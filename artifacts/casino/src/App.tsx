@@ -5773,7 +5773,7 @@ export default function App() {
       {cashierOpen && (
         <div onClick={e=>{ if(e.target===e.currentTarget) setCashierOpen(false); }}
           style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.75)",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px",zIndex:999 }}>
-          <div style={{ width:"100%",maxWidth:"580px",background:"#16202e",border:"1px solid #2a3650",borderRadius:"16px",overflow:"hidden",boxShadow:"0 24px 60px rgba(0,0,0,.6)",fontFamily:"'Inter', sans-serif" }}>
+          <div style={{ width:"100%",maxWidth:"580px",background:"#16202e",border:"1px solid #2a3650",borderRadius:"16px",overflow:"hidden",boxShadow:"0 24px 60px rgba(0,0,0,.6)",fontFamily:"'Inter', sans-serif",minHeight:"680px",display:"flex",flexDirection:"column" }}>
             <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 20px 14px" }}>
               <h3 style={{ margin:0,color:"#f2f3f7",fontSize:"22px",fontWeight:700 }}>Wallet</h3>
               <button onClick={()=>setCashierOpen(false)} style={{ width:"32px",height:"32px",borderRadius:"50%",background:"#2a3550",border:"none",color:"#9ea8bc",fontSize:"20px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
@@ -5799,7 +5799,7 @@ export default function App() {
 
             {/* Deposit */}
             {currentUser && cashierTab==="deposit" && (
-              <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",minHeight:"520px" }}>
+              <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",flex:1 }}>
                 {/* Currency + Network — 2-column grid */}
                 <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px" }}>
                   {/* Currency */}
@@ -5907,7 +5907,7 @@ export default function App() {
             )}
 
             {currentUser && cashierTab==="withdraw" && (
-              <div style={{ padding:"20px",minHeight:"520px" }}>
+              <div style={{ padding:"20px",flex:1 }}>
                 {/* Section heading */}
                 <div style={{ marginBottom:"20px" }}>
                   <span style={{ fontSize:"22px",fontWeight:700,color:"#fff" }}>Withdraw</span>
