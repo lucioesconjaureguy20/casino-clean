@@ -5906,14 +5906,6 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Info bar */}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(90,154,255,.07)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#8a9ab8",border:"1px solid rgba(90,154,255,.12)",marginTop:"14px" }}>
-                  <span style={{ color:"#5a9aff",flexShrink:0,marginTop:"1px",fontSize:"15px" }}>ℹ</span>
-                  <span>
-                    <strong style={{ color:"#c8d6ea" }}>{pendingDeposit?.network ?? depositNetwork} only.</strong> Do not use other networks. The min deposit amount <strong style={{ color:"#fff" }}>{minDepositNative(pendingDeposit?.coin ?? depositCoin, pendingDeposit?.network ?? depositNetwork).toFixed(8)} {pendingDeposit?.coin ?? depositCoin}</strong>
-                  </span>
-                </div>
-
                 {/* Security warning */}
                 <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"14px" }}>
                   <span style={{ flexShrink:0,marginTop:"4px",display:"inline-flex" }}>
