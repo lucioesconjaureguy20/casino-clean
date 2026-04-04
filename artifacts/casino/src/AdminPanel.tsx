@@ -968,6 +968,7 @@ function AlertsTab({ token }: { token: string }) {
   const isBlocked = (userId: string) => data?.blockedUsers.some(b => b.id === userId) ?? false;
 
   const visible = (data?.alerts ?? []).filter(a => {
+    if (isBlocked(a.userId)) return false;       // bloqueados van solo al tab Bloqueados
     if (reviewed.has(a.id)) return false;
     if (sevFilter !== "all" && a.severity !== sevFilter) return false;
     if (typeFilter !== "all" && a.type !== typeFilter) return false;
@@ -975,11 +976,11 @@ function AlertsTab({ token }: { token: string }) {
     return true;
   });
 
-  // counts on the visible (not reviewed) alerts
+  // counts on the visible (not reviewed, not blocked) alerts
   const counts = {
-    critical: (data?.alerts ?? []).filter(a => !reviewed.has(a.id) && a.severity === "critical").length,
-    medium:   (data?.alerts ?? []).filter(a => !reviewed.has(a.id) && a.severity === "medium").length,
-    low:      (data?.alerts ?? []).filter(a => !reviewed.has(a.id) && a.severity === "low").length,
+    critical: (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "critical").length,
+    medium:   (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "medium").length,
+    low:      (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "low").length,
   };
 
   const btnFilter = (active: boolean, color?: string): React.CSSProperties => ({
@@ -1143,12 +1144,8 @@ function AlertsTab({ token }: { token: string }) {
           {/* Accordion list */}
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {data!.blockedUsers.map(bu => {
-              const userAlerts = (data?.alerts ?? []).filter(a => {
-                if (a.userId !== bu.id) return false;
-                // Solo alertas generadas DESPUÉS del bloqueo
-                if (bu.blocked_at && a.createdAt <= bu.blocked_at) return false;
-                return true;
-              });
+              // Mostrar TODAS las alertas del usuario bloqueado (explican por qué fue bloqueado + nuevas)
+              const userAlerts = (data?.alerts ?? []).filter(a => a.userId === bu.id);
               const busy       = acting === bu.id;
               const open       = expanded.has(bu.id);
 
