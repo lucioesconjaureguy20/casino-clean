@@ -44,13 +44,14 @@ router.get("/pending-deposits", async (_req: Request, res: Response) => {
 
     const ids = [...new Set(deposits.map((d) => d.user_id))];
     const idsParam = `(${ids.map((id) => `"${id}"`).join(",")})`;
-    const pr = await sbAdmin(
-      `profiles?id=in.${idsParam}&select=id,username,mander_id`,
+    let pr = await sbAdmin(
+      `profiles?id=in.${idsParam}&select=id,username,mander_id,is_flagged`,
     );
+    if (!pr.ok) pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username,mander_id`);
 
-    let profileMap: Record<string, { username: string; mander_id: string }> = {};
+    let profileMap: Record<string, { username: string; mander_id: string; is_flagged?: boolean }> = {};
     if (pr.ok) {
-      const profiles: { id: string; username: string; mander_id: string }[] =
+      const profiles: { id: string; username: string; mander_id: string; is_flagged?: boolean }[] =
         await pr.json();
       for (const p of profiles) profileMap[p.id] = p;
     }
@@ -59,6 +60,7 @@ router.get("/pending-deposits", async (_req: Request, res: Response) => {
       ...d,
       username: profileMap[d.user_id]?.username ?? d.user_id,
       mander_id: profileMap[d.user_id]?.mander_id ?? "",
+      is_flagged: profileMap[d.user_id]?.is_flagged ?? false,
     }));
 
     return res.json({ deposits: result });
@@ -76,10 +78,17 @@ router.get("/users", async (_req: Request, res: Response) => {
     return res.status(503).json({ error: "Servicio no disponible." });
 
   try {
-    const pr = await sbAdmin(
-      "profiles?select=id,mander_id,username,created_at,is_blocked&order=created_at.asc",
+    let pr = await sbAdmin(
+      "profiles?select=id,mander_id,username,created_at,is_blocked,is_flagged&order=created_at.asc",
       { headers: { Prefer: "count=none" } },
     );
+    // Fallback if is_flagged column not yet added
+    if (!pr.ok) {
+      pr = await sbAdmin(
+        "profiles?select=id,mander_id,username,created_at,is_blocked&order=created_at.asc",
+        { headers: { Prefer: "count=none" } },
+      );
+    }
     if (!pr.ok) {
       const txt = await pr.text();
       return res.status(502).json({ error: "Error fetching profiles", detail: txt });
@@ -91,6 +100,7 @@ router.get("/users", async (_req: Request, res: Response) => {
       username: string;
       created_at: string;
       is_blocked?: boolean;
+      is_flagged?: boolean;
     }[] = await pr.json();
 
     if (!profiles.length) return res.json({ users: [] });
@@ -118,6 +128,7 @@ router.get("/users", async (_req: Request, res: Response) => {
       username: p.username,
       created_at: p.created_at,
       is_blocked: p.is_blocked ?? false,
+      is_flagged: p.is_flagged ?? false,
       balances: (balanceMap[p.mander_id] ?? []).filter((b) => b.balance > 0),
     }));
 

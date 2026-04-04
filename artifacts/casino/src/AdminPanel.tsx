@@ -10,6 +10,7 @@ interface AdminUser {
   username: string;
   created_at: string;
   is_blocked: boolean;
+  is_flagged?: boolean;
   balances: UserBalance[];
 }
 
@@ -22,6 +23,7 @@ interface PendingDeposit {
   network: string;
   address: string;
   created_at: string;
+  is_flagged?: boolean;
 }
 
 interface Withdrawal {
@@ -36,6 +38,7 @@ interface Withdrawal {
   status: "pending" | "approved" | "paid" | "rejected";
   tx_hash: string | null;
   created_at: string;
+  is_flagged?: boolean;
 }
 
 interface ConfirmInputs { amount: string; txHash: string; }
@@ -376,6 +379,11 @@ function UsersTab({ token }: { token: string }) {
                     <td style={td}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                         <span style={{ fontWeight: 700, color: u.is_blocked ? "#f87171" : "#f59e0b" }}>{u.username}</span>
+                        {u.is_flagged && (
+                          <span style={{ background: "#1a1205", border: "1px solid #78350f", borderRadius: 4, color: "#fbbf24", fontSize: 9, fontWeight: 700, padding: "1px 5px", letterSpacing: "0.3px" }}>
+                            ⚑
+                          </span>
+                        )}
                         {u.is_blocked && (
                           <span style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 5, color: "#fca5a5", fontSize: 10, fontWeight: 700, padding: "1px 6px", letterSpacing: "0.3px" }}>
                             BLOQUEADO
@@ -566,7 +574,12 @@ function DepositsTab() {
                     >
                       <td style={{ ...td, color: "#64748b", fontFamily: "monospace" }}>#{d.id}</td>
                       <td style={td}>
-                        <div style={{ fontWeight: 600 }}>{d.username}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ fontWeight: 600 }}>{d.username}</span>
+                          {d.is_flagged && (
+                            <span style={{ background: "#1a1205", border: "1px solid #78350f", borderRadius: 4, color: "#fbbf24", fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>⚑</span>
+                          )}
+                        </div>
                         {d.mander_id && <div style={{ fontSize: 11, color: "#475569", fontFamily: "monospace" }}>{d.mander_id}</div>}
                       </td>
                       <td style={td}>
@@ -741,7 +754,12 @@ function WithdrawalsTab({ token }: { token: string }) {
                       style={{ transition: "background .15s" }}
                     >
                       <td style={td}>
-                        <div style={{ fontWeight: 700, color: "#f59e0b" }}>{w.username}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ fontWeight: 700, color: "#f59e0b" }}>{w.username}</span>
+                          {w.is_flagged && (
+                            <span style={{ background: "#1a1205", border: "1px solid #78350f", borderRadius: 4, color: "#fbbf24", fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>⚑</span>
+                          )}
+                        </div>
                         <div style={{ fontSize: 10, color: "#475569", fontFamily: "monospace" }}>{w.mander_id?.slice(0,12)}…</div>
                       </td>
                       <td style={td}>

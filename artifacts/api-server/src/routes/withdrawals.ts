@@ -358,18 +358,23 @@ router.get("/admin/withdrawals", requireAdmin, async (_req: Request, res: Respon
   const withdrawals: any[] = await r.json();
   if (!withdrawals.length) return res.json({ withdrawals: [] });
 
-  // Join usernames
+  // Join usernames and is_flagged
   const ids = [...new Set(withdrawals.map((w) => w.user_id).filter(Boolean))];
   const idsParam = `(${ids.map((id) => `"${id}"`).join(",")})`;
-  const pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username`, { headers: { Prefer: "count=none" } });
-  let profileMap: Record<string, string> = {};
+  let pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username,is_flagged`, { headers: { Prefer: "count=none" } });
+  if (!pr.ok) pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username`, { headers: { Prefer: "count=none" } });
+  let profileMap: Record<string, { username: string; is_flagged?: boolean }> = {};
   if (pr.ok) {
     const profiles: any[] = await pr.json();
-    for (const p of profiles) profileMap[p.id] = p.username;
+    for (const p of profiles) profileMap[p.id] = { username: p.username, is_flagged: p.is_flagged ?? false };
   }
 
   return res.json({
-    withdrawals: withdrawals.map((w) => ({ ...w, username: profileMap[w.user_id] ?? w.user_id })),
+    withdrawals: withdrawals.map((w) => ({
+      ...w,
+      username: profileMap[w.user_id]?.username ?? w.user_id,
+      is_flagged: profileMap[w.user_id]?.is_flagged ?? false,
+    })),
   });
 });
 
