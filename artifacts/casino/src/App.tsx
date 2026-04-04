@@ -5799,7 +5799,7 @@ export default function App() {
 
             {/* Deposit */}
             {currentUser && cashierTab==="deposit" && (
-              <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",flex:1,justifyContent:"space-between" }}>
+              <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",flex:1 }}>
                 {/* Currency + Network — 2-column grid */}
                 <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px" }}>
                   {/* Currency */}
@@ -5864,7 +5864,7 @@ export default function App() {
                 </div>
 
                 {/* Address section header */}
-                <div style={{ marginBottom:"12px" }}>
+                <div style={{ marginBottom:"12px",marginTop:"30px" }}>
                   <span style={{ color:"#9ea8bc",fontSize:"13px",fontWeight:600,letterSpacing:"0.3px" }}>Deposit address</span>
                 </div>
 
@@ -5900,7 +5900,7 @@ export default function App() {
                 )}
 
                 {/* Info bar */}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(90,154,255,.07)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#8a9ab8",border:"1px solid rgba(90,154,255,.12)" }}>
+                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(90,154,255,.07)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#8a9ab8",border:"1px solid rgba(90,154,255,.12)",marginTop:"14px" }}>
                   <span style={{ color:"#5a9aff",flexShrink:0,marginTop:"1px",fontSize:"15px" }}>ℹ</span>
                   <span>
                     <strong style={{ color:"#c8d6ea" }}>{pendingDeposit?.network ?? depositNetwork} only.</strong> Do not use other networks. The min deposit amount <strong style={{ color:"#fff" }}>{minDepositNative(pendingDeposit?.coin ?? depositCoin, pendingDeposit?.network ?? depositNetwork).toFixed(8)} {pendingDeposit?.coin ?? depositCoin}</strong>
@@ -5908,7 +5908,7 @@ export default function App() {
                 </div>
 
                 {/* Security warning */}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)" }}>
+                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"14px" }}>
                   <span style={{ flexShrink:0,marginTop:"1px",fontSize:"15px" }}>⚠️</span>
                   <span>
                     <strong style={{ color:"#f6c94e" }}>Security notice:</strong> Only send <strong style={{ color:"#fff" }}>{pendingDeposit?.coin ?? depositCoin}</strong> to this address via <strong style={{ color:"#fff" }}>{pendingDeposit?.network ?? depositNetwork}</strong>. Sending any other coin or using a different network will result in <strong style={{ color:"#ff7070" }}>permanent loss of funds</strong>.
