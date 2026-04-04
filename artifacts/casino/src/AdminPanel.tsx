@@ -834,6 +834,7 @@ interface AlertsData {
   alerts: Alert[];
   summary: { total: number; critical: number; medium: number; low: number };
   blockedUsers: { id: string; username: string; blocked_at: string | null }[];
+  flaggedUsers: { id: string; username: string; flagged_at: string | null }[];
   period: string;
   generatedAt: string;
 }
@@ -889,7 +890,7 @@ function AlertsTab({ token }: { token: string }) {
   const [acting, setActing]       = useState<string | null>(null);
   const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
   const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
-  const [view, setView]           = useState<"alerts" | "blocked">("alerts");
+  const [view, setView]           = useState<"alerts" | "flagged" | "blocked">("alerts");
   const [expanded, setExpanded]   = useState<Set<string>>(new Set());
 
   function toggleExpand(id: string) {
@@ -965,10 +966,47 @@ function AlertsTab({ token }: { token: string }) {
     } finally { setActing(null); }
   }
 
+  async function flagUser(userId: string, uname: string) {
+    const reason = blockInputs[userId] ?? "";
+    setActing(userId);
+    try {
+      const r = await fetch("/api/admin/user/flag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: userId, reason: reason || undefined }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error ?? `Error ${r.status}`);
+      showToast(`${uname} marcado como flagged.`, true);
+      await load();
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error al marcar", false);
+    } finally { setActing(null); }
+  }
+
+  async function unflagUser(userId: string, uname: string) {
+    setActing(userId);
+    try {
+      const r = await fetch("/api/admin/user/unflag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error ?? `Error ${r.status}`);
+      showToast(`${uname} removido de flagged.`, true);
+      await load();
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error al desmarcar", false);
+    } finally { setActing(null); }
+  }
+
   const isBlocked = (userId: string) => data?.blockedUsers.some(b => b.id === userId) ?? false;
+  const isFlagged = (userId: string) => data?.flaggedUsers?.some(f => f.id === userId) ?? false;
 
   const visible = (data?.alerts ?? []).filter(a => {
     if (isBlocked(a.userId)) return false;       // bloqueados van solo al tab Bloqueados
+    if (isFlagged(a.userId)) return false;       // flaggeados van solo al tab Flagged
     if (reviewed.has(a.id)) return false;
     if (sevFilter !== "all" && a.severity !== sevFilter) return false;
     if (typeFilter !== "all" && a.type !== typeFilter) return false;
@@ -976,11 +1014,11 @@ function AlertsTab({ token }: { token: string }) {
     return true;
   });
 
-  // counts on the visible (not reviewed, not blocked) alerts
+  // counts on the visible (not reviewed, not blocked, not flagged) alerts
   const counts = {
-    critical: (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "critical").length,
-    medium:   (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "medium").length,
-    low:      (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !reviewed.has(a.id) && a.severity === "low").length,
+    critical: (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !isFlagged(a.userId) && !reviewed.has(a.id) && a.severity === "critical").length,
+    medium:   (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !isFlagged(a.userId) && !reviewed.has(a.id) && a.severity === "medium").length,
+    low:      (data?.alerts ?? []).filter(a => !isBlocked(a.userId) && !isFlagged(a.userId) && !reviewed.has(a.id) && a.severity === "low").length,
   };
 
   const btnFilter = (active: boolean, color?: string): React.CSSProperties => ({
@@ -1044,6 +1082,23 @@ function AlertsTab({ token }: { token: string }) {
               background: "#7f1d1d", color: "#fca5a5", borderRadius: 20,
               padding: "1px 7px", fontSize: 11, marginLeft: 6,
             }}>{counts.critical + counts.medium + counts.low}</span>
+          )}
+        </button>
+        <button
+          onClick={() => setView("flagged")}
+          style={{
+            flex: 1, padding: "9px 0", borderRadius: 7, border: "none", cursor: "pointer",
+            fontWeight: 700, fontSize: 13, fontFamily: "'Inter', sans-serif",
+            background: view === "flagged" ? "#1a1505" : "transparent",
+            color: view === "flagged" ? "#fbbf24" : "#475569",
+            transition: "all .15s",
+          }}
+        >
+          ⚑ Flagged {!loading && (data?.flaggedUsers?.length ?? 0) > 0 && (
+            <span style={{
+              background: "#451a03", color: "#fde68a", borderRadius: 20,
+              padding: "1px 7px", fontSize: 11, marginLeft: 6,
+            }}>{(data?.flaggedUsers?.length ?? 0)}</span>
           )}
         </button>
         <button
@@ -1117,6 +1172,159 @@ function AlertsTab({ token }: { token: string }) {
         </div>
 
       </>}
+
+      {/* ══════════════ VISTA: FLAGGED ══════════════ */}
+      {view === "flagged" && (data?.flaggedUsers?.length ?? 0) > 0 && (
+        <div style={{ marginBottom: 24 }}>
+          {/* Section header */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 10, marginBottom: 12,
+            paddingBottom: 10, borderBottom: "1px solid #1e2a3d",
+          }}>
+            <span style={{ fontSize: 18 }}>⚑</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: "#fbbf24" }}>Usuarios Flaggeados</span>
+            <span style={{
+              background: "#451a03", border: "1px solid #92400e",
+              borderRadius: 20, padding: "2px 10px", fontSize: 12, fontWeight: 700, color: "#fde68a",
+            }}>{(data?.flaggedUsers?.length ?? 0)}</span>
+            <span style={{ fontSize: 12, color: "#64748b", marginLeft: 4 }}>— en revisión manual</span>
+          </div>
+
+          {/* Accordion list */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {(data?.flaggedUsers ?? []).map(fu => {
+              const userAlerts = (data?.alerts ?? []).filter(a => a.userId === fu.id);
+              const busy = acting === fu.id;
+              const open = expanded.has(fu.id);
+
+              return (
+                <div key={fu.id} style={{
+                  background: "#0d0d08", border: `2px solid ${open ? "#92400e" : "#3a2805"}`,
+                  borderRadius: 12, overflow: "hidden", transition: "border-color .2s",
+                }}>
+                  {/* Row header */}
+                  <div
+                    onClick={() => toggleExpand(fu.id)}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+                      padding: "13px 16px", background: open ? "#1a1205" : "#100e04",
+                      cursor: "pointer", userSelect: "none", transition: "background .2s",
+                    }}
+                  >
+                    <svg
+                      viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="#92400e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                      style={{ flexShrink: 0, transition: "transform .25s cubic-bezier(0.22,1,0.36,1)", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+
+                    <span style={{ fontSize: 15 }}>⚑</span>
+                    <span style={{ fontWeight: 800, fontSize: 14, color: "#fbbf24" }}>@{fu.username}</span>
+                    <span style={{
+                      background: "#78350f", color: "#fde68a", borderRadius: 5,
+                      padding: "1px 7px", fontSize: 10, fontWeight: 700, letterSpacing: "0.4px",
+                    }}>FLAGGED</span>
+
+                    {fu.flagged_at && (
+                      <span style={{ fontSize: 11, color: "#78350f" }}>
+                        desde {fmt(fu.flagged_at)}
+                      </span>
+                    )}
+
+                    {/* Alert count badge */}
+                    {userAlerts.length > 0 && (
+                      <span style={{
+                        background: "#1e2a3d", border: "1px solid #2a3550",
+                        borderRadius: 20, padding: "1px 8px", fontSize: 11, color: "#94a3b8", fontWeight: 600,
+                      }}>
+                        {userAlerts.length} alerta{userAlerts.length !== 1 ? "s" : ""}
+                      </span>
+                    )}
+                    {userAlerts.length === 0 && (
+                      <span style={{ fontSize: 11, color: "#475569", fontStyle: "italic" }}>sin alertas en este período</span>
+                    )}
+
+                    {/* Actions — stop propagation */}
+                    <div style={{ marginLeft: "auto", display: "flex", gap: 6, flexShrink: 0 }}>
+                      <button
+                        onClick={e => { e.stopPropagation(); unflagUser(fu.id, fu.username); }}
+                        disabled={busy}
+                        style={{
+                          background: "#1a2438", border: "1px solid #2a3550",
+                          borderRadius: 7, color: "#94a3b8", cursor: busy ? "not-allowed" : "pointer",
+                          fontSize: 12, fontWeight: 700, padding: "6px 12px", opacity: busy ? 0.6 : 1,
+                          fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap",
+                        }}
+                      >{busy ? "…" : "Quitar flag"}</button>
+                      <button
+                        onClick={e => { e.stopPropagation(); blockUser(fu.id, fu.username); }}
+                        disabled={busy}
+                        style={{
+                          background: "#1a0808", border: "1px solid #7f1d1d",
+                          borderRadius: 7, color: "#f87171", cursor: busy ? "not-allowed" : "pointer",
+                          fontSize: 12, fontWeight: 700, padding: "6px 12px", opacity: busy ? 0.6 : 1,
+                          fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap",
+                        }}
+                      >{busy ? "…" : "🔒 Bloquear"}</button>
+                    </div>
+                  </div>
+
+                  {/* Expandable alerts panel */}
+                  {open && (
+                    <div style={{
+                      padding: "10px 16px 14px", display: "flex", flexDirection: "column", gap: 8,
+                      borderTop: "1px solid #2a1a05",
+                      animation: "blockExpand .25s cubic-bezier(0.22,1,0.36,1)",
+                    }}>
+                      {userAlerts.length === 0 ? (
+                        <div style={{ fontSize: 12, color: "#475569", fontStyle: "italic", padding: "6px 0" }}>
+                          Sin alertas en el período seleccionado.
+                        </div>
+                      ) : userAlerts.map(a => {
+                        const s  = SEV[a.severity];
+                        const tm = TYPE_META[a.type] ?? { label: a.type, icon: "❓" };
+                        return (
+                          <div key={a.id} style={{
+                            display: "flex", gap: 10, alignItems: "flex-start",
+                            background: "#100e04", border: `1px solid ${s.border}`,
+                            borderLeft: `3px solid ${s.color}`, borderRadius: 8, padding: "10px 12px",
+                          }}>
+                            <span style={{ fontSize: 20, lineHeight: 1, flexShrink: 0 }}>{tm.icon}</span>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
+                                <span style={{
+                                  background: s.bg, color: s.color, border: `1px solid ${s.border}`,
+                                  borderRadius: 5, padding: "1px 6px", fontSize: 10, fontWeight: 700,
+                                }}>{s.dot} {s.label.toUpperCase()}</span>
+                                <span style={{ fontSize: 11, color: "#475569" }}>{tm.icon} {tm.label}</span>
+                                <span style={{ marginLeft: "auto", fontSize: 11, color: "#334155", whiteSpace: "nowrap" }}>
+                                  {fmt(a.createdAt)}
+                                </span>
+                              </div>
+                              <div style={{ fontSize: 12, fontWeight: 600, color: s.color, marginBottom: 2 }}>{a.title}</div>
+                              <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>{a.detail}</div>
+                              {a.wallet && (
+                                <div style={{ fontSize: 11, color: "#334155", marginTop: 4, display: "flex", gap: 6, alignItems: "center" }}>
+                                  <span style={{ color: "#475569" }}>Wallet:</span>
+                                  <code style={{ background: "#0d1525", padding: "2px 6px", borderRadius: 4, color: "#94a3b8", fontFamily: "monospace", fontSize: 10 }}>
+                                    {a.wallet.slice(0, 14)}…{a.wallet.slice(-6)}
+                                  </code>
+                                  {a.network && <span style={{ color: "#334155" }}>· {a.network}</span>}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ══════════════ VISTA: BLOQUEADOS ══════════════ */}
       {view === "blocked" && (data?.blockedUsers.length ?? 0) > 0 && (
@@ -1277,6 +1485,15 @@ function AlertsTab({ token }: { token: string }) {
         </div>
       )}
 
+      {/* ── VISTA FLAGGED: empty state ── */}
+      {view === "flagged" && !loading && (data?.flaggedUsers?.length ?? 0) === 0 && (
+        <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>⚑</div>
+          <div style={{ color: "#e2e8f0", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>Sin usuarios flaggeados</div>
+          <div style={{ color: "#64748b", fontSize: 13 }}>Ningún usuario está marcado para revisión manual actualmente.</div>
+        </div>
+      )}
+
       {/* ── VISTA BLOQUEADOS: empty state ── */}
       {view === "blocked" && !loading && (data?.blockedUsers.length ?? 0) === 0 && (
         <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
@@ -1374,6 +1591,14 @@ function AlertsTab({ token }: { token: string }) {
                         onChange={e => setBlockInputs(prev => ({ ...prev, [alert.userId]: e.target.value }))}
                         style={{ ...inputStyle, width: 120, fontSize: 11 }}
                       />
+                      <button onClick={() => flagUser(alert.userId, alert.username)} disabled={busy} style={{
+                        background: "#1a1205", border: "1px solid #92400e", borderRadius: 7,
+                        color: "#fbbf24", cursor: busy ? "not-allowed" : "pointer",
+                        fontSize: 11, fontWeight: 600, padding: "5px 12px",
+                        fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap",
+                      }}>
+                        {busy ? "…" : "⚑ Flaggear"}
+                      </button>
                       <button onClick={() => blockUser(alert.userId, alert.username)} disabled={busy} style={{
                         background: "#1a0808", border: "1px solid #7f1d1d", borderRadius: 7,
                         color: "#f87171", cursor: busy ? "not-allowed" : "pointer",

@@ -12,11 +12,12 @@ import { verifyGameToken } from "../lib/gameToken.js";
 import fs from "node:fs";
 import path from "node:path";
 
-const AUDIT_LOG = path.join(process.cwd(), "block_audit.jsonl");
+const AUDIT_LOG      = path.join(process.cwd(), "block_audit.jsonl");
+const FLAG_AUDIT_LOG = path.join(process.cwd(), "flag_audit.jsonl");
 
-function writeAudit(entry: Record<string, unknown>) {
+function writeAudit(entry: Record<string, unknown>, file = AUDIT_LOG) {
   try {
-    fs.appendFileSync(AUDIT_LOG, JSON.stringify({ ...entry, ts: new Date().toISOString() }) + "\n");
+    fs.appendFileSync(file, JSON.stringify({ ...entry, ts: new Date().toISOString() }) + "\n");
   } catch (e) {
     console.error("[AUDIT] write failed:", e);
   }
@@ -47,7 +48,7 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
 
 async function getProfile(userId: string) {
   const r = await sbAdmin(
-    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked&limit=1`,
+    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked,is_flagged&limit=1`,
   );
   if (!r.ok) return null;
   const rows: any[] = await r.json();
@@ -200,13 +201,18 @@ router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) =>
     // For wallet duplicates we always scan ALL history
     const sinceAll = new Date(Date.now() - 365 * 86_400_000).toISOString();
 
-    const [prices, wRes, txRes, profRes, balRes] = await Promise.all([
+    const [prices, wRes, txRes, profResRaw, balRes] = await Promise.all([
       getPrices(),
       sbAdmin(`withdrawals?select=id,user_id,amount,currency,status,wallet,network,created_at&order=created_at.desc`),
       sbAdmin(`transactions?select=id,user_id,mander_id,type,amount,currency,created_at&created_at=gte.${since}&order=created_at.desc`),
-      sbAdmin(`profiles?select=id,username,is_blocked`),
+      sbAdmin(`profiles?select=id,username,is_blocked,is_flagged`),
       sbAdmin(`balances?select=user_id,mander_id,currency,balance,locked_amount`),
     ]);
+
+    // If is_flagged column doesn't exist yet, fall back to query without it
+    const profRes = profResRaw.ok
+      ? profResRaw
+      : await sbAdmin(`profiles?select=id,username,is_blocked`);
 
     const withdrawals: any[] = wRes.ok  ? await wRes.json()  : [];
     const txAll:       any[] = txRes.ok ? await txRes.json() : [];
@@ -215,8 +221,8 @@ router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) =>
 
     // ── Build lookup maps ─────────────────────────────────────────────────────
 
-    const profMap: Record<string, { username: string; is_blocked?: boolean }> = {};
-    for (const p of profiles) profMap[p.id] = { username: p.username, is_blocked: p.is_blocked };
+    const profMap: Record<string, { username: string; is_blocked?: boolean; is_flagged?: boolean }> = {};
+    for (const p of profiles) profMap[p.id] = { username: p.username, is_blocked: p.is_blocked, is_flagged: p.is_flagged };
 
     const manderToUser: Record<string, string> = {};
     for (const b of balances) if (b.user_id) manderToUser[b.mander_id] = b.user_id;
@@ -516,28 +522,35 @@ router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) =>
       low:      unique.filter(a => a.severity === "low").length,
     };
 
-    // ── Leer audit log para obtener el timestamp del último bloqueo ──────────
-    const blockTimestamps: Record<string, string> = {};
-    try {
-      const raw = fs.readFileSync(AUDIT_LOG, "utf8");
-      for (const line of raw.split("\n").filter(Boolean)) {
-        try {
-          const entry = JSON.parse(line);
-          if (entry.action === "block" && entry.target_user_id && entry.ts) {
-            // Si hay múltiples entradas, nos quedamos con la más reciente
-            if (!blockTimestamps[entry.target_user_id] || entry.ts > blockTimestamps[entry.target_user_id]) {
-              blockTimestamps[entry.target_user_id] = entry.ts;
+    // ── Leer audit logs para timestamps de bloqueo y flagging ─────────────────
+    function readAuditTimestamps(file: string, action: string): Record<string, string> {
+      const ts: Record<string, string> = {};
+      try {
+        const raw = fs.readFileSync(file, "utf8");
+        for (const line of raw.split("\n").filter(Boolean)) {
+          try {
+            const e = JSON.parse(line);
+            if (e.action === action && e.target_user_id && e.ts) {
+              if (!ts[e.target_user_id] || e.ts > ts[e.target_user_id]) ts[e.target_user_id] = e.ts;
             }
-          }
-        } catch {}
-      }
-    } catch {}
+          } catch {}
+        }
+      } catch {}
+      return ts;
+    }
+
+    const blockTimestamps = readAuditTimestamps(AUDIT_LOG,      "block");
+    const flagTimestamps  = readAuditTimestamps(FLAG_AUDIT_LOG, "flag");
 
     const blockedUsers = profiles
       .filter(p => p.is_blocked === true)
       .map(p => ({ id: p.id, username: p.username, blocked_at: blockTimestamps[p.id] ?? null }));
 
-    return res.json({ ok: true, alerts: unique, summary, blockedUsers, period, generatedAt: new Date().toISOString() });
+    const flaggedUsers = profiles
+      .filter(p => p.is_flagged === true && p.is_blocked !== true)
+      .map(p => ({ id: p.id, username: p.username, flagged_at: flagTimestamps[p.id] ?? null }));
+
+    return res.json({ ok: true, alerts: unique, summary, blockedUsers, flaggedUsers, period, generatedAt: new Date().toISOString() });
   } catch (err: unknown) {
     console.error("[ALERTS]", err);
     return res.status(500).json({ error: "Error al generar alertas." });
@@ -609,6 +622,52 @@ router.get("/admin/blocked-users", requireAdmin, async (_req: Request, res: Resp
   const r = await sbAdmin("profiles?is_blocked=eq.true&select=id,username,created_at");
   if (!r.ok) return res.json({ blockedUsers: [] });
   return res.json({ blockedUsers: await r.json() });
+});
+
+// ── POST /api/admin/user/flag ─────────────────────────────────────────────────
+
+router.post("/admin/user/flag", requireAdmin, async (req: Request, res: Response) => {
+  const { user_id, reason } = req.body;
+  if (!user_id) return res.status(400).json({ error: "user_id requerido." });
+
+  const r = await sbAdmin(`profiles?id=eq.${encodeURIComponent(user_id)}`, {
+    method:  "PATCH",
+    body:    JSON.stringify({ is_flagged: true }),
+    headers: { Prefer: "return=representation" },
+  });
+
+  if (!r.ok) {
+    const err = await r.text();
+    if (err.includes("is_flagged"))
+      return res.status(500).json({ error: "Columna is_flagged falta. Ejecutar en Supabase SQL Editor: ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_flagged boolean DEFAULT false;" });
+    return res.status(500).json({ error: "Error al marcar usuario." });
+  }
+
+  const [updated] = await r.json();
+  if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
+  console.log(`[FLAG] ${updated.username} by admin=${req.authUser?.id}. Reason: ${reason ?? "—"}`);
+  writeAudit({ action: "flag", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id, reason: reason ?? null }, FLAG_AUDIT_LOG);
+  return res.json({ ok: true, message: `Usuario ${updated.username} marcado como flagged.` });
+});
+
+// ── POST /api/admin/user/unflag ───────────────────────────────────────────────
+
+router.post("/admin/user/unflag", requireAdmin, async (req: Request, res: Response) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ error: "user_id requerido." });
+
+  const r = await sbAdmin(`profiles?id=eq.${encodeURIComponent(user_id)}`, {
+    method:  "PATCH",
+    body:    JSON.stringify({ is_flagged: false }),
+    headers: { Prefer: "return=representation" },
+  });
+
+  if (!r.ok) return res.status(500).json({ error: "Error al desmarcar usuario." });
+  const [updated] = await r.json();
+  if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
+  console.log(`[UNFLAG] ${updated.username} by admin=${req.authUser?.id}`);
+  writeAudit({ action: "unflag", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id }, FLAG_AUDIT_LOG);
+  return res.json({ ok: true, message: `Usuario ${updated.username} removido de flagged.` });
 });
 
 export { requireAdmin as alertsRequireAdmin };
