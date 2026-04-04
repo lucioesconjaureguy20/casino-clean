@@ -5884,13 +5884,16 @@ export default function App() {
                         <img src={`https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={110} height={110} style={{ display:"block" }} alt="QR"/>
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"8px" }}>
-                        <div style={{ background:"#0d1622",border:"1px solid #2e3f58",borderRadius:"8px",padding:"8px 12px",color:"#d4e0f0",fontWeight:500,fontSize:"13.5px",wordBreak:"break-all" as const,lineHeight:1.6,textAlign:"center" }}>
-                          {pendingDeposit.address}
+                        <div onClick={()=>{ navigator.clipboard.writeText(pendingDeposit!.address!); setAddressCopied(true); setTimeout(()=>setAddressCopied(false),2000); }}
+                          style={{ background:"#0d1622",border:`1px solid ${addressCopied?"#2a6a44":"#2e3f58"}`,borderRadius:"8px",padding:"8px 12px",color:"#d4e0f0",fontWeight:500,fontSize:"13.5px",wordBreak:"break-all" as const,lineHeight:1.6,display:"flex",alignItems:"center",gap:"10px",cursor:"pointer",transition:"border-color .2s" }}>
+                          <span style={{ flex:1 }}>{pendingDeposit.address}</span>
+                          <span style={{ flexShrink:0,color:addressCopied?"#4ade80":"#8a9ab8",transition:"color .2s" }}>
+                            {addressCopied
+                              ? <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                              : <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M17 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="7" y="11" width="10" height="8" rx="1"/></svg>
+                            }
+                          </span>
                         </div>
-                        <button onClick={()=>{ navigator.clipboard.writeText(pendingDeposit!.address!); setAddressCopied(true); setTimeout(()=>setAddressCopied(false),2000); }} className="cashier-btn"
-                          style={{ width:"100%",padding:"8px 0",borderRadius:"7px",background:addressCopied?"#1a3a28":"#253548",border:`1px solid ${addressCopied?"#2a6a44":"#344d66"}`,color:addressCopied?"#4ade80":"#d4e0f0",fontWeight:600,fontSize:"13px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:"7px",transition:"background .2s,border-color .2s,color .2s" }}>
-                          {addressCopied ? <>Copied! <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg></> : <>Copy <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M17 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="7" y="11" width="10" height="8" rx="1"/></svg></>}
-                        </button>
                       </div>
                     </div>
                   </div>
