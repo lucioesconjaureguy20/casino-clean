@@ -6716,13 +6716,11 @@ export default function App() {
                 flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #1e2a3d",
                 background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
               }}>Entendido</button>
-              <a href="mailto:soporte@manderbet.com" style={{ textDecoration:"none", flex:1 }}>
-                <button style={{
-                  width:"100%", padding:"12px", borderRadius:"10px", border:"none",
-                  background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
-                  fontWeight:600, fontSize:"14px", cursor:"pointer",
-                }}>Contactar soporte</button>
-              </a>
+              <button onClick={()=>{ setWithdrawBlocked(false); setChatOpen(true); if(currentUser) loadChatSessions(currentUser); }} style={{
+                flex:1, padding:"12px", borderRadius:"10px", border:"none",
+                background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
+                fontWeight:600, fontSize:"14px", cursor:"pointer",
+              }}>Contactar soporte</button>
             </div>
           </div>
         </div>
