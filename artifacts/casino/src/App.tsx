@@ -6711,7 +6711,7 @@ export default function App() {
             <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.75, margin:"0 0 10px" }}>
               Por el momento los retiros de tu cuenta están <strong style={{ color:"#94a3b8" }}>en pausa</strong> mientras nuestro equipo realiza una revisión de rutina.
             </p>
-            <p style={{ fontSize:"14px", color:"#475569", lineHeight:1.6, margin:"0 0 22px" }}>
+            <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.6, margin:"0 0 22px" }}>
               Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.
             </p>
             <div style={{ display:"flex", gap:"10px" }}>
