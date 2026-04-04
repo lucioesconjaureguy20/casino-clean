@@ -595,7 +595,7 @@ function nextDisplayId(type: "deposit"|"withdraw"): number {
 
 interface Bet { amount: number; winAmount: number; createdAt: string; }
 interface LiveWin { user: string; game: string; betUsd: number; win: boolean; profitUsd: number; createdAt: string; }
-interface AppNotification { id: string; type: "deposit"|"withdraw"|"bonus"|"info"; title: string; message: string; createdAt: string; read: boolean; }
+interface AppNotification { id: string; type: "deposit"|"withdraw"|"withdraw_paid"|"bonus"|"info"; title: string; message: string; createdAt: string; read: boolean; }
 
 interface GameBetRecord {
   amount: number; multiplier: number; win: boolean; payout: number; createdAt: string;
@@ -1019,7 +1019,7 @@ export default function App() {
   const [bhFilter, setBhFilter] = useState<string>("all");
   const [bhPage, setBhPage] = useState(0);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
-  const [toast, setToast] = useState<{ title:string; message:string; type:AppNotification["type"]|"win"|"confirm" }|null>(null);
+  const [toast, setToast] = useState<{ title:string; message:string; type:AppNotification["type"]|"win"|"confirm"|"withdraw_paid" }|null>(null);
   const [toastExiting, setToastExiting] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout>|null>(null);
   const toastExitTimerRef = useRef<ReturnType<typeof setTimeout>|null>(null);
@@ -1909,7 +1909,7 @@ export default function App() {
             // Build notification
             const notif: AppNotification = {
               id: `w_paid_${w.id}`,
-              type: "withdraw",
+              type: "withdraw_paid",
               title: "Retiro enviado",
               message: `${usd} ${coin} fueron procesados y enviados a tu wallet.${w.tx_hash ? ` TX: ${w.tx_hash}` : ""}`,
               createdAt: new Date().toISOString(),
@@ -1921,7 +1921,7 @@ export default function App() {
               ls.saveNotifs(currentUser, updated);
               setNotifications(updated);
               setToastExiting(false);
-              setToast({ title: notif.title, message: notif.message, type: "withdraw" });
+              setToast({ title: notif.title, message: notif.message, type: "withdraw_paid" });
               if (toastTimerRef.current)     clearTimeout(toastTimerRef.current);
               if (toastExitTimerRef.current) clearTimeout(toastExitTimerRef.current);
               toastTimerRef.current     = setTimeout(() => setToastExiting(true), 12500);
@@ -3952,7 +3952,7 @@ export default function App() {
                     {notifications.length === 0 ? (
                       <div style={{ padding:"32px 16px",textAlign:"center",color:"#4a5a78",fontSize:"13px" }}>Sin notificaciones aún</div>
                     ) : notifications.map(n => {
-                      const colors: Record<string,string> = { deposit:"#22c55e", withdraw:"#f59e0b", bonus:"#f4a91f", info:"#60a5fa" };
+                      const colors: Record<string,string> = { deposit:"#22c55e", withdraw:"#f59e0b", withdraw_paid:"#22c55e", bonus:"#f4a91f", info:"#60a5fa" };
                       const notifIcon = (type: string) => {
                         const c = colors[type] ?? "#94a3b8";
                         if (type === "deposit") return (
@@ -3962,6 +3962,12 @@ export default function App() {
                           </svg>
                         );
                         if (type === "withdraw") return (
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/>
+                            <path d="M5 3h14"/>
+                          </svg>
+                        );
+                        if (type === "withdraw_paid") return (
                           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/>
                             <path d="M5 3h14"/>
@@ -6927,10 +6933,11 @@ export default function App() {
           display:"flex", alignItems:"center", gap:"14px",
           background: toast.type === "confirm" ? "linear-gradient(135deg,#0d2318 0%,#0f2a1a 100%)" : "#1a2438",
           border:`1px solid ${
-            toast.type==="confirm"  ? "rgba(34,197,94,0.6)"   :
-            toast.type==="deposit"  ? "rgba(34,197,94,0.45)"  :
-            toast.type==="withdraw" ? "rgba(245,158,11,0.45)" :
-                                      "rgba(96,165,250,0.45)"
+            toast.type==="confirm"       ? "rgba(34,197,94,0.6)"   :
+            toast.type==="deposit"       ? "rgba(34,197,94,0.45)"  :
+            toast.type==="withdraw_paid" ? "rgba(34,197,94,0.55)"  :
+            toast.type==="withdraw"      ? "rgba(245,158,11,0.45)" :
+                                           "rgba(96,165,250,0.45)"
           }`,
           borderRadius:"14px", padding:"14px 18px", minWidth:"290px", maxWidth:"340px",
           boxShadow: toast.type === "confirm"
@@ -6943,16 +6950,19 @@ export default function App() {
           <div style={{
             width:"44px", height:"44px", borderRadius:"12px", flexShrink:0,
             background:
-              toast.type==="confirm"  ? "rgba(34,197,94,0.18)"  :
-              toast.type==="deposit"  ? "rgba(34,197,94,0.15)"  :
-              toast.type==="withdraw" ? "rgba(245,158,11,0.15)" :
-                                        "rgba(96,165,250,0.15)",
+              toast.type==="confirm"       ? "rgba(34,197,94,0.18)"  :
+              toast.type==="deposit"       ? "rgba(34,197,94,0.15)"  :
+              toast.type==="withdraw_paid" ? "rgba(34,197,94,0.15)"  :
+              toast.type==="withdraw"      ? "rgba(245,158,11,0.15)" :
+                                             "rgba(96,165,250,0.15)",
             display:"flex", alignItems:"center", justifyContent:"center"
           }}>
             {toast.type==="confirm" ? (
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4ade80" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
             ) : toast.type==="deposit" ? (
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="3" x2="12" y2="15"/><polyline points="17 10 12 15 7 10"/><path d="M5 21h14"/></svg>
+            ) : toast.type==="withdraw_paid" ? (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/><path d="M5 3h14"/></svg>
             ) : toast.type==="withdraw" ? (
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/><path d="M5 3h14"/></svg>
             ) : (
