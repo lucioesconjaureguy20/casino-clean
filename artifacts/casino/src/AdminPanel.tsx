@@ -23,6 +23,20 @@ interface PendingDeposit {
   created_at: string;
 }
 
+interface Withdrawal {
+  id: string;
+  user_id: string;
+  mander_id: string;
+  username: string;
+  amount: number;
+  currency: string;
+  network: string;
+  wallet: string;
+  status: "pending" | "approved" | "paid" | "rejected";
+  tx_hash: string | null;
+  created_at: string;
+}
+
 interface ConfirmInputs { amount: string; txHash: string; }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -80,6 +94,28 @@ const btnSecondary: React.CSSProperties = {
   fontFamily: "'Inter', sans-serif",
 };
 
+// ── Status Badge ──────────────────────────────────────────────────────────────
+
+const STATUS_COLORS: Record<string, { bg: string; color: string; label: string }> = {
+  pending:  { bg: "#1e2a3d", color: "#f59e0b", label: "Pendiente" },
+  approved: { bg: "#0d2b1e", color: "#4ade80", label: "Aprobado"  },
+  paid:     { bg: "#0d2224", color: "#22d3ee", label: "Pagado"    },
+  rejected: { bg: "#1e0d0d", color: "#f87171", label: "Rechazado" },
+};
+
+function StatusBadge({ status }: { status: string }) {
+  const s = STATUS_COLORS[status] ?? { bg: "#1e2a3d", color: "#94a3b8", label: status };
+  return (
+    <span style={{
+      background: s.bg, color: s.color, border: `1px solid ${s.color}40`,
+      borderRadius: 6, padding: "3px 10px", fontSize: 11, fontWeight: 700,
+      letterSpacing: "0.5px", whiteSpace: "nowrap",
+    }}>
+      {s.label}
+    </span>
+  );
+}
+
 // ── Adjust-balance modal ──────────────────────────────────────────────────────
 
 interface AdjustModalProps {
@@ -106,16 +142,10 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
     try {
       const r = await fetch("/api/admin/adjust-balance", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
-          mander_id: user.mander_id,
-          username:  user.username,
-          amount:    parsed,
-          currency,
-          notes:     notes.trim() || undefined,
+          mander_id: user.mander_id, username: user.username,
+          amount: parsed, currency, notes: notes.trim() || undefined,
         }),
       });
       const data = await r.json();
@@ -137,29 +167,21 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
       position: "fixed", inset: 0, zIndex: 9999,
       background: "rgba(0,0,0,.7)", display: "flex",
       alignItems: "center", justifyContent: "center", padding: 16,
-    }}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-    >
+    }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div style={{
         background: "#111827", border: "1px solid #2a3550",
         borderRadius: 16, padding: 28, width: "100%", maxWidth: 400,
         fontFamily: "'Inter', sans-serif",
       }}>
         <div style={{ marginBottom: 20 }}>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>
-            Ajustar balance
-          </h2>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Ajustar balance</h2>
           <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
             Usuario: <strong style={{ color: "#f59e0b" }}>{user.username}</strong>
           </p>
         </div>
 
-        {/* Balances actuales */}
         {user.balances.length > 0 && (
-          <div style={{
-            background: "#0d1525", borderRadius: 8, padding: "10px 14px",
-            marginBottom: 16, fontSize: 12, color: "#64748b",
-          }}>
+          <div style={{ background: "#0d1525", borderRadius: 8, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#64748b" }}>
             <div style={{ fontWeight: 600, color: "#94a3b8", marginBottom: 6 }}>Balance actual:</div>
             {user.balances.map(b => (
               <div key={b.currency} style={{ display: "flex", justifyContent: "space-between" }}>
@@ -170,22 +192,13 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
           </div>
         )}
 
-        {/* Amount */}
         <div style={{ marginBottom: 14 }}>
           <label style={{ display: "block", fontSize: 12, color: "#94a3b8", marginBottom: 6, fontWeight: 600 }}>
             Monto <span style={{ color: "#64748b", fontWeight: 400 }}>(positivo = sumar, negativo = restar)</span>
           </label>
-          <input
-            type="number"
-            placeholder="ej: 50  o  -10"
-            step="any"
-            value={amount}
+          <input type="number" placeholder="ej: 50  o  -10" step="any" value={amount}
             onChange={e => setAmount(e.target.value)}
-            style={{
-              ...inputStyle,
-              borderColor: isPositive ? "#15803d" : isNegative ? "#dc2626" : "#2a3550",
-              color: isPositive ? "#4ade80" : isNegative ? "#f87171" : "#e2e8f0",
-            }}
+            style={{ ...inputStyle, borderColor: isPositive ? "#15803d" : isNegative ? "#dc2626" : "#2a3550", color: isPositive ? "#4ade80" : isNegative ? "#f87171" : "#e2e8f0" }}
           />
           {amount && !isNaN(parseFloat(amount)) && parseFloat(amount) !== 0 && (
             <div style={{ fontSize: 11, marginTop: 4, color: isPositive ? "#4ade80" : "#f87171" }}>
@@ -194,51 +207,31 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
           )}
         </div>
 
-        {/* Currency */}
         <div style={{ marginBottom: 14 }}>
-          <label style={{ display: "block", fontSize: 12, color: "#94a3b8", marginBottom: 6, fontWeight: 600 }}>
-            Moneda
-          </label>
-          <select
-            value={currency}
-            onChange={e => setCurrency(e.target.value)}
-            style={{ ...inputStyle }}
-          >
+          <label style={{ display: "block", fontSize: 12, color: "#94a3b8", marginBottom: 6, fontWeight: 600 }}>Moneda</label>
+          <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ ...inputStyle }}>
             {CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
 
-        {/* Notes */}
         <div style={{ marginBottom: 20 }}>
           <label style={{ display: "block", fontSize: 12, color: "#94a3b8", marginBottom: 6, fontWeight: 600 }}>
             Nota <span style={{ color: "#64748b", fontWeight: 400 }}>(opcional)</span>
           </label>
-          <input
-            type="text"
-            placeholder="Motivo del ajuste..."
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-            style={inputStyle}
-          />
+          <input type="text" placeholder="Motivo del ajuste..." value={notes}
+            onChange={e => setNotes(e.target.value)} style={inputStyle} />
         </div>
 
-        {/* Buttons */}
         <div style={{ display: "flex", gap: 10 }}>
-          <button
-            onClick={submit}
-            disabled={loading}
-            style={{
-              ...btnPrimary, flex: 1,
-              background: loading ? "#374151" : "#f59e0b",
-              color: loading ? "#9ca3af" : "#0d1117",
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-          >
+          <button onClick={submit} disabled={loading} style={{
+            ...btnPrimary, flex: 1,
+            background: loading ? "#374151" : "#f59e0b",
+            color: loading ? "#9ca3af" : "#0d1117",
+            cursor: loading ? "not-allowed" : "pointer",
+          }}>
             {loading ? "Guardando..." : "Confirmar ajuste"}
           </button>
-          <button onClick={onClose} style={{ ...btnSecondary }}>
-            Cancelar
-          </button>
+          <button onClick={onClose} style={{ ...btnSecondary }}>Cancelar</button>
         </div>
       </div>
     </div>
@@ -248,12 +241,12 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
 // ── Users Tab ─────────────────────────────────────────────────────────────────
 
 function UsersTab({ token }: { token: string }) {
-  const [users, setUsers]           = useState<AdminUser[]>([]);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState("");
-  const [search, setSearch]         = useState("");
-  const [adjusting, setAdjusting]   = useState<AdminUser | null>(null);
-  const [toast, setToast]           = useState<{ msg: string; ok: boolean } | null>(null);
+  const [users, setUsers]         = useState<AdminUser[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState("");
+  const [search, setSearch]       = useState("");
+  const [adjusting, setAdjusting] = useState<AdminUser | null>(null);
+  const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -264,9 +257,7 @@ function UsersTab({ token }: { token: string }) {
       setUsers(data.users ?? []);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -283,28 +274,21 @@ function UsersTab({ token }: { token: string }) {
   return (
     <>
       {adjusting && (
-        <AdjustModal
-          user={adjusting}
-          token={token}
+        <AdjustModal user={adjusting} token={token}
           onClose={() => { setAdjusting(null); load(); }}
           onSuccess={(msg) => showToast(msg, true)}
           onError={(msg) => showToast(msg, false)}
         />
       )}
-
       {toast && (
         <div style={{
           position: "fixed", top: 20, right: 20, zIndex: 9998,
           background: toast.ok ? "#15803d" : "#dc2626",
           color: "#fff", borderRadius: 10, padding: "12px 20px",
-          fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)",
-          maxWidth: 420,
-        }}>
-          {toast.msg}
-        </div>
+          fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)", maxWidth: 420,
+        }}>{toast.msg}</div>
       )}
 
-      {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Usuarios</h2>
@@ -313,13 +297,8 @@ function UsersTab({ token }: { token: string }) {
           </p>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <input
-            type="text"
-            placeholder="Buscar por username o ID..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{ ...inputStyle, width: 220 }}
-          />
+          <input type="text" placeholder="Buscar por username o ID..." value={search}
+            onChange={e => setSearch(e.target.value)} style={{ ...inputStyle, width: 220 }} />
           <button onClick={load} disabled={loading} style={btnSecondary}>
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
@@ -331,10 +310,7 @@ function UsersTab({ token }: { token: string }) {
       </div>
 
       {error && (
-        <div style={{
-          background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10,
-          padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16,
-        }}>
+        <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>
           Error: {error}
         </div>
       )}
@@ -368,19 +344,8 @@ function UsersTab({ token }: { token: string }) {
                     onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                     style={{ transition: "background .15s" }}
                   >
-                    {/* Username */}
-                    <td style={td}>
-                      <div style={{ fontWeight: 700, color: "#f59e0b" }}>{u.username}</div>
-                    </td>
-
-                    {/* Mander ID */}
-                    <td style={td}>
-                      <span style={{ fontFamily: "monospace", fontSize: 11, color: "#475569" }}>
-                        {u.mander_id || "—"}
-                      </span>
-                    </td>
-
-                    {/* Balances */}
+                    <td style={td}><div style={{ fontWeight: 700, color: "#f59e0b" }}>{u.username}</div></td>
+                    <td style={td}><span style={{ fontFamily: "monospace", fontSize: 11, color: "#475569" }}>{u.mander_id || "—"}</span></td>
                     <td style={td}>
                       {u.balances.length === 0 ? (
                         <span style={{ color: "#475569", fontSize: 12 }}>Sin saldo</span>
@@ -389,8 +354,7 @@ function UsersTab({ token }: { token: string }) {
                           {u.balances.map(b => (
                             <span key={b.currency} style={{
                               background: "#1e2a3d", border: "1px solid #2a3550",
-                              borderRadius: 6, padding: "2px 8px", fontSize: 12,
-                              color: "#94a3b8", whiteSpace: "nowrap",
+                              borderRadius: 6, padding: "2px 8px", fontSize: 12, color: "#94a3b8",
                             }}>
                               <strong style={{ color: "#e2e8f0" }}>{fmtBal(b.balance)}</strong> {b.currency}
                             </span>
@@ -398,33 +362,17 @@ function UsersTab({ token }: { token: string }) {
                         </div>
                       )}
                     </td>
-
-                    {/* Fecha */}
-                    <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap" }}>
-                      {fmt(u.created_at)}
-                    </td>
-
-                    {/* Acción */}
+                    <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap" }}>{fmt(u.created_at)}</td>
                     <td style={{ ...td, textAlign: "center" }}>
-                      <button
-                        onClick={() => setAdjusting(u)}
-                        style={{
-                          background: "#1e2a3d", border: "1px solid #2a3550",
-                          borderRadius: 8, color: "#f59e0b", cursor: "pointer",
-                          fontSize: 12, fontWeight: 600, padding: "7px 14px",
-                          transition: "all .15s", fontFamily: "'Inter', sans-serif",
-                        }}
-                        onMouseEnter={e => {
-                          e.currentTarget.style.background = "#f59e0b";
-                          e.currentTarget.style.color = "#0d1117";
-                        }}
-                        onMouseLeave={e => {
-                          e.currentTarget.style.background = "#1e2a3d";
-                          e.currentTarget.style.color = "#f59e0b";
-                        }}
-                      >
-                        Ajustar
-                      </button>
+                      <button onClick={() => setAdjusting(u)} style={{
+                        background: "#1e2a3d", border: "1px solid #2a3550",
+                        borderRadius: 8, color: "#f59e0b", cursor: "pointer",
+                        fontSize: 12, fontWeight: 600, padding: "7px 14px",
+                        transition: "all .15s", fontFamily: "'Inter', sans-serif",
+                      }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.color = "#0d1117"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "#1e2a3d"; e.currentTarget.style.color = "#f59e0b"; }}
+                      >Ajustar</button>
                     </td>
                   </tr>
                 ))}
@@ -456,9 +404,7 @@ function DepositsTab() {
       setDeposits(data.deposits ?? []);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -476,8 +422,7 @@ function DepositsTab() {
     const { amount, txHash } = getInput(d.id);
     const parsedAmount = parseFloat(amount.replace(",", "."));
     if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
-      showToast("Ingresá el monto recibido antes de confirmar", false);
-      return;
+      showToast("Ingresá el monto recibido antes de confirmar", false); return;
     }
     setConfirming(d.id);
     try {
@@ -492,9 +437,7 @@ function DepositsTab() {
       setDeposits(prev => prev.filter(dep => dep.id !== d.id));
     } catch (e: unknown) {
       showToast(e instanceof Error ? e.message : "Error al confirmar", false);
-    } finally {
-      setConfirming(null);
-    }
+    } finally { setConfirming(null); }
   }
 
   return (
@@ -504,19 +447,15 @@ function DepositsTab() {
           position: "fixed", top: 20, right: 20, zIndex: 9999,
           background: toast.ok ? "#15803d" : "#dc2626",
           color: "#fff", borderRadius: 10, padding: "12px 20px",
-          fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)",
-          maxWidth: 420,
-        }}>
-          {toast.msg}
-        </div>
+          fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)", maxWidth: 420,
+        }}>{toast.msg}</div>
       )}
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
         <div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Depósitos Pendientes</h2>
           <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
-            {loading ? "Cargando..." : deposits.length === 0
-              ? "No hay depósitos pendientes"
+            {loading ? "Cargando..." : deposits.length === 0 ? "No hay depósitos pendientes"
               : `${deposits.length} depósito${deposits.length !== 1 ? "s" : ""} esperando confirmación`}
           </p>
         </div>
@@ -530,10 +469,7 @@ function DepositsTab() {
       </div>
 
       {error && (
-        <div style={{
-          background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10,
-          padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16,
-        }}>
+        <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>
           Error: {error}
         </div>
       )}
@@ -577,32 +513,28 @@ function DepositsTab() {
                         {d.mander_id && <div style={{ fontSize: 11, color: "#475569", fontFamily: "monospace" }}>{d.mander_id}</div>}
                       </td>
                       <td style={td}>
-                        <span style={{ background: "#1e2a3d", border: "1px solid #2a3550", borderRadius: 6, padding: "3px 8px", fontSize: 12, fontWeight: 700, color: "#94a3b8", display: "inline-block", marginBottom: 4 }}>
-                          {d.currency}
-                        </span>
-                        <div style={{ fontSize: 11, color: "#475569" }}>{d.network}</div>
+                        <div style={{ fontWeight: 600 }}>{d.currency}</div>
+                        <div style={{ fontSize: 11, color: "#64748b" }}>{d.network}</div>
                       </td>
                       <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap" }}>{fmt(d.created_at)}</td>
                       <td style={td}>
-                        <div style={{ fontSize: 11, color: "#f59e0b", marginBottom: 4, fontWeight: 600 }}>¿Cuánto envió?</div>
-                        <input type="number" placeholder="ej: 100" min="0" step="any" value={inp.amount}
-                          onChange={e => setField(d.id, "amount", e.target.value)}
-                          style={{ ...inputStyle, borderColor: inp.amount ? "#2a3550" : "#374151" }}
-                        />
-                        {inp.amount && <div style={{ fontSize: 11, color: "#64748b", marginTop: 3 }}>{inp.amount} {d.currency}</div>}
+                        <input type="number" placeholder="0.00" step="any" min="0"
+                          value={inp.amount} onChange={e => setField(d.id, "amount", e.target.value)}
+                          style={{ ...inputStyle, width: 120 }} />
                       </td>
                       <td style={td}>
-                        <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>Hash de la tx (opcional)</div>
-                        <input type="text" placeholder="0x..." value={inp.txHash}
-                          onChange={e => setField(d.id, "txHash", e.target.value)}
-                          style={{ ...inputStyle, fontFamily: "monospace" }}
-                        />
+                        <input type="text" placeholder="TxHash (opcional)"
+                          value={inp.txHash} onChange={e => setField(d.id, "txHash", e.target.value)}
+                          style={{ ...inputStyle, width: 180 }} />
                       </td>
                       <td style={{ ...td, textAlign: "center" }}>
-                        <button onClick={() => confirm(d)} disabled={busy}
-                          style={{ background: busy ? "#1a2235" : "#15803d", border: "none", borderRadius: 8, color: busy ? "#64748b" : "#fff", cursor: busy ? "not-allowed" : "pointer", fontSize: 13, fontWeight: 600, padding: "9px 18px", transition: "all .15s", whiteSpace: "nowrap", fontFamily: "'Inter', sans-serif" }}
-                        >
-                          {busy ? "Confirmando..." : "Confirmar ✓"}
+                        <button onClick={() => confirm(d)} disabled={busy} style={{
+                          ...btnPrimary, fontSize: 12, padding: "8px 14px",
+                          background: busy ? "#374151" : "#f59e0b",
+                          color: busy ? "#9ca3af" : "#0d1117",
+                          cursor: busy ? "not-allowed" : "pointer",
+                        }}>
+                          {busy ? "..." : "Confirmar"}
                         </button>
                       </td>
                     </tr>
@@ -613,61 +545,273 @@ function DepositsTab() {
           </div>
         </div>
       )}
-
-      <div style={{ marginTop: 20, background: "#0d1525", border: "1px solid #1a2235", borderRadius: 10, padding: "14px 18px" }}>
-        <div style={{ color: "#64748b", fontSize: 12, lineHeight: 1.9 }}>
-          <strong style={{ color: "#94a3b8" }}>¿Cómo funciona?</strong><br />
-          1. El usuario abre el panel de depósito → se genera la dirección wallet.<br />
-          2. El usuario envía la cripto desde su billetera a esa dirección.<br />
-          3. Vos ves la transacción en la blockchain → ingresás el <strong style={{ color: "#f59e0b" }}>monto real recibido</strong> y opcionalmente el TX hash.<br />
-          4. Apretás <strong>Confirmar</strong> → el balance se acredita automáticamente.
-        </div>
-      </div>
     </>
   );
 }
 
-// ── Main AdminPanel ───────────────────────────────────────────────────────────
+// ── Withdrawals Tab ───────────────────────────────────────────────────────────
 
-interface AdminPanelProps { token?: string; }
+function WithdrawalsTab({ token }: { token: string }) {
+  const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
+  const [loading, setLoading]         = useState(true);
+  const [error, setError]             = useState("");
+  const [txInputs, setTxInputs]       = useState<Record<string, string>>({});
+  const [acting, setActing]           = useState<string | null>(null);
+  const [toast, setToast]             = useState<{ msg: string; ok: boolean } | null>(null);
+  const [filter, setFilter]           = useState<string>("all");
 
-export default function AdminPanel({ token = "" }: AdminPanelProps) {
-  const [tab, setTab] = useState<"deposits" | "users">("deposits");
+  const load = useCallback(async () => {
+    setLoading(true); setError("");
+    try {
+      const r = await fetch("/api/admin/withdrawals", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!r.ok) throw new Error(`Error ${r.status}`);
+      const data = await r.json();
+      setWithdrawals(data.withdrawals ?? []);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error desconocido");
+    } finally { setLoading(false); }
+  }, [token]);
 
-  const tabStyle = (active: boolean): React.CSSProperties => ({
-    padding: "10px 20px", borderRadius: 8, cursor: "pointer",
-    fontSize: 14, fontWeight: active ? 700 : 500,
-    color: active ? "#f59e0b" : "#64748b",
-    background: active ? "#1e2a3d" : "transparent",
-    border: active ? "1px solid #2a3550" : "1px solid transparent",
-    transition: "all .15s", fontFamily: "'Inter', sans-serif",
-  });
+  useEffect(() => { load(); }, [load]);
+
+  function showToast(msg: string, ok: boolean) {
+    setToast({ msg, ok });
+    setTimeout(() => setToast(null), 4000);
+  }
+
+  async function action(endpoint: string, withdrawal_id: string, extra?: Record<string, string>) {
+    setActing(withdrawal_id);
+    try {
+      const r = await fetch(`/api${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ withdrawal_id, ...extra }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
+      showToast(data.message || "Operación exitosa", true);
+      await load();
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error desconocido", false);
+    } finally { setActing(null); }
+  }
+
+  const filtered = filter === "all" ? withdrawals : withdrawals.filter(w => w.status === filter);
+  const counts   = withdrawals.reduce<Record<string, number>>((acc, w) => {
+    acc[w.status] = (acc[w.status] ?? 0) + 1; return acc;
+  }, {});
 
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 16px 64px", fontFamily: "'Inter', sans-serif" }}>
+    <>
+      {toast && (
+        <div style={{
+          position: "fixed", top: 20, right: 20, zIndex: 9999,
+          background: toast.ok ? "#15803d" : "#dc2626",
+          color: "#fff", borderRadius: 10, padding: "12px 20px",
+          fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)", maxWidth: 420,
+        }}>{toast.msg}</div>
+      )}
 
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#e2e8f0" }}>
-          Panel Admin
-        </h1>
-        <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
-          Gestión de usuarios y depósitos
-        </p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Retiros</h2>
+          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
+            {loading ? "Cargando..." : `${withdrawals.length} retiro${withdrawals.length !== 1 ? "s" : ""} en total`}
+            {counts.pending ? <span style={{ color: "#f59e0b", marginLeft: 8, fontWeight: 600 }}>· {counts.pending} pendiente{counts.pending !== 1 ? "s" : ""}</span> : null}
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          {["all","pending","approved","paid","rejected"].map(s => (
+            <button key={s} onClick={() => setFilter(s)} style={{
+              background: filter === s ? "#f59e0b" : "transparent",
+              border: `1px solid ${filter === s ? "#f59e0b" : "#2a3550"}`,
+              borderRadius: 8, color: filter === s ? "#0d1117" : "#94a3b8",
+              cursor: "pointer", fontSize: 12, fontWeight: 600, padding: "6px 12px",
+              fontFamily: "'Inter', sans-serif", transition: "all .15s",
+            }}>
+              {s === "all" ? "Todos" : STATUS_COLORS[s]?.label ?? s}
+              {s !== "all" && counts[s] ? ` (${counts[s]})` : ""}
+            </button>
+          ))}
+          <button onClick={load} disabled={loading} style={btnSecondary}>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Actualizar
+          </button>
+        </div>
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 24, borderBottom: "1px solid #1e2a3d", paddingBottom: 16 }}>
-        <button style={tabStyle(tab === "deposits")} onClick={() => setTab("deposits")}>
-          💰 Depósitos Pendientes
-        </button>
-        <button style={tabStyle(tab === "users")} onClick={() => setTab("users")}>
-          👥 Usuarios
-        </button>
-      </div>
+      {error && (
+        <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>
+          Error: {error}
+        </div>
+      )}
 
-      {tab === "deposits" && <DepositsTab />}
-      {tab === "users" && <UsersTab token={token} />}
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "60px 0", color: "#64748b" }}>Cargando retiros...</div>
+      ) : filtered.length === 0 ? (
+        <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
+          <div style={{ fontSize: 36, marginBottom: 12 }}>💸</div>
+          <div style={{ color: "#e2e8f0", fontWeight: 600, fontSize: 16 }}>Sin retiros{filter !== "all" ? ` ${STATUS_COLORS[filter]?.label?.toLowerCase() ?? filter}s` : ""}</div>
+        </div>
+      ) : (
+        <div style={card}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={th}>Usuario</th>
+                  <th style={th}>Monto</th>
+                  <th style={th}>Red</th>
+                  <th style={{ ...th, minWidth: 180 }}>Wallet</th>
+                  <th style={th}>Estado</th>
+                  <th style={th}>Fecha</th>
+                  <th style={{ ...th, minWidth: 220 }}>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((w) => {
+                  const busy = acting === w.id;
+                  const txVal = txInputs[w.id] ?? "";
+                  return (
+                    <tr key={w.id}
+                      onMouseEnter={e => (e.currentTarget.style.background = "#131d30")}
+                      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                      style={{ transition: "background .15s" }}
+                    >
+                      <td style={td}>
+                        <div style={{ fontWeight: 700, color: "#f59e0b" }}>{w.username}</div>
+                        <div style={{ fontSize: 10, color: "#475569", fontFamily: "monospace" }}>{w.mander_id?.slice(0,12)}…</div>
+                      </td>
+                      <td style={td}>
+                        <div style={{ fontWeight: 700, fontSize: 14, color: "#e2e8f0" }}>{fmtBal(w.amount)}</div>
+                        <div style={{ fontSize: 11, color: "#64748b" }}>{w.currency}</div>
+                      </td>
+                      <td style={{ ...td, fontSize: 12 }}>{w.network}</td>
+                      <td style={td}>
+                        <div style={{
+                          fontFamily: "monospace", fontSize: 11, color: "#94a3b8",
+                          maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                        }} title={w.wallet}>{w.wallet}</div>
+                        {w.tx_hash && (
+                          <div style={{ fontSize: 10, color: "#22d3ee", fontFamily: "monospace", marginTop: 2 }}>
+                            TX: {w.tx_hash.slice(0, 20)}…
+                          </div>
+                        )}
+                      </td>
+                      <td style={td}><StatusBadge status={w.status} /></td>
+                      <td style={{ ...td, fontSize: 12, color: "#64748b", whiteSpace: "nowrap" }}>{fmt(w.created_at)}</td>
+                      <td style={td}>
+                        {w.status === "pending" && (
+                          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                            <button onClick={() => action("/admin/withdraw/approve", w.id)} disabled={busy} style={{
+                              background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
+                              color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
+                              fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                              fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                            }}>
+                              {busy ? "..." : "Aprobar"}
+                            </button>
+                            <button onClick={() => action("/admin/withdraw/reject", w.id)} disabled={busy} style={{
+                              background: "#1e0d0d", border: "1px solid #7f1d1d", borderRadius: 7,
+                              color: "#f87171", cursor: busy ? "not-allowed" : "pointer",
+                              fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                              fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                            }}>
+                              {busy ? "..." : "Rechazar"}
+                            </button>
+                          </div>
+                        )}
+                        {w.status === "approved" && (
+                          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+                            <input type="text" placeholder="TX hash (opcional)"
+                              value={txVal}
+                              onChange={e => setTxInputs(prev => ({ ...prev, [w.id]: e.target.value }))}
+                              style={{ ...inputStyle, width: 140, fontSize: 11 }}
+                            />
+                            <button onClick={() => action("/admin/withdraw/pay", w.id, txVal ? { tx_hash: txVal } : {})} disabled={busy} style={{
+                              background: "#0d2224", border: "1px solid #0891b2", borderRadius: 7,
+                              color: "#22d3ee", cursor: busy ? "not-allowed" : "pointer",
+                              fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                              fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
+                            }}>
+                              {busy ? "..." : "Pagar ✓"}
+                            </button>
+                          </div>
+                        )}
+                        {(w.status === "paid" || w.status === "rejected") && (
+                          <span style={{ color: "#475569", fontSize: 12 }}>—</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ── AdminPanel ────────────────────────────────────────────────────────────────
+
+type TabId = "deposits" | "withdrawals" | "users";
+
+export default function AdminPanel({ token }: { token: string }) {
+  const [tab, setTab] = useState<TabId>("deposits");
+
+  const tabs: { id: TabId; label: string; icon: string }[] = [
+    { id: "deposits",    label: "Depósitos",  icon: "⬇" },
+    { id: "withdrawals", label: "Retiros",     icon: "⬆" },
+    { id: "users",       label: "Usuarios",   icon: "👤" },
+  ];
+
+  return (
+    <div style={{
+      minHeight: "calc(100vh - 70px)", background: "#0d1117",
+      padding: "24px 16px", fontFamily: "'Inter', sans-serif",
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ marginBottom: 28 }}>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#e2e8f0", letterSpacing: "-0.5px" }}>
+            Panel Admin
+          </h1>
+          <p style={{ margin: "6px 0 0", color: "#64748b", fontSize: 14 }}>
+            Gestión de depósitos, retiros y usuarios
+          </p>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 4, marginBottom: 24, borderBottom: "1px solid #1e2a3d", paddingBottom: 0 }}>
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)} style={{
+              background: "transparent", border: "none",
+              borderBottom: tab === t.id ? "2px solid #f59e0b" : "2px solid transparent",
+              color: tab === t.id ? "#f59e0b" : "#64748b",
+              cursor: "pointer", fontSize: 14, fontWeight: 600,
+              padding: "10px 18px", transition: "all .15s",
+              fontFamily: "'Inter', sans-serif",
+              display: "flex", alignItems: "center", gap: 7,
+              marginBottom: -1,
+            }}>
+              <span>{t.icon}</span> {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Content */}
+        {tab === "deposits"    && <DepositsTab />}
+        {tab === "withdrawals" && <WithdrawalsTab token={token} />}
+        {tab === "users"       && <UsersTab token={token} />}
+      </div>
     </div>
   );
 }

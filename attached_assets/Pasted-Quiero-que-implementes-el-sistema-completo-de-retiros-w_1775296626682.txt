@@ -1,0 +1,71 @@
+Quiero que implementes el sistema completo de retiros (withdrawals) en mi casino usando Node.js, Express y Supabase.
+
+Ya tengo creada la tabla `withdrawals` con estas columnas:
+
+* id (UUID, primary key)
+* user_id (UUID, referencia a profiles.id)
+* mander_id (UUID)
+* amount (numeric)
+* currency (text)
+* network (text)
+* wallet (text)
+* status (text: pending, approved, paid, rejected)
+* tx_hash (text)
+* created_at (timestamp)
+
+También tengo:
+
+* tabla `balances` (user_id, currency, amount)
+* tabla `transactions` (user_id, amount, currency, type)
+
+Quiero que implementes lo siguiente:
+
+1. Endpoint POST `/withdraw/create`
+
+* Recibe: user_id, amount, currency, network, wallet
+* Valida que el usuario tenga suficiente balance
+* NO descuenta el balance todavía
+* Guarda el retiro con status "pending"
+* Guarda mander_id automáticamente desde profiles
+
+2. Endpoint GET `/admin/withdrawals`
+
+* Lista todos los retiros
+* Incluye username (join con profiles)
+* Devuelve: amount, currency, network, wallet, status, created_at
+
+3. Endpoint POST `/admin/withdraw/approve`
+
+* Recibe: withdrawal_id
+* Cambia status a "approved"
+* NO modifica balance todavía
+
+4. Endpoint POST `/admin/withdraw/reject`
+
+* Recibe: withdrawal_id
+* Cambia status a "rejected"
+
+5. Endpoint POST `/admin/withdraw/pay`
+
+* Recibe: withdrawal_id, tx_hash
+* Cambia status a "paid"
+* Guarda tx_hash
+* AHÍ recién descuenta el balance del usuario
+* Registra una transacción en `transactions` con:
+
+  * type = "withdrawal"
+  * amount negativo
+
+6. Lógica de balances:
+
+* Si el balance no alcanza, no permitir crear retiro
+* No permitir saldo negativo bajo ninguna circunstancia
+
+7. Seguridad:
+
+* Todos los endpoints /admin deben verificar que el usuario sea admin (según lógica actual del servidor)
+
+8. Código limpio, con async/await y manejo de errores
+
+No quiero automatización todavía, todo manual desde el panel admin.
+Quiero que quede listo para integrar después con Coinbase Commerce o CoinPayments.
