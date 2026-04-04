@@ -516,9 +516,26 @@ router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) =>
       low:      unique.filter(a => a.severity === "low").length,
     };
 
+    // ── Leer audit log para obtener el timestamp del último bloqueo ──────────
+    const blockTimestamps: Record<string, string> = {};
+    try {
+      const raw = fs.readFileSync(AUDIT_LOG, "utf8");
+      for (const line of raw.split("\n").filter(Boolean)) {
+        try {
+          const entry = JSON.parse(line);
+          if (entry.action === "block" && entry.target_user_id && entry.ts) {
+            // Si hay múltiples entradas, nos quedamos con la más reciente
+            if (!blockTimestamps[entry.target_user_id] || entry.ts > blockTimestamps[entry.target_user_id]) {
+              blockTimestamps[entry.target_user_id] = entry.ts;
+            }
+          }
+        } catch {}
+      }
+    } catch {}
+
     const blockedUsers = profiles
       .filter(p => p.is_blocked === true)
-      .map(p => ({ id: p.id, username: p.username }));
+      .map(p => ({ id: p.id, username: p.username, blocked_at: blockTimestamps[p.id] ?? null }));
 
     return res.json({ ok: true, alerts: unique, summary, blockedUsers, period, generatedAt: new Date().toISOString() });
   } catch (err: unknown) {

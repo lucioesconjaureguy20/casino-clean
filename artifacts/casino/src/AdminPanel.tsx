@@ -833,7 +833,7 @@ interface Alert {
 interface AlertsData {
   alerts: Alert[];
   summary: { total: number; critical: number; medium: number; low: number };
-  blockedUsers: { id: string; username: string }[];
+  blockedUsers: { id: string; username: string; blocked_at: string | null }[];
   period: string;
   generatedAt: string;
 }
@@ -1143,7 +1143,12 @@ function AlertsTab({ token }: { token: string }) {
           {/* Accordion list */}
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {data!.blockedUsers.map(bu => {
-              const userAlerts = (data?.alerts ?? []).filter(a => a.userId === bu.id);
+              const userAlerts = (data?.alerts ?? []).filter(a => {
+                if (a.userId !== bu.id) return false;
+                // Solo alertas generadas DESPUÉS del bloqueo
+                if (bu.blocked_at && a.createdAt <= bu.blocked_at) return false;
+                return true;
+              });
               const busy       = acting === bu.id;
               const open       = expanded.has(bu.id);
 
