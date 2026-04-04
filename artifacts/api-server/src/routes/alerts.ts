@@ -48,7 +48,7 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
 
 async function getProfile(userId: string) {
   const r = await sbAdmin(
-    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked,is_flagged&limit=1`,
+    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked&limit=1`,
   );
   if (!r.ok) return null;
   const rows: any[] = await r.json();
