@@ -5909,7 +5909,13 @@ export default function App() {
 
                 {/* Security warning */}
                 <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"14px" }}>
-                  <span style={{ flexShrink:0,marginTop:"1px",fontSize:"15px" }}>⚠️</span>
+                  <span style={{ flexShrink:0,marginTop:"1px",display:"inline-flex" }}>
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="#f6c94e" opacity=".15" stroke="#f6c94e" strokeWidth="1.5" strokeLinejoin="round"/>
+                      <line x1="12" y1="9" x2="12" y2="13" stroke="#f6c94e" strokeWidth="1.8" strokeLinecap="round"/>
+                      <circle cx="12" cy="16.5" r="0.9" fill="#f6c94e"/>
+                    </svg>
+                  </span>
                   <span>
                     <strong style={{ color:"#f6c94e" }}>Security notice:</strong> Only send <strong style={{ color:"#fff" }}>{pendingDeposit?.coin ?? depositCoin}</strong> to this address via <strong style={{ color:"#fff" }}>{pendingDeposit?.network ?? depositNetwork}</strong>. Sending any other coin or using a different network will result in <strong style={{ color:"#ff7070" }}>permanent loss of funds</strong>.
                   </span>
