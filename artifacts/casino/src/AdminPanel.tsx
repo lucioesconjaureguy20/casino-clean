@@ -809,9 +809,10 @@ function AlertsTab({ token }: { token: string }) {
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState("");
   const [sevFilter, setSevFilter] = useState<Severity | "all">("all");
-  const [acting, setActing]     = useState<string | null>(null);
-  const [toast, setToast]       = useState<{ msg: string; ok: boolean } | null>(null);
-  const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
+  const [acting, setActing]       = useState<string | null>(null);
+  const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
+  const [blockInputs, setBlockInputs]   = useState<Record<string, string>>({});
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -870,7 +871,11 @@ function AlertsTab({ token }: { token: string }) {
     } finally { setActing(null); }
   }
 
-  const filtered = data ? (sevFilter === "all" ? data.alerts : data.alerts.filter(a => a.severity === sevFilter)) : [];
+  const dismiss = (id: string) => setDismissed(prev => new Set(prev).add(id));
+
+  const filtered = data
+    ? (sevFilter === "all" ? data.alerts : data.alerts.filter(a => a.severity === sevFilter)).filter(a => !dismissed.has(a.id))
+    : [];
   const isBlocked = (userId: string) => data?.blockedUsers.some(b => b.id === userId) ?? false;
 
   return (
@@ -1005,14 +1010,21 @@ function AlertsTab({ token }: { token: string }) {
                           </td>
                           <td style={td}>
                             {blocked ? (
-                              <button onClick={() => unblockUser(alert.userId, alert.username)} disabled={busy} style={{
-                                background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
-                                color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
-                                fontSize: 12, fontWeight: 600, padding: "6px 14px",
-                                fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
-                              }}>
-                                {busy ? "..." : "Desbloquear"}
-                              </button>
+                              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                                <button onClick={() => unblockUser(alert.userId, alert.username)} disabled={busy} style={{
+                                  background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
+                                  color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
+                                  fontSize: 12, fontWeight: 600, padding: "6px 14px",
+                                  fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
+                                }}>
+                                  {busy ? "..." : "Desbloquear"}
+                                </button>
+                                <button onClick={() => dismiss(alert.id)} title="Ignorar alerta" style={{
+                                  background: "transparent", border: "1px solid #1e2a3d", borderRadius: 7,
+                                  color: "#475569", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                                  padding: "6px 10px", fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                                }}>✕</button>
+                              </div>
                             ) : (
                               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
                                 <input
@@ -1020,7 +1032,7 @@ function AlertsTab({ token }: { token: string }) {
                                   placeholder="Motivo (opcional)"
                                   value={blockInputs[alert.userId] ?? ""}
                                   onChange={e => setBlockInputs(prev => ({ ...prev, [alert.userId]: e.target.value }))}
-                                  style={{ ...inputStyle, width: 120, fontSize: 11 }}
+                                  style={{ ...inputStyle, width: 110, fontSize: 11 }}
                                 />
                                 <button onClick={() => blockUser(alert.userId, alert.username)} disabled={busy} style={{
                                   background: "#1e0d0d", border: "1px solid #7f1d1d", borderRadius: 7,
@@ -1030,6 +1042,11 @@ function AlertsTab({ token }: { token: string }) {
                                 }}>
                                   {busy ? "..." : "🔒 Bloquear"}
                                 </button>
+                                <button onClick={() => dismiss(alert.id)} title="Ignorar alerta" style={{
+                                  background: "transparent", border: "1px solid #1e2a3d", borderRadius: 7,
+                                  color: "#475569", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                                  padding: "6px 10px", fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                                }}>✕</button>
                               </div>
                             )}
                           </td>
