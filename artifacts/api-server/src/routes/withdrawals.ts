@@ -591,27 +591,56 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
     console.log(`[WITHDRAW pay] cleared locked_amount -${parsed} ${cur} | mander_id=${mander_id}`);
   }
 
-  // ── Step 5: Insert negative transaction record ────────────────────────────
-  const txRes = await sbAdmin("transactions", {
-    method: "POST",
-    body: JSON.stringify({
-      user_id,
-      mander_id,
-      type:            "withdrawal",
-      amount:          -Math.abs(parsed),   // always negative
-      currency:        cur,
-      network:         w.network ?? "",
-      status:          "completed",
-      external_tx_id:  (tx_hash as string | undefined)?.trim() || null,
-      notes:           `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
-      completed_at:    new Date().toISOString(),
-    }),
-  });
+  // ── Step 5: Update existing pending transaction or insert new one ─────────
+  const txPatch = {
+    status:         "completed",
+    amount:         -Math.abs(parsed),
+    external_tx_id: (tx_hash as string | undefined)?.trim() || null,
+    notes:          `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
+    completed_at:   new Date().toISOString(),
+  };
 
-  if (!txRes.ok) {
-    console.error(`[WITHDRAW pay] TX insert failed (non-fatal) id=${withdrawal_id}:`, await txRes.text());
-  } else {
-    console.log(`[WITHDRAW pay] TX record inserted — id=${withdrawal_id} amount=-${parsed} ${cur}`);
+  // Try to find the existing pending withdrawal transaction for this user+currency
+  const existingTxRes = await sbAdmin(
+    `transactions?user_id=eq.${encodeURIComponent(user_id)}&type=eq.withdrawal&status=eq.pending&currency=eq.${encodeURIComponent(cur)}&order=created_at.desc&limit=1`,
+    { headers: { Prefer: "count=none" } },
+  );
+
+  let txUpdated = false;
+  if (existingTxRes.ok) {
+    const existingRows: any[] = await existingTxRes.json();
+    if (existingRows.length > 0) {
+      const patchRes = await sbAdmin(`transactions?id=eq.${existingRows[0].id}`, {
+        method: "PATCH",
+        body:   JSON.stringify(txPatch),
+      });
+      if (patchRes.ok) {
+        txUpdated = true;
+        console.log(`[WITHDRAW pay] TX record updated (pending→completed) tx_id=${existingRows[0].id}`);
+      } else {
+        console.error(`[WITHDRAW pay] TX patch failed:`, await patchRes.text());
+      }
+    }
+  }
+
+  if (!txUpdated) {
+    // Fallback: insert new completed transaction (no pending row found)
+    const txRes = await sbAdmin("transactions", {
+      method: "POST",
+      body: JSON.stringify({
+        user_id,
+        mander_id,
+        type:    "withdrawal",
+        network: w.network ?? "",
+        currency: cur,
+        ...txPatch,
+      }),
+    });
+    if (!txRes.ok) {
+      console.error(`[WITHDRAW pay] TX insert failed (non-fatal) id=${withdrawal_id}:`, await txRes.text());
+    } else {
+      console.log(`[WITHDRAW pay] TX record inserted (new) — id=${withdrawal_id} amount=-${parsed} ${cur}`);
+    }
   }
 
   return res.json({
