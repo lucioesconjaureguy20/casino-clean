@@ -330,12 +330,49 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
 
   const [row] = await r.json();
   console.log(
-    `[WITHDRAW create] id=${row?.id} user=${profile.username} amount=${parsed} ${cur} | ` +
-    `balance locked`,
+    `[WITHDRAW create] id=${row?.id} user=${profile.username} amount=${parsed} ${cur} | balance locked`,
   );
+
+  // Also insert into `transactions` so the user sees it in their history
+  let txDisplayId: number | null = null;
+  try {
+    const TX_WITHDRAWAL_START = 2099;
+    const dRes = await sbAdmin(
+      `transactions?type=eq.withdrawal&display_id=not.is.null&select=display_id`,
+      { headers: { Prefer: "count=none" } },
+    );
+    if (dRes.ok) {
+      const dRows: { display_id: string }[] = await dRes.json();
+      const ids = dRows
+        .map((dr) => parseInt(dr.display_id, 10))
+        .filter((n) => !isNaN(n) && n > TX_WITHDRAWAL_START && n < 1_000_000);
+      txDisplayId = ids.length > 0 ? Math.max(...ids) + 1 : TX_WITHDRAWAL_START + 1;
+    }
+    await sbAdmin("transactions", {
+      method: "POST",
+      body: JSON.stringify({
+        mander_id:       profile.mander_id,
+        user_id:         req.authUser!.id,
+        display_id:      txDisplayId,
+        type:            "withdrawal",
+        amount:          parsed,
+        currency:        cur,
+        network:         (network as string).trim(),
+        status:          "pending",
+        external_tx_id:  (wallet as string).trim(),
+        notes:           null,
+      }),
+    });
+    console.log(`[WITHDRAW create] tx history row inserted display_id=${txDisplayId}`);
+  } catch (e) {
+    console.error("[WITHDRAW create] Failed to insert tx history row:", e);
+    // Non-fatal — withdrawal row is already created
+  }
+
   return res.json({
     ok: true,
     withdrawal: row,
+    transaction_display_id: txDisplayId,
     message: `Retiro de ${parsed} ${cur} solicitado. Tu balance fue actualizado.`,
   });
 });

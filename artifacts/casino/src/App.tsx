@@ -3331,13 +3331,13 @@ export default function App() {
       let serverTxId: string | undefined;
       let serverDisplayId: string | number | undefined;
       try {
-        console.log("[Withdraw Supabase] INSERT →", { type: "withdrawal", amount: amt, currency: withdrawCoin, network: withdrawNetwork });
-        const res = await fetch("/api/transactions", {
+        console.log("[Withdraw Supabase] →", { amount: amt, currency: withdrawCoin, network: withdrawNetwork });
+        const res = await fetch("/api/withdraw/create", {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessW.access_token}` },
           body: JSON.stringify({
-            type: "withdrawal", amount: amt, currency: withdrawCoin,
-            network: withdrawNetwork, external_tx_id: withdrawAddress,
+            amount: amt, currency: withdrawCoin,
+            network: withdrawNetwork, wallet: withdrawAddress,
           }),
         });
         if (res.status === 403) {
@@ -3346,10 +3346,10 @@ export default function App() {
           return;
         }
         if (res.ok) {
-          const { transaction: serverTx } = await res.json();
-          serverTxId = serverTx?.id;
-          serverDisplayId = serverTx?.display_id;
-          console.log("[Withdraw Supabase] OK — id:", serverTxId, "display_id:", serverDisplayId);
+          const data = await res.json();
+          serverTxId = data.withdrawal?.id;
+          serverDisplayId = data.transaction_display_id ?? data.withdrawal?.id;
+          console.log("[Withdraw Supabase] OK — withdrawal_id:", serverTxId, "display_id:", serverDisplayId);
         } else {
           const errBody = await res.json().catch(() => ({}));
           const errMsg = (errBody as any)?.error ?? `Error ${res.status}`;
