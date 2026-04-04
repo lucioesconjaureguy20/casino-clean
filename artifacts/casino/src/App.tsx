@@ -4338,11 +4338,6 @@ export default function App() {
                             onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="";}}>
                             {(g as any).img && <img src={(g as any).img} alt={g.title} style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:(g as any).imgFit??"cover",objectPosition:"center center",padding:(g as any).imgPad??undefined,zIndex:0 }}/>}
                             {!(g as {img?:string}).img && <div style={{ position:"absolute",inset:0,opacity:.38,background:"radial-gradient(circle at 20% 30%,rgba(255,255,255,.35),transparent 25%), radial-gradient(circle at 80% 70%,rgba(255,255,255,.25),transparent 22%)",zIndex:1 }}/>}
-                            {!(g as {img?:string}).img && g.soon && (g as any).soonIcon && (
-                              <div style={{ position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",zIndex:2,flexDirection:"column" }}>
-                                <div style={{ opacity:0.7,display:"flex",alignItems:"center",justifyContent:"center" }}>{(g as any).soonIcon}</div>
-                              </div>
-                            )}
                             {!(g as {img?:string}).img && g.title==="Baccarat" && (
                               <div style={{ position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",zIndex:2,gap:"10px",transform:"rotate(-8deg)" }}>
                                 {[{r:"A",s:"♠",top:"#fff"},{r:"K",s:"♥",top:"#ff4a6a"}].map((c,ci)=>(
