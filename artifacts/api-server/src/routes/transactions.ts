@@ -660,13 +660,13 @@ router.post("/admin/adjust-balance", requireAuth, async (req: Request, res: Resp
     const txRow: Record<string, unknown> = {
       mander_id,
       display_id:     null,
-      type:           "admin_adjustment",
+      type:           "bonus",
       amount:         absAmount,
       currency:       cur,
       network:        "",
       status:         "completed",
       external_tx_id: null,
-      notes:          adjustmentNote,
+      notes:          `[admin_adjustment] ${adjustmentNote}`,
       completed_at:   new Date().toISOString(),
       user_id:        targetUserId,
     };
