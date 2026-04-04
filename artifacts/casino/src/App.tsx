@@ -2063,7 +2063,11 @@ export default function App() {
     if (!isEmail) {
       // Look up email from localStorage (backward-compat for existing users)
       const storedEmail = ls.get("email_" + loginUser.trim());
-      if (storedEmail) {
+      const savedForEmailCheck = ls.get("user_" + loginUser.trim());
+      // Only use stored email for Supabase login if the user is a Supabase user (password is "__supabase__")
+      // Pure local users (real password stored) must always go through local auth
+      const isPureLocalUser = savedForEmailCheck && savedForEmailCheck !== "__supabase__";
+      if (storedEmail && !isPureLocalUser) {
         emailToUse = storedEmail;
       } else {
         // Try local auth fallback for demo / pre-Supabase users
