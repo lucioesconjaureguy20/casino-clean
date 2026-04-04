@@ -1016,7 +1016,7 @@ export default function App() {
   const [rwPage, setRwPage] = useState(0);
   const [txFilter, setTxFilter] = useState<"deposit"|"withdraw">("deposit");
   const [txPage, setTxPage] = useState(0);
-  const [selectedWithdrawTx, setSelectedWithdrawTx] = useState<Transaction|null>(null);
+  const [selectedTxDetail, setSelectedTxDetail] = useState<Transaction|null>(null);
   const [bhFilter, setBhFilter] = useState<string>("all");
   const [bhPage, setBhPage] = useState(0);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
@@ -5106,11 +5106,11 @@ export default function App() {
                                 <tbody>
                                   {pageData.map((tx,i)=>{
                                     const txKey = tx.id ?? `${tx.createdAt}_${i}`;
-                                    const canExpand = tx.type === "withdraw" && (tx.address || tx.tx_hash);
+                                    const canExpand = !!(tx.address || tx.tx_hash);
                                     return (
                                     <Fragment key={txKey}>
                                     <tr style={{ borderBottom:"1px solid #1a2236", cursor: canExpand ? "pointer" : "default" }}
-                                      onClick={()=>{ if(canExpand) setSelectedWithdrawTx(tx); }}
+                                      onClick={()=>{ if(canExpand) setSelectedTxDetail(tx); }}
                                       onMouseEnter={e=>(e.currentTarget.style.background="#1a2438")}
                                       onMouseLeave={e=>(e.currentTarget.style.background="transparent")}>
                                       <td style={{ padding:"13px 16px", whiteSpace:"nowrap" as const }}>
@@ -6074,114 +6074,120 @@ export default function App() {
 
       {/* CASHIER MODAL */}
       {/* ── Withdrawal detail modal ── */}
-      {selectedWithdrawTx && (
-        <div onClick={e=>{ if(e.target===e.currentTarget) setSelectedWithdrawTx(null); }}
-          style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.78)",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px",zIndex:1000 }}>
-          <div style={{ width:"100%",maxWidth:"440px",background:"#16202e",border:"1px solid #2a3650",borderRadius:"16px",overflow:"hidden",boxShadow:"0 24px 60px rgba(0,0,0,.6)",fontFamily:"'Inter', sans-serif" }}>
-            {/* Header */}
-            <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 20px 14px",borderBottom:"1px solid #1a2a40" }}>
-              <div style={{ display:"flex",alignItems:"center",gap:"10px" }}>
-                <div style={{ width:"36px",height:"36px",borderRadius:"10px",background:"rgba(244,169,31,.12)",display:"flex",alignItems:"center",justifyContent:"center" }}>
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
-                  </svg>
+      {selectedTxDetail && (()=>{
+        const tx = selectedTxDetail;
+        const isDeposit = tx.type === "deposit";
+        const accentColor = isDeposit ? "#22c55e" : "#f4a91f";
+        const accentBg    = isDeposit ? "rgba(34,197,94,.12)" : "rgba(244,169,31,.12)";
+        const amountSign  = isDeposit ? "+" : "-";
+        const walletLabel = isDeposit ? "Wallet de depósito" : "Wallet destino";
+        return (
+          <div onClick={e=>{ if(e.target===e.currentTarget) setSelectedTxDetail(null); }}
+            style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.78)",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px",zIndex:1000 }}>
+            <div style={{ width:"100%",maxWidth:"440px",background:"#16202e",border:"1px solid #2a3650",borderRadius:"16px",overflow:"hidden",boxShadow:"0 24px 60px rgba(0,0,0,.6)",fontFamily:"'Inter', sans-serif" }}>
+              {/* Header */}
+              <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 20px 14px",borderBottom:"1px solid #1a2a40" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"10px" }}>
+                  <div style={{ width:"36px",height:"36px",borderRadius:"10px",background:accentBg,display:"flex",alignItems:"center",justifyContent:"center" }}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={accentColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      {isDeposit
+                        ? <><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></>
+                        : <><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></>}
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style={{ margin:0,color:"#f2f3f7",fontSize:"17px",fontWeight:700 }}>
+                      {isDeposit ? "Detalle del depósito" : "Detalle del retiro"}
+                    </h3>
+                    {tx.display_id && <span style={{ fontSize:"12px",color:"#4a5e7a" }}>#{tx.display_id}</span>}
+                  </div>
                 </div>
-                <div>
-                  <h3 style={{ margin:0,color:"#f2f3f7",fontSize:"17px",fontWeight:700 }}>Detalle del retiro</h3>
-                  {selectedWithdrawTx.display_id && (
-                    <span style={{ fontSize:"12px",color:"#4a5e7a" }}>#{selectedWithdrawTx.display_id}</span>
+                <button onClick={()=>setSelectedTxDetail(null)}
+                  style={{ width:"32px",height:"32px",borderRadius:"50%",background:"#2a3550",border:"none",color:"#9ea8bc",fontSize:"20px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
+              </div>
+              {/* Body */}
+              <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0" }}>
+                {/* Status badge */}
+                <div style={{ display:"flex",justifyContent:"center",marginBottom:"20px" }}>
+                  <span style={{ display:"inline-flex",alignItems:"center",gap:"6px",padding:"6px 16px",borderRadius:"20px",
+                    background: tx.status==="completed"||tx.status==="approved" ? "rgba(34,197,94,.12)" : tx.status==="rejected" ? "rgba(239,68,68,.12)" : "rgba(244,169,31,.12)",
+                    color:      tx.status==="completed"||tx.status==="approved" ? "#22c55e"  : tx.status==="rejected" ? "#ef4444" : "#f4a91f",
+                    fontWeight:700,fontSize:"13px" }}>
+                    {(tx.status==="completed"||tx.status==="approved") && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                    {tx.status==="rejected"  && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>}
+                    {tx.status==="pending"   && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>}
+                    {statusLabel(tx.status)}
+                  </span>
+                </div>
+                {/* Amount */}
+                <div style={{ textAlign:"center",marginBottom:"24px" }}>
+                  <div style={{ fontSize:"32px",fontWeight:800,color:accentColor,letterSpacing:"-0.5px" }}>
+                    {amountSign}${tx.usdAmount.toFixed(2)}
+                  </div>
+                  <div style={{ fontSize:"14px",color:"#7a8faa",marginTop:"4px" }}>{tx.coin}</div>
+                </div>
+                {/* Divider */}
+                <div style={{ borderTop:"1px solid #1a2a40",marginBottom:"20px" }}/>
+                {/* Details */}
+                <div style={{ display:"flex",flexDirection:"column",gap:"14px" }}>
+                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
+                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Fecha</span>
+                    <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:500 }}>{fmtDate(tx.createdAt)}</span>
+                  </div>
+                  {tx.network && (
+                    <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
+                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Red</span>
+                      <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:600 }}>{tx.network}</span>
+                    </div>
                   )}
-                </div>
-              </div>
-              <button onClick={()=>setSelectedWithdrawTx(null)}
-                style={{ width:"32px",height:"32px",borderRadius:"50%",background:"#2a3550",border:"none",color:"#9ea8bc",fontSize:"20px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
-            </div>
-            {/* Body */}
-            <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0" }}>
-              {/* Status badge */}
-              <div style={{ display:"flex",justifyContent:"center",marginBottom:"20px" }}>
-                <span style={{ display:"inline-flex",alignItems:"center",gap:"6px",padding:"6px 16px",borderRadius:"20px",
-                  background: selectedWithdrawTx.status==="completed" ? "rgba(34,197,94,.12)" : selectedWithdrawTx.status==="rejected" ? "rgba(239,68,68,.12)" : "rgba(244,169,31,.12)",
-                  color: selectedWithdrawTx.status==="completed" ? "#22c55e" : selectedWithdrawTx.status==="rejected" ? "#ef4444" : "#f4a91f",
-                  fontWeight:700,fontSize:"13px" }}>
-                  {selectedWithdrawTx.status==="completed" && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
-                  {selectedWithdrawTx.status==="rejected" && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>}
-                  {selectedWithdrawTx.status==="pending" && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>}
-                  {statusLabel(selectedWithdrawTx.status)}
-                </span>
-              </div>
-              {/* Amount big display */}
-              <div style={{ textAlign:"center",marginBottom:"24px" }}>
-                <div style={{ fontSize:"32px",fontWeight:800,color:"#f4a91f",letterSpacing:"-0.5px" }}>
-                  -${selectedWithdrawTx.usdAmount.toFixed(2)}
-                </div>
-                <div style={{ fontSize:"14px",color:"#7a8faa",marginTop:"4px" }}>{selectedWithdrawTx.coin}</div>
-              </div>
-              {/* Divider */}
-              <div style={{ borderTop:"1px solid #1a2a40",marginBottom:"20px" }}/>
-              {/* Details list */}
-              <div style={{ display:"flex",flexDirection:"column",gap:"14px" }}>
-                {/* Fecha */}
-                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                  <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Fecha</span>
-                  <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:500 }}>{fmtDate(selectedWithdrawTx.createdAt)}</span>
-                </div>
-                {/* Red */}
-                {selectedWithdrawTx.network && (
-                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Red</span>
-                    <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:600 }}>{selectedWithdrawTx.network}</span>
-                  </div>
-                )}
-                {/* Wallet */}
-                {selectedWithdrawTx.address && (
-                  <div style={{ display:"flex",flexDirection:"column",gap:"6px" }}>
-                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Wallet destino</span>
-                    <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1e2e44",borderRadius:"8px",padding:"10px 12px" }}>
-                      <span style={{ fontSize:"12px",color:"#8aa0c0",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{selectedWithdrawTx.address}</span>
-                      <button onClick={()=>navigator.clipboard.writeText(selectedWithdrawTx!.address!)}
-                        title="Copiar wallet"
-                        style={{ background:"#1a2a40",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#5b8dee",flexShrink:0,display:"flex",alignItems:"center" }}>
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                        </svg>
-                      </button>
+                  {tx.address && (
+                    <div style={{ display:"flex",flexDirection:"column",gap:"6px" }}>
+                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>{walletLabel}</span>
+                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1e2e44",borderRadius:"8px",padding:"10px 12px" }}>
+                        <span style={{ fontSize:"12px",color:"#8aa0c0",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{tx.address}</span>
+                        <button onClick={()=>navigator.clipboard.writeText(tx.address!)}
+                          title="Copiar wallet"
+                          style={{ background:"#1a2a40",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#5b8dee",flexShrink:0,display:"flex",alignItems:"center" }}>
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )}
-                {/* TX Hash */}
-                {selectedWithdrawTx.tx_hash ? (
-                  <div style={{ display:"flex",flexDirection:"column",gap:"6px" }}>
-                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
-                    <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1a3020",borderRadius:"8px",padding:"10px 12px" }}>
-                      <span style={{ fontSize:"12px",color:"#22c55e",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{selectedWithdrawTx.tx_hash}</span>
-                      <button onClick={()=>navigator.clipboard.writeText(selectedWithdrawTx!.tx_hash!)}
-                        title="Copiar TX hash"
-                        style={{ background:"rgba(34,197,94,.1)",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#22c55e",flexShrink:0,display:"flex",alignItems:"center" }}>
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                        </svg>
-                      </button>
+                  )}
+                  {tx.tx_hash ? (
+                    <div style={{ display:"flex",flexDirection:"column",gap:"6px" }}>
+                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
+                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1a3020",borderRadius:"8px",padding:"10px 12px" }}>
+                        <span style={{ fontSize:"12px",color:"#22c55e",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{tx.tx_hash}</span>
+                        <button onClick={()=>navigator.clipboard.writeText(tx.tx_hash!)}
+                          title="Copiar TX hash"
+                          style={{ background:"rgba(34,197,94,.1)",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#22c55e",flexShrink:0,display:"flex",alignItems:"center" }}>
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ) : selectedWithdrawTx.status === "completed" ? (
-                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
-                    <span style={{ fontSize:"13px",color:"#3a4e68",fontStyle:"italic" }}>No disponible</span>
-                  </div>
-                ) : null}
+                  ) : (tx.status==="completed"||tx.status==="approved") ? (
+                    <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
+                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
+                      <span style={{ fontSize:"13px",color:"#3a4e68",fontStyle:"italic" }}>No disponible</span>
+                    </div>
+                  ) : null}
+                </div>
+                {/* Close */}
+                <button onClick={()=>setSelectedTxDetail(null)}
+                  style={{ marginTop:"24px",width:"100%",padding:"12px",background:"#1e2e44",border:"1px solid #2a3a5a",borderRadius:"10px",color:"#9ea8bc",fontSize:"14px",fontWeight:600,cursor:"pointer",transition:"background .15s" }}
+                  onMouseEnter={e=>(e.currentTarget.style.background="#253349")}
+                  onMouseLeave={e=>(e.currentTarget.style.background="#1e2e44")}>
+                  Cerrar
+                </button>
               </div>
-              {/* Close button */}
-              <button onClick={()=>setSelectedWithdrawTx(null)}
-                style={{ marginTop:"24px",width:"100%",padding:"12px",background:"#1e2e44",border:"1px solid #2a3a5a",borderRadius:"10px",color:"#9ea8bc",fontSize:"14px",fontWeight:600,cursor:"pointer",transition:"background .15s" }}
-                onMouseEnter={e=>(e.currentTarget.style.background="#253349")}
-                onMouseLeave={e=>(e.currentTarget.style.background="#1e2e44")}>
-                Cerrar
-              </button>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {cashierOpen && (
         <div onClick={e=>{ if(e.target===e.currentTarget) setCashierOpen(false); }}
