@@ -42,7 +42,6 @@ async function getProfile(userId: string) {
 // Suma el monto nativo al balance de la moneda. Si no existe, crea la fila.
 async function creditBalance(
   manderId: string,
-  username: string,
   currency: string,
   nativeAmount: number,
 ): Promise<void> {
@@ -66,7 +65,7 @@ async function creditBalance(
     const newBalance = Math.max(0, Number(existing.balance || 0) + nativeAmount);
     const patchRes = await sbAdmin(`balances?id=eq.${existing.id}`, {
       method: "PATCH",
-      body: JSON.stringify({ balance: newBalance, updated_at: now, username }),
+      body: JSON.stringify({ balance: newBalance, updated_at: now }),
     });
     if (!patchRes.ok)
       console.error("[DEPOSIT balance] error al actualizar:", await patchRes.text());
@@ -77,7 +76,6 @@ async function creditBalance(
       method: "POST",
       body: JSON.stringify({
         mander_id: manderId,
-        username,
         currency: cur,
         balance: Math.max(0, nativeAmount),
         updated_at: now,
@@ -113,16 +111,17 @@ async function addToProfileBalance(manderId: string, deltaUsd: number): Promise<
 // ── Helper: registrar transacción en tabla transactions ───────────────────────
 async function insertTransaction(
   manderId: string,
-  username: string,
+  userId: string,
   amount: number,
   currency: string,
   network: string,
   txHash: string,
   depositId: string,
 ): Promise<void> {
+  const now = new Date().toISOString();
   const row = {
     mander_id:      manderId,
-    username,
+    user_id:        userId,
     type:           "deposit",
     amount,
     currency:       currency.trim().toUpperCase(),
@@ -130,7 +129,7 @@ async function insertTransaction(
     status:         "completed",
     external_tx_id: txHash || null,
     notes:          `deposit_id:${depositId}`,
-    completed_at:   new Date().toISOString(),
+    completed_at:   now,
   };
 
   const r = await sbAdmin("transactions", {
@@ -241,7 +240,7 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Depósito no encontrado." });
     }
 
-    if (deposit.status === "completed") {
+    if (deposit.status === "confirmed") {
       return res.status(409).json({ error: "El depósito ya fue confirmado." });
     }
 
@@ -255,9 +254,8 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
     const updRes = await sbAdmin(`deposits?id=eq.${deposit_id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        status:      "completed",
-        tx_hash:     tx_hash || null,
-        completed_at: new Date().toISOString(),
+        status:  "confirmed",
+        tx_hash: tx_hash || null,
       }),
     });
 
@@ -275,7 +273,7 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
 
     // 4. Acreditar balance en tabla balances (monto nativo)
     const nativeAmount = Number(deposit.amount);
-    await creditBalance(profile.mander_id, profile.username, deposit.currency, nativeAmount);
+    await creditBalance(profile.mander_id, deposit.currency, nativeAmount);
 
     // 5. Actualizar profiles.balance (total en USD)
     const priceUsd = getPriceUsd(deposit.currency.trim().toUpperCase());
@@ -285,7 +283,7 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
     // 6. Registrar en tabla transactions
     await insertTransaction(
       profile.mander_id,
-      profile.username,
+      deposit.user_id,
       nativeAmount,
       deposit.currency,
       deposit.network,
@@ -295,7 +293,7 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
 
     return res.json({
       ok: true,
-      deposit: updatedDeposit ?? { ...deposit, status: "completed", tx_hash },
+      deposit: updatedDeposit ?? { ...deposit, status: "confirmed", tx_hash },
     });
 
   } catch (err: any) {
