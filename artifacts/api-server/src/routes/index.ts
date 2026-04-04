@@ -6,6 +6,7 @@ import affiliateRouter from "./affiliate";
 import authRouter from "./auth";
 import transactionsRouter from "./transactions";
 import depositRouter from "./deposit";
+import adminRouter from "./admin";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(affiliateRouter);
 router.use(authRouter);
 router.use(transactionsRouter);
 router.use(depositRouter);
+router.use("/api/admin", adminRouter);
 
 export default router;

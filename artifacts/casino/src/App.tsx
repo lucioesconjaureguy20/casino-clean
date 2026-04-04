@@ -8,6 +8,7 @@ import RouletteGame, { RouletteStats, rouletteStatsDefault } from "./RouletteGam
 import BaccaratGame, { BaccaratStats, baccaratStatsDefault } from "./BaccaratGame";
 import AffiliateProgram from "./AffiliateProgram";
 import RegisteredUsers from "./RegisteredUsers";
+import AdminPanel from "./AdminPanel";
 import ProfilePage from "./ProfilePage";
 import NotLoggedInState from "./NotLoggedInState";
 import { VIP_RANKS, getRankIndex, getVipInfo, getRakebackBalances, distributeRakeback, claimInstantRakeback, claimPeriodicRakeback, canClaimInstant, canClaimPeriodic, timeUntilInstant, timeUntilClaim, saveRewardClaim, getRewardHistory } from "./vipSystem";
@@ -3508,6 +3509,35 @@ export default function App() {
           ); })}
         </ul>
 
+        {/* ── Admin link — only visible when logged in ── */}
+        {currentUser && (
+          <div style={{ flexShrink:0, borderTop:"1px solid #1a2235" }}>
+            <div
+              onClick={()=>{ window.scrollTo({top:0,behavior:"instant"}); setSection("admin"); }}
+              title={sidebarCollapsed ? "Admin" : undefined}
+              onMouseEnter={e=>{ e.currentTarget.style.background="#131d30"; e.currentTarget.style.color="#fff"; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; e.currentTarget.style.color="#9ca3af"; }}
+              style={{
+                display:"flex", alignItems:"center", gap:"10px",
+                justifyContent: sidebarCollapsed ? "center" : "flex-start",
+                padding: sidebarCollapsed ? "14px 0" : "12px 16px",
+                cursor:"pointer", color: section==="admin" ? "#f59e0b" : "#9ca3af",
+                background: section==="admin" ? "#131d30" : "transparent",
+                borderLeft: section==="admin" ? "3px solid #f59e0b" : "3px solid transparent",
+                transition:"all .15s",
+              }}
+            >
+              <span style={{ width:"22px", height:"22px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  <path d="M16 3.5c.7.5 1.2 1.4 1.2 2.5s-.5 2-1.2 2.5"/>
+                </svg>
+              </span>
+              {!sidebarCollapsed && <span style={{ fontSize:"14px", fontWeight:500, whiteSpace:"nowrap" }}>Admin</span>}
+            </div>
+          </div>
+        )}
+
         {/* ── Language selector — last flex child inside aside ── */}
         <div style={{ flexShrink:0, position:"relative", borderTop:"1px solid #1a2235" }}>
           {/* Language list popup — fixed so it's not clipped */}
@@ -5717,6 +5747,11 @@ export default function App() {
               ))}
             </div>
             <CasinoFooter onHome={showHomeView} />
+          </section>
+        )}
+        {section==="admin" && (
+          <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)" }}>
+            <AdminPanel />
           </section>
         )}
       </main>
