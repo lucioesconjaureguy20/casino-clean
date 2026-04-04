@@ -6715,15 +6715,25 @@ export default function App() {
               Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.
             </p>
             <div style={{ display:"flex", gap:"10px" }}>
-              <button onClick={()=>setWithdrawBlocked(false)} style={{
-                flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #1e2a3d",
-                background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
-              }}>Entendido</button>
-              <button onClick={()=>{ setWithdrawBlocked(false); setChatOpen(true); if(currentUser) loadChatSessions(currentUser); }} style={{
-                flex:1, padding:"12px", borderRadius:"10px", border:"none",
-                background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
-                fontWeight:600, fontSize:"14px", cursor:"pointer",
-              }}>Contactar soporte</button>
+              <button
+                onClick={()=>setWithdrawBlocked(false)}
+                onMouseEnter={e=>{ e.currentTarget.style.background="#1a2438"; e.currentTarget.style.borderColor="#334155"; e.currentTarget.style.color="#94a3b8"; }}
+                onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#1e2a3d"; e.currentTarget.style.color="#64748b"; }}
+                style={{
+                  flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #1e2a3d",
+                  background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
+                  transition:"background 0.15s, border-color 0.15s, color 0.15s",
+                }}>Entendido</button>
+              <button
+                onClick={()=>{ setWithdrawBlocked(false); setChatOpen(true); if(currentUser) loadChatSessions(currentUser); }}
+                onMouseEnter={e=>{ e.currentTarget.style.background="linear-gradient(180deg,#3b82f6,#2563eb)"; e.currentTarget.style.transform="translateY(-1px)"; }}
+                onMouseLeave={e=>{ e.currentTarget.style.background="linear-gradient(180deg,#2563eb,#1d4ed8)"; e.currentTarget.style.transform="translateY(0)"; }}
+                style={{
+                  flex:1, padding:"12px", borderRadius:"10px", border:"none",
+                  background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
+                  fontWeight:600, fontSize:"14px", cursor:"pointer",
+                  transition:"background 0.15s, transform 0.15s",
+                }}>Contactar soporte</button>
             </div>
           </div>
         </div>
