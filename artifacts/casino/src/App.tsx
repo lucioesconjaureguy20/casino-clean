@@ -5884,7 +5884,7 @@ export default function App() {
                         <img src={`https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={110} height={110} style={{ display:"block" }} alt="QR"/>
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"8px" }}>
-                        <div style={{ color:"#d4e0f0",fontWeight:500,fontSize:"12.5px",wordBreak:"break-all" as const,lineHeight:1.6 }}>
+                        <div style={{ color:"#d4e0f0",fontWeight:500,fontSize:"14px",wordBreak:"break-all" as const,lineHeight:1.6,textAlign:"center" }}>
                           {pendingDeposit.address}
                         </div>
                         <button onClick={()=>{ navigator.clipboard.writeText(pendingDeposit!.address!); setAddressCopied(true); setTimeout(()=>setAddressCopied(false),2000); }} className="cashier-btn"
