@@ -6704,14 +6704,14 @@ export default function App() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontWeight:700, fontSize:"17px", color:"#cbd5e1" }}>Retiros en revisión</div>
-                <div style={{ fontSize:"12px", color:"#475569", marginTop:"3px" }}>Tu cuenta está siendo verificada</div>
+                <div style={{ fontWeight:700, fontSize:"14px", color:"#cbd5e1" }}>Retiros en revisión</div>
+                <div style={{ fontSize:"14px", color:"#475569", marginTop:"3px" }}>Tu cuenta está siendo verificada</div>
               </div>
             </div>
             <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.75, margin:"0 0 10px" }}>
               Por el momento los retiros de tu cuenta están <strong style={{ color:"#94a3b8" }}>en pausa</strong> mientras nuestro equipo realiza una revisión de rutina.
             </p>
-            <p style={{ fontSize:"13px", color:"#475569", lineHeight:1.6, margin:"0 0 22px" }}>
+            <p style={{ fontSize:"14px", color:"#475569", lineHeight:1.6, margin:"0 0 22px" }}>
               Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.
             </p>
             <div style={{ display:"flex", gap:"10px" }}>
