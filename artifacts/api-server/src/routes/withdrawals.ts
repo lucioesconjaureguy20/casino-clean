@@ -298,17 +298,16 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
     return res.status(400).json({ error: lockResult.reason });
   }
 
-  // Create withdrawal record
+  // Create withdrawal record (mander_id omitted — UUID column incompatible with hex IDs)
   const r = await sbAdmin("withdrawals", {
     method: "POST",
     body: JSON.stringify({
-      user_id:   req.authUser!.id,
-      mander_id: profile.mander_id,
-      amount:    parsed,
-      currency:  cur,
-      network:   (network as string).trim(),
-      wallet:    (wallet as string).trim(),
-      status:    "pending",
+      user_id:  req.authUser!.id,
+      amount:   parsed,
+      currency: cur,
+      network:  (network as string).trim(),
+      wallet:   (wallet as string).trim(),
+      status:   "pending",
     }),
   });
 
@@ -406,7 +405,14 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
   if (w.status === "paid")    return res.status(400).json({ error: "No se puede rechazar un retiro ya pagado." });
   if (w.status === "rejected") return res.status(400).json({ error: "El retiro ya está rechazado." });
 
-  const { mander_id, amount, currency } = w;
+  // Resolve mander_id from withdrawal or fallback to profile lookup
+  let mander_id: string = w.mander_id;
+  if (!mander_id && w.user_id) {
+    const profile = await getProfile(w.user_id).catch(() => null);
+    if (profile?.mander_id) mander_id = profile.mander_id;
+  }
+
+  const { amount, currency } = w;
   const cur    = (currency as string).trim().toUpperCase();
   const parsed = Number(amount);
 
@@ -452,7 +458,17 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
   if (w.status === "paid")    return res.status(400).json({ error: "DOBLE PAGO BLOQUEADO: Este retiro ya fue pagado." });
   if (w.status === "rejected") return res.status(400).json({ error: "No se puede pagar un retiro rechazado." });
 
-  const { mander_id, amount, currency, user_id } = w;
+  // Resolve mander_id from withdrawal or fallback to profile lookup
+  const { amount, currency, user_id } = w;
+  let mander_id: string = w.mander_id;
+  if (!mander_id && user_id) {
+    const profile = await getProfile(user_id).catch(() => null);
+    if (profile?.mander_id) mander_id = profile.mander_id;
+  }
+  if (!mander_id) {
+    console.error(`[WITHDRAW pay] Cannot resolve mander_id for user_id=${user_id} withdrawal=${withdrawal_id}`);
+    return res.status(500).json({ error: "No se pudo resolver el perfil del usuario." });
+  }
   const cur    = (currency as string).trim().toUpperCase();
   const parsed = Number(amount);
 
