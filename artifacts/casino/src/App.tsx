@@ -5762,7 +5762,7 @@ export default function App() {
         )}
         {section==="admin" && (
           <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)" }}>
-            <AdminPanel />
+            <AdminPanel token={supaSession?.access_token || ""} />
           </section>
         )}
       </main>

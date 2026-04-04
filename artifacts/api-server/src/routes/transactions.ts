@@ -615,6 +615,93 @@ router.post("/balance/sync", requireAuth, async (req: Request, res: Response) =>
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
+// POST /api/admin/adjust-balance
+// Suma o resta saldo a un usuario. Requiere auth + ser admin.
+// Body: { mander_id, username, amount (signed native), currency, notes? }
+router.post("/admin/adjust-balance", requireAuth, async (req: Request, res: Response) => {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(503).json({ error: "Servicio no disponible." });
+
+  // Verificar que el caller es admin
+  const callerProfile = await getProfile(req.authUser!.id).catch(() => null);
+  if (!callerProfile) return res.status(403).json({ error: "Perfil no encontrado." });
+  const adminUsernames = (process.env.ADMIN_USERNAMES || "")
+    .split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+  if (!adminUsernames.includes(callerProfile.username.toLowerCase())) {
+    return res.status(403).json({ error: "Acceso denegado." });
+  }
+
+  const { mander_id, username, amount, currency, notes } = req.body;
+  if (!mander_id || !username || typeof amount !== "number" || amount === 0 || !currency) {
+    return res.status(400).json({
+      error: "Campos requeridos: mander_id, username, amount (≠ 0), currency.",
+    });
+  }
+
+  const cur = currency.trim().toUpperCase();
+  const isCredit = amount > 0;
+  const absAmount = Math.abs(amount);
+  const adjustmentNote = notes?.trim()
+    || `Admin ${isCredit ? "+" : "-"}${absAmount} ${cur} por ${callerProfile.username}`;
+
+  console.log(`[ADMIN adjust-balance] caller=${callerProfile.username} target=${username} amount=${amount} ${cur}`);
+
+  try {
+    // Obtener user_id real del target
+    let targetUserId: string | null = null;
+    const targetRes = await sbAdmin(
+      `profiles?mander_id=eq.${encodeURIComponent(mander_id)}&select=id&limit=1`,
+      { headers: { Prefer: "count=none" } },
+    );
+    if (targetRes.ok) {
+      const rows: { id: string }[] = await targetRes.json();
+      if (rows[0]) targetUserId = rows[0].id;
+    }
+
+    const txRow: Record<string, unknown> = {
+      mander_id,
+      display_id:     null,
+      type:           "admin_adjustment",
+      amount:         absAmount,
+      currency:       cur,
+      network:        "",
+      status:         "completed",
+      external_tx_id: null,
+      notes:          adjustmentNote,
+      completed_at:   new Date().toISOString(),
+      user_id:        targetUserId,
+    };
+
+    const insRes = await sbAdmin("transactions", {
+      method: "POST",
+      body: JSON.stringify(txRow),
+    });
+
+    if (!insRes.ok) {
+      const errBody = await insRes.json().catch(() => ({}));
+      const msg = (errBody as Record<string, unknown>).message || JSON.stringify(errBody);
+      console.error("[ADMIN adjust-balance] error TX:", msg);
+      return res.status(500).json({ error: "Error al insertar transacción: " + msg });
+    }
+
+    const inserted = await insRes.json();
+    const txRow_ = Array.isArray(inserted) ? inserted[0] : inserted;
+
+    // Actualizar balance con monto nativo exacto (signed)
+    await updateBalance(mander_id, cur, amount, "admin_adjustment", amount);
+
+    console.log(`[ADMIN adjust-balance] OK — tx id=${txRow_?.id} ${isCredit ? "+" : ""}${amount} ${cur} → ${username}`);
+    return res.json({
+      ok: true,
+      transaction: txRow_,
+      message: `Balance de ${username} ${isCredit ? "aumentado" : "reducido"} en ${absAmount} ${cur}.`,
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[ADMIN adjust-balance] excepción:", msg);
+    return res.status(500).json({ error: msg });
+  }
+});
+
 // POST /api/admin/add-balance
 // Agrega balance manualmente a un usuario (uso administrativo).
 // Header requerido: x-admin-key = SUPABASE_SERVICE_KEY (service role)

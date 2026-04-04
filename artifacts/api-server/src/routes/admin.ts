@@ -19,7 +19,6 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
 }
 
 // GET /api/admin/pending-deposits
-// Returns all pending deposits joined with profile username
 router.get("/pending-deposits", async (_req: Request, res: Response) => {
   try {
     const r = await sbAdmin(
@@ -43,7 +42,6 @@ router.get("/pending-deposits", async (_req: Request, res: Response) => {
 
     if (!deposits.length) return res.json({ deposits: [] });
 
-    // Fetch profiles for these user_ids in one call
     const ids = [...new Set(deposits.map((d) => d.user_id))];
     const idsParam = `(${ids.map((id) => `"${id}"`).join(",")})`;
     const pr = await sbAdmin(
@@ -67,6 +65,65 @@ router.get("/pending-deposits", async (_req: Request, res: Response) => {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error("[ADMIN] exception:", msg);
+    return res.status(500).json({ error: msg });
+  }
+});
+
+// GET /api/admin/users
+// Returns all users with their balances per currency
+router.get("/users", async (_req: Request, res: Response) => {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
+    return res.status(503).json({ error: "Servicio no disponible." });
+
+  try {
+    const pr = await sbAdmin(
+      "profiles?select=id,mander_id,username,created_at&order=created_at.asc",
+      { headers: { Prefer: "count=none" } },
+    );
+    if (!pr.ok) {
+      const txt = await pr.text();
+      return res.status(502).json({ error: "Error fetching profiles", detail: txt });
+    }
+
+    const profiles: {
+      id: string;
+      mander_id: string;
+      username: string;
+      created_at: string;
+    }[] = await pr.json();
+
+    if (!profiles.length) return res.json({ users: [] });
+
+    const manderIds = profiles.map((p) => p.mander_id).filter(Boolean);
+    const idsParam = `(${manderIds.map((id) => `"${id}"`).join(",")})`;
+    const br = await sbAdmin(
+      `balances?mander_id=in.${idsParam}&select=mander_id,currency,balance`,
+      { headers: { Prefer: "count=none" } },
+    );
+
+    const balanceMap: Record<string, { currency: string; balance: number }[]> = {};
+    if (br.ok) {
+      const balRows: { mander_id: string; currency: string; balance: number }[] =
+        await br.json();
+      for (const b of balRows) {
+        if (!balanceMap[b.mander_id]) balanceMap[b.mander_id] = [];
+        balanceMap[b.mander_id].push({ currency: b.currency, balance: Number(b.balance) });
+      }
+    }
+
+    const users = profiles.map((p) => ({
+      id: p.id,
+      mander_id: p.mander_id,
+      username: p.username,
+      created_at: p.created_at,
+      balances: (balanceMap[p.mander_id] ?? []).filter((b) => b.balance > 0),
+    }));
+
+    console.log(`[ADMIN users] ${users.length} usuarios`);
+    return res.json({ users });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[ADMIN users] exception:", msg);
     return res.status(500).json({ error: msg });
   }
 });
