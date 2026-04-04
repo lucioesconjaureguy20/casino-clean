@@ -6681,35 +6681,38 @@ export default function App() {
       {withdrawBlocked && (
         <div style={{
           position:"fixed", inset:0, zIndex:5100,
-          background:"rgba(0,0,0,.78)", display:"flex", alignItems:"center", justifyContent:"center",
+          background:"rgba(0,0,0,.65)", display:"flex", alignItems:"center", justifyContent:"center",
         }} onClick={()=>setWithdrawBlocked(false)}>
           <div onClick={e=>e.stopPropagation()} style={{
-            background:"#0f1828", border:"2px solid #ef4444", borderRadius:"18px",
-            padding:"28px 32px", maxWidth:"400px", width:"90%",
-            boxShadow:"0 20px 60px rgba(0,0,0,.9)",
+            background:"#0f1828", border:"1px solid #334155", borderRadius:"18px",
+            padding:"28px 32px", maxWidth:"420px", width:"90%",
+            boxShadow:"0 16px 50px rgba(0,0,0,.7)",
             animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
           }}>
             <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
-              <div style={{ fontSize:"36px" }}>🚫</div>
+              <div style={{ fontSize:"34px" }}>⏸️</div>
               <div>
-                <div style={{ fontWeight:800, fontSize:"17px", color:"#ef4444" }}>Cuenta Bloqueada</div>
-                <div style={{ fontSize:"12px", color:"#5a7090", marginTop:"2px" }}>Retiros suspendidos temporalmente</div>
+                <div style={{ fontWeight:700, fontSize:"16px", color:"#cbd5e1" }}>Retiros en revisión</div>
+                <div style={{ fontSize:"12px", color:"#475569", marginTop:"2px" }}>Tu cuenta está siendo verificada</div>
               </div>
             </div>
-            <p style={{ fontSize:"14px", color:"#8090b0", lineHeight:1.7, margin:"0 0 22px" }}>
-              Tu cuenta está <strong style={{ color:"#fca5a5" }}>bloqueada para retiros</strong> por el equipo de seguridad. Si creés que es un error, contactá al soporte y adjuntá tu Mander ID.
+            <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.75, margin:"0 0 10px" }}>
+              Por el momento los retiros de tu cuenta están <strong style={{ color:"#94a3b8" }}>en pausa</strong> mientras nuestro equipo realiza una revisión de rutina.
+            </p>
+            <p style={{ fontSize:"13px", color:"#475569", lineHeight:1.6, margin:"0 0 22px" }}>
+              Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.
             </p>
             <div style={{ display:"flex", gap:"10px" }}>
               <button onClick={()=>setWithdrawBlocked(false)} style={{
-                flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #2a3550",
-                background:"#1a2438", color:"#94a3b8", fontWeight:600, fontSize:"14px", cursor:"pointer",
-              }}>Cerrar</button>
+                flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #1e2a3d",
+                background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
+              }}>Entendido</button>
               <a href="mailto:soporte@manderbet.com" style={{ textDecoration:"none", flex:1 }}>
                 <button style={{
                   width:"100%", padding:"12px", borderRadius:"10px", border:"none",
-                  background:"linear-gradient(180deg,#ef4444,#b91c1c)", color:"#fff",
-                  fontWeight:700, fontSize:"14px", cursor:"pointer",
-                }}>Contactar Soporte</button>
+                  background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
+                  fontWeight:600, fontSize:"14px", cursor:"pointer",
+                }}>Contactar soporte</button>
               </a>
             </div>
           </div>
