@@ -6688,6 +6688,7 @@ export default function App() {
             padding:"28px 32px", maxWidth:"420px", width:"90%",
             boxShadow:"0 16px 50px rgba(0,0,0,.7)",
             animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
+            fontFamily:"'Inter', sans-serif",
           }}>
             <div style={{ display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", gap:"12px", marginBottom:"20px" }}>
               <div style={{
