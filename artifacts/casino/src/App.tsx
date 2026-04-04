@@ -6691,13 +6691,13 @@ export default function App() {
           }}>
             <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
               <div style={{
-                width:48, height:48, borderRadius:"50%",
-                background:"rgba(59,130,246,0.12)", border:"1px solid rgba(59,130,246,0.25)",
+                width:52, height:52, borderRadius:"50%",
+                background:"rgba(59,130,246,0.1)", border:"1px solid rgba(59,130,246,0.22)",
                 display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
               }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="9" stroke="#60a5fa" strokeWidth="1.8"/>
-                  <path d="M12 7v5l3 3" stroke="#60a5fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#60a5fa" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
                 </svg>
               </div>
               <div>
