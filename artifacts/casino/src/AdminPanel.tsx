@@ -98,7 +98,7 @@ export default function AdminPanel() {
   };
 
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 16px 64px" }}>
+    <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 16px 64px", fontFamily: "'Inter', sans-serif" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
