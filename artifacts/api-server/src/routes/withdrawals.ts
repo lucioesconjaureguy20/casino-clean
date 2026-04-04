@@ -36,7 +36,7 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
 
 async function getProfile(userId: string) {
   const r = await sbAdmin(
-    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username&limit=1`,
+    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked&limit=1`,
     { headers: { Prefer: "count=none" } },
   );
   if (!r.ok) return null;
@@ -275,6 +275,12 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
   // Profile
   const profile = await getProfile(req.authUser!.id).catch(() => null);
   if (!profile) return res.status(404).json({ error: "Perfil no encontrado." });
+
+  // Block check
+  if (profile.is_blocked === true) {
+    console.warn(`[WITHDRAW create] BLOCKED user attempted withdrawal: ${profile.username}`);
+    return res.status(403).json({ error: "Tu cuenta está suspendida temporalmente. Contactá al soporte." });
+  }
 
   const cur = (currency as string).trim().toUpperCase();
 

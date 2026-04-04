@@ -9,6 +9,7 @@ import depositRouter from "./deposit";
 import adminRouter from "./admin";
 import withdrawalsRouter from "./withdrawals";
 import statsRouter from "./stats";
+import alertsRouter from "./alerts";
 
 const router: IRouter = Router();
 
@@ -22,5 +23,6 @@ router.use(depositRouter);
 router.use("/api/admin", adminRouter);
 router.use("/api", withdrawalsRouter);
 router.use("/api", statsRouter);
+router.use("/api", alertsRouter);
 
 export default router;

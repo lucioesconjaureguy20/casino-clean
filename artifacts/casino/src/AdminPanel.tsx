@@ -759,6 +759,303 @@ function WithdrawalsTab({ token }: { token: string }) {
   );
 }
 
+// ── Alerts Tab ────────────────────────────────────────────────────────────────
+
+type Severity = "critical" | "high" | "medium" | "low";
+
+interface Alert {
+  id: string; severity: Severity; type: string;
+  title: string; detail: string; username: string; userId: string;
+  amount?: number; currency?: string; createdAt: string;
+}
+interface AlertsData {
+  alerts: Alert[];
+  summary: { total: number; critical: number; high: number; medium: number; low: number };
+  blockedUsers: { id: string; username: string }[];
+  generatedAt: string;
+}
+
+const SEV: Record<Severity, { color: string; bg: string; label: string; icon: string }> = {
+  critical: { color: "#f87171", bg: "#1e0d0d", label: "Crítico",  icon: "🚨" },
+  high:     { color: "#fb923c", bg: "#1e1208", label: "Alto",     icon: "⚠️" },
+  medium:   { color: "#facc15", bg: "#1e1a08", label: "Medio",    icon: "🟡" },
+  low:      { color: "#94a3b8", bg: "#0d1525", label: "Bajo",     icon: "ℹ️" },
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  large_withdrawal: "Retiro grande",
+  large_deposit:    "Depósito grande",
+  balance_drain:    "Drain de balance",
+  rapid_activity:   "Actividad rápida",
+  instant_withdrawal: "Retiro inmediato",
+  multiple_pending: "Múltiples pendientes",
+};
+
+function AlertSeverityBadge({ sev }: { sev: Severity }) {
+  const s = SEV[sev];
+  return (
+    <span style={{
+      background: s.bg, color: s.color, border: `1px solid ${s.color}50`,
+      borderRadius: 6, padding: "3px 10px", fontSize: 11, fontWeight: 700,
+      letterSpacing: "0.4px", whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: 4,
+    }}>
+      {s.icon} {s.label}
+    </span>
+  );
+}
+
+function AlertsTab({ token }: { token: string }) {
+  const [data, setData]         = useState<AlertsData | null>(null);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState("");
+  const [sevFilter, setSevFilter] = useState<Severity | "all">("all");
+  const [acting, setActing]     = useState<string | null>(null);
+  const [toast, setToast]       = useState<{ msg: string; ok: boolean } | null>(null);
+  const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
+
+  const load = useCallback(async () => {
+    setLoading(true); setError("");
+    try {
+      const r = await fetch("/api/admin/alerts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!r.ok) throw new Error(`Error ${r.status}`);
+      const d = await r.json();
+      if (!d.ok) throw new Error(d.error ?? "Error desconocido");
+      setData(d);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error al cargar alertas");
+    } finally { setLoading(false); }
+  }, [token]);
+
+  useEffect(() => { load(); }, [load]);
+
+  function showToast(msg: string, ok: boolean) {
+    setToast({ msg, ok });
+    setTimeout(() => setToast(null), 4000);
+  }
+
+  async function blockUser(userId: string, username: string) {
+    const reason = blockInputs[userId] ?? "";
+    setActing(userId);
+    try {
+      const r = await fetch("/api/admin/user/block", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: userId, reason: reason || undefined }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error ?? `Error ${r.status}`);
+      showToast(`${username} bloqueado correctamente.`, true);
+      await load();
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error al bloquear", false);
+    } finally { setActing(null); }
+  }
+
+  async function unblockUser(userId: string, username: string) {
+    setActing(userId);
+    try {
+      const r = await fetch("/api/admin/user/unblock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error ?? `Error ${r.status}`);
+      showToast(`${username} desbloqueado.`, true);
+      await load();
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error al desbloquear", false);
+    } finally { setActing(null); }
+  }
+
+  const filtered = data ? (sevFilter === "all" ? data.alerts : data.alerts.filter(a => a.severity === sevFilter)) : [];
+  const isBlocked = (userId: string) => data?.blockedUsers.some(b => b.id === userId) ?? false;
+
+  return (
+    <>
+      {toast && (
+        <div style={{
+          position: "fixed", top: 20, right: 20, zIndex: 9999,
+          background: toast.ok ? "#15803d" : "#dc2626", color: "#fff",
+          borderRadius: 10, padding: "12px 20px", fontSize: 14, fontWeight: 600,
+          boxShadow: "0 4px 20px rgba(0,0,0,.5)", maxWidth: 420,
+        }}>{toast.msg}</div>
+      )}
+
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Alertas y Monitoreo</h2>
+          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
+            {loading ? "Analizando actividad..." : data ? `${data.summary.total} alertas detectadas · Actualizado a las ${new Date(data.generatedAt).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}` : "Sin datos"}
+          </p>
+        </div>
+        <button onClick={load} disabled={loading} style={{ ...btnSecondary }}>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+          </svg>
+          Analizar
+        </button>
+      </div>
+
+      {loading && <div style={{ textAlign: "center", padding: "60px 0", color: "#64748b" }}>Analizando actividad sospechosa...</div>}
+      {error && <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "14px 18px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>{error}</div>}
+
+      {data && (
+        <>
+          {/* Summary cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px,1fr))", gap: 10, marginBottom: 20 }}>
+            {(["critical", "high", "medium", "low"] as Severity[]).map(sev => {
+              const s = SEV[sev];
+              const count = data.summary[sev];
+              return (
+                <button key={sev} onClick={() => setSevFilter(sevFilter === sev ? "all" : sev)} style={{
+                  background: sevFilter === sev ? s.bg : "#111827",
+                  border: `1px solid ${sevFilter === sev ? s.color : "#1e2a3d"}`,
+                  borderRadius: 10, padding: "14px 16px", cursor: "pointer",
+                  textAlign: "left", transition: "all .15s",
+                  fontFamily: "'Inter', sans-serif",
+                }}>
+                  <div style={{ fontSize: 22, marginBottom: 4 }}>{s.icon}</div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: count > 0 ? s.color : "#475569" }}>{count}</div>
+                  <div style={{ fontSize: 11, color: "#64748b", fontWeight: 600, marginTop: 2, textTransform: "uppercase", letterSpacing: "0.6px" }}>{s.label}</div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Blocked users banner */}
+          {data.blockedUsers.length > 0 && (
+            <div style={{ background: "#1e0d0d", border: "1px solid #7f1d1d", borderRadius: 10, padding: "12px 16px", marginBottom: 16, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 16 }}>🔒</span>
+              <span style={{ fontSize: 13, color: "#fca5a5", fontWeight: 600 }}>
+                {data.blockedUsers.length} usuario{data.blockedUsers.length !== 1 ? "s" : ""} bloqueado{data.blockedUsers.length !== 1 ? "s" : ""}:
+              </span>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {data.blockedUsers.map(u => (
+                  <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ background: "#7f1d1d", color: "#fca5a5", borderRadius: 6, padding: "2px 8px", fontSize: 12, fontWeight: 600 }}>
+                      {u.username}
+                    </span>
+                    <button onClick={() => unblockUser(u.id, u.username)} disabled={acting === u.id} style={{
+                      background: "transparent", border: "1px solid #475569", borderRadius: 6,
+                      color: "#94a3b8", cursor: "pointer", fontSize: 11, padding: "2px 8px",
+                      fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                    }}>
+                      {acting === u.id ? "..." : "Desbloquear"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Alerts table */}
+          {filtered.length === 0 ? (
+            <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>✅</div>
+              <div style={{ color: "#e2e8f0", fontWeight: 600, fontSize: 16, marginBottom: 6 }}>
+                {sevFilter === "all" ? "Sin alertas detectadas" : `Sin alertas de nivel ${SEV[sevFilter].label.toLowerCase()}`}
+              </div>
+              <div style={{ color: "#64748b", fontSize: 13 }}>El sistema no detectó actividad sospechosa.</div>
+            </div>
+          ) : (
+            <div style={card}>
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr>
+                      <th style={th}>Severidad</th>
+                      <th style={th}>Tipo</th>
+                      <th style={th}>Usuario</th>
+                      <th style={th}>Descripción</th>
+                      <th style={th}>Detalle</th>
+                      <th style={th}>Fecha</th>
+                      <th style={{ ...th, minWidth: 200 }}>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map(alert => {
+                      const blocked = isBlocked(alert.userId);
+                      const busy = acting === alert.userId;
+                      return (
+                        <tr key={alert.id}
+                          onMouseEnter={e => (e.currentTarget.style.background = "#0f1a2e")}
+                          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                          style={{ transition: "background .15s", borderLeft: `3px solid ${SEV[alert.severity].color}40` }}
+                        >
+                          <td style={td}><AlertSeverityBadge sev={alert.severity} /></td>
+                          <td style={{ ...td, fontSize: 11, color: "#64748b", whiteSpace: "nowrap" }}>{TYPE_LABELS[alert.type] ?? alert.type}</td>
+                          <td style={td}>
+                            <div style={{ fontWeight: 700, color: "#f59e0b", display: "flex", alignItems: "center", gap: 6 }}>
+                              {blocked && <span title="Bloqueado" style={{ fontSize: 12 }}>🔒</span>}
+                              {alert.username}
+                            </div>
+                          </td>
+                          <td style={{ ...td, maxWidth: 200 }}>
+                            <div style={{ fontSize: 12, fontWeight: 600, color: SEV[alert.severity].color }}>{alert.title}</div>
+                          </td>
+                          <td style={{ ...td, maxWidth: 220 }}>
+                            <div style={{ fontSize: 11, color: "#94a3b8", lineHeight: 1.5 }}>{alert.detail}</div>
+                          </td>
+                          <td style={{ ...td, fontSize: 11, color: "#475569", whiteSpace: "nowrap" }}>
+                            {fmt(alert.createdAt)}
+                          </td>
+                          <td style={td}>
+                            {blocked ? (
+                              <button onClick={() => unblockUser(alert.userId, alert.username)} disabled={busy} style={{
+                                background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
+                                color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
+                                fontSize: 12, fontWeight: 600, padding: "6px 14px",
+                                fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
+                              }}>
+                                {busy ? "..." : "Desbloquear"}
+                              </button>
+                            ) : (
+                              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                                <input
+                                  type="text"
+                                  placeholder="Motivo (opcional)"
+                                  value={blockInputs[alert.userId] ?? ""}
+                                  onChange={e => setBlockInputs(prev => ({ ...prev, [alert.userId]: e.target.value }))}
+                                  style={{ ...inputStyle, width: 120, fontSize: 11 }}
+                                />
+                                <button onClick={() => blockUser(alert.userId, alert.username)} disabled={busy} style={{
+                                  background: "#1e0d0d", border: "1px solid #7f1d1d", borderRadius: 7,
+                                  color: "#f87171", cursor: busy ? "not-allowed" : "pointer",
+                                  fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                                  fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
+                                }}>
+                                  {busy ? "..." : "🔒 Bloquear"}
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* SQL reminder if needed */}
+          <div style={{ marginTop: 16, background: "#0d1525", border: "1px solid #1e2a3d", borderRadius: 10, padding: "12px 16px", fontSize: 12, color: "#64748b" }}>
+            <span style={{ color: "#f59e0b", fontWeight: 600 }}>Nota: </span>
+            Para que el bloqueo funcione, ejecutar en Supabase SQL Editor:{" "}
+            <code style={{ background: "#131d30", padding: "2px 8px", borderRadius: 4, color: "#22d3ee", fontFamily: "monospace" }}>
+              ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_blocked boolean DEFAULT false;
+            </code>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
 // ── Stats Tab ─────────────────────────────────────────────────────────────────
 
 type Period = "day" | "week" | "month";
@@ -1042,13 +1339,14 @@ function StatsTab({ token }: { token: string }) {
 
 // ── AdminPanel ────────────────────────────────────────────────────────────────
 
-type TabId = "deposits" | "withdrawals" | "users" | "stats";
+type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts";
 
 export default function AdminPanel({ token }: { token: string }) {
   const [tab, setTab] = useState<TabId>("stats");
 
   const tabs: { id: TabId; label: string; icon: string }[] = [
     { id: "stats",       label: "Estadísticas", icon: "📊" },
+    { id: "alerts",      label: "Alertas",      icon: "🚨" },
     { id: "deposits",    label: "Depósitos",    icon: "⬇" },
     { id: "withdrawals", label: "Retiros",      icon: "⬆" },
     { id: "users",       label: "Usuarios",     icon: "👤" },
@@ -1091,6 +1389,7 @@ export default function AdminPanel({ token }: { token: string }) {
 
         {/* Content */}
         {tab === "stats"       && <StatsTab token={token} />}
+        {tab === "alerts"      && <AlertsTab token={token} />}
         {tab === "deposits"    && <DepositsTab />}
         {tab === "withdrawals" && <WithdrawalsTab token={token} />}
         {tab === "users"       && <UsersTab token={token} />}
