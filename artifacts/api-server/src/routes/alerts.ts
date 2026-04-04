@@ -1,11 +1,10 @@
 /**
  * alerts.ts — Suspicious activity detection + user blocking
  *
- * Endpoints:
- *   GET  /api/admin/alerts          — analyze recent data, return flagged items
- *   POST /api/admin/user/block      — block user (requires is_blocked col in profiles)
- *   POST /api/admin/user/unblock    — unblock user
- *   GET  /api/admin/blocked-users   — list all blocked users
+ * GET  /api/admin/alerts?period=today|7d|30d  — analyze + return flagged items
+ * POST /api/admin/user/block                  — block user
+ * POST /api/admin/user/unblock                — unblock user
+ * GET  /api/admin/blocked-users               — list blocked users
  */
 
 import { Router, Request, Response, NextFunction } from "express";
@@ -28,7 +27,7 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
       apikey:         SUPABASE_SERVICE_KEY,
       Authorization:  `Bearer ${SUPABASE_SERVICE_KEY}`,
       "Content-Type": "application/json",
-      Prefer:         "return=representation",
+      Prefer:         "count=none",
       ...(opts.headers as Record<string, string> | undefined),
     },
   });
@@ -36,15 +35,14 @@ function sbAdmin(path: string, opts: RequestInit = {}) {
 
 async function getProfile(userId: string) {
   const r = await sbAdmin(
-    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username&limit=1`,
-    { headers: { Prefer: "count=none" } },
+    `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,is_blocked&limit=1`,
   );
   if (!r.ok) return null;
   const rows: any[] = await r.json();
   return rows[0] ?? null;
 }
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
+// ── Auth middleware ───────────────────────────────────────────────────────────
 
 declare global {
   namespace Express {
@@ -56,14 +54,12 @@ declare global {
 
 async function requireAdmin(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith("Bearer ")) return res.status(401).json({ error: "Sesión inválida." });
+  if (!authHeader?.startsWith("Bearer "))
+    return res.status(401).json({ error: "Sesión inválida." });
   const token = authHeader.slice(7);
 
   let userId: string | null = null;
-  try {
-    const g = verifyGameToken(token) as any;
-    if (g) userId = g.profileId;
-  } catch {}
+  try { const g = verifyGameToken(token) as any; if (g) userId = g.profileId; } catch {}
 
   if (!userId) {
     try {
@@ -84,42 +80,41 @@ async function requireAdmin(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-// ── Alert types ───────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-type Severity = "critical" | "high" | "medium" | "low";
+export type AlertSeverity = "critical" | "medium" | "low";
+export type AlertType =
+  | "large_withdrawal"
+  | "large_deposit"
+  | "balance_drain"
+  | "rapid_activity"
+  | "instant_withdrawal"
+  | "multiple_pending"
+  | "flagged_wallet"
+  | "high_locked";
 
-interface Alert {
-  id:          string;
-  severity:    Severity;
-  type:        string;
+export interface Alert {
+  id:          string;          // deterministic, stable across refreshes
+  severity:    AlertSeverity;
+  type:        AlertType;
   title:       string;
   detail:      string;
   username:    string;
   userId:      string;
   amount?:     number;
   currency?:   string;
+  wallet?:     string;
+  network?:    string;
+  txId?:       string;
   createdAt:   string;
 }
 
-// ── Approximate USD thresholds per currency ───────────────────────────────────
+// ── USD thresholds per currency ───────────────────────────────────────────────
 
-const APPROX_USD: Record<string, number> = {
+const PRICE_APPROX: Record<string, number> = {
   USDT: 1, USDC: 1, BTC: 65000, ETH: 2000, BNB: 580,
   SOL: 80, LTC: 50, TRX: 0.30, POL: 0.09,
 };
-
-function toUsd(amount: number, currency: string): number {
-  return amount * (APPROX_USD[currency.toUpperCase()] ?? 1);
-}
-
-// Thresholds (USD equivalent)
-const LARGE_WITHDRAWAL_USD   = 100;  // flag withdrawal above this
-const LARGE_DEPOSIT_USD      = 250;  // flag deposit above this
-const RAPID_WINDOW_MINUTES   = 60;   // window for rapid-transaction detection
-const RAPID_TX_COUNT         = 5;    // flag user with > this many tx in window
-const HIGH_BALANCE_PCT       = 0.80; // flag withdrawal > 80% of balance
-
-// ── Price cache (refresh once per request batch) ──────────────────────────────
 
 let cachedPrices: Record<string, number> = {};
 let cacheTs = 0;
@@ -134,208 +129,312 @@ async function getPrices(): Promise<Record<string, number>> {
     if (r.ok) {
       const d = await r.json();
       cachedPrices = {
-        USDT: d.tether?.usd ?? 1, USDC: d["usd-coin"]?.usd ?? 1,
-        BTC: d.bitcoin?.usd ?? 65000, ETH: d.ethereum?.usd ?? 2000,
-        BNB: d.binancecoin?.usd ?? 580, SOL: d.solana?.usd ?? 80,
-        LTC: d.litecoin?.usd ?? 50, TRX: d.tron?.usd ?? 0.30,
-        POL: d["matic-network"]?.usd ?? 0.09,
+        USDT: d.tether?.usd ?? 1,       USDC: d["usd-coin"]?.usd ?? 1,
+        BTC:  d.bitcoin?.usd ?? 65000,  ETH: d.ethereum?.usd ?? 2000,
+        BNB:  d.binancecoin?.usd ?? 580, SOL: d.solana?.usd ?? 80,
+        LTC:  d.litecoin?.usd ?? 50,    TRX: d.tron?.usd ?? 0.30,
+        POL:  d["matic-network"]?.usd ?? 0.09,
       };
       cacheTs = Date.now();
     }
   } catch {}
-  return { ...APPROX_USD, ...cachedPrices };
+  return { ...PRICE_APPROX, ...cachedPrices };
+}
+
+function toUsd(amount: number, currency: string, prices: Record<string, number>): number {
+  return Math.abs(amount) * (prices[currency?.toUpperCase()] ?? 1);
+}
+
+// ── Deterministic alert ID ────────────────────────────────────────────────────
+
+function makeId(type: string, userId: string, extra: string): string {
+  return `${type}__${userId}__${extra}`.replace(/[^a-zA-Z0-9_\-.]/g, "_");
+}
+
+// ── Thresholds ────────────────────────────────────────────────────────────────
+
+const THR = {
+  WITHDRAW_CRITICAL_USD: 500,
+  WITHDRAW_HIGH_USD:     100,
+  DEPOSIT_HIGH_USD:      500,
+  DEPOSIT_MEDIUM_USD:    200,
+  BALANCE_DRAIN_PCT:     0.80,
+  RAPID_WINDOW_MS:       3600_000,   // 1 hour
+  RAPID_TX_COUNT:        5,
+  INSTANT_WITHDRAW_MIN:  30,         // withdraw within N minutes of deposit
+  HIGH_LOCKED_USD:       50,         // flag locked_amount above this
+  HIGH_LOCKED_PCT:       0.60,       // or above 60% of total funds
+};
+
+// ── Period helper ─────────────────────────────────────────────────────────────
+
+function periodStart(period: string): Date {
+  const now = Date.now();
+  if (period === "today") return new Date(now - 86_400_000);
+  if (period === "7d")    return new Date(now - 7  * 86_400_000);
+  return                         new Date(now - 30 * 86_400_000);
 }
 
 // ── GET /api/admin/alerts ─────────────────────────────────────────────────────
 
-router.get("/admin/alerts", requireAdmin, async (_req: Request, res: Response) => {
+router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) => {
   try {
-    const since30d = new Date(Date.now() - 30 * 86400_000).toISOString();
-    const since1h  = new Date(Date.now() -      3600_000).toISOString();
+    const period   = (req.query.period as string) || "30d";
+    const since    = periodStart(period).toISOString();
+    // For wallet duplicates we always scan ALL history
+    const sinceAll = new Date(Date.now() - 365 * 86_400_000).toISOString();
 
-    const [prices, withdrawalsRes, txRes, profilesRes, balancesRes] = await Promise.all([
+    const [prices, wRes, txRes, profRes, balRes] = await Promise.all([
       getPrices(),
-      sbAdmin(
-        `withdrawals?select=id,user_id,amount,currency,status,created_at,wallet,network&order=created_at.desc`,
-        { headers: { Prefer: "count=none" } },
-      ),
-      sbAdmin(
-        `transactions?select=id,user_id,mander_id,type,amount,currency,created_at&created_at=gte.${since30d}&order=created_at.desc`,
-        { headers: { Prefer: "count=none" } },
-      ),
-      sbAdmin(`profiles?select=id,username,is_blocked,created_at`, { headers: { Prefer: "count=none" } }),
-      sbAdmin(`balances?select=user_id,mander_id,currency,balance,locked_amount`, { headers: { Prefer: "count=none" } }),
+      sbAdmin(`withdrawals?select=id,user_id,amount,currency,status,wallet,network,created_at&order=created_at.desc`),
+      sbAdmin(`transactions?select=id,user_id,mander_id,type,amount,currency,created_at&created_at=gte.${since}&order=created_at.desc`),
+      sbAdmin(`profiles?select=id,username,is_blocked`),
+      sbAdmin(`balances?select=user_id,mander_id,currency,balance,locked_amount`),
     ]);
 
-    const withdrawals: any[] = withdrawalsRes.ok ? await withdrawalsRes.json() : [];
-    const txAll:       any[] = txRes.ok       ? await txRes.json()       : [];
-    const profilesRaw: any[] = profilesRes.ok ? await profilesRes.json() : [];
-    const balancesRaw: any[] = balancesRes.ok ? await balancesRes.json() : [];
+    const withdrawals: any[] = wRes.ok  ? await wRes.json()  : [];
+    const txAll:       any[] = txRes.ok ? await txRes.json() : [];
+    const profiles:    any[] = profRes.ok ? await profRes.json() : [];
+    const balances:    any[] = balRes.ok  ? await balRes.json()  : [];
 
-    // Build lookup maps
-    const profileMap: Record<string, { username: string; is_blocked?: boolean }> = {};
-    for (const p of profilesRaw) profileMap[p.id] = { username: p.username, is_blocked: p.is_blocked };
+    // ── Build lookup maps ─────────────────────────────────────────────────────
 
-    // mander_id → user_id map (from balances)
+    const profMap: Record<string, { username: string; is_blocked?: boolean }> = {};
+    for (const p of profiles) profMap[p.id] = { username: p.username, is_blocked: p.is_blocked };
+
     const manderToUser: Record<string, string> = {};
-    for (const b of balancesRaw) if (b.user_id) manderToUser[b.mander_id] = b.user_id;
+    for (const b of balances) if (b.user_id) manderToUser[b.mander_id] = b.user_id;
 
-    // balance lookup: user_id+currency → { balance, locked }
     const balMap: Record<string, { balance: number; locked: number }> = {};
-    for (const b of balancesRaw) {
+    for (const b of balances) {
       const uid = b.user_id ?? manderToUser[b.mander_id];
       if (!uid) continue;
       const key = `${uid}::${b.currency}`;
       balMap[key] = { balance: Number(b.balance ?? 0), locked: Number(b.locked_amount ?? 0) };
     }
 
+    // Period-filtered withdrawals
+    const wFiltered = withdrawals.filter(w => w.created_at >= since);
+
+    function username(userId: string) {
+      return profMap[userId]?.username ?? userId?.slice(0, 8) ?? "?";
+    }
+
     const alerts: Alert[] = [];
-    let alertIdx = 0;
-    function uid() { return `alert-${++alertIdx}`; }
 
-    // ── Rule 1: Large withdrawals ───────────────────────────────────────────
-    for (const w of withdrawals) {
+    // ── Rule 1: Large withdrawals ─────────────────────────────────────────────
+    for (const w of wFiltered) {
       if (w.status === "rejected") continue;
-      const usd = toUsd(Number(w.amount), w.currency);
-      const username = profileMap[w.user_id]?.username ?? w.user_id;
-      if (usd >= LARGE_WITHDRAWAL_USD) {
-        const sev: Severity = usd >= 500 ? "critical" : usd >= 200 ? "high" : "medium";
-        alerts.push({
-          id: uid(), severity: sev, type: "large_withdrawal",
-          title: `Retiro grande — ${w.amount} ${w.currency}`,
-          detail: `≈ $${Math.round(usd)} USD · Red: ${w.network} · Wallet: ${w.wallet?.slice(0, 16)}…`,
-          username, userId: w.user_id, amount: Number(w.amount), currency: w.currency,
-          createdAt: w.created_at,
-        });
-      }
-    }
-
-    // ── Rule 2: Withdrawal > HIGH_BALANCE_PCT of total balance ─────────────
-    for (const w of withdrawals) {
-      if (w.status === "paid" || w.status === "rejected") continue;
-      const key = `${w.user_id}::${w.currency}`;
-      const bal = balMap[key];
-      if (!bal) continue;
-      const totalFunds = bal.balance + bal.locked;
-      if (totalFunds <= 0) continue;
-      const pct = Number(w.amount) / totalFunds;
-      if (pct >= HIGH_BALANCE_PCT) {
-        const username = profileMap[w.user_id]?.username ?? w.user_id;
-        alerts.push({
-          id: uid(), severity: "high", type: "balance_drain",
-          title: `Retiro del ${Math.round(pct * 100)}% del balance total`,
-          detail: `${w.amount} ${w.currency} de ${totalFunds.toFixed(4)} totales — status: ${w.status}`,
-          username, userId: w.user_id, amount: Number(w.amount), currency: w.currency,
-          createdAt: w.created_at,
-        });
-      }
-    }
-
-    // ── Rule 3: Large deposits ──────────────────────────────────────────────
-    for (const tx of txAll) {
-      if (tx.type !== "deposit") continue;
-      const usd = toUsd(Math.abs(Number(tx.amount)), tx.currency);
-      if (usd < LARGE_DEPOSIT_USD) continue;
-      const userId = tx.user_id ?? manderToUser[tx.mander_id];
-      const username = profileMap[userId]?.username ?? userId;
+      const usd = toUsd(w.amount, w.currency, prices);
+      if (usd < THR.WITHDRAW_HIGH_USD) continue;
+      const sev: AlertSeverity = usd >= THR.WITHDRAW_CRITICAL_USD ? "critical" : "medium";
       alerts.push({
-        id: uid(), severity: usd >= 1000 ? "high" : "medium", type: "large_deposit",
-        title: `Depósito grande — ${Math.abs(Number(tx.amount))} ${tx.currency}`,
-        detail: `≈ $${Math.round(usd)} USD`,
-        username, userId, amount: Math.abs(Number(tx.amount)), currency: tx.currency,
-        createdAt: tx.created_at,
-      });
-    }
-
-    // ── Rule 4: Rapid transactions (> RAPID_TX_COUNT in last hour) ──────────
-    const recentTx = txAll.filter(t => t.created_at >= since1h);
-    const txCountByUser: Record<string, number> = {};
-    for (const tx of recentTx) {
-      const userId = tx.user_id ?? manderToUser[tx.mander_id];
-      if (!userId) continue;
-      txCountByUser[userId] = (txCountByUser[userId] ?? 0) + 1;
-    }
-    for (const [userId, count] of Object.entries(txCountByUser)) {
-      if (count <= RAPID_TX_COUNT) continue;
-      const username = profileMap[userId]?.username ?? userId;
-      alerts.push({
-        id: uid(), severity: count >= 10 ? "critical" : "high", type: "rapid_activity",
-        title: `Actividad rápida — ${count} transacciones en 1 hora`,
-        detail: `Usuario con ${count} movimientos en la última hora. Posible actividad automatizada.`,
-        username, userId, createdAt: new Date().toISOString(),
-      });
-    }
-
-    // ── Rule 5: Withdrawal right after deposit (< 30 min gap) ──────────────
-    const depositsByUser: Record<string, Date[]> = {};
-    for (const tx of txAll) {
-      if (tx.type !== "deposit") continue;
-      const userId = tx.user_id ?? manderToUser[tx.mander_id];
-      if (!userId) continue;
-      (depositsByUser[userId] ??= []).push(new Date(tx.created_at));
-    }
-    for (const w of withdrawals) {
-      if (w.status === "rejected") continue;
-      const depDates = depositsByUser[w.user_id] ?? [];
-      const wDate = new Date(w.created_at);
-      const closeDep = depDates.find(d => {
-        const diff = (wDate.getTime() - d.getTime()) / 60000;
-        return diff >= 0 && diff <= 30;
-      });
-      if (!closeDep) continue;
-      const username = profileMap[w.user_id]?.username ?? w.user_id;
-      const diffMin = Math.round((wDate.getTime() - closeDep.getTime()) / 60000);
-      alerts.push({
-        id: uid(), severity: "high", type: "instant_withdrawal",
-        title: `Retiro ${diffMin} min después de depósito`,
-        detail: `${w.amount} ${w.currency} retirados a los ${diffMin} minutos de un depósito. Posible cash-out.`,
-        username, userId: w.user_id, amount: Number(w.amount), currency: w.currency,
+        id:        makeId("large_withdrawal", w.user_id, `${w.currency}_${Math.round(usd)}_${w.created_at.slice(0,13)}`),
+        severity:  sev, type: "large_withdrawal",
+        title:     `Retiro grande — ${Number(w.amount).toFixed(4)} ${w.currency}`,
+        detail:    `≈ $${Math.round(usd)} USD · Red: ${w.network ?? "—"} · Status: ${w.status}`,
+        username:  username(w.user_id), userId: w.user_id,
+        amount:    Number(w.amount), currency: w.currency,
+        wallet:    w.wallet, network: w.network, txId: w.id,
         createdAt: w.created_at,
       });
     }
 
-    // ── Rule 6: Multiple pending withdrawals (shouldn't happen, but guard) ──
+    // ── Rule 2: Balance drain (withdrawal > 80% of total funds) ───────────────
+    for (const w of wFiltered) {
+      if (w.status === "paid" || w.status === "rejected") continue;
+      const bal = balMap[`${w.user_id}::${w.currency}`];
+      if (!bal) continue;
+      const total = bal.balance + bal.locked;
+      if (total <= 0) continue;
+      const pct = Number(w.amount) / total;
+      if (pct < THR.BALANCE_DRAIN_PCT) continue;
+      alerts.push({
+        id:        makeId("balance_drain", w.user_id, `${w.currency}_${w.created_at.slice(0,10)}`),
+        severity:  "critical", type: "balance_drain",
+        title:     `Retiro del ${Math.round(pct * 100)}% del balance total`,
+        detail:    `${Number(w.amount).toFixed(4)} ${w.currency} de ${total.toFixed(4)} disponibles · Status: ${w.status}`,
+        username:  username(w.user_id), userId: w.user_id,
+        amount:    Number(w.amount), currency: w.currency,
+        wallet:    w.wallet, network: w.network, txId: w.id,
+        createdAt: w.created_at,
+      });
+    }
+
+    // ── Rule 3: Large deposits ────────────────────────────────────────────────
+    for (const tx of txAll) {
+      if (tx.type !== "deposit") continue;
+      const usd = toUsd(tx.amount, tx.currency, prices);
+      if (usd < THR.DEPOSIT_MEDIUM_USD) continue;
+      const uid = tx.user_id ?? manderToUser[tx.mander_id];
+      const sev: AlertSeverity = usd >= THR.DEPOSIT_HIGH_USD ? "medium" : "low";
+      alerts.push({
+        id:        makeId("large_deposit", uid, `${tx.currency}_${Math.round(usd)}_${tx.created_at.slice(0,13)}`),
+        severity:  sev, type: "large_deposit",
+        title:     `Depósito grande — ${Math.abs(Number(tx.amount)).toFixed(4)} ${tx.currency}`,
+        detail:    `≈ $${Math.round(usd)} USD`,
+        username:  username(uid), userId: uid,
+        amount:    Math.abs(Number(tx.amount)), currency: tx.currency,
+        txId:      tx.id, createdAt: tx.created_at,
+      });
+    }
+
+    // ── Rule 4: Rapid activity (> N transactions in 1 hour) ───────────────────
+    const since1h = new Date(Date.now() - THR.RAPID_WINDOW_MS).toISOString();
+    const recentTx = txAll.filter(t => t.created_at >= since1h);
+    const txCountByUser: Record<string, number> = {};
+    for (const tx of recentTx) {
+      const uid = tx.user_id ?? manderToUser[tx.mander_id];
+      if (uid) txCountByUser[uid] = (txCountByUser[uid] ?? 0) + 1;
+    }
+    for (const [uid, count] of Object.entries(txCountByUser)) {
+      if (count <= THR.RAPID_TX_COUNT) continue;
+      const sev: AlertSeverity = count >= 10 ? "critical" : "medium";
+      alerts.push({
+        id:        makeId("rapid_activity", uid, `count${count}_${new Date().toISOString().slice(0,10)}`),
+        severity:  sev, type: "rapid_activity",
+        title:     `Actividad rápida — ${count} transacciones en 1 hora`,
+        detail:    `Posible bot o actividad automatizada. ${count} movimientos en los últimos 60 minutos.`,
+        username:  username(uid), userId: uid,
+        createdAt: new Date().toISOString(),
+      });
+    }
+
+    // ── Rule 5: Instant withdrawal (< 30 min after deposit) ───────────────────
+    const depositsByUser: Record<string, { date: Date; txId: string }[]> = {};
+    for (const tx of txAll) {
+      if (tx.type !== "deposit") continue;
+      const uid = tx.user_id ?? manderToUser[tx.mander_id];
+      if (!uid) continue;
+      (depositsByUser[uid] ??= []).push({ date: new Date(tx.created_at), txId: tx.id });
+    }
+    for (const w of wFiltered) {
+      if (w.status === "rejected") continue;
+      const deps = depositsByUser[w.user_id] ?? [];
+      const wDate = new Date(w.created_at);
+      const close = deps.find(d => {
+        const diff = (wDate.getTime() - d.date.getTime()) / 60000;
+        return diff >= 0 && diff <= THR.INSTANT_WITHDRAW_MIN;
+      });
+      if (!close) continue;
+      const diffMin = Math.round((wDate.getTime() - close.date.getTime()) / 60000);
+      alerts.push({
+        id:        makeId("instant_withdrawal", w.user_id, `${w.currency}_${w.created_at.slice(0,13)}`),
+        severity:  "medium", type: "instant_withdrawal",
+        title:     `Retiro ${diffMin} min después de depósito`,
+        detail:    `${Number(w.amount).toFixed(4)} ${w.currency} retirados a los ${diffMin} min de un depósito · Posible cash-out.`,
+        username:  username(w.user_id), userId: w.user_id,
+        amount:    Number(w.amount), currency: w.currency,
+        wallet:    w.wallet, network: w.network, txId: w.id,
+        createdAt: w.created_at,
+      });
+    }
+
+    // ── Rule 6: Multiple pending withdrawals ──────────────────────────────────
     const pendingByUser: Record<string, number> = {};
     for (const w of withdrawals) {
       if (w.status !== "pending" && w.status !== "approved") continue;
       pendingByUser[w.user_id] = (pendingByUser[w.user_id] ?? 0) + 1;
     }
-    for (const [userId, count] of Object.entries(pendingByUser)) {
+    for (const [uid, count] of Object.entries(pendingByUser)) {
       if (count < 2) continue;
-      const username = profileMap[userId]?.username ?? userId;
       alerts.push({
-        id: uid(), severity: "critical", type: "multiple_pending",
-        title: `${count} retiros pendientes simultáneos`,
-        detail: `Un usuario tiene ${count} retiros en estado pending/approved al mismo tiempo. Verificar manualmente.`,
-        username, userId, createdAt: new Date().toISOString(),
+        id:        makeId("multiple_pending", uid, `count${count}`),
+        severity:  "critical", type: "multiple_pending",
+        title:     `${count} retiros pendientes simultáneos`,
+        detail:    `Un mismo usuario tiene ${count} retiros en estado pending/approved. Verificar manualmente.`,
+        username:  username(uid), userId: uid,
+        createdAt: new Date().toISOString(),
       });
     }
 
-    // Sort: critical → high → medium → low, then by date desc
-    const SEV_RANK: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 };
-    alerts.sort((a, b) => {
-      const diff = SEV_RANK[a.severity] - SEV_RANK[b.severity];
-      if (diff !== 0) return diff;
+    // ── Rule 7: Flagged wallet — same wallet used by 2+ accounts ─────────────
+    // Collect all wallets from ALL withdrawals (full history)
+    const walletToUsers: Record<string, Set<string>> = {};
+    for (const w of withdrawals) {
+      if (!w.wallet || w.wallet.length < 10) continue;
+      const wKey = w.wallet.trim().toLowerCase();
+      (walletToUsers[wKey] ??= new Set()).add(w.user_id);
+    }
+    for (const [wallet, userSet] of Object.entries(walletToUsers)) {
+      if (userSet.size < 2) continue;
+      const usersArr = [...userSet];
+      // Only flag if at least one of these users had activity in the period
+      const hasRecentActivity = usersArr.some(uid => {
+        return wFiltered.some(w => w.user_id === uid) || txAll.some(t => {
+          const txUid = t.user_id ?? manderToUser[t.mander_id];
+          return txUid === uid;
+        });
+      });
+      if (!hasRecentActivity) continue;
+
+      const usernames = usersArr.map(uid => username(uid)).join(", ");
+      const displayWallet = wallet.slice(0, 10) + "…" + wallet.slice(-6);
+
+      // Generate one alert per affected user
+      for (const uid of usersArr) {
+        const others = usersArr.filter(u => u !== uid).map(u => username(u)).join(", ");
+        alerts.push({
+          id:        makeId("flagged_wallet", uid, wallet.slice(0, 20)),
+          severity:  "medium", type: "flagged_wallet",
+          title:     `Wallet compartida — ${displayWallet}`,
+          detail:    `Esta wallet también es usada por: ${others}. Posible multi-cuenta.`,
+          username:  username(uid), userId: uid,
+          wallet:    wallet,
+          createdAt: new Date().toISOString(),
+        });
+      }
+    }
+
+    // ── Rule 8: High locked_amount ────────────────────────────────────────────
+    for (const [key, bal] of Object.entries(balMap)) {
+      if (bal.locked <= 0) continue;
+      const [uid, currency] = key.split("::");
+      const lockedUsd = toUsd(bal.locked, currency, prices);
+      const total = bal.balance + bal.locked;
+      const lockedPct = total > 0 ? bal.locked / total : 0;
+      if (lockedUsd < THR.HIGH_LOCKED_USD && lockedPct < THR.HIGH_LOCKED_PCT) continue;
+      alerts.push({
+        id:        makeId("high_locked", uid, `${currency}_${Math.round(lockedUsd)}`),
+        severity:  lockedUsd >= 200 ? "medium" : "low", type: "high_locked",
+        title:     `Fondos bloqueados — ${bal.locked.toFixed(4)} ${currency}`,
+        detail:    `≈ $${Math.round(lockedUsd)} USD en retiros pendientes · ${Math.round(lockedPct * 100)}% del balance total.`,
+        username:  username(uid), userId: uid,
+        amount:    bal.locked, currency,
+        createdAt: new Date().toISOString(),
+      });
+    }
+
+    // ── Deduplicate by id ─────────────────────────────────────────────────────
+    const seen = new Set<string>();
+    const unique = alerts.filter(a => {
+      if (seen.has(a.id)) return false;
+      seen.add(a.id);
+      return true;
+    });
+
+    // ── Sort: critical → medium → low, then by date desc ─────────────────────
+    const RANK: Record<AlertSeverity, number> = { critical: 0, medium: 1, low: 2 };
+    unique.sort((a, b) => {
+      const d = RANK[a.severity] - RANK[b.severity];
+      if (d !== 0) return d;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
-    // Summary
     const summary = {
-      total:    alerts.length,
-      critical: alerts.filter(a => a.severity === "critical").length,
-      high:     alerts.filter(a => a.severity === "high").length,
-      medium:   alerts.filter(a => a.severity === "medium").length,
-      low:      alerts.filter(a => a.severity === "low").length,
+      total:    unique.length,
+      critical: unique.filter(a => a.severity === "critical").length,
+      medium:   unique.filter(a => a.severity === "medium").length,
+      low:      unique.filter(a => a.severity === "low").length,
     };
 
-    // Blocked users
-    const blockedUsers = profilesRaw
+    const blockedUsers = profiles
       .filter(p => p.is_blocked === true)
-      .map(p => ({ id: p.id, username: p.username, blockedAt: p.created_at }));
+      .map(p => ({ id: p.id, username: p.username }));
 
-    return res.json({ ok: true, alerts, summary, blockedUsers, generatedAt: new Date().toISOString() });
+    return res.json({ ok: true, alerts: unique, summary, blockedUsers, period, generatedAt: new Date().toISOString() });
   } catch (err: unknown) {
-    console.error("[ALERTS] Error:", err);
+    console.error("[ALERTS]", err);
     return res.status(500).json({ error: "Error al generar alertas." });
   }
 });
@@ -344,7 +443,6 @@ router.get("/admin/alerts", requireAdmin, async (_req: Request, res: Response) =
 
 router.post("/admin/user/block", requireAdmin, async (req: Request, res: Response) => {
   const { user_id, username, reason } = req.body;
-  const target = user_id || (username ? `eq.username.${username}` : null);
   if (!user_id && !username) return res.status(400).json({ error: "user_id o username requerido." });
 
   const filter = user_id
@@ -352,27 +450,21 @@ router.post("/admin/user/block", requireAdmin, async (req: Request, res: Respons
     : `profiles?username=eq.${encodeURIComponent(username)}`;
 
   const r = await sbAdmin(filter, {
-    method: "PATCH",
-    body: JSON.stringify({ is_blocked: true }),
+    method:  "PATCH",
+    body:    JSON.stringify({ is_blocked: true }),
     headers: { Prefer: "return=representation" },
   });
 
   if (!r.ok) {
     const err = await r.text();
-    console.error("[BLOCK] PATCH error:", err);
-    if (err.includes("is_blocked")) {
-      return res.status(500).json({
-        error: "La columna is_blocked no existe en la tabla profiles. Ejecutar en Supabase SQL Editor: ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_blocked boolean DEFAULT false;",
-      });
-    }
-    return res.status(500).json({ error: "Error al bloquear el usuario." });
+    if (err.includes("is_blocked"))
+      return res.status(500).json({ error: "Columna is_blocked falta. Ejecutar en Supabase SQL Editor: ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_blocked boolean DEFAULT false;" });
+    return res.status(500).json({ error: "Error al bloquear." });
   }
 
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
-
-  const adminWho = req.authUser?.id ?? "unknown";
-  console.log(`[BLOCK] user=${updated.username ?? user_id} blocked by admin=${adminWho}. Reason: ${reason ?? "—"}`);
+  console.log(`[BLOCK] ${updated.username} by admin=${req.authUser?.id}. Reason: ${reason ?? "—"}`);
   return res.json({ ok: true, message: `Usuario ${updated.username} bloqueado.` });
 });
 
@@ -387,35 +479,29 @@ router.post("/admin/user/unblock", requireAdmin, async (req: Request, res: Respo
     : `profiles?username=eq.${encodeURIComponent(username)}`;
 
   const r = await sbAdmin(filter, {
-    method: "PATCH",
-    body: JSON.stringify({ is_blocked: false }),
+    method:  "PATCH",
+    body:    JSON.stringify({ is_blocked: false }),
     headers: { Prefer: "return=representation" },
   });
 
   if (!r.ok) {
     const err = await r.text();
     if (err.includes("is_blocked"))
-      return res.status(500).json({ error: "La columna is_blocked no existe aún en profiles." });
-    return res.status(500).json({ error: "Error al desbloquear el usuario." });
+      return res.status(500).json({ error: "Columna is_blocked falta en profiles." });
+    return res.status(500).json({ error: "Error al desbloquear." });
   }
-
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
-
-  console.log(`[UNBLOCK] user=${updated.username ?? user_id}`);
+  console.log(`[UNBLOCK] ${updated.username}`);
   return res.json({ ok: true, message: `Usuario ${updated.username} desbloqueado.` });
 });
 
 // ── GET /api/admin/blocked-users ──────────────────────────────────────────────
 
 router.get("/admin/blocked-users", requireAdmin, async (_req: Request, res: Response) => {
-  const r = await sbAdmin(
-    "profiles?is_blocked=eq.true&select=id,username,created_at",
-    { headers: { Prefer: "count=none" } },
-  );
-  if (!r.ok) return res.json({ blockedUsers: [] }); // graceful if column doesn't exist
-  const users: any[] = await r.json();
-  return res.json({ blockedUsers: users });
+  const r = await sbAdmin("profiles?is_blocked=eq.true&select=id,username,created_at");
+  if (!r.ok) return res.json({ blockedUsers: [] });
+  return res.json({ blockedUsers: await r.json() });
 });
 
 export { requireAdmin as alertsRequireAdmin };
