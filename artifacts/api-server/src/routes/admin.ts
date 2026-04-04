@@ -141,4 +141,96 @@ router.get("/users", async (_req: Request, res: Response) => {
   }
 });
 
+// GET /api/admin/user/:userId/stats
+router.get("/user/:userId/stats", async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
+    return res.status(503).json({ error: "Servicio no disponible." });
+
+  try {
+    // Profile
+    const profR = await sbAdmin(
+      `profiles?id=eq.${encodeURIComponent(userId)}&select=id,mander_id,username,created_at,is_blocked&limit=1`,
+    );
+    if (!profR.ok) return res.status(502).json({ error: "Error fetching profile." });
+    const profRows: any[] = await profR.json();
+    const profile = profRows[0];
+    if (!profile) return res.status(404).json({ error: "Usuario no encontrado." });
+
+    const mid = encodeURIComponent(profile.mander_id);
+    const uid = encodeURIComponent(userId);
+
+    // All transactions for this user
+    const [txR, wR, depR, balR] = await Promise.all([
+      sbAdmin(`transactions?mander_id=eq.${mid}&select=type,amount,currency,status,created_at&order=created_at.desc&limit=5000`, { headers: { Prefer: "count=none" } }),
+      sbAdmin(`withdrawals?user_id=eq.${uid}&select=amount,currency,status,created_at&order=created_at.desc`, { headers: { Prefer: "count=none" } }),
+      sbAdmin(`deposits?user_id=eq.${uid}&select=amount,currency,status,created_at&order=created_at.desc`, { headers: { Prefer: "count=none" } }),
+      sbAdmin(`balances?mander_id=eq.${mid}&select=currency,balance,locked_amount`, { headers: { Prefer: "count=none" } }),
+    ]);
+
+    const txs:      any[] = txR.ok  ? await txR.json()  : [];
+    const wds:      any[] = wR.ok   ? await wR.json()   : [];
+    const deps:     any[] = depR.ok ? await depR.json() : [];
+    const balRows:  any[] = balR.ok ? await balR.json() : [];
+
+    // Transactions breakdown
+    const bets      = txs.filter(t => t.type === "bet");
+    const bonuses   = txs.filter(t => t.type === "bonus");
+
+    const totalWagered    = bets.reduce((s: number, t: any) => s + Math.abs(Number(t.amount)), 0);
+    const betCount        = bets.length;
+    const totalBonus      = bonuses.reduce((s: number, t: any) => s + Math.abs(Number(t.amount)), 0);
+    const bonusCount      = bonuses.length;
+
+    // Withdrawals
+    const paidWds     = wds.filter(w => w.status === "paid");
+    const pendingWds  = wds.filter(w => w.status === "pending" || w.status === "approved");
+    const totalWithdrawn = paidWds.reduce((s: number, w: any) => s + Number(w.amount), 0);
+
+    // Deposits (confirmed)
+    const confirmedDeps  = deps.filter(d => d.status === "confirmed" || d.status === "completed");
+    const totalDeposited = confirmedDeps.reduce((s: number, d: any) => s + Number(d.amount), 0);
+
+    // Balances
+    const balances = balRows
+      .filter(b => Number(b.balance) > 0 || Number(b.locked_amount) > 0)
+      .map(b => ({ currency: b.currency, balance: Number(b.balance), locked: Number(b.locked_amount) }));
+
+    // First & last activity
+    const allDates = txs.map(t => t.created_at).filter(Boolean).sort();
+    const firstActivity = allDates[0] ?? null;
+    const lastActivity  = allDates[allDates.length - 1] ?? null;
+
+    return res.json({
+      ok: true,
+      profile: {
+        id: profile.id,
+        mander_id: profile.mander_id,
+        username: profile.username,
+        created_at: profile.created_at,
+        is_blocked: profile.is_blocked ?? false,
+      },
+      stats: {
+        totalWagered:   Math.round(totalWagered   * 100) / 100,
+        betCount,
+        totalDeposited: Math.round(totalDeposited * 100) / 100,
+        depositCount:   confirmedDeps.length,
+        totalWithdrawn: Math.round(totalWithdrawn * 100) / 100,
+        withdrawalCount: paidWds.length,
+        pendingWithdrawals: pendingWds.length,
+        totalBonus:   Math.round(totalBonus * 100) / 100,
+        bonusCount,
+        txTotal: txs.length,
+        firstActivity,
+        lastActivity,
+      },
+      balances,
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[ADMIN user stats] exception:", msg);
+    return res.status(500).json({ error: msg });
+  }
+});
+
 export default router;

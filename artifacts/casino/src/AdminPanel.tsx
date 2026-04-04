@@ -244,6 +244,157 @@ function AdjustModal({ user, token, onClose, onSuccess, onError }: AdjustModalPr
   );
 }
 
+// ── User Stats Modal ──────────────────────────────────────────────────────────
+
+interface UserStats {
+  totalWagered: number;
+  betCount: number;
+  totalDeposited: number;
+  depositCount: number;
+  totalWithdrawn: number;
+  withdrawalCount: number;
+  pendingWithdrawals: number;
+  totalBonus: number;
+  bonusCount: number;
+  txTotal: number;
+  firstActivity: string | null;
+  lastActivity: string | null;
+}
+
+interface UserStatsData {
+  profile: { id: string; mander_id: string; username: string; created_at: string; is_blocked: boolean };
+  stats: UserStats;
+  balances: { currency: string; balance: number; locked: number }[];
+}
+
+function UserStatsModal({ userId, token, onClose }: { userId: string; token: string; onClose: () => void }) {
+  const [data, setData]       = useState<UserStatsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch(`/api/admin/user/${userId}/stats`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || `Error ${r.status}`);
+        setData(d);
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Error al cargar");
+      } finally { setLoading(false); }
+    })();
+  }, [userId, token]);
+
+  const fmtNum = (n: number) =>
+    n === 0 ? "0" : n < 0.001 ? n.toExponential(2) : n.toLocaleString("en-US", { maximumFractionDigits: 4 });
+
+  const fmtDate = (iso: string | null) =>
+    iso ? new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
+
+  const s = data?.stats;
+
+  const StatRow = ({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) => (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #1e2a3d" }}>
+      <span style={{ color: "#64748b", fontSize: 13 }}>{label}</span>
+      <div style={{ textAlign: "right" }}>
+        <span style={{ fontWeight: 700, fontSize: 14, color: color ?? "#e2e8f0" }}>{value}</span>
+        {sub && <div style={{ fontSize: 11, color: "#475569", marginTop: 1 }}>{sub}</div>}
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,.75)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{
+        background: "#111827", border: "1px solid #2a3550", borderRadius: 18,
+        width: "100%", maxWidth: 520, maxHeight: "90vh", overflowY: "auto",
+        fontFamily: "'Inter', sans-serif", boxShadow: "0 20px 60px rgba(0,0,0,.7)",
+      }}>
+        {/* Header */}
+        <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #1e2a3d", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+          <div>
+            {data ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <span style={{ fontSize: 20, fontWeight: 800, color: "#f59e0b" }}>{data.profile.username}</span>
+                  {data.profile.is_blocked && (
+                    <span style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 5, color: "#fca5a5", fontSize: 10, fontWeight: 700, padding: "2px 7px" }}>BLOQUEADO</span>
+                  )}
+                </div>
+                <div style={{ fontSize: 11, color: "#475569", fontFamily: "monospace", marginTop: 4 }}>{data.profile.mander_id}</div>
+                <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>Registrado {fmtDate(data.profile.created_at)}</div>
+              </>
+            ) : (
+              <span style={{ fontSize: 16, fontWeight: 700, color: "#e2e8f0" }}>Estadísticas de usuario</span>
+            )}
+          </div>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: "#475569", cursor: "pointer", fontSize: 20, lineHeight: 1, padding: 4 }}>✕</button>
+        </div>
+
+        <div style={{ padding: "16px 24px 24px" }}>
+          {loading && <div style={{ textAlign: "center", padding: "40px 0", color: "#64748b" }}>Cargando estadísticas...</div>}
+          {error  && <div style={{ color: "#fca5a5", fontSize: 13 }}>Error: {error}</div>}
+
+          {data && s && (
+            <>
+              {/* Wagering */}
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#f59e0b", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 4 }}>🎰 Juego</div>
+                <StatRow label="Total apostado"  value={`$${fmtNum(s.totalWagered)}`}  sub={`${s.betCount} rondas`} color="#e2e8f0" />
+                <StatRow label="Bonos recibidos" value={`$${fmtNum(s.totalBonus)}`}    sub={`${s.bonusCount} bonos`} />
+              </div>
+
+              {/* Deposits */}
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#4ade80", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 4 }}>⬇ Depósitos</div>
+                <StatRow label="Total depositado" value={`$${fmtNum(s.totalDeposited)}`} sub={`${s.depositCount} depósito${s.depositCount !== 1 ? "s" : ""} confirmado${s.depositCount !== 1 ? "s" : ""}`} color="#4ade80" />
+              </div>
+
+              {/* Withdrawals */}
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#f87171", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 4 }}>⬆ Retiros</div>
+                <StatRow label="Total retirado"   value={`$${fmtNum(s.totalWithdrawn)}`} sub={`${s.withdrawalCount} retiro${s.withdrawalCount !== 1 ? "s" : ""} pagado${s.withdrawalCount !== 1 ? "s" : ""}`} color="#f87171" />
+                {s.pendingWithdrawals > 0 && (
+                  <StatRow label="Retiros pendientes" value={String(s.pendingWithdrawals)} color="#f59e0b" />
+                )}
+              </div>
+
+              {/* Balances */}
+              {data.balances.length > 0 && (
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#22d3ee", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 4 }}>💰 Balance actual</div>
+                  {data.balances.map(b => (
+                    <StatRow
+                      key={b.currency}
+                      label={b.currency}
+                      value={fmtNum(b.balance)}
+                      sub={b.locked > 0 ? `${fmtNum(b.locked)} en retiro pendiente` : undefined}
+                      color="#22d3ee"
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Activity */}
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 4 }}>📅 Actividad</div>
+                <StatRow label="Primera actividad" value={fmtDate(s.firstActivity)} />
+                <StatRow label="Última actividad"  value={fmtDate(s.lastActivity)} />
+                <StatRow label="Transacciones totales" value={String(s.txTotal)} />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Users Tab ─────────────────────────────────────────────────────────────────
 
 function UsersTab({ token }: { token: string }) {
@@ -254,6 +405,7 @@ function UsersTab({ token }: { token: string }) {
   const [adjusting, setAdjusting] = useState<AdminUser | null>(null);
   const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
   const [blocking, setBlocking]   = useState<string | null>(null);
+  const [statsUser, setStatsUser] = useState<AdminUser | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -302,6 +454,9 @@ function UsersTab({ token }: { token: string }) {
 
   return (
     <>
+      {statsUser && (
+        <UserStatsModal userId={statsUser.id} token={token} onClose={() => setStatsUser(null)} />
+      )}
       {adjusting && (
         <AdjustModal user={adjusting} token={token}
           onClose={() => { setAdjusting(null); load(); }}
@@ -380,7 +535,11 @@ function UsersTab({ token }: { token: string }) {
                   >
                     <td style={td}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontWeight: 700, color: u.is_blocked ? "#f87171" : "#f59e0b" }}>{u.username}</span>
+                        <span
+                          onClick={() => setStatsUser(u)}
+                          style={{ fontWeight: 700, color: u.is_blocked ? "#f87171" : "#f59e0b", cursor: "pointer", textDecoration: "underline", textDecorationStyle: "dotted", textUnderlineOffset: 3 }}
+                          title="Ver estadísticas"
+                        >{u.username}</span>
                         {u.is_flagged && (
                           <span style={{ background: "#1a1205", border: "1px solid #78350f", borderRadius: 4, color: "#fbbf24", fontSize: 9, fontWeight: 700, padding: "1px 5px", letterSpacing: "0.3px" }}>
                             ⚑
