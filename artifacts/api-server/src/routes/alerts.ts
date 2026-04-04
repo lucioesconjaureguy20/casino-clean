@@ -91,7 +91,8 @@ export type AlertType =
   | "instant_withdrawal"
   | "multiple_pending"
   | "flagged_wallet"
-  | "high_locked";
+  | "high_locked"
+  | "low_wagering_cashout";
 
 export interface Alert {
   id:          string;          // deterministic, stable across refreshes
@@ -154,16 +155,19 @@ function makeId(type: string, userId: string, extra: string): string {
 // ── Thresholds ────────────────────────────────────────────────────────────────
 
 const THR = {
-  WITHDRAW_CRITICAL_USD: 500,
-  WITHDRAW_HIGH_USD:     100,
-  DEPOSIT_HIGH_USD:      500,
-  DEPOSIT_MEDIUM_USD:    200,
-  BALANCE_DRAIN_PCT:     0.80,
-  RAPID_WINDOW_MS:       3600_000,   // 1 hour
-  RAPID_TX_COUNT:        5,
-  INSTANT_WITHDRAW_MIN:  30,         // withdraw within N minutes of deposit
-  HIGH_LOCKED_USD:       50,         // flag locked_amount above this
-  HIGH_LOCKED_PCT:       0.60,       // or above 60% of total funds
+  WITHDRAW_CRITICAL_USD:    500,
+  WITHDRAW_HIGH_USD:        100,
+  DEPOSIT_HIGH_USD:         500,
+  DEPOSIT_MEDIUM_USD:       200,
+  BALANCE_DRAIN_PCT:        0.80,
+  RAPID_WINDOW_MS:          3600_000,   // 1 hour
+  RAPID_TX_COUNT:           5,
+  INSTANT_WITHDRAW_MIN:     30,         // withdraw within N minutes of deposit
+  HIGH_LOCKED_USD:          50,         // flag locked_amount above this
+  HIGH_LOCKED_PCT:          0.60,       // or above 60% of total funds
+  LOW_WAGERING_RATIO:       0.80,       // withdrew >= 80% of what was deposited
+  LOW_WAGERING_WINDOW_H:    24,         // within this many hours
+  LOW_WAGERING_MIN_USD:     10,         // ignore micro-amounts
 };
 
 // ── Period helper ─────────────────────────────────────────────────────────────
@@ -328,6 +332,78 @@ router.get("/admin/alerts", requireAdmin, async (req: Request, res: Response) =>
         wallet:    w.wallet, network: w.network, txId: w.id,
         createdAt: w.created_at,
       });
+    }
+
+    // ── Rule 5b: Low-wagering cashout (deposit → near-full withdrawal, minimal play) ──────
+    // Detects: user deposits X, then withdraws ≥80% of X within 24h in same currency
+    // Classic pattern for: referral fraud, fake-deposit cashout, money-pass-through
+    {
+      const windowMs = THR.LOW_WAGERING_WINDOW_H * 3600_000;
+
+      // Build per-user, per-currency deposit list from period transactions
+      const depsByUserCur: Record<string, { amount: number; usd: number; date: Date; txId: string }[]> = {};
+      for (const tx of txAll) {
+        if (tx.type !== "deposit") continue;
+        const uid = tx.user_id ?? manderToUser[tx.mander_id];
+        if (!uid) continue;
+        const amt = Math.abs(Number(tx.amount));
+        const usd = toUsd(amt, tx.currency, prices);
+        if (usd < THR.LOW_WAGERING_MIN_USD) continue;
+        const key = `${uid}::${tx.currency}`;
+        (depsByUserCur[key] ??= []).push({ amount: amt, usd, date: new Date(tx.created_at), txId: tx.id });
+      }
+
+      // Check each withdrawal against deposits in the same currency within the window
+      for (const w of wFiltered) {
+        if (w.status === "rejected") continue;
+        const wAmt = Number(w.amount);
+        const wUsd = toUsd(wAmt, w.currency, prices);
+        if (wUsd < THR.LOW_WAGERING_MIN_USD) continue;
+        const wDate = new Date(w.created_at);
+        const key = `${w.user_id}::${w.currency}`;
+        const deps = depsByUserCur[key] ?? [];
+
+        // Sum all deposits in this currency within the window BEFORE this withdrawal
+        const windowDeposits = deps.filter(d => {
+          const diff = wDate.getTime() - d.date.getTime();
+          return diff >= 0 && diff <= windowMs;
+        });
+        if (windowDeposits.length === 0) continue;
+
+        const totalDeposited = windowDeposits.reduce((s, d) => s + d.amount, 0);
+        const totalDepUsd    = windowDeposits.reduce((s, d) => s + d.usd, 0);
+        const ratio = wAmt / totalDeposited;
+
+        if (ratio < THR.LOW_WAGERING_RATIO) continue;
+
+        // Check if a referral bonus was received between first deposit and withdrawal
+        const firstDep = windowDeposits.reduce((min, d) => d.date < min.date ? d : min, windowDeposits[0]);
+        const gotReferralBonus = txAll.some(tx => {
+          if (tx.type !== "bonus") return false;
+          const txUid = tx.user_id ?? manderToUser[tx.mander_id];
+          if (txUid !== w.user_id) return false;
+          const txDate = new Date(tx.created_at);
+          return txDate >= firstDep.date && txDate <= wDate;
+        });
+
+        const hoursAfter = Math.round((wDate.getTime() - firstDep.date.getTime()) / 3600_000 * 10) / 10;
+        const sev: AlertSeverity = gotReferralBonus ? "critical" : ratio >= 0.95 ? "critical" : "medium";
+
+        alerts.push({
+          id:        makeId("low_wagering_cashout", w.user_id, `${w.currency}_${w.created_at.slice(0,13)}`),
+          severity:  sev, type: "low_wagering_cashout",
+          title:     `Cash-out con wager mínimo — ${Math.round(ratio * 100)}% del depósito`,
+          detail:    [
+            `Depositó ${totalDeposited.toFixed(4)} ${w.currency} (≈$${Math.round(totalDepUsd)} USD)`,
+            `y retiró ${wAmt.toFixed(4)} ${w.currency} ${hoursAfter < 1 ? `en ${Math.round(hoursAfter * 60)} min` : `en ${hoursAfter}h`}.`,
+            gotReferralBonus ? "⚠️ Recibió bono entre depósito y retiro — posible fraude de referido." : "Wager casi nulo antes del retiro.",
+          ].join(" "),
+          username:  username(w.user_id), userId: w.user_id,
+          amount:    wAmt, currency: w.currency,
+          wallet:    w.wallet, network: w.network, txId: w.id,
+          createdAt: w.created_at,
+        });
+      }
     }
 
     // ── Rule 6: Multiple pending withdrawals ──────────────────────────────────

@@ -765,7 +765,7 @@ type AlertSeverity = "critical" | "medium" | "low";
 type AlertType =
   | "large_withdrawal" | "large_deposit" | "balance_drain"
   | "rapid_activity"  | "instant_withdrawal" | "multiple_pending"
-  | "flagged_wallet"  | "high_locked";
+  | "flagged_wallet"  | "high_locked" | "low_wagering_cashout";
 
 interface Alert {
   id: string; severity: AlertSeverity; type: AlertType;
@@ -788,14 +788,15 @@ const SEV: Record<AlertSeverity, { color: string; bg: string; border: string; la
 };
 
 const TYPE_META: Record<AlertType, { label: string; icon: string }> = {
-  large_withdrawal:   { label: "Retiro grande",       icon: "📤" },
-  large_deposit:      { label: "Depósito grande",      icon: "💰" },
-  balance_drain:      { label: "Drain de balance",     icon: "📉" },
-  rapid_activity:     { label: "Actividad rápida",     icon: "⚡" },
-  instant_withdrawal: { label: "Retiro inmediato",     icon: "⏱️" },
-  multiple_pending:   { label: "Múlt. pendientes",     icon: "🔄" },
-  flagged_wallet:     { label: "Wallet duplicada",     icon: "⚠️" },
-  high_locked:        { label: "Fondos bloqueados",    icon: "🔒" },
+  large_withdrawal:     { label: "Retiro grande",       icon: "📤" },
+  large_deposit:        { label: "Depósito grande",     icon: "💰" },
+  balance_drain:        { label: "Drain de balance",    icon: "📉" },
+  rapid_activity:       { label: "Actividad rápida",    icon: "⚡" },
+  instant_withdrawal:   { label: "Retiro inmediato",    icon: "⏱️" },
+  multiple_pending:     { label: "Múlt. pendientes",    icon: "🔄" },
+  flagged_wallet:       { label: "Wallet duplicada",    icon: "⚠️" },
+  high_locked:          { label: "Fondos bloqueados",   icon: "🔒" },
+  low_wagering_cashout: { label: "Cash-out sin wager",  icon: "🎰" },
 };
 
 const LS_KEY = "casino_admin_reviewed";
@@ -816,7 +817,7 @@ const PERIODS = [
 const ALL_TYPES: AlertType[] = [
   "large_withdrawal","large_deposit","balance_drain",
   "rapid_activity","instant_withdrawal","multiple_pending",
-  "flagged_wallet","high_locked",
+  "flagged_wallet","high_locked","low_wagering_cashout",
 ];
 
 function AlertsTab({ token }: { token: string }) {
