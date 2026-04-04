@@ -759,17 +759,299 @@ function WithdrawalsTab({ token }: { token: string }) {
   );
 }
 
+// ── Stats Tab ─────────────────────────────────────────────────────────────────
+
+type Period = "day" | "week" | "month";
+
+interface StatsData {
+  generatedAt: string;
+  balanceTotals: { currency: string; balance: number; locked: number; total: number }[];
+  transactions: {
+    deposits:    { day: PeriodStat; week: PeriodStat; month: PeriodStat };
+    withdrawals: { day: PeriodStat; week: PeriodStat; month: PeriodStat };
+    bonuses:     { day: PeriodStat; week: PeriodStat; month: PeriodStat };
+  };
+  activeUsers:          { day: number; week: number; month: number };
+  withdrawalsByStatus:  { pending: number; approved: number; paid: number; rejected: number; pendingAmounts: { currency: string; amount: number }[] };
+  topPlayers:           { username: string; volume: number; deposits: number; withdrawals: number }[];
+  newUsers:             { day: number; week: number; month: number; total: number };
+}
+interface PeriodStat { count: number; total: number; }
+
+const PERIOD_LABELS: Record<Period, string> = { day: "Hoy", week: "7 días", month: "30 días" };
+
+function StatCard({ label, value, sub, color = "#f59e0b", icon }: {
+  label: string; value: string | number; sub?: string; color?: string; icon?: string;
+}) {
+  return (
+    <div style={{
+      background: "#111827", border: "1px solid #1e2a3d", borderRadius: 12,
+      padding: "18px 20px", display: "flex", flexDirection: "column", gap: 4,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+        {icon && <span style={{ fontSize: 18 }}>{icon}</span>}
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.7px" }}>{label}</span>
+      </div>
+      <div style={{ fontSize: 26, fontWeight: 800, color, lineHeight: 1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function Bar({ value, max, color }: { value: number; max: number; color: string }) {
+  const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0;
+  return (
+    <div style={{ background: "#1e2a3d", borderRadius: 4, height: 6, width: "100%", overflow: "hidden" }}>
+      <div style={{ background: color, width: `${pct}%`, height: "100%", borderRadius: 4, transition: "width .4s ease" }} />
+    </div>
+  );
+}
+
+function StatsTab({ token }: { token: string }) {
+  const [data, setData]       = useState<StatsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState("");
+  const [period, setPeriod]   = useState<Period>("week");
+
+  const load = useCallback(async () => {
+    setLoading(true); setError("");
+    try {
+      const r = await fetch("/api/admin/stats", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!r.ok) throw new Error(`Error ${r.status}`);
+      const d = await r.json();
+      if (!d.ok) throw new Error(d.error ?? "Error desconocido");
+      setData(d);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error desconocido");
+    } finally { setLoading(false); }
+  }, [token]);
+
+  useEffect(() => { load(); }, [load]);
+
+  if (loading) return <div style={{ textAlign: "center", padding: "80px 0", color: "#64748b", fontSize: 15 }}>Cargando estadísticas...</div>;
+  if (error) return (
+    <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "16px 20px", color: "#fca5a5" }}>
+      Error: {error}
+    </div>
+  );
+  if (!data) return null;
+
+  const tx       = data.transactions;
+  const txD      = { dep: tx.deposits[period], wit: tx.withdrawals[period], bon: tx.bonuses[period] };
+  const maxVol   = Math.max(...data.topPlayers.map(p => p.volume), 1);
+
+  const wStatusItems = [
+    { label: "Pendientes",  value: data.withdrawalsByStatus.pending,  color: "#f59e0b" },
+    { label: "Aprobados",   value: data.withdrawalsByStatus.approved, color: "#4ade80" },
+    { label: "Pagados",     value: data.withdrawalsByStatus.paid,     color: "#22d3ee" },
+    { label: "Rechazados",  value: data.withdrawalsByStatus.rejected, color: "#f87171" },
+  ];
+
+  const genAt = new Date(data.generatedAt).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Estadísticas</h2>
+          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>Actualizado a las {genAt}</p>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          {(["day", "week", "month"] as Period[]).map(p => (
+            <button key={p} onClick={() => setPeriod(p)} style={{
+              background: period === p ? "#f59e0b" : "transparent",
+              border: `1px solid ${period === p ? "#f59e0b" : "#2a3550"}`,
+              borderRadius: 8, color: period === p ? "#0d1117" : "#94a3b8",
+              cursor: "pointer", fontSize: 12, fontWeight: 600, padding: "6px 14px",
+              fontFamily: "'Inter', sans-serif", transition: "all .15s",
+            }}>{PERIOD_LABELS[p]}</button>
+          ))}
+          <button onClick={load} style={{ ...btnSecondary, padding: "6px 12px" }}>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Row 1 — Summary cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 20 }}>
+        <StatCard icon="👥" label="Usuarios totales"  value={data.newUsers.total}   sub={`+${data.newUsers[period]} en ${PERIOD_LABELS[period].toLowerCase()}`} color="#e2e8f0" />
+        <StatCard icon="🟢" label="Usuarios activos"  value={data.activeUsers[period]} sub={PERIOD_LABELS[period]} color="#4ade80" />
+        <StatCard icon="⬇" label="Depósitos"          value={`$${txD.dep.total}`}   sub={`${txD.dep.count} operaciones`} color="#22d3ee" />
+        <StatCard icon="⬆" label="Retiros pagados"    value={`$${txD.wit.total}`}   sub={`${txD.wit.count} operaciones`} color="#f87171" />
+        <StatCard icon="🔒" label="Retiros pendientes" value={data.withdrawalsByStatus.pending + data.withdrawalsByStatus.approved} sub="pending + aprobados" color="#f59e0b" />
+      </div>
+
+      {/* Row 2 — Balance + Tx breakdown */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+
+        {/* Casino balance per currency */}
+        <div style={{ ...card, padding: "18px 20px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#e2e8f0", marginBottom: 16 }}>💰 Balance del Casino</div>
+          {data.balanceTotals.length === 0 ? (
+            <div style={{ color: "#64748b", fontSize: 13 }}>Sin balance registrado.</div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {data.balanceTotals.map(b => (
+                <div key={b.currency}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>{b.currency}</span>
+                    <div style={{ textAlign: "right" }}>
+                      <span style={{ fontSize: 13, color: "#4ade80", fontWeight: 700 }}>{fmtBal(b.balance)}</span>
+                      {b.locked > 0 && (
+                        <span style={{ fontSize: 11, color: "#f59e0b", marginLeft: 8 }}>+{fmtBal(b.locked)} 🔒</span>
+                      )}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 4, height: 6 }}>
+                    <div style={{
+                      background: "#4ade80",
+                      borderRadius: 4,
+                      height: "100%",
+                      width: b.total > 0 ? `${(b.balance / b.total) * 100}%` : "0%",
+                      transition: "width .4s ease",
+                    }} />
+                    <div style={{
+                      background: "#f59e0b",
+                      borderRadius: 4,
+                      height: "100%",
+                      width: b.total > 0 ? `${(b.locked / b.total) * 100}%` : "0%",
+                      transition: "width .4s ease",
+                    }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 12, marginTop: 3 }}>
+                    <span style={{ fontSize: 10, color: "#4ade80" }}>■ Líquido</span>
+                    <span style={{ fontSize: 10, color: "#f59e0b" }}>■ Bloqueado</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Transaction flow */}
+        <div style={{ ...card, padding: "18px 20px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#e2e8f0", marginBottom: 16 }}>📊 Flujo ({PERIOD_LABELS[period]})</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {[
+              { label: "Depósitos",  value: txD.dep.total, count: txD.dep.count, color: "#22d3ee" },
+              { label: "Retiros",    value: txD.wit.total, count: txD.wit.count, color: "#f87171" },
+              { label: "Bonos",      value: txD.bon.total, count: txD.bon.count, color: "#a78bfa" },
+            ].map(item => {
+              const maxVal = Math.max(txD.dep.total, txD.wit.total, txD.bon.total, 1);
+              return (
+                <div key={item.label}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: "#94a3b8" }}>{item.label}</span>
+                    <div>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: item.color }}>${fmtBal(item.value)}</span>
+                      <span style={{ fontSize: 11, color: "#475569", marginLeft: 6 }}>{item.count}x</span>
+                    </div>
+                  </div>
+                  <Bar value={item.value} max={maxVal} color={item.color} />
+                </div>
+              );
+            })}
+
+            <div style={{ borderTop: "1px solid #1e2a3d", paddingTop: 12, marginTop: 4 }}>
+              <div style={{ fontSize: 11, color: "#64748b", marginBottom: 6, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.6px" }}>Retiros por estado</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                {wStatusItems.map(s => (
+                  <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: s.color, flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, color: "#94a3b8" }}>{s.label}:</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: s.color }}>{s.value}</span>
+                  </div>
+                ))}
+              </div>
+              {data.withdrawalsByStatus.pendingAmounts.length > 0 && (
+                <div style={{ marginTop: 10, background: "#0d1525", borderRadius: 8, padding: "8px 12px", fontSize: 11, color: "#f59e0b" }}>
+                  🔒 En proceso: {data.withdrawalsByStatus.pendingAmounts.map(a => `${fmtBal(a.amount)} ${a.currency}`).join(" · ")}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Row 3 — Top players */}
+      <div style={{ ...card, marginBottom: 16 }}>
+        <div style={{ padding: "16px 20px 12px", fontSize: 13, fontWeight: 700, color: "#e2e8f0", borderBottom: "1px solid #1e2a3d" }}>
+          🏆 Top Jugadores por Volumen — {PERIOD_LABELS[period]}
+        </div>
+        {data.topPlayers.length === 0 ? (
+          <div style={{ padding: "30px 20px", color: "#64748b", fontSize: 13 }}>Sin actividad en este período.</div>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ ...th, width: 36 }}>#</th>
+                  <th style={th}>Usuario</th>
+                  <th style={th}>Volumen total</th>
+                  <th style={th}>Depósitos</th>
+                  <th style={th}>Retiros</th>
+                  <th style={{ ...th, minWidth: 140 }}>Barra de actividad</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.topPlayers.map((p, i) => (
+                  <tr key={p.username}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#131d30")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                    style={{ transition: "background .15s" }}
+                  >
+                    <td style={{ ...td, color: i < 3 ? "#f59e0b" : "#475569", fontWeight: 700, fontSize: 14 }}>
+                      {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`}
+                    </td>
+                    <td style={{ ...td, fontWeight: 700, color: "#f59e0b" }}>{p.username}</td>
+                    <td style={{ ...td, fontWeight: 700 }}>${fmtBal(p.volume)}</td>
+                    <td style={{ ...td, color: "#22d3ee" }}>${fmtBal(p.deposits)}</td>
+                    <td style={{ ...td, color: "#f87171" }}>${fmtBal(p.withdrawals)}</td>
+                    <td style={{ ...td, minWidth: 140 }}>
+                      <Bar value={p.volume} max={maxVol} color="#f59e0b" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Row 4 — New users mini-stats */}
+      <div style={{ ...card, padding: "16px 20px" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#e2e8f0", marginBottom: 14 }}>👤 Nuevos Registros</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
+          {([["Hoy", data.newUsers.day, "#22d3ee"], ["7 días", data.newUsers.week, "#4ade80"], ["30 días", data.newUsers.month, "#a78bfa"], ["Total", data.newUsers.total, "#e2e8f0"]] as [string, number, string][]).map(([label, val, color]) => (
+            <div key={label} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 24, fontWeight: 800, color }}>{val}</div>
+              <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── AdminPanel ────────────────────────────────────────────────────────────────
 
-type TabId = "deposits" | "withdrawals" | "users";
+type TabId = "deposits" | "withdrawals" | "users" | "stats";
 
 export default function AdminPanel({ token }: { token: string }) {
-  const [tab, setTab] = useState<TabId>("deposits");
+  const [tab, setTab] = useState<TabId>("stats");
 
   const tabs: { id: TabId; label: string; icon: string }[] = [
-    { id: "deposits",    label: "Depósitos",  icon: "⬇" },
-    { id: "withdrawals", label: "Retiros",     icon: "⬆" },
-    { id: "users",       label: "Usuarios",   icon: "👤" },
+    { id: "stats",       label: "Estadísticas", icon: "📊" },
+    { id: "deposits",    label: "Depósitos",    icon: "⬇" },
+    { id: "withdrawals", label: "Retiros",      icon: "⬆" },
+    { id: "users",       label: "Usuarios",     icon: "👤" },
   ];
 
   return (
@@ -808,6 +1090,7 @@ export default function AdminPanel({ token }: { token: string }) {
         </div>
 
         {/* Content */}
+        {tab === "stats"       && <StatsTab token={token} />}
         {tab === "deposits"    && <DepositsTab />}
         {tab === "withdrawals" && <WithdrawalsTab token={token} />}
         {tab === "users"       && <UsersTab token={token} />}
