@@ -5885,7 +5885,7 @@ export default function App() {
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"4px" }}>
                         <div style={{ textAlign:"right" as const,fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
-                          <strong style={{ color:"#c8d6ea" }}>{pendingDeposit.network} only</strong>, do not use other networks
+                          <strong style={{ color:"#fff" }}>{pendingDeposit.network} only</strong>, do not use other networks
                         </div>
                         <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:"6px",fontSize:"12px",color:"#7c8caa" }}>
                           <span>Min. deposit:</span>
