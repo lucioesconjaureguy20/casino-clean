@@ -5881,7 +5881,7 @@ export default function App() {
                     {/* QR left | address+Copy stacked right */}
                     <div style={{ display:"flex",alignItems:"stretch",gap:"12px" }}>
                       <div style={{ flexShrink:0,background:"#fff",borderRadius:"7px",padding:"4px",display:"inline-flex" }}>
-                        <img src={`https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={66} height={66} style={{ display:"block" }} alt="QR"/>
+                        <img src={`https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={110} height={110} style={{ display:"block" }} alt="QR"/>
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"8px" }}>
                         <div style={{ color:"#d4e0f0",fontWeight:500,fontSize:"12.5px",wordBreak:"break-all" as const,lineHeight:1.6 }}>
@@ -5901,6 +5901,14 @@ export default function App() {
                   <span style={{ color:"#5a9aff",flexShrink:0,marginTop:"1px",fontSize:"15px" }}>ℹ</span>
                   <span>
                     <strong style={{ color:"#c8d6ea" }}>{pendingDeposit?.network ?? depositNetwork} only.</strong> Do not use other networks. The min deposit amount <strong style={{ color:"#fff" }}>{minDepositNative(pendingDeposit?.coin ?? depositCoin, pendingDeposit?.network ?? depositNetwork).toFixed(8)} {pendingDeposit?.coin ?? depositCoin}</strong>
+                  </span>
+                </div>
+
+                {/* Security warning */}
+                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"10px" }}>
+                  <span style={{ flexShrink:0,marginTop:"1px",fontSize:"15px" }}>⚠️</span>
+                  <span>
+                    <strong style={{ color:"#f6c94e" }}>Security notice:</strong> Only send <strong style={{ color:"#fff" }}>{pendingDeposit?.coin ?? depositCoin}</strong> to this address via <strong style={{ color:"#fff" }}>{pendingDeposit?.network ?? depositNetwork}</strong>. Sending any other coin or using a different network will result in <strong style={{ color:"#ff7070" }}>permanent loss of funds</strong>.
                   </span>
                 </div>
               </div>
