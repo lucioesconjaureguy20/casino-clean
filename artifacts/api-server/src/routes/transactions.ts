@@ -438,6 +438,13 @@ router.get("/profile", requireAuth, async (req: Request, res: Response) => {
       }
     } catch {}
 
+    // Verificar si el usuario es admin
+    const adminUsernames = (process.env.ADMIN_USERNAMES || "")
+      .split(",")
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean);
+    const isAdmin = adminUsernames.includes((profileRow.username || "").toLowerCase());
+
     return res.json({
       profile: {
         mander_id:  profileRow.mander_id,
@@ -446,6 +453,7 @@ router.get("/profile", requireAuth, async (req: Request, res: Response) => {
         balance:    realBalance,
         status:     profileRow.status ?? "active",
         created_at: profileRow.created_at || req.authUser!.created_at,
+        is_admin:   isAdmin,
       },
       details: null,
     });

@@ -864,6 +864,7 @@ export default function App() {
   const [rbMonthly, setRbMonthly] = useState(() => getRakebackBalances(ls.get("currentUser")||"").monthly);
   const [userEmail,      setUserEmail]      = useState("");
   const [accountStatus,  setAccountStatus]  = useState("activo");
+  const [isAdmin,        setIsAdmin]        = useState(false);
   const [profileDetails, setProfileDetails] = useState<{
     country?: string; currency?: string; last_ip?: string;
     device_info?: string; notes?: string; referrer_id?: string; username?: string; created_at?: string;
@@ -1589,6 +1590,7 @@ export default function App() {
           }
           if (profileData?.profile?.email) setUserEmail(profileData.profile.email);
           if (profileData?.profile?.status) setAccountStatus(profileData.profile.status);
+          setIsAdmin(!!profileData?.profile?.is_admin);
           setProfileDetails(prev => ({ ...prev, ...(profileData?.details || {}), created_at: profileData?.profile?.created_at || prev.created_at }));
           if (profileData?.details?.currency) {
             currencyFromDbRef.current = true;
@@ -1764,6 +1766,7 @@ export default function App() {
               }
               if (profileData?.profile?.email) setUserEmail(profileData.profile.email);
               if (profileData?.profile?.status) setAccountStatus(profileData.profile.status);
+              setIsAdmin(!!profileData?.profile?.is_admin);
               setProfileDetails(prev => ({ ...prev, ...(profileData?.details || {}), created_at: profileData?.profile?.created_at || prev.created_at }));
               if (profileData?.details?.currency) dbCurrency2 = profileData.details.currency;
               // Restaurar wager_req restante desde el servidor (nuevo modelo: saldo pendiente)
@@ -2127,6 +2130,7 @@ export default function App() {
         }
         if (profileData?.profile?.email) setUserEmail(profileData.profile.email);
         if (profileData?.profile?.status) setAccountStatus(profileData.profile.status);
+        setIsAdmin(!!profileData?.profile?.is_admin);
         setProfileDetails(prev => ({ ...prev, ...(profileData?.details || {}), created_at: profileData?.profile?.created_at || prev.created_at }));
         if (profileData?.details?.currency) dbCurrency3 = profileData.details.currency;
         // Restaurar wager_req restante desde el servidor (nuevo modelo: saldo pendiente)
@@ -2275,6 +2279,7 @@ export default function App() {
     ls.rm("currentUser");
     setCurrentUser("");
     setBalanceState(0);
+    setIsAdmin(false);
     setLoginUser(""); setLoginPass("");
     setSection("home");
     setHomeView("dashboard");
@@ -3509,8 +3514,8 @@ export default function App() {
           ); })}
         </ul>
 
-        {/* ── Admin link — only visible when logged in ── */}
-        {currentUser && (
+        {/* ── Admin link — only visible for admin users ── */}
+        {isAdmin && (
           <div style={{ flexShrink:0, borderTop:"1px solid #1a2235" }}>
             <div
               onClick={()=>{ window.scrollTo({top:0,behavior:"instant"}); setSection("admin"); }}

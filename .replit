@@ -29,6 +29,7 @@ timeoutMs = 20000
 
 [userenv.shared]
 SUPABASE_URL = "https://depfcvdajueskzoxiokt.supabase.co"
+ADMIN_USERNAMES = "lucioescon"
 
 [nix]
 channel = "stable-25_05"
