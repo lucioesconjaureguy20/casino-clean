@@ -5883,15 +5883,13 @@ export default function App() {
                       <div style={{ flexShrink:0,background:"#fff",borderRadius:"7px",padding:"4px",display:"inline-flex" }}>
                         <img src={`https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={148} height={148} style={{ display:"block" }} alt="QR"/>
                       </div>
-                      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",gap:"4px" }}>
-                        <div>
-                          <div style={{ textAlign:"right" as const,fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
-                            <strong style={{ color:"#fff" }}>{pendingDeposit.network} only</strong>, do not use other networks
-                          </div>
-                          <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:"6px",fontSize:"12px",color:"#7c8caa",marginTop:"4px" }}>
-                            <span>Min. deposit:</span>
-                            <span style={{ color:"#fff",fontWeight:600 }}>{minDepositNative(pendingDeposit.coin!, pendingDeposit.network!).toFixed(8)} {pendingDeposit.coin}</span>
-                          </div>
+                      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"2px" }}>
+                        <div style={{ fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
+                          <strong style={{ color:"#fff" }}>{pendingDeposit.network} only</strong>, do not use other networks
+                        </div>
+                        <div style={{ display:"flex",alignItems:"center",gap:"6px",fontSize:"12px",color:"#7c8caa",marginBottom:"4px" }}>
+                          <span>Min. deposit:</span>
+                          <span style={{ color:"#fff",fontWeight:600 }}>{minDepositNative(pendingDeposit.coin!, pendingDeposit.network!).toFixed(8)} {pendingDeposit.coin}</span>
                         </div>
                         <div onClick={()=>{ navigator.clipboard.writeText(pendingDeposit!.address!); setAddressCopied(true); setTimeout(()=>setAddressCopied(false),2000); }}
                           style={{ background:"#0d1622",border:`1px solid ${addressCopied?"#2a6a44":"#2e3f58"}`,borderRadius:"8px",padding:"8px 12px",color:"#d4e0f0",fontWeight:500,fontSize:"11px",wordBreak:"break-all" as const,lineHeight:1.6,display:"flex",alignItems:"center",gap:"10px",cursor:"pointer",transition:"border-color .2s" }}>
