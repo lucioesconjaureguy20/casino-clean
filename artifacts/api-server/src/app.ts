@@ -1,6 +1,8 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import path from "path";
+import { fileURLToPath } from "url";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -31,5 +33,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 app.use("/", router);
+
+// Serve casino static files in production (Render: one service = api + frontend)
+// In Render, the monorepo structure is preserved so we can reference the casino build.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const casinoPublicDir = path.resolve(__dirname, "..", "..", "casino", "dist", "public");
+
+app.use(express.static(casinoPublicDir));
+
+// SPA fallback: all non-API routes return index.html
+app.use((req, res) => {
+  const indexFile = path.join(casinoPublicDir, "index.html");
+  res.sendFile(indexFile, (err) => {
+    if (err) {
+      res.status(200).send("OK");
+    }
+  });
+});
 
 export default app;

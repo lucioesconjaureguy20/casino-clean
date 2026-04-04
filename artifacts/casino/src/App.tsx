@@ -2098,7 +2098,13 @@ export default function App() {
       }
     }
     setAuthLoading(true);
-    const result = await authLogin(emailToUse, loginPass);
+    let result: Awaited<ReturnType<typeof authLogin>>;
+    try {
+      result = await authLogin(emailToUse, loginPass);
+    } catch (e: any) {
+      setAuthLoading(false);
+      return setLoginError("Error de conexión. Por favor intentá nuevamente.");
+    }
     setAuthLoading(false);
     if (result.error) {
       if (result.error === "EMAIL_NOT_CONFIRMED") {
