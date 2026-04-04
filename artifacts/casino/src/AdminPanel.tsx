@@ -1065,30 +1065,104 @@ function AlertsTab({ token }: { token: string }) {
           onChange={e => setUserSearch(e.target.value)}
           style={{ ...inputStyle, width: 170, fontSize: 12, marginLeft: "auto" }}
         />
-        {reviewed.size > 0 && (
-          <button onClick={() => { const s = new Set<string>(); setReviewed(s); saveReviewed(s); }}
-            style={{ ...btnFilter(false), color: "#f87171", borderColor: "#7f1d1d" }}>
-            Limpiar {reviewed.size} revisadas
-          </button>
-        )}
       </div>
 
-      {/* ── Blocked users banner ── */}
+      {/* ── Bloqueados section ── */}
       {(data?.blockedUsers.length ?? 0) > 0 && (
-        <div style={{ background: "#1a0808", border: "1px solid #7f1d1d", borderRadius: 10, padding: "10px 16px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 15 }}>🔒</span>
-          <span style={{ fontSize: 13, color: "#fca5a5", fontWeight: 600 }}>
-            {data!.blockedUsers.length} bloqueado{data!.blockedUsers.length !== 1 ? "s" : ""}:
-          </span>
-          {data!.blockedUsers.map(u => (
-            <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ background: "#7f1d1d", color: "#fca5a5", borderRadius: 6, padding: "2px 10px", fontSize: 12, fontWeight: 700 }}>{u.username}</span>
-              <button onClick={() => unblockUser(u.id, u.username)} disabled={acting === u.id}
-                style={{ background: "transparent", border: "1px solid #475569", borderRadius: 6, color: "#94a3b8", cursor: "pointer", fontSize: 11, padding: "2px 8px", fontFamily: "'Inter', sans-serif" }}>
-                {acting === u.id ? "…" : "Desbloquear"}
-              </button>
-            </div>
-          ))}
+        <div style={{ marginBottom: 24 }}>
+          {/* Section header */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 10, marginBottom: 12,
+            paddingBottom: 10, borderBottom: "1px solid #1e2a3d",
+          }}>
+            <span style={{ fontSize: 18 }}>🚫</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: "#f87171" }}>Usuarios Bloqueados</span>
+            <span style={{
+              background: "#450a0a", border: "1px solid #7f1d1d",
+              borderRadius: 20, padding: "2px 10px", fontSize: 12, fontWeight: 700, color: "#fca5a5",
+            }}>{data!.blockedUsers.length}</span>
+          </div>
+
+          {/* One card per blocked user */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {data!.blockedUsers.map(bu => {
+              const userAlerts = (data?.alerts ?? []).filter(a => a.userId === bu.id);
+              const busy = acting === bu.id;
+              return (
+                <div key={bu.id} style={{
+                  background: "#0d0808", border: "2px solid #7f1d1d",
+                  borderRadius: 12, overflow: "hidden",
+                }}>
+                  {/* User header row */}
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+                    padding: "12px 16px", background: "#1a0808", borderBottom: "1px solid #2d1010",
+                  }}>
+                    <span style={{ fontSize: 16 }}>🔒</span>
+                    <span style={{ fontWeight: 800, fontSize: 14, color: "#f87171" }}>@{bu.username}</span>
+                    <span style={{
+                      background: "#7f1d1d", color: "#fca5a5", borderRadius: 5,
+                      padding: "1px 7px", fontSize: 10, fontWeight: 700, letterSpacing: "0.4px",
+                    }}>BLOQUEADO</span>
+                    <button
+                      onClick={() => unblockUser(bu.id, bu.username)}
+                      disabled={busy}
+                      style={{
+                        marginLeft: "auto", background: "#14532d", border: "1px solid #166534",
+                        borderRadius: 7, color: "#86efac", cursor: busy ? "not-allowed" : "pointer",
+                        fontSize: 12, fontWeight: 700, padding: "6px 14px", opacity: busy ? 0.6 : 1,
+                        fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap",
+                      }}
+                    >{busy ? "…" : "Desbloquear"}</button>
+                  </div>
+
+                  {/* Alert rows for this user */}
+                  <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+                    {userAlerts.length === 0 ? (
+                      <div style={{ fontSize: 12, color: "#475569", fontStyle: "italic", padding: "4px 0" }}>
+                        Sin alertas en el período seleccionado — posiblemente fue bloqueado en base a actividad histórica.
+                      </div>
+                    ) : userAlerts.map(a => {
+                      const s  = SEV[a.severity];
+                      const tm = TYPE_META[a.type] ?? { label: a.type, icon: "❓" };
+                      return (
+                        <div key={a.id} style={{
+                          display: "flex", gap: 10, alignItems: "flex-start",
+                          background: "#110c0c", border: `1px solid ${s.border}`,
+                          borderLeft: `3px solid ${s.color}`, borderRadius: 8, padding: "10px 12px",
+                        }}>
+                          <span style={{ fontSize: 20, lineHeight: 1, flexShrink: 0 }}>{tm.icon}</span>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
+                              <span style={{
+                                background: s.bg, color: s.color, border: `1px solid ${s.border}`,
+                                borderRadius: 5, padding: "1px 6px", fontSize: 10, fontWeight: 700,
+                              }}>{s.dot} {s.label.toUpperCase()}</span>
+                              <span style={{ fontSize: 11, color: "#475569" }}>{tm.icon} {tm.label}</span>
+                              <span style={{ marginLeft: "auto", fontSize: 11, color: "#334155", whiteSpace: "nowrap" }}>
+                                {fmt(a.createdAt)}
+                              </span>
+                            </div>
+                            <div style={{ fontSize: 12, fontWeight: 600, color: s.color, marginBottom: 2 }}>{a.title}</div>
+                            <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>{a.detail}</div>
+                            {a.wallet && (
+                              <div style={{ fontSize: 11, color: "#334155", marginTop: 4, display: "flex", gap: 6, alignItems: "center" }}>
+                                <span style={{ color: "#475569" }}>Wallet:</span>
+                                <code style={{ background: "#0d1525", padding: "2px 6px", borderRadius: 4, color: "#94a3b8", fontFamily: "monospace", fontSize: 10 }}>
+                                  {a.wallet.slice(0, 14)}…{a.wallet.slice(-6)}
+                                </code>
+                                {a.network && <span style={{ color: "#334155" }}>· {a.network}</span>}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
