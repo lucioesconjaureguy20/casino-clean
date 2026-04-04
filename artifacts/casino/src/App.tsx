@@ -3859,16 +3859,42 @@ export default function App() {
                     {notifications.length === 0 ? (
                       <div style={{ padding:"32px 16px",textAlign:"center",color:"#4a5a78",fontSize:"13px" }}>Sin notificaciones aún</div>
                     ) : notifications.map(n => {
-                      const icons: Record<string,string> = { deposit:"💰", withdraw:"📤", bonus:"🎁", info:"ℹ️" };
                       const colors: Record<string,string> = { deposit:"#22c55e", withdraw:"#f59e0b", bonus:"#f4a91f", info:"#60a5fa" };
+                      const notifIcon = (type: string) => {
+                        const c = colors[type] ?? "#94a3b8";
+                        if (type === "deposit") return (
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="3" x2="12" y2="15"/><polyline points="17 10 12 15 7 10"/>
+                            <path d="M5 21h14"/>
+                          </svg>
+                        );
+                        if (type === "withdraw") return (
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/>
+                            <path d="M5 3h14"/>
+                          </svg>
+                        );
+                        if (type === "bonus") return (
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/>
+                            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                          </svg>
+                        );
+                        return (
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                          </svg>
+                        );
+                      };
                       return (
                         <div key={n.id}
                           onClick={()=>{ const upd = notifications.map(x=>x.id===n.id?{...x,read:true}:x); ls.saveNotifs(currentUser,upd); setNotifications(upd); }}
                           style={{ display:"flex",gap:"12px",padding:"13px 16px",borderBottom:"1px solid #1a2640",background: n.read?"transparent":"rgba(244,169,31,0.04)",cursor:"pointer",transition:"background .12s" }}
                           onMouseEnter={e=>(e.currentTarget.style.background="#1e2a40")}
                           onMouseLeave={e=>(e.currentTarget.style.background=n.read?"transparent":"rgba(244,169,31,0.04)")}>
-                          <div style={{ width:"36px",height:"36px",borderRadius:"10px",background:`${colors[n.type]}22`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",flexShrink:0 }}>
-                            {icons[n.type]}
+                          <div style={{ width:"36px",height:"36px",borderRadius:"10px",background:`${colors[n.type] ?? "#94a3b8"}22`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
+                            {notifIcon(n.type)}
                           </div>
                           <div style={{ flex:1,minWidth:0 }}>
                             <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:"8px" }}>
@@ -4951,8 +4977,27 @@ export default function App() {
                                       <td style={{ padding:"13px 16px", fontSize:"13px", color:"#c8d8ec", fontWeight:600 }}>{tx.coin}</td>
                                       <td style={{ padding:"13px 16px", fontSize:"13px", color:"#8a9ab8" }}>{tx.network}</td>
                                       <td style={{ padding:"13px 16px" }}>
-                                        <span style={{ fontSize:"12px", fontWeight:600, color: statusColor(tx.status), background: statusColor(tx.status)+"18", border:`1px solid ${statusColor(tx.status)}40`, borderRadius:"6px", padding:"3px 8px", display:"inline-flex", alignItems:"center", gap:"4px" }}>
-                                          {tx.status==="pending" && <span style={{ display:"inline-block", width:"7px", height:"7px", borderRadius:"50%", background:"#f4a91f", animation:"txPulse 1.2s ease-in-out infinite" }}/>}
+                                        <span style={{ fontSize:"12px", fontWeight:600, color: statusColor(tx.status), background: statusColor(tx.status)+"18", border:`1px solid ${statusColor(tx.status)}40`, borderRadius:"6px", padding:"3px 8px", display:"inline-flex", alignItems:"center", gap:"5px" }}>
+                                          {tx.status==="pending" && (
+                                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                          )}
+                                          {(tx.status==="completed"||tx.status==="approved") && (
+                                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                              <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                          )}
+                                          {tx.status==="expired" && (
+                                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                              <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                          )}
+                                          {tx.status==="rejected" && (
+                                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                              <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                          )}
                                           {statusLabel(tx.status)}
                                         </span>
                                       </td>
@@ -6814,9 +6859,17 @@ export default function App() {
               toast.type==="deposit"  ? "rgba(34,197,94,0.15)"  :
               toast.type==="withdraw" ? "rgba(245,158,11,0.15)" :
                                         "rgba(96,165,250,0.15)",
-            display:"flex", alignItems:"center", justifyContent:"center", fontSize:"24px"
+            display:"flex", alignItems:"center", justifyContent:"center"
           }}>
-            {toast.type==="confirm" ? "✅" : toast.type==="deposit" ? "💰" : toast.type==="withdraw" ? "📤" : "🔔"}
+            {toast.type==="confirm" ? (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4ade80" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+            ) : toast.type==="deposit" ? (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="3" x2="12" y2="15"/><polyline points="17 10 12 15 7 10"/><path d="M5 21h14"/></svg>
+            ) : toast.type==="withdraw" ? (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="21" x2="12" y2="9"/><polyline points="7 14 12 9 17 14"/><path d="M5 3h14"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            )}
           </div>
           <div style={{ minWidth:0, flex:1 }}>
             <div style={{
