@@ -2118,6 +2118,26 @@ export default function App() {
     }
     const session = result.session!;
     const username = session.user.user_metadata?.username || loginUser.trim();
+    // Si el usuario ingresó un username (no email) pero Supabase devolvió otro username,
+    // el email guardado pertenece a otro usuario — limpiar y usar game-token local.
+    if (!isEmail && session.user.user_metadata?.username && session.user.user_metadata.username !== loginUser.trim()) {
+      ls.rm("email_" + loginUser.trim());
+      ls.rm("user_" + loginUser.trim());
+      supabase.auth.signOut().catch(() => {});
+      const uLocal = loginUser.trim();
+      ls.set("currentUser", uLocal);
+      setCurrentUser(uLocal);
+      setAuthModal("");
+      loadUser(uLocal);
+      fetch("/api/auth/local-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: uLocal }),
+      }).then(r => r.ok ? r.json() : null).then(data => {
+        if (data?.token) localStorage.setItem(`mander_game_token_${uLocal}`, data.token);
+      }).catch(() => {});
+      return;
+    }
     supaSessionRef.current = session; // sincronizar ref ANTES de loadUser
     setSupaSession(session);
     // Ensure local profile exists
