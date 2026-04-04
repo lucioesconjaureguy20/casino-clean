@@ -5864,7 +5864,7 @@ export default function App() {
                 </div>
 
                 {/* Address section header */}
-                <div style={{ marginBottom:"6px",marginTop:"8px" }}>
+                <div style={{ marginBottom:"6px",marginTop:"2px" }}>
                   <span style={{ color:"#9ea8bc",fontSize:"13px",fontWeight:600,letterSpacing:"0.3px" }}>Deposit address</span>
                 </div>
 
