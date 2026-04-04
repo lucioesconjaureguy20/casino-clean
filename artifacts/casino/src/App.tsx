@@ -6690,7 +6690,16 @@ export default function App() {
             animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
           }}>
             <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
-              <div style={{ fontSize:"34px" }}>⏸️</div>
+              <div style={{
+                width:48, height:48, borderRadius:"50%",
+                background:"rgba(59,130,246,0.12)", border:"1px solid rgba(59,130,246,0.25)",
+                display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="9" stroke="#60a5fa" strokeWidth="1.8"/>
+                  <path d="M12 7v5l3 3" stroke="#60a5fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <div>
                 <div style={{ fontWeight:700, fontSize:"16px", color:"#cbd5e1" }}>Retiros en revisión</div>
                 <div style={{ fontSize:"12px", color:"#475569", marginTop:"2px" }}>Tu cuenta está siendo verificada</div>
