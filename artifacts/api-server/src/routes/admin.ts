@@ -77,7 +77,7 @@ router.get("/users", async (_req: Request, res: Response) => {
 
   try {
     const pr = await sbAdmin(
-      "profiles?select=id,mander_id,username,created_at&order=created_at.asc",
+      "profiles?select=id,mander_id,username,created_at,is_blocked&order=created_at.asc",
       { headers: { Prefer: "count=none" } },
     );
     if (!pr.ok) {
@@ -90,6 +90,7 @@ router.get("/users", async (_req: Request, res: Response) => {
       mander_id: string;
       username: string;
       created_at: string;
+      is_blocked?: boolean;
     }[] = await pr.json();
 
     if (!profiles.length) return res.json({ users: [] });
@@ -116,6 +117,7 @@ router.get("/users", async (_req: Request, res: Response) => {
       mander_id: p.mander_id,
       username: p.username,
       created_at: p.created_at,
+      is_blocked: p.is_blocked ?? false,
       balances: (balanceMap[p.mander_id] ?? []).filter((b) => b.balance > 0),
     }));
 

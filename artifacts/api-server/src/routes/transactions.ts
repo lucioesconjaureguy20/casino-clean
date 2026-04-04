@@ -74,8 +74,8 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 // ── Helper: obtener perfil del usuario ───────────────────────────────────────
-async function getProfile(userId: string): Promise<{ mander_id: string; username: string; balance?: number } | null> {
-  const r = await sbAdmin(`profiles?id=eq.${userId}&select=mander_id,username,balance&limit=1`);
+async function getProfile(userId: string): Promise<{ mander_id: string; username: string; balance?: number; is_blocked?: boolean } | null> {
+  const r = await sbAdmin(`profiles?id=eq.${userId}&select=mander_id,username,balance,is_blocked&limit=1`);
   const rows = await r.json();
   return rows?.[0] ?? null;
 }
@@ -215,6 +215,11 @@ router.post("/transactions", requireAuth, async (req: Request, res: Response) =>
     if (!profile) {
       console.error("[TX INSERT] perfil no encontrado para user:", req.authUser!.id);
       return res.status(404).json({ error: "Perfil no encontrado." });
+    }
+
+    if (type === "withdrawal" && profile.is_blocked === true) {
+      console.warn(`[TX INSERT] usuario bloqueado intentó retiro: ${req.authUser!.id}`);
+      return res.status(403).json({ error: "Tu cuenta está bloqueada para retiros. Contactá al soporte." });
     }
 
     const displayId = await nextDisplayId(type);

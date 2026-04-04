@@ -9,6 +9,18 @@
 
 import { Router, Request, Response, NextFunction } from "express";
 import { verifyGameToken } from "../lib/gameToken.js";
+import fs from "node:fs";
+import path from "node:path";
+
+const AUDIT_LOG = path.join(process.cwd(), "block_audit.jsonl");
+
+function writeAudit(entry: Record<string, unknown>) {
+  try {
+    fs.appendFileSync(AUDIT_LOG, JSON.stringify({ ...entry, ts: new Date().toISOString() }) + "\n");
+  } catch (e) {
+    console.error("[AUDIT] write failed:", e);
+  }
+}
 
 const router = Router();
 
@@ -541,6 +553,7 @@ router.post("/admin/user/block", requireAdmin, async (req: Request, res: Respons
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
   console.log(`[BLOCK] ${updated.username} by admin=${req.authUser?.id}. Reason: ${reason ?? "—"}`);
+  writeAudit({ action: "block", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id, reason: reason ?? null });
   return res.json({ ok: true, message: `Usuario ${updated.username} bloqueado.` });
 });
 
@@ -568,7 +581,8 @@ router.post("/admin/user/unblock", requireAdmin, async (req: Request, res: Respo
   }
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
-  console.log(`[UNBLOCK] ${updated.username}`);
+  console.log(`[UNBLOCK] ${updated.username} by admin=${req.authUser?.id}`);
+  writeAudit({ action: "unblock", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id });
   return res.json({ ok: true, message: `Usuario ${updated.username} desbloqueado.` });
 });
 

@@ -9,6 +9,7 @@ interface AdminUser {
   mander_id: string;
   username: string;
   created_at: string;
+  is_blocked: boolean;
   balances: UserBalance[];
 }
 
@@ -247,6 +248,7 @@ function UsersTab({ token }: { token: string }) {
   const [search, setSearch]       = useState("");
   const [adjusting, setAdjusting] = useState<AdminUser | null>(null);
   const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
+  const [blocking, setBlocking]   = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -266,6 +268,28 @@ function UsersTab({ token }: { token: string }) {
     setToast({ msg, ok });
     setTimeout(() => setToast(null), 3500);
   }
+
+  async function toggleBlock(u: AdminUser) {
+    const action = u.is_blocked ? "unblock" : "block";
+    setBlocking(u.id);
+    try {
+      const r = await fetch(`/api/admin/user/${action}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: u.id }),
+      });
+      const data = await r.json();
+      if (!r.ok) { showToast(data.error ?? "Error", false); return; }
+      showToast(data.message ?? "OK", true);
+      setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_blocked: !u.is_blocked } : x));
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Error de red", false);
+    } finally {
+      setBlocking(null);
+    }
+  }
+
+  const blockedCount = users.filter(u => u.is_blocked).length;
 
   const filtered = users.filter(u =>
     !search || u.username.toLowerCase().includes(search.toLowerCase()) || u.mander_id.includes(search)
@@ -292,8 +316,13 @@ function UsersTab({ token }: { token: string }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Usuarios</h2>
-          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
+          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13, display: "flex", alignItems: "center", gap: 10 }}>
             {loading ? "Cargando..." : `${users.length} usuario${users.length !== 1 ? "s" : ""} registrado${users.length !== 1 ? "s" : ""}`}
+            {!loading && blockedCount > 0 && (
+              <span style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 6, color: "#fca5a5", fontSize: 11, fontWeight: 700, padding: "2px 8px" }}>
+                🚫 {blockedCount} bloqueado{blockedCount !== 1 ? "s" : ""}
+              </span>
+            )}
           </p>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -334,17 +363,26 @@ function UsersTab({ token }: { token: string }) {
                   <th style={th}>Mander ID</th>
                   <th style={th}>Balances</th>
                   <th style={th}>Registro</th>
-                  <th style={{ ...th, textAlign: "center" }}>Acción</th>
+                  <th style={{ ...th, textAlign: "center" }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((u) => (
                   <tr key={u.id}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#131d30")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                    style={{ transition: "background .15s" }}
+                    onMouseEnter={e => (e.currentTarget.style.background = u.is_blocked ? "#1a0a0a" : "#131d30")}
+                    onMouseLeave={e => (e.currentTarget.style.background = u.is_blocked ? "#120808" : "transparent")}
+                    style={{ transition: "background .15s", background: u.is_blocked ? "#120808" : "transparent" }}
                   >
-                    <td style={td}><div style={{ fontWeight: 700, color: "#f59e0b" }}>{u.username}</div></td>
+                    <td style={td}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        <span style={{ fontWeight: 700, color: u.is_blocked ? "#f87171" : "#f59e0b" }}>{u.username}</span>
+                        {u.is_blocked && (
+                          <span style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 5, color: "#fca5a5", fontSize: 10, fontWeight: 700, padding: "1px 6px", letterSpacing: "0.3px" }}>
+                            BLOQUEADO
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td style={td}><span style={{ fontFamily: "monospace", fontSize: 11, color: "#475569" }}>{u.mander_id || "—"}</span></td>
                     <td style={td}>
                       {u.balances.length === 0 ? (
@@ -364,15 +402,34 @@ function UsersTab({ token }: { token: string }) {
                     </td>
                     <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap" }}>{fmt(u.created_at)}</td>
                     <td style={{ ...td, textAlign: "center" }}>
-                      <button onClick={() => setAdjusting(u)} style={{
-                        background: "#1e2a3d", border: "1px solid #2a3550",
-                        borderRadius: 8, color: "#f59e0b", cursor: "pointer",
-                        fontSize: 12, fontWeight: 600, padding: "7px 14px",
-                        transition: "all .15s", fontFamily: "'Inter', sans-serif",
-                      }}
-                        onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.color = "#0d1117"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "#1e2a3d"; e.currentTarget.style.color = "#f59e0b"; }}
-                      >Ajustar</button>
+                      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap" }}>
+                        <button onClick={() => setAdjusting(u)} style={{
+                          background: "#1e2a3d", border: "1px solid #2a3550",
+                          borderRadius: 8, color: "#f59e0b", cursor: "pointer",
+                          fontSize: 12, fontWeight: 600, padding: "7px 12px",
+                          transition: "all .15s", fontFamily: "'Inter', sans-serif",
+                        }}
+                          onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.color = "#0d1117"; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = "#1e2a3d"; e.currentTarget.style.color = "#f59e0b"; }}
+                        >Ajustar</button>
+                        <button
+                          onClick={() => toggleBlock(u)}
+                          disabled={blocking === u.id}
+                          style={{
+                            background: u.is_blocked ? "#14532d" : "#450a0a",
+                            border: `1px solid ${u.is_blocked ? "#166534" : "#7f1d1d"}`,
+                            borderRadius: 8, cursor: blocking === u.id ? "not-allowed" : "pointer",
+                            color: u.is_blocked ? "#86efac" : "#fca5a5",
+                            fontSize: 12, fontWeight: 600, padding: "7px 12px",
+                            opacity: blocking === u.id ? 0.6 : 1,
+                            transition: "all .15s", fontFamily: "'Inter', sans-serif",
+                          }}
+                          onMouseEnter={e => { if (blocking !== u.id) e.currentTarget.style.opacity = "0.8"; }}
+                          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+                        >
+                          {blocking === u.id ? "..." : u.is_blocked ? "Desbloquear" : "Bloquear"}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

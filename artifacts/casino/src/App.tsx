@@ -1077,6 +1077,7 @@ export default function App() {
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [withdrawAddress, setWithdrawAddress] = useState("");
   const [withdrawError, setWithdrawError] = useState("");
+  const [withdrawBlocked, setWithdrawBlocked] = useState(false);
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [fairnessGame, setFairnessGame] = useState("Dice");
@@ -3318,30 +3319,17 @@ export default function App() {
     const wagerReq = ls.getWagerReq(currentUser);
     if (wagerReq > 0.001) {
       setCashierOpen(false);
-      // wager_req_initial = total de depósitos que generaron el requisito (para barra de progreso)
       const wagerReqInitial = Math.max(ls.getWagerReqInitial(currentUser), wagerReq);
       const wageredToward = Math.max(0, wagerReqInitial - wagerReq);
       setWagerAlert({ required: wagerReqInitial, wagered: wageredToward, remaining: +wagerReq.toFixed(4) });
       return;
     }
-    const localId = `local_${Date.now()}`;
-    const newTx: Transaction = {
-      id: localId, type:"withdraw", coin:withdrawCoin, network:withdrawNetwork,
-      usdAmount:amt, address:withdrawAddress, status:"pending",
-      createdAt:new Date().toISOString(), display_id: nextDisplayId("withdraw"),
-    };
-    const tx = ls.getTx(currentUser);
-    tx.push(newTx);
-    ls.saveTx(currentUser, tx);
-    const nb = curBal - amt;
-    setCoinBalanceUsd(nb);
-    setTransactions([...tx]);
-    setCashierOpen(false);
-    addNotif("withdraw", "Retiro solicitado", `${fmtMoney(amt)} está siendo procesado. Te notificaremos cuando sea enviado.`);
 
-    // ── Sync a Supabase en segundo plano ──────────────────────────────────
     const sessW = supaSessionRef.current;
     if (sessW?.access_token) {
+      // ── Con sesión Supabase: llamar API primero para verificar bloqueo y registrar ──
+      let serverTxId: string | undefined;
+      let serverDisplayId: string | number | undefined;
       try {
         console.log("[Withdraw Supabase] INSERT →", { type: "withdrawal", amount: amt, currency: withdrawCoin, network: withdrawNetwork });
         const res = await fetch("/api/transactions", {
@@ -3352,23 +3340,56 @@ export default function App() {
             network: withdrawNetwork, external_tx_id: withdrawAddress,
           }),
         });
+        if (res.status === 403) {
+          setCashierOpen(false);
+          setWithdrawBlocked(true);
+          return;
+        }
         if (res.ok) {
           const { transaction: serverTx } = await res.json();
-          const updated = ls.getTx(currentUser).map((t: Transaction) =>
-            t.id === localId ? { ...t, id: serverTx.id, display_id: serverTx.display_id } : t
-          );
-          ls.saveTx(currentUser, updated);
-          setTransactions([...updated]);
+          serverTxId = serverTx?.id;
+          serverDisplayId = serverTx?.display_id;
+          console.log("[Withdraw Supabase] OK — id:", serverTxId, "display_id:", serverDisplayId);
         } else {
           const errBody = await res.json().catch(() => ({}));
+          const errMsg = (errBody as any)?.error ?? `Error ${res.status}`;
           console.error("[Withdraw Supabase]", res.status, errBody);
+          setWithdrawError(errMsg);
+          return;
         }
       } catch (e) {
         console.error("[Withdraw Supabase] fetch error:", e);
+        // Red caída: continuar localmente
       }
-    } else {
-      console.warn("[Withdraw Supabase] No hay sesión activa, retiro guardado solo localmente");
+      const newTx: Transaction = {
+        id: serverTxId ?? `local_${Date.now()}`, type:"withdraw", coin:withdrawCoin, network:withdrawNetwork,
+        usdAmount:amt, address:withdrawAddress, status:"pending",
+        createdAt:new Date().toISOString(), display_id: serverDisplayId ?? nextDisplayId("withdraw"),
+      };
+      const tx = ls.getTx(currentUser);
+      tx.push(newTx);
+      ls.saveTx(currentUser, tx);
+      setCoinBalanceUsd(curBal - amt);
+      setTransactions([...tx]);
+      setCashierOpen(false);
+      addNotif("withdraw", "Retiro solicitado", `${fmtMoney(amt)} está siendo procesado. Te notificaremos cuando sea enviado.`);
+      return;
     }
+
+    // ── Sin sesión Supabase: solo local ───────────────────────────────────
+    console.warn("[Withdraw Supabase] No hay sesión activa, retiro guardado solo localmente");
+    const newTx: Transaction = {
+      id: `local_${Date.now()}`, type:"withdraw", coin:withdrawCoin, network:withdrawNetwork,
+      usdAmount:amt, address:withdrawAddress, status:"pending",
+      createdAt:new Date().toISOString(), display_id: nextDisplayId("withdraw"),
+    };
+    const tx = ls.getTx(currentUser);
+    tx.push(newTx);
+    ls.saveTx(currentUser, tx);
+    setCoinBalanceUsd(curBal - amt);
+    setTransactions([...tx]);
+    setCashierOpen(false);
+    addNotif("withdraw", "Retiro solicitado", `${fmtMoney(amt)} está siendo procesado. Te notificaremos cuando sea enviado.`);
   }
 
   // ── Stats ─────────────────────────────────────────────────────────────
@@ -6657,6 +6678,44 @@ export default function App() {
       )}
 
       {/* ── Wager Requirement Alert ── */}
+      {withdrawBlocked && (
+        <div style={{
+          position:"fixed", inset:0, zIndex:5100,
+          background:"rgba(0,0,0,.78)", display:"flex", alignItems:"center", justifyContent:"center",
+        }} onClick={()=>setWithdrawBlocked(false)}>
+          <div onClick={e=>e.stopPropagation()} style={{
+            background:"#0f1828", border:"2px solid #ef4444", borderRadius:"18px",
+            padding:"28px 32px", maxWidth:"400px", width:"90%",
+            boxShadow:"0 20px 60px rgba(0,0,0,.9)",
+            animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
+          }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
+              <div style={{ fontSize:"36px" }}>🚫</div>
+              <div>
+                <div style={{ fontWeight:800, fontSize:"17px", color:"#ef4444" }}>Cuenta Bloqueada</div>
+                <div style={{ fontSize:"12px", color:"#5a7090", marginTop:"2px" }}>Retiros suspendidos temporalmente</div>
+              </div>
+            </div>
+            <p style={{ fontSize:"14px", color:"#8090b0", lineHeight:1.7, margin:"0 0 22px" }}>
+              Tu cuenta está <strong style={{ color:"#fca5a5" }}>bloqueada para retiros</strong> por el equipo de seguridad. Si creés que es un error, contactá al soporte y adjuntá tu Mander ID.
+            </p>
+            <div style={{ display:"flex", gap:"10px" }}>
+              <button onClick={()=>setWithdrawBlocked(false)} style={{
+                flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #2a3550",
+                background:"#1a2438", color:"#94a3b8", fontWeight:600, fontSize:"14px", cursor:"pointer",
+              }}>Cerrar</button>
+              <a href="mailto:soporte@manderbet.com" style={{ textDecoration:"none", flex:1 }}>
+                <button style={{
+                  width:"100%", padding:"12px", borderRadius:"10px", border:"none",
+                  background:"linear-gradient(180deg,#ef4444,#b91c1c)", color:"#fff",
+                  fontWeight:700, fontSize:"14px", cursor:"pointer",
+                }}>Contactar Soporte</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
       {wagerAlert && (
         <div style={{
           position:"fixed", inset:0, zIndex:5000,
