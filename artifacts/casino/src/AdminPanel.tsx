@@ -5,11 +5,15 @@ interface PendingDeposit {
   user_id: string;
   username: string;
   mander_id: string;
-  amount: number;
   currency: string;
   network: string;
   address: string;
   created_at: string;
+}
+
+interface ConfirmInputs {
+  amount: string;
+  txHash: string;
 }
 
 function fmt(iso: string) {
@@ -20,13 +24,26 @@ function fmt(iso: string) {
   });
 }
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  background: "#0d1525",
+  border: "1px solid #2a3550",
+  borderRadius: 8,
+  padding: "8px 10px",
+  color: "#e2e8f0",
+  fontSize: 12,
+  outline: "none",
+  boxSizing: "border-box",
+  fontFamily: "'Inter', sans-serif",
+};
+
 export default function AdminPanel() {
-  const [deposits, setDeposits] = useState<PendingDeposit[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [txInputs, setTxInputs] = useState<Record<number, string>>({});
+  const [deposits, setDeposits]   = useState<PendingDeposit[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState("");
+  const [inputs, setInputs]       = useState<Record<number, ConfirmInputs>>({});
   const [confirming, setConfirming] = useState<number | null>(null);
-  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -45,24 +62,43 @@ export default function AdminPanel() {
 
   useEffect(() => { load(); }, [load]);
 
+  function getInput(id: number): ConfirmInputs {
+    return inputs[id] ?? { amount: "", txHash: "" };
+  }
+
+  function setField(id: number, field: keyof ConfirmInputs, value: string) {
+    setInputs(prev => ({ ...prev, [id]: { ...getInput(id), [field]: value } }));
+  }
+
   function showToast(msg: string, ok: boolean) {
     setToast({ msg, ok });
     setTimeout(() => setToast(null), 3500);
   }
 
-  async function confirm(depositId: number) {
-    const txHash = (txInputs[depositId] ?? "").trim();
-    setConfirming(depositId);
+  async function confirm(d: PendingDeposit) {
+    const { amount, txHash } = getInput(d.id);
+    const parsedAmount = parseFloat(amount.replace(",", "."));
+
+    if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
+      showToast("Ingresá el monto recibido antes de confirmar", false);
+      return;
+    }
+
+    setConfirming(d.id);
     try {
       const r = await fetch("/api/deposit/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deposit_id: String(depositId), tx_hash: txHash || undefined }),
+        body: JSON.stringify({
+          deposit_id: String(d.id),
+          amount: parsedAmount,
+          tx_hash: txHash.trim() || undefined,
+        }),
       });
       const data = await r.json();
       if (!r.ok || !data.ok) throw new Error(data.error ?? `Error ${r.status}`);
-      showToast(`Depósito #${depositId} confirmado ✓`, true);
-      setDeposits((prev) => prev.filter((d) => d.id !== depositId));
+      showToast(`Depósito #${d.id} confirmado — ${parsedAmount} ${d.currency} acreditado a ${d.username} ✓`, true);
+      setDeposits(prev => prev.filter(dep => dep.id !== d.id));
     } catch (e: unknown) {
       showToast(e instanceof Error ? e.message : "Error al confirmar", false);
     } finally {
@@ -94,11 +130,12 @@ export default function AdminPanel() {
     fontSize: "13px",
     color: "#e2e8f0",
     borderBottom: "1px solid #131d30",
-    verticalAlign: "middle",
+    verticalAlign: "top",
   };
 
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 16px 64px", fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ maxWidth: 1060, margin: "0 auto", padding: "32px 16px 64px", fontFamily: "'Inter', sans-serif" }}>
+
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
@@ -106,7 +143,7 @@ export default function AdminPanel() {
             Panel Admin — Depósitos Pendientes
           </h1>
           <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
-            {deposits.length === 0 && !loading
+            {loading ? "Cargando..." : deposits.length === 0
               ? "No hay depósitos pendientes"
               : `${deposits.length} depósito${deposits.length !== 1 ? "s" : ""} esperando confirmación`}
           </p>
@@ -115,17 +152,10 @@ export default function AdminPanel() {
           onClick={load}
           disabled={loading}
           style={{
-            background: "transparent",
-            border: "1px solid #2a3550",
-            borderRadius: 8,
-            color: "#94a3b8",
-            cursor: loading ? "not-allowed" : "pointer",
-            fontSize: 13,
-            padding: "8px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            transition: "all .15s",
+            background: "transparent", border: "1px solid #2a3550", borderRadius: 8,
+            color: "#94a3b8", cursor: loading ? "not-allowed" : "pointer",
+            fontSize: 13, padding: "8px 16px", display: "flex", alignItems: "center",
+            gap: 6, transition: "all .15s", fontFamily: "'Inter', sans-serif",
           }}
         >
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -143,7 +173,7 @@ export default function AdminPanel() {
           background: toast.ok ? "#15803d" : "#dc2626",
           color: "#fff", borderRadius: 10, padding: "12px 20px",
           fontSize: 14, fontWeight: 600, boxShadow: "0 4px 20px rgba(0,0,0,.5)",
-          animation: "nlsfadeIn .2s ease",
+          animation: "nlsfadeIn .2s ease", maxWidth: 400,
         }}>
           {toast.msg}
         </div>
@@ -188,93 +218,127 @@ export default function AdminPanel() {
                 <tr>
                   <th style={th}>#ID</th>
                   <th style={th}>Usuario</th>
-                  <th style={th}>Monto</th>
-                  <th style={th}>Moneda</th>
-                  <th style={th}>Red</th>
+                  <th style={th}>Moneda / Red</th>
                   <th style={th}>Fecha</th>
-                  <th style={{ ...th, minWidth: 200 }}>TX Hash (opcional)</th>
+                  <th style={{ ...th, minWidth: 130 }}>Monto recibido *</th>
+                  <th style={{ ...th, minWidth: 190 }}>TX Hash (opcional)</th>
                   <th style={{ ...th, textAlign: "center" }}>Acción</th>
                 </tr>
               </thead>
               <tbody>
-                {deposits.map((d) => (
-                  <tr key={d.id} style={{ transition: "background .15s" }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#131d30")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                  >
-                    <td style={{ ...td, color: "#64748b", fontFamily: "monospace" }}>#{d.id}</td>
-                    <td style={td}>
-                      <div style={{ fontWeight: 600, color: "#e2e8f0" }}>{d.username}</div>
-                      {d.mander_id && (
-                        <div style={{ fontSize: 11, color: "#475569", marginTop: 2, fontFamily: "monospace" }}>
-                          {d.mander_id}
+                {deposits.map((d) => {
+                  const inp = getInput(d.id);
+                  const busy = confirming === d.id;
+                  return (
+                    <tr key={d.id}
+                      onMouseEnter={e => (e.currentTarget.style.background = "#131d30")}
+                      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                      style={{ transition: "background .15s" }}
+                    >
+                      {/* ID */}
+                      <td style={{ ...td, color: "#64748b", fontFamily: "monospace", paddingTop: 18 }}>
+                        #{d.id}
+                      </td>
+
+                      {/* Usuario */}
+                      <td style={{ ...td, paddingTop: 18 }}>
+                        <div style={{ fontWeight: 600, color: "#e2e8f0" }}>{d.username}</div>
+                        {d.mander_id && (
+                          <div style={{ fontSize: 11, color: "#475569", marginTop: 2, fontFamily: "monospace" }}>
+                            {d.mander_id}
+                          </div>
+                        )}
+                      </td>
+
+                      {/* Moneda / Red */}
+                      <td style={{ ...td, paddingTop: 18 }}>
+                        <span style={{
+                          background: "#1e2a3d", border: "1px solid #2a3550",
+                          borderRadius: 6, padding: "3px 8px", fontSize: 12, fontWeight: 700,
+                          color: "#94a3b8", display: "inline-block", marginBottom: 4,
+                        }}>
+                          {d.currency}
+                        </span>
+                        <div style={{ fontSize: 11, color: "#475569" }}>{d.network}</div>
+                      </td>
+
+                      {/* Fecha */}
+                      <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap", paddingTop: 18 }}>
+                        {fmt(d.created_at)}
+                      </td>
+
+                      {/* Monto real — lo ingresa el admin */}
+                      <td style={td}>
+                        <div style={{ fontSize: 11, color: "#f59e0b", marginBottom: 4, fontWeight: 600 }}>
+                          ¿Cuánto envió?
                         </div>
-                      )}
-                    </td>
-                    <td style={{ ...td, color: "#22d3ee", fontWeight: 700, fontSize: 15 }}>
-                      {Number(d.amount).toLocaleString("es-AR")}
-                    </td>
-                    <td style={td}>
-                      <span style={{
-                        background: "#1e2a3d", border: "1px solid #2a3550",
-                        borderRadius: 6, padding: "3px 8px", fontSize: 12, fontWeight: 600,
-                        color: "#94a3b8",
-                      }}>
-                        {d.currency}
-                      </span>
-                    </td>
-                    <td style={{ ...td, color: "#94a3b8", fontSize: 12 }}>{d.network}</td>
-                    <td style={{ ...td, color: "#64748b", fontSize: 12, whiteSpace: "nowrap" }}>
-                      {fmt(d.created_at)}
-                    </td>
-                    <td style={td}>
-                      <input
-                        type="text"
-                        placeholder="0x... (dejar vacío si no tenés)"
-                        value={txInputs[d.id] ?? ""}
-                        onChange={e => setTxInputs(prev => ({ ...prev, [d.id]: e.target.value }))}
-                        style={{
-                          width: "100%", background: "#0d1525", border: "1px solid #2a3550",
-                          borderRadius: 8, padding: "8px 10px", color: "#e2e8f0",
-                          fontSize: 12, outline: "none", fontFamily: "monospace",
-                          boxSizing: "border-box",
-                        }}
-                      />
-                    </td>
-                    <td style={{ ...td, textAlign: "center" }}>
-                      <button
-                        onClick={() => confirm(d.id)}
-                        disabled={confirming === d.id}
-                        style={{
-                          background: confirming === d.id ? "#1a2235" : "#15803d",
-                          border: "none", borderRadius: 8,
-                          color: confirming === d.id ? "#64748b" : "#fff",
-                          cursor: confirming === d.id ? "not-allowed" : "pointer",
-                          fontSize: 13, fontWeight: 600, padding: "9px 18px",
-                          transition: "all .15s", whiteSpace: "nowrap",
-                        }}
-                        onMouseEnter={e => { if (confirming !== d.id) e.currentTarget.style.background = "#166534"; }}
-                        onMouseLeave={e => { if (confirming !== d.id) e.currentTarget.style.background = "#15803d"; }}
-                      >
-                        {confirming === d.id ? "Confirmando..." : "Confirmar ✓"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        <input
+                          type="number"
+                          placeholder={`ej: 100`}
+                          min="0"
+                          step="any"
+                          value={inp.amount}
+                          onChange={e => setField(d.id, "amount", e.target.value)}
+                          style={{ ...inputStyle, borderColor: inp.amount ? "#2a3550" : "#374151" }}
+                        />
+                        {inp.amount && (
+                          <div style={{ fontSize: 11, color: "#64748b", marginTop: 3 }}>
+                            {inp.amount} {d.currency}
+                          </div>
+                        )}
+                      </td>
+
+                      {/* TX Hash */}
+                      <td style={td}>
+                        <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>
+                          Hash de la tx (opcional)
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="0x..."
+                          value={inp.txHash}
+                          onChange={e => setField(d.id, "txHash", e.target.value)}
+                          style={{ ...inputStyle, fontFamily: "monospace" }}
+                        />
+                      </td>
+
+                      {/* Botón confirmar */}
+                      <td style={{ ...td, textAlign: "center", paddingTop: 26 }}>
+                        <button
+                          onClick={() => confirm(d)}
+                          disabled={busy}
+                          style={{
+                            background: busy ? "#1a2235" : "#15803d",
+                            border: "none", borderRadius: 8,
+                            color: busy ? "#64748b" : "#fff",
+                            cursor: busy ? "not-allowed" : "pointer",
+                            fontSize: 13, fontWeight: 600, padding: "9px 18px",
+                            transition: "all .15s", whiteSpace: "nowrap",
+                            fontFamily: "'Inter', sans-serif",
+                          }}
+                          onMouseEnter={e => { if (!busy) e.currentTarget.style.background = "#166534"; }}
+                          onMouseLeave={e => { if (!busy) e.currentTarget.style.background = "#15803d"; }}
+                        >
+                          {busy ? "Confirmando..." : "Confirmar ✓"}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Info footer */}
+      {/* Footer info */}
       <div style={{ marginTop: 24, background: "#0d1525", border: "1px solid #1a2235", borderRadius: 10, padding: "14px 18px" }}>
-        <div style={{ color: "#64748b", fontSize: 12, lineHeight: 1.7 }}>
+        <div style={{ color: "#64748b", fontSize: 12, lineHeight: 1.9 }}>
           <strong style={{ color: "#94a3b8" }}>¿Cómo funciona?</strong><br />
-          1. El usuario inicia un depósito desde el panel → queda en estado <em>pending</em>.<br />
-          2. El usuario envía la cripto a la dirección generada.<br />
-          3. Vos verificás la transacción en la blockchain y apretás <strong>Confirmar</strong> (con el TX hash si querés).<br />
-          4. El balance del usuario se acredita automáticamente.
+          1. El usuario abre el panel de depósito → se genera la dirección wallet.<br />
+          2. El usuario envía la cripto desde su billetera a esa dirección.<br />
+          3. Vos ves la transacción en la blockchain → ingresás el <strong style={{ color: "#f59e0b" }}>monto real recibido</strong> y opcionalmente el TX hash.<br />
+          4. Apretás <strong>Confirmar</strong> → el balance se acredita automáticamente.
         </div>
       </div>
     </div>

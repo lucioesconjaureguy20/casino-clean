@@ -146,22 +146,19 @@ async function insertTransaction(
 // ──────────────────────────────────────────────────────────────────────────────
 // POST /api/deposit/create
 // Crea un depósito pendiente en la tabla deposits.
-// Body: { user_id, amount, currency, network }
+// El monto real lo ingresa el admin al confirmar, no el usuario al crear.
+// Body: { user_id, currency, network, address }
 // ──────────────────────────────────────────────────────────────────────────────
 router.post("/deposit/create", async (req: Request, res: Response) => {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
     return res.status(503).json({ error: "Servicio no disponible." });
 
-  const { user_id, amount, currency, network, address } = req.body ?? {};
+  const { user_id, currency, network, address } = req.body ?? {};
 
-  if (!user_id || !amount || !currency || !network) {
+  if (!user_id || !currency || !network) {
     return res.status(400).json({
-      error: "Campos requeridos: user_id, amount, currency, network.",
+      error: "Campos requeridos: user_id, currency, network.",
     });
-  }
-
-  if (typeof amount !== "number" || amount <= 0) {
-    return res.status(400).json({ error: "amount debe ser un número positivo." });
   }
 
   try {
@@ -172,14 +169,14 @@ router.post("/deposit/create", async (req: Request, res: Response) => {
 
     const depositRow = {
       user_id,
-      amount,
+      amount:   0, // el monto real lo ingresa el admin al confirmar
       currency: currency.trim().toUpperCase(),
       network,
       address:  address || "",
       status:   "pending",
     };
 
-    console.log(`[DEPOSIT create] user=${user_id} ${amount} ${currency} ${network}`);
+    console.log(`[DEPOSIT create] user=${user_id} ${currency} ${network} (monto pendiente de confirmar)`);
 
     const insRes = await sbAdmin("deposits", {
       method: "POST",
@@ -207,18 +204,23 @@ router.post("/deposit/create", async (req: Request, res: Response) => {
 
 // ──────────────────────────────────────────────────────────────────────────────
 // POST /api/deposit/confirm
-// Confirma un depósito pendiente: cambia status a "completed", guarda tx_hash,
-// actualiza balances y registra la transacción.
-// Body: { deposit_id, tx_hash }
+// Confirma un depósito pendiente: cambia status a "confirmed", guarda tx_hash
+// y el monto real enviado por el usuario, acredita balance y registra transacción.
+// Body: { deposit_id, amount, tx_hash? }
 // ──────────────────────────────────────────────────────────────────────────────
 router.post("/deposit/confirm", async (req: Request, res: Response) => {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
     return res.status(503).json({ error: "Servicio no disponible." });
 
-  const { deposit_id, tx_hash } = req.body ?? {};
+  const { deposit_id, tx_hash, amount: rawAmount } = req.body ?? {};
 
   if (!deposit_id) {
     return res.status(400).json({ error: "Campos requeridos: deposit_id." });
+  }
+
+  const confirmedAmount = parseFloat(rawAmount);
+  if (!rawAmount || isNaN(confirmedAmount) || confirmedAmount <= 0) {
+    return res.status(400).json({ error: "Ingresá el monto real recibido (amount > 0)." });
   }
 
   try {
@@ -250,11 +252,12 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Usuario del depósito no encontrado." });
     }
 
-    // 3. Actualizar el depósito a "completed" con tx_hash
+    // 3. Actualizar el depósito con monto real, tx_hash y status "confirmed"
     const updRes = await sbAdmin(`deposits?id=eq.${deposit_id}`, {
       method: "PATCH",
       body: JSON.stringify({
         status:  "confirmed",
+        amount:  confirmedAmount,
         tx_hash: tx_hash || null,
       }),
     });
@@ -269,22 +272,21 @@ router.post("/deposit/confirm", async (req: Request, res: Response) => {
     const updatedRows = await updRes.json();
     const updatedDeposit = Array.isArray(updatedRows) ? updatedRows[0] : updatedRows;
 
-    console.log(`[DEPOSIT confirm] deposit=${deposit_id} completado tx_hash=${tx_hash}`);
+    console.log(`[DEPOSIT confirm] deposit=${deposit_id} amount=${confirmedAmount} ${deposit.currency} tx_hash=${tx_hash}`);
 
-    // 4. Acreditar balance en tabla balances (monto nativo)
-    const nativeAmount = Number(deposit.amount);
-    await creditBalance(profile.mander_id, deposit.currency, nativeAmount);
+    // 4. Acreditar balance en tabla balances (monto nativo real confirmado)
+    await creditBalance(profile.mander_id, deposit.currency, confirmedAmount);
 
     // 5. Actualizar profiles.balance (total en USD)
     const priceUsd = getPriceUsd(deposit.currency.trim().toUpperCase());
-    const deltaUsd = nativeAmount * priceUsd;
+    const deltaUsd = confirmedAmount * priceUsd;
     await addToProfileBalance(profile.mander_id, deltaUsd);
 
     // 6. Registrar en tabla transactions
     await insertTransaction(
       profile.mander_id,
       deposit.user_id,
-      nativeAmount,
+      confirmedAmount,
       deposit.currency,
       deposit.network,
       tx_hash || "",
