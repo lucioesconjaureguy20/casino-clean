@@ -1,0 +1,131 @@
+Quiero mejorar el sistema de balances y retiros agregando soporte para "locked balance" (fondos bloqueados) sin romper la lógica actual.
+
+Contexto actual:
+
+* Tabla `balances`: user_id, currency, amount
+* Tabla `withdrawals`: ya implementada y funcionando
+* Tabla `transactions`: registra movimientos
+* El sistema ya descuenta balance cuando se paga el retiro (status = paid)
+
+Objetivo:
+Evitar que los usuarios puedan seguir usando dinero que ya solicitaron retirar.
+
+---
+
+1. Modificación de base de datos
+
+Agregar columna a `balances`:
+
+ALTER TABLE balances
+ADD COLUMN locked_amount numeric DEFAULT 0;
+
+---
+
+2. Lógica al crear retiro (POST /api/withdraw/create)
+
+Actualmente:
+
+* solo valida balance
+* crea withdrawal en "pending"
+
+Cambiar a:
+
+* Obtener balance actual del usuario (amount)
+* Validar que amount >= withdrawal amount
+* Restar del balance disponible (amount)
+* Sumar a locked_amount
+
+Ejemplo:
+Si tiene 100 y retira 40:
+
+amount: 100 → 60
+locked_amount: 0 → 40
+
+* Luego crear el withdrawal como "pending"
+
+IMPORTANTE:
+Esta operación debe ser segura (idealmente en una sola transacción lógica)
+
+---
+
+3. Lógica al rechazar retiro (POST /api/admin/withdraw/reject)
+
+Cuando se rechaza:
+
+* Restar de locked_amount
+* Sumar nuevamente a amount
+
+Ejemplo:
+amount: 60 → 100
+locked_amount: 40 → 0
+
+---
+
+4. Lógica al pagar retiro (POST /api/admin/withdraw/pay)
+
+Actualmente:
+
+* descuenta balance al pagar
+
+CAMBIAR A:
+
+* NO tocar amount (ya se descontó antes)
+* SOLO restar de locked_amount
+
+Ejemplo:
+locked_amount: 40 → 0
+
+* Mantener:
+
+  * status = paid
+  * guardar tx_hash
+  * registrar transaction negativa
+
+---
+
+5. Validaciones importantes
+
+* Nunca permitir:
+
+  * amount < 0
+  * locked_amount < 0
+
+* Validar siempre antes de mover fondos
+
+---
+
+6. Seguridad
+
+* Mantener todas las validaciones actuales:
+
+  * anti doble pago
+  * re-validación de balance
+  * validación de wallet
+
+* No romper endpoints existentes
+
+---
+
+7. Frontend
+
+* NO mostrar locked_amount al usuario
+* El balance visible sigue siendo solo `amount`
+* El usuario ve sus retiros en historial (pending / approved / paid)
+
+---
+
+8. Código limpio
+
+* Usar async/await
+* Manejo de errores en todos los endpoints
+* Logs claros en operaciones críticas
+
+---
+
+Objetivo final:
+Que cuando un usuario solicite un retiro:
+
+* su balance visible baje inmediatamente
+* no pueda usar ese dinero
+* el sistema mantenga control interno seguro con locked_amount
+* todo siga funcionando con el panel admin actual

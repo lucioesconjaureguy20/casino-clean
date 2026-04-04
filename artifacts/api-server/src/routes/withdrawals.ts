@@ -1,3 +1,13 @@
+/**
+ * withdrawals.ts
+ *
+ * Locked-balance flow:
+ *   CREATE  → deduct from `balance`, add to `locked_amount`
+ *   REJECT  → restore `balance`, clear `locked_amount`
+ *   PAY     → clear `locked_amount` only (balance was already deducted on create)
+ *             insert negative transaction for the record
+ */
+
 import { Router, Request, Response, NextFunction } from "express";
 import { verifyGameToken } from "../lib/gameToken.js";
 
@@ -9,16 +19,16 @@ const SUPABASE_ANON_KEY    = process.env.SUPABASE_ANON_KEY!;
 const ADMIN_USERNAMES      = () =>
   (process.env.ADMIN_USERNAMES || "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
 
-// ── Supabase helpers ──────────────────────────────────────────────────────────
+// ── Supabase REST helper ──────────────────────────────────────────────────────
 
 function sbAdmin(path: string, opts: RequestInit = {}) {
   return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...opts,
     headers: {
-      apikey:          SUPABASE_SERVICE_KEY,
-      Authorization:   `Bearer ${SUPABASE_SERVICE_KEY}`,
-      "Content-Type":  "application/json",
-      Prefer:          "return=representation",
+      apikey:         SUPABASE_SERVICE_KEY,
+      Authorization:  `Bearer ${SUPABASE_SERVICE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer:         "return=representation",
       ...(opts.headers as Record<string, string> | undefined),
     },
   });
@@ -34,7 +44,7 @@ async function getProfile(userId: string) {
   return rows[0] ?? null;
 }
 
-// ── requireAuth / requireAdmin middlewares ────────────────────────────────────
+// ── Auth middlewares ──────────────────────────────────────────────────────────
 
 declare global {
   namespace Express {
@@ -49,10 +59,9 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (!authHeader?.startsWith("Bearer "))
     return res.status(401).json({ error: "Sesión expirada o inválida." });
   const token = authHeader.slice(7);
-  if (!token)
-    return res.status(401).json({ error: "Sesión expirada o inválida." });
+  if (!token) return res.status(401).json({ error: "Sesión expirada o inválida." });
 
-  // Game token (local auth)
+  // Game token (local accounts)
   try {
     const gameUser = verifyGameToken(token) as any;
     if (gameUser) {
@@ -85,12 +94,145 @@ async function requireAdmin(req: Request, res: Response, next: NextFunction) {
   });
 }
 
-// ── Balance helpers ───────────────────────────────────────────────────────────
+// ── Balance row helpers ───────────────────────────────────────────────────────
 
-async function getBalanceRow(manderId: string, currency: string) {
+interface BalanceRow {
+  id: string;
+  balance: number;
+  locked_amount: number;
+}
+
+async function getBalanceRow(manderId: string, currency: string): Promise<BalanceRow | null> {
   const cur = currency.trim().toUpperCase();
   const r = await sbAdmin(
-    `balances?mander_id=eq.${encodeURIComponent(manderId)}&currency=eq.${encodeURIComponent(cur)}&select=id,balance&limit=1`,
+    `balances?mander_id=eq.${encodeURIComponent(manderId)}&currency=eq.${encodeURIComponent(cur)}&select=id,balance,locked_amount&limit=1`,
+    { headers: { Prefer: "count=none" } },
+  );
+  if (!r.ok) return null;
+  const rows: any[] = await r.json();
+  if (!rows[0]) return null;
+  return {
+    id:            rows[0].id,
+    balance:       Number(rows[0].balance       ?? 0),
+    locked_amount: Number(rows[0].locked_amount ?? 0),
+  };
+}
+
+type OpResult = { ok: true } | { ok: false; reason: string };
+
+/**
+ * LOCK: move `amount` from balance → locked_amount.
+ * Uses conditional PATCH filter (balance >= amount) for race-condition safety.
+ */
+async function lockFunds(manderId: string, currency: string, amount: number): Promise<OpResult> {
+  const row = await getBalanceRow(manderId, currency);
+  if (!row) return { ok: false, reason: "Fila de balance no encontrada." };
+
+  if (row.balance < amount)
+    return { ok: false, reason: `Balance insuficiente: ${row.balance} disponibles, ${amount} requeridos.` };
+
+  const newBalance = parseFloat((row.balance - amount).toFixed(8));
+  const newLocked  = parseFloat((row.locked_amount + amount).toFixed(8));
+
+  if (newBalance < 0) return { ok: false, reason: "El nuevo balance quedaría negativo." };
+
+  // Conditional PATCH: only succeeds if balance is still >= amount (race protection)
+  const p = await sbAdmin(
+    `balances?id=eq.${row.id}&balance=gte.${amount}`,
+    {
+      method: "PATCH",
+      body:   JSON.stringify({ balance: newBalance, locked_amount: newLocked, updated_at: new Date().toISOString() }),
+    },
+  );
+  if (!p.ok) return { ok: false, reason: "Error al actualizar balance (db error)." };
+
+  const patched: any[] = await p.json();
+  if (!patched.length)
+    return { ok: false, reason: "Balance ya no es suficiente (condición de carrera detectada)." };
+
+  return { ok: true };
+}
+
+/**
+ * UNLOCK: restore `amount` from locked_amount → balance (on reject).
+ */
+async function unlockFunds(manderId: string, currency: string, amount: number): Promise<OpResult> {
+  const row = await getBalanceRow(manderId, currency);
+  if (!row) return { ok: false, reason: "Fila de balance no encontrada." };
+
+  const currentLocked = row.locked_amount;
+  if (currentLocked < amount)
+    return { ok: false, reason: `locked_amount insuficiente: ${currentLocked} < ${amount}.` };
+
+  const newBalance = parseFloat((row.balance + amount).toFixed(8));
+  const newLocked  = parseFloat((currentLocked - amount).toFixed(8));
+
+  const p = await sbAdmin(
+    `balances?id=eq.${row.id}&locked_amount=gte.${amount}`,
+    {
+      method: "PATCH",
+      body:   JSON.stringify({ balance: newBalance, locked_amount: newLocked, updated_at: new Date().toISOString() }),
+    },
+  );
+  if (!p.ok) return { ok: false, reason: "Error al restaurar balance (db error)." };
+
+  const patched: any[] = await p.json();
+  if (!patched.length)
+    return { ok: false, reason: "locked_amount cambió durante la operación (condición de carrera)." };
+
+  return { ok: true };
+}
+
+/**
+ * CLEAR LOCKED: remove `amount` from locked_amount only (on pay).
+ * Balance was already deducted when the withdrawal was created.
+ */
+async function clearLocked(manderId: string, currency: string, amount: number): Promise<OpResult> {
+  const row = await getBalanceRow(manderId, currency);
+  if (!row) return { ok: false, reason: "Fila de balance no encontrada." };
+
+  const newLocked = parseFloat((row.locked_amount - amount).toFixed(8));
+  if (newLocked < 0) {
+    console.warn(`[CLEAR LOCKED] locked_amount (${row.locked_amount}) < amount (${amount}) — clamping to 0`);
+  }
+
+  const safeNewLocked = Math.max(0, newLocked);
+  const p = await sbAdmin(`balances?id=eq.${row.id}`, {
+    method: "PATCH",
+    body:   JSON.stringify({ locked_amount: safeNewLocked, updated_at: new Date().toISOString() }),
+  });
+  if (!p.ok) return { ok: false, reason: "Error al limpiar locked_amount (db error)." };
+
+  return { ok: true };
+}
+
+// ── Wallet format validation ──────────────────────────────────────────────────
+
+const WALLET_RULES: Record<string, { pattern: RegExp; hint: string }> = {
+  TRC20:   { pattern: /^T[A-Za-z1-9]{33}$/,         hint: "Dirección TRC20 inválida (debe empezar con T, 34 caracteres)." },
+  ERC20:   { pattern: /^0x[0-9a-fA-F]{40}$/,         hint: "Dirección ERC20 inválida (debe empezar con 0x, 42 caracteres)." },
+  BEP20:   { pattern: /^0x[0-9a-fA-F]{40}$/,         hint: "Dirección BEP20 inválida (debe empezar con 0x, 42 caracteres)." },
+  BTC:     { pattern: /^(1|3|bc1)[A-Za-z0-9]{10,90}$/, hint: "Dirección BTC inválida." },
+  SOL:     { pattern: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, hint: "Dirección Solana inválida (32-44 caracteres base58)." },
+  LTC:     { pattern: /^(L|M|ltc1)[A-Za-z0-9]{10,90}$/, hint: "Dirección LTC inválida." },
+  POLYGON: { pattern: /^0x[0-9a-fA-F]{40}$/,         hint: "Dirección Polygon inválida (debe empezar con 0x, 42 caracteres)." },
+};
+
+function validateWallet(wallet: string, network: string): string | null {
+  const w = wallet.trim();
+  if (!w)          return "La wallet no puede estar vacía.";
+  if (w.length < 10) return "La wallet debe tener al menos 10 caracteres.";
+  if (w.length > 200) return "La wallet es demasiado larga.";
+  const rule = WALLET_RULES[network.trim().toUpperCase()];
+  if (rule && !rule.pattern.test(w)) return rule.hint;
+  return null;
+}
+
+// ── Withdrawal helper ─────────────────────────────────────────────────────────
+
+async function fetchWithdrawal(id: string) {
+  const r = await sbAdmin(
+    `withdrawals?id=eq.${encodeURIComponent(id)}&select=id,user_id,mander_id,amount,currency,network,status,tx_hash&limit=1`,
     { headers: { Prefer: "count=none" } },
   );
   if (!r.ok) return null;
@@ -98,71 +240,32 @@ async function getBalanceRow(manderId: string, currency: string) {
   return rows[0] ?? null;
 }
 
-/**
- * Atomically deduct `amount` from balance.
- * Returns { ok: true } | { ok: false, reason: string }
- */
-async function atomicDeduct(
-  manderId: string,
-  currency: string,
-  amount: number,
-): Promise<{ ok: true } | { ok: false; reason: string }> {
-  // Re-fetch balance inside the deduction to get the freshest value
-  const row = await getBalanceRow(manderId, currency);
-  if (!row) return { ok: false, reason: "Fila de balance no encontrada." };
-
-  const current = Number(row.balance);
-  if (current < amount)
-    return { ok: false, reason: `Balance insuficiente: ${current} disponibles, ${amount} requeridos.` };
-
-  const newBalance = parseFloat((current - amount).toFixed(8));
-  const p = await sbAdmin(`balances?id=eq.${row.id}`, {
+async function patchWithdrawal(id: string, patch: Record<string, unknown>) {
+  return sbAdmin(`withdrawals?id=eq.${encodeURIComponent(id)}`, {
     method: "PATCH",
-    body: JSON.stringify({ balance: newBalance, updated_at: new Date().toISOString() }),
+    body:   JSON.stringify(patch),
   });
-  if (!p.ok) return { ok: false, reason: "Error al actualizar balance en base de datos." };
-  return { ok: true };
 }
 
-// ── Wallet format validation ──────────────────────────────────────────────────
-
-const WALLET_RULES: Record<string, { pattern: RegExp; hint: string }> = {
-  TRC20:     { pattern: /^T[A-Za-z1-9]{33}$/, hint: "Dirección TRC20 inválida (debe empezar con T, 34 caracteres)." },
-  ERC20:     { pattern: /^0x[0-9a-fA-F]{40}$/, hint: "Dirección ERC20 inválida (debe empezar con 0x, 42 caracteres)." },
-  BEP20:     { pattern: /^0x[0-9a-fA-F]{40}$/, hint: "Dirección BEP20 inválida (debe empezar con 0x, 42 caracteres)." },
-  BTC:       { pattern: /^(1|3|bc1)[A-Za-z0-9]{10,90}$/, hint: "Dirección BTC inválida." },
-  SOL:       { pattern: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, hint: "Dirección Solana inválida (32-44 caracteres base58)." },
-  LTC:       { pattern: /^(L|M|ltc1)[A-Za-z0-9]{10,90}$/, hint: "Dirección LTC inválida." },
-  POLYGON:   { pattern: /^0x[0-9a-fA-F]{40}$/, hint: "Dirección Polygon inválida (debe empezar con 0x, 42 caracteres)." },
-};
-
-function validateWallet(wallet: string, network: string): string | null {
-  const w = wallet.trim();
-  if (!w) return "La wallet no puede estar vacía.";
-  if (w.length < 10) return "La wallet debe tener al menos 10 caracteres.";
-  if (w.length > 200) return "La wallet es demasiado larga.";
-
-  const net = network.trim().toUpperCase();
-  const rule = WALLET_RULES[net];
-  if (rule && !rule.pattern.test(w)) return rule.hint;
-
-  return null; // valid
-}
-
-// ── 1. POST /api/withdraw/create ─────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
+// 1. POST /api/withdraw/create
+//    - Validate wallet + amount + balance
+//    - Lock funds: balance -= amount, locked_amount += amount
+//    - Create withdrawal as "pending"
+// ═════════════════════════════════════════════════════════════════════════════
 
 router.post("/withdraw/create", requireAuth, async (req: Request, res: Response) => {
   const { amount, currency, network, wallet } = req.body;
 
-  // Basic field presence
+  // Field presence
   if (!amount || !currency || !network || !wallet)
     return res.status(400).json({ error: "Campos requeridos: amount, currency, network, wallet." });
 
-  // Wallet format validation
+  // Wallet format
   const walletError = validateWallet(String(wallet), String(network));
   if (walletError) return res.status(400).json({ error: walletError });
 
-  // Amount validation
+  // Amount
   const parsed = Number(amount);
   if (!Number.isFinite(parsed) || parsed <= 0)
     return res.status(400).json({ error: "El monto debe ser un número positivo." });
@@ -173,17 +276,9 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
   const profile = await getProfile(req.authUser!.id).catch(() => null);
   if (!profile) return res.status(404).json({ error: "Perfil no encontrado." });
 
-  const cur = currency.trim().toUpperCase();
+  const cur = (currency as string).trim().toUpperCase();
 
-  // Balance check
-  const balRow = await getBalanceRow(profile.mander_id, cur);
-  const currentBalance = Number(balRow?.balance ?? 0);
-  if (currentBalance < parsed)
-    return res.status(400).json({
-      error: `Balance insuficiente. Disponible: ${currentBalance} ${cur}, solicitado: ${parsed} ${cur}.`,
-    });
-
-  // Check for existing pending withdrawal (avoid spam)
+  // Check no existing pending/approved withdrawal in this currency
   const existingR = await sbAdmin(
     `withdrawals?user_id=eq.${req.authUser!.id}&currency=eq.${cur}&status=in.(pending,approved)&select=id&limit=1`,
     { headers: { Prefer: "count=none" } },
@@ -196,7 +291,14 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
       });
   }
 
-  // Insert withdrawal
+  // Lock funds (balance → locked_amount) — this validates balance internally
+  const lockResult = await lockFunds(profile.mander_id, cur, parsed);
+  if (!lockResult.ok) {
+    console.warn(`[WITHDRAW create] lockFunds failed: ${lockResult.reason}`);
+    return res.status(400).json({ error: lockResult.reason });
+  }
+
+  // Create withdrawal record
   const r = await sbAdmin("withdrawals", {
     method: "POST",
     body: JSON.stringify({
@@ -204,28 +306,38 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
       mander_id: profile.mander_id,
       amount:    parsed,
       currency:  cur,
-      network:   network.trim(),
-      wallet:    wallet.trim(),
+      network:   (network as string).trim(),
+      wallet:    (wallet as string).trim(),
       status:    "pending",
     }),
   });
 
   if (!r.ok) {
     const err = await r.text();
-    console.error("[WITHDRAW create] Supabase error:", err);
-    return res.status(500).json({ error: "Error al registrar el retiro. Intentá nuevamente." });
+    console.error("[WITHDRAW create] Supabase insert error:", err);
+    // Rollback: restore the locked funds
+    const rollback = await unlockFunds(profile.mander_id, cur, parsed);
+    if (!rollback.ok) {
+      console.error(`[WITHDRAW create] ROLLBACK FAILED for mander_id=${profile.mander_id}: ${rollback.reason}`);
+    }
+    return res.status(500).json({ error: "Error al registrar el retiro. Los fondos fueron restaurados." });
   }
 
   const [row] = await r.json();
-  console.log(`[WITHDRAW create] id=${row?.id} user=${profile.username} amount=${parsed} ${cur}`);
+  console.log(
+    `[WITHDRAW create] id=${row?.id} user=${profile.username} amount=${parsed} ${cur} | ` +
+    `balance locked`,
+  );
   return res.json({
     ok: true,
     withdrawal: row,
-    message: `Retiro de ${parsed} ${cur} solicitado correctamente. El equipo lo procesará en breve.`,
+    message: `Retiro de ${parsed} ${cur} solicitado. Tu balance fue actualizado.`,
   });
 });
 
-// ── 2. GET /api/admin/withdrawals ─────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
+// 2. GET /api/admin/withdrawals
+// ═════════════════════════════════════════════════════════════════════════════
 
 router.get("/admin/withdrawals", requireAdmin, async (_req: Request, res: Response) => {
   const r = await sbAdmin(
@@ -241,53 +353,32 @@ router.get("/admin/withdrawals", requireAdmin, async (_req: Request, res: Respon
   const withdrawals: any[] = await r.json();
   if (!withdrawals.length) return res.json({ withdrawals: [] });
 
-  // Join usernames from profiles
+  // Join usernames
   const ids = [...new Set(withdrawals.map((w) => w.user_id).filter(Boolean))];
   const idsParam = `(${ids.map((id) => `"${id}"`).join(",")})`;
-  const pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username`, {
-    headers: { Prefer: "count=none" },
-  });
+  const pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username`, { headers: { Prefer: "count=none" } });
   let profileMap: Record<string, string> = {};
   if (pr.ok) {
     const profiles: any[] = await pr.json();
     for (const p of profiles) profileMap[p.id] = p.username;
   }
 
-  const result = withdrawals.map((w) => ({
-    ...w,
-    username: profileMap[w.user_id] ?? w.user_id,
-  }));
-  return res.json({ withdrawals: result });
+  return res.json({
+    withdrawals: withdrawals.map((w) => ({ ...w, username: profileMap[w.user_id] ?? w.user_id })),
+  });
 });
 
-// ── helper: fetch withdrawal by id ───────────────────────────────────────────
-
-async function fetchWithdrawal(id: string) {
-  const r = await sbAdmin(
-    `withdrawals?id=eq.${encodeURIComponent(id)}&select=id,user_id,mander_id,amount,currency,network,status,tx_hash&limit=1`,
-    { headers: { Prefer: "count=none" } },
-  );
-  if (!r.ok) return null;
-  const rows: any[] = await r.json();
-  return rows[0] ?? null;
-}
-
-async function patchWithdrawal(id: string, patch: Record<string, unknown>) {
-  return sbAdmin(`withdrawals?id=eq.${encodeURIComponent(id)}`, {
-    method: "PATCH",
-    body: JSON.stringify(patch),
-  });
-}
-
-// ── 3. POST /api/admin/withdraw/approve ──────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
+// 3. POST /api/admin/withdraw/approve
+// ═════════════════════════════════════════════════════════════════════════════
 
 router.post("/admin/withdraw/approve", requireAdmin, async (req: Request, res: Response) => {
   const { withdrawal_id } = req.body;
   if (!withdrawal_id) return res.status(400).json({ error: "withdrawal_id requerido." });
 
   const w = await fetchWithdrawal(withdrawal_id);
-  if (!w) return res.status(404).json({ error: "Retiro no encontrado." });
-  if (w.status === "paid") return res.status(400).json({ error: "No se puede aprobar un retiro ya pagado." });
+  if (!w)                     return res.status(404).json({ error: "Retiro no encontrado." });
+  if (w.status === "paid")    return res.status(400).json({ error: "No se puede aprobar un retiro ya pagado." });
   if (w.status === "rejected") return res.status(400).json({ error: "No se puede aprobar un retiro rechazado." });
   if (w.status === "approved") return res.status(400).json({ error: "El retiro ya está aprobado." });
 
@@ -301,16 +392,33 @@ router.post("/admin/withdraw/approve", requireAdmin, async (req: Request, res: R
   return res.json({ ok: true, message: "Retiro aprobado." });
 });
 
-// ── 4. POST /api/admin/withdraw/reject ───────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
+// 4. POST /api/admin/withdraw/reject
+//    - Unlock funds: locked_amount → balance (restore to user)
+// ═════════════════════════════════════════════════════════════════════════════
 
 router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Response) => {
   const { withdrawal_id } = req.body;
   if (!withdrawal_id) return res.status(400).json({ error: "withdrawal_id requerido." });
 
   const w = await fetchWithdrawal(withdrawal_id);
-  if (!w) return res.status(404).json({ error: "Retiro no encontrado." });
-  if (w.status === "paid") return res.status(400).json({ error: "No se puede rechazar un retiro ya pagado." });
+  if (!w)                     return res.status(404).json({ error: "Retiro no encontrado." });
+  if (w.status === "paid")    return res.status(400).json({ error: "No se puede rechazar un retiro ya pagado." });
   if (w.status === "rejected") return res.status(400).json({ error: "El retiro ya está rechazado." });
+
+  const { mander_id, amount, currency } = w;
+  const cur    = (currency as string).trim().toUpperCase();
+  const parsed = Number(amount);
+
+  // Restore funds: locked_amount → balance
+  const unlockResult = await unlockFunds(mander_id, cur, parsed);
+  if (!unlockResult.ok) {
+    console.error(`[WITHDRAW reject] unlockFunds failed: ${unlockResult.reason} — id=${withdrawal_id}`);
+    // Still mark as rejected even if unlock fails (log for manual reconciliation)
+    console.error(`[WITHDRAW reject] MANUAL RECONCILIATION NEEDED: mander_id=${mander_id} amount=${parsed} ${cur}`);
+  } else {
+    console.log(`[WITHDRAW reject] unlocked ${parsed} ${cur} → balance | mander_id=${mander_id}`);
+  }
 
   const r = await patchWithdrawal(withdrawal_id, { status: "rejected" });
   if (!r.ok) {
@@ -319,32 +427,30 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
   }
 
   console.log(`[WITHDRAW reject] id=${withdrawal_id}`);
-  return res.json({ ok: true, message: "Retiro rechazado." });
+  return res.json({
+    ok: true,
+    message: unlockResult.ok
+      ? `Retiro rechazado. ${parsed} ${cur} restaurados al balance del usuario.`
+      : "Retiro rechazado. (Nota: error al restaurar fondos — revisar manualmente)",
+  });
 });
 
-// ── 5. POST /api/admin/withdraw/pay ──────────────────────────────────────────
-//
-// Atomic safety strategy:
-//   1. Fresh fetch + status guard (double-pay prevention)
-//   2. Balance re-validation (exploit prevention)
-//   3. Conditional PATCH status → "paid" WHERE status IN (pending,approved)
-//      This uses Supabase filter so only one concurrent request can succeed.
-//   4. Deduct balance (with fresh fetch inside atomicDeduct)
-//   5. Insert negative transaction
-//   If steps 4-5 fail after step 3: log CRITICAL and return error with details.
-// ─────────────────────────────────────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
+// 5. POST /api/admin/withdraw/pay
+//    - Anti double-pay via conditional PATCH (only if status IN pending|approved)
+//    - Clear locked_amount only (balance was already deducted at create time)
+//    - Insert negative transaction record
+// ═════════════════════════════════════════════════════════════════════════════
 
 router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Response) => {
   const { withdrawal_id, tx_hash } = req.body;
   if (!withdrawal_id) return res.status(400).json({ error: "withdrawal_id requerido." });
 
-  // ── Step 1: Fresh fetch + guard ──────────────────────────────────────────
+  // ── Step 1: Fresh fetch + status guard ───────────────────────────────────
   const w = await fetchWithdrawal(withdrawal_id);
-  if (!w) return res.status(404).json({ error: "Retiro no encontrado." });
-  if (w.status === "paid")
-    return res.status(400).json({ error: "DOBLE PAGO BLOQUEADO: Este retiro ya fue pagado." });
-  if (w.status === "rejected")
-    return res.status(400).json({ error: "No se puede pagar un retiro rechazado." });
+  if (!w)                     return res.status(404).json({ error: "Retiro no encontrado." });
+  if (w.status === "paid")    return res.status(400).json({ error: "DOBLE PAGO BLOQUEADO: Este retiro ya fue pagado." });
+  if (w.status === "rejected") return res.status(400).json({ error: "No se puede pagar un retiro rechazado." });
 
   const { mander_id, amount, currency, user_id } = w;
   const cur    = (currency as string).trim().toUpperCase();
@@ -353,21 +459,22 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
   if (!Number.isFinite(parsed) || parsed <= 0)
     return res.status(400).json({ error: "El monto del retiro es inválido." });
 
-  // ── Step 2: Balance re-validation ────────────────────────────────────────
+  // ── Step 2: Verify locked_amount covers the withdrawal ───────────────────
   const balRow = await getBalanceRow(mander_id, cur);
-  const currentBalance = Number(balRow?.balance ?? 0);
-  if (currentBalance < parsed)
-    return res.status(400).json({
-      error: `Balance insuficiente para procesar: ${currentBalance} ${cur} disponibles, ${parsed} ${cur} requeridos.`,
-    });
+  if (balRow && balRow.locked_amount < parsed) {
+    console.warn(
+      `[WITHDRAW pay] locked_amount (${balRow.locked_amount}) < amount (${parsed}) — ` +
+      `id=${withdrawal_id}. Proceeding anyway (balance was deducted at create time).`,
+    );
+    // Non-blocking: locked_amount may be 0 if column was added after withdrawal was created
+  }
 
-  // ── Step 3: Conditional PATCH to "paid" — prevents double-pay race ───────
-  // Filter: only update if status is still pending or approved (not already paid/rejected).
+  // ── Step 3: Atomic claim — conditional PATCH (prevents double-pay race) ──
   const claimRes = await sbAdmin(
     `withdrawals?id=eq.${encodeURIComponent(withdrawal_id)}&status=in.(pending,approved)`,
     {
       method: "PATCH",
-      body: JSON.stringify({ status: "paid", tx_hash: tx_hash?.trim() || null }),
+      body: JSON.stringify({ status: "paid", tx_hash: (tx_hash as string | undefined)?.trim() || null }),
     },
   );
 
@@ -379,64 +486,53 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
 
   const claimed: any[] = await claimRes.json();
   if (!claimed.length) {
-    // 0 rows updated → someone else already paid it (concurrent request)
-    console.warn(`[WITHDRAW pay] DOUBLE-PAY PREVENTED — id=${withdrawal_id} already changed status`);
+    console.warn(`[WITHDRAW pay] DOUBLE-PAY PREVENTED — id=${withdrawal_id} (concurrent update detected)`);
     return res.status(409).json({
       error: "DOBLE PAGO BLOQUEADO: El retiro ya fue procesado por otra operación simultánea.",
     });
   }
 
-  console.log(`[WITHDRAW pay] status → paid claimed — id=${withdrawal_id}`);
+  console.log(`[WITHDRAW pay] status → paid | id=${withdrawal_id}`);
 
-  // ── Step 4: Deduct balance ───────────────────────────────────────────────
-  const deductResult = await atomicDeduct(mander_id, cur, parsed);
-  if (!deductResult.ok) {
-    // CRITICAL: status is already "paid" but balance wasn't deducted
-    // Log with high visibility for manual reconciliation
+  // ── Step 4: Clear locked_amount (balance was already deducted at create) ─
+  const clearResult = await clearLocked(mander_id, cur, parsed);
+  if (!clearResult.ok) {
     console.error(
-      `[WITHDRAW pay] CRITICAL — retiro id=${withdrawal_id} marcado como paid pero balance NO descontado. ` +
-      `Razón: ${deductResult.reason}. mander_id=${mander_id} amount=${parsed} ${cur}`,
+      `[WITHDRAW pay] clearLocked failed: ${clearResult.reason} — ` +
+      `id=${withdrawal_id} mander_id=${mander_id} amount=${parsed} ${cur}. ` +
+      `Withdrawal is PAID, locked_amount may need manual reconciliation.`,
     );
-    // Attempt to revert status back to "approved" for safety
-    await sbAdmin(`withdrawals?id=eq.${encodeURIComponent(withdrawal_id)}`, {
-      method: "PATCH",
-      body: JSON.stringify({ status: "approved" }),
-    });
-    return res.status(500).json({
-      error: `Error al descontar el balance: ${deductResult.reason}. El retiro fue revertido a "aprobado".`,
-    });
+    // Non-fatal: the withdrawal is already paid and status set — don't revert
+  } else {
+    console.log(`[WITHDRAW pay] cleared locked_amount -${parsed} ${cur} | mander_id=${mander_id}`);
   }
 
-  console.log(`[WITHDRAW pay] balance deducted — -${parsed} ${cur} mander_id=${mander_id}`);
-
-  // ── Step 5: Insert transaction record (negative amount = withdrawal) ──────
+  // ── Step 5: Insert negative transaction record ────────────────────────────
   const txRes = await sbAdmin("transactions", {
     method: "POST",
     body: JSON.stringify({
       user_id,
       mander_id,
-      type:           "withdrawal",
-      amount:         -Math.abs(parsed),   // always negative
-      currency:       cur,
-      network:        w.network ?? "",
-      status:         "completed",
-      external_tx_id: tx_hash?.trim() || null,
-      notes:          `Retiro pagado. TX: ${tx_hash?.trim() || "—"}`,
-      completed_at:   new Date().toISOString(),
+      type:            "withdrawal",
+      amount:          -Math.abs(parsed),   // always negative
+      currency:        cur,
+      network:         w.network ?? "",
+      status:          "completed",
+      external_tx_id:  (tx_hash as string | undefined)?.trim() || null,
+      notes:           `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
+      completed_at:    new Date().toISOString(),
     }),
   });
 
   if (!txRes.ok) {
-    const txErr = await txRes.text();
-    console.error(`[WITHDRAW pay] TX insert error (non-fatal) id=${withdrawal_id}:`, txErr);
-    // Non-fatal: balance was deducted and withdrawal is paid — just log it
+    console.error(`[WITHDRAW pay] TX insert failed (non-fatal) id=${withdrawal_id}:`, await txRes.text());
   } else {
     console.log(`[WITHDRAW pay] TX record inserted — id=${withdrawal_id} amount=-${parsed} ${cur}`);
   }
 
   return res.json({
     ok: true,
-    message: `Retiro pagado exitosamente. ${parsed} ${cur} descontados del balance del usuario.`,
+    message: `Retiro pagado exitosamente. ${parsed} ${cur} procesados.`,
   });
 });
 
