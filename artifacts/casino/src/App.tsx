@@ -5824,12 +5824,19 @@ export default function App() {
                           <div style={{ position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#131d2d",border:"1px solid #2a3650",borderRadius:"10px",zIndex:99,maxHeight:"240px",overflowY:"auto",boxShadow:"0 8px 32px rgba(0,0,0,.7)" }}>
                             {Object.entries(coinDisplayMap).filter(([k])=>coinConfig[k]).map(([k,v])=>{
                               const selected = k===depositCoin;
+                              const native = coinBalances[k] ?? 0;
+                              const fiatVal = convertUsd(native * (coinConfig[k]?.priceUsd ?? 1));
+                              const sym = getCurrencySymbol(displayCurrency);
+                              const nativeStr = native === 0 ? "0" : parseFloat(native.toPrecision(8)).toString();
                               return (
                                 <div key={k} onClick={()=>{ setDepositCoin(k); setDepositNetwork(coinConfig[k]?.networks[0]||"TRC20"); setShowCoinDrop(false); }}
                                   style={{ display:"flex",alignItems:"center",gap:"10px",padding:"10px 14px",cursor:"pointer",background:selected?"rgba(90,154,255,.12)":"transparent",borderBottom:"1px solid #1a2840" }}>
                                   {v.icon ? <img src={v.icon} width={24} height={24} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={k}/> : <span style={{ fontSize:"18px" }}>{v.badgeText}</span>}
                                   <span style={{ color:selected?"#5a9aff":"#fff",fontWeight:600,fontSize:"13px" }}>{k}</span>
-                                  {selected && <span style={{ marginLeft:"auto",color:"#5a9aff",fontSize:"12px" }}>✓</span>}
+                                  <div style={{ marginLeft:"auto",textAlign:"right" as const }}>
+                                    <div style={{ color:"#fff",fontWeight:700,fontSize:"13px" }}>{sym}{fiatVal.toLocaleString("en",{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+                                    <div style={{ color:"#7c8caa",fontSize:"11px" }}>{nativeStr}</div>
+                                  </div>
                                 </div>
                               );
                             })}
@@ -5952,12 +5959,19 @@ export default function App() {
                           <div style={{ position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#131d2d",border:"1px solid #2a3650",borderRadius:"10px",zIndex:99,maxHeight:"240px",overflowY:"auto",boxShadow:"0 8px 32px rgba(0,0,0,.7)" }}>
                             {Object.entries(coinDisplayMap).filter(([k])=>coinConfig[k]).map(([k,v])=>{
                               const selected = k===withdrawCoin;
+                              const native = coinBalances[k] ?? 0;
+                              const fiatVal = convertUsd(native * (coinConfig[k]?.priceUsd ?? 1));
+                              const sym = getCurrencySymbol(displayCurrency);
+                              const nativeStr = native === 0 ? "0" : parseFloat(native.toPrecision(8)).toString();
                               return (
                                 <div key={k} onClick={()=>{ setDepositCoin(k); setDepositNetwork(coinConfig[k]?.networks[0]||"TRC20"); setWithdrawNetwork(coinConfig[k]?.networks[0]||"TRC20"); setShowCoinDrop(false); }}
                                   style={{ display:"flex",alignItems:"center",gap:"10px",padding:"10px 14px",cursor:"pointer",background:selected?"rgba(90,154,255,.12)":"transparent",borderBottom:"1px solid #1a2840" }}>
                                   {v.icon ? <img src={v.icon} width={24} height={24} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={k}/> : <span style={{ fontSize:"18px" }}>{v.badgeText}</span>}
                                   <span style={{ color:selected?"#5a9aff":"#fff",fontWeight:600,fontSize:"13px" }}>{k}</span>
-                                  {selected && <span style={{ marginLeft:"auto",color:"#5a9aff",fontSize:"12px" }}>✓</span>}
+                                  <div style={{ marginLeft:"auto",textAlign:"right" as const }}>
+                                    <div style={{ color:"#fff",fontWeight:700,fontSize:"13px" }}>{sym}{fiatVal.toLocaleString("en",{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+                                    <div style={{ color:"#7c8caa",fontSize:"11px" }}>{nativeStr}</div>
+                                  </div>
                                 </div>
                               );
                             })}
