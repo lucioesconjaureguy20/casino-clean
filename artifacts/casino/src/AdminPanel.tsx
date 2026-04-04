@@ -72,11 +72,13 @@ const th: React.CSSProperties = {
   padding: "12px 16px", textAlign: "left", color: "#64748b",
   fontSize: "11px", fontWeight: 600, textTransform: "uppercase",
   letterSpacing: "0.8px", borderBottom: "1px solid #1e2a3d", whiteSpace: "nowrap",
+  fontFamily: "'Inter', sans-serif",
 };
 
 const td: React.CSSProperties = {
   padding: "12px 16px", fontSize: "13px", color: "#e2e8f0",
   borderBottom: "1px solid #131d30", verticalAlign: "middle",
+  fontFamily: "'Inter', sans-serif",
 };
 
 const inputStyle: React.CSSProperties = {
