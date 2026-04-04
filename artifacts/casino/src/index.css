@@ -1,0 +1,1102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* DARK CASINO THEME */
+:root {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+
+  --opaque-button-border-intensity: 9;
+
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+
+  --background: 222 47% 11%;
+  --foreground: 213 31% 91%;
+  --border: 222 30% 20%;
+  --card: 222 40% 16%;
+  --card-foreground: 213 31% 91%;
+  --card-border: 222 30% 22%;
+  --sidebar: 222 40% 14%;
+  --sidebar-foreground: 213 31% 91%;
+  --sidebar-border: 222 30% 20%;
+  --sidebar-primary: 38 92% 50%;
+  --sidebar-primary-foreground: 222 47% 11%;
+  --sidebar-accent: 222 30% 22%;
+  --sidebar-accent-foreground: 213 31% 91%;
+  --sidebar-ring: 38 92% 50%;
+  --popover: 222 40% 16%;
+  --popover-foreground: 213 31% 91%;
+  --popover-border: 222 30% 22%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 30% 22%;
+  --secondary-foreground: 213 31% 91%;
+  --muted: 222 30% 18%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 222 30% 24%;
+  --accent-foreground: 213 31% 91%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 222 30% 24%;
+  --ring: 38 92% 50%;
+  --chart-1: 38 92% 50%;
+  --chart-2: 145 63% 49%;
+  --chart-3: 217 91% 60%;
+  --chart-4: 271 76% 53%;
+  --chart-5: 0 72% 51%;
+
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: Menlo, monospace;
+  --radius: .5rem; /* 8px */
+  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00); /*replace with H S L */
+  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00); /*replace with H S L */
+  --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* Automatically computed borders - intensity can be controlled by the user by the --opaque-button-border-intensity setting */
+
+  /* Fallback for older browsers */
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+.dark {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+
+  --background: 222 47% 11%;
+  --foreground: 213 31% 91%;
+  --border: 222 30% 20%;
+  --card: 222 40% 16%;
+  --card-foreground: 213 31% 91%;
+  --card-border: 222 30% 22%;
+  --sidebar: 222 40% 14%;
+  --sidebar-foreground: 213 31% 91%;
+  --sidebar-border: 222 30% 20%;
+  --sidebar-primary: 38 92% 50%;
+  --sidebar-primary-foreground: 222 47% 11%;
+  --sidebar-accent: 222 30% 22%;
+  --sidebar-accent-foreground: 213 31% 91%;
+  --sidebar-ring: 38 92% 50%;
+  --popover: 222 40% 16%;
+  --popover-foreground: 213 31% 91%;
+  --popover-border: 222 30% 22%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 30% 22%;
+  --secondary-foreground: 213 31% 91%;
+  --muted: 222 30% 18%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 222 30% 24%;
+  --accent-foreground: 213 31% 91%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 222 30% 28%;
+  --ring: 38 92% 50%;
+  --chart-1: 38 92% 50%;
+  --chart-2: 145 63% 49%;
+  --chart-3: 217 91% 60%;
+  --chart-4: 271 76% 53%;
+  --chart-5: 0 72% 51%;
+
+  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+
+}
+
+@keyframes nlsfadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pwdReqIn {
+  from { opacity: 0; transform: translateY(-6px) scaleY(0.92); }
+  to   { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateX(-28px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes bannerFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+  50%       { transform: translateY(-18px) scale(1.12); opacity: 1; }
+}
+
+@keyframes bannerSweep {
+  0%   { transform: translateX(-140%) skewX(-15deg); opacity: 0; }
+  15%  { opacity: 0.8; }
+  85%  { opacity: 0.8; }
+  100% { transform: translateX(500%) skewX(-15deg); opacity: 0; }
+}
+
+@keyframes bannerTitleGlow {
+  0%, 100% { text-shadow: 0 0 0px transparent; }
+  50%       { text-shadow: 0 0 20px rgba(255,255,255,0.4); }
+}
+
+@keyframes dotGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
+  50%       { box-shadow: 0 0 0 6px rgba(255,255,255,0.18); }
+}
+
+@keyframes loyaltyPan {
+  0%   { background-position: 90% center; }
+  100% { background-position: 30% center; }
+}
+
+.loyalty-banner-pan {
+  animation: loyaltyPan 9s linear infinite;
+}
+
+@keyframes loyaltyScroll {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.loyalty-scroll-track {
+  animation: loyaltyScroll 14s linear infinite;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    @apply antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    zoom: 0.9;
+  }
+
+  input, button, select, textarea {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* ══ Lockly Originals card hover ══════════════════════════════════════════════ */
+.lockly-game-card {
+  transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), filter 0.2s ease;
+  border-radius: 14px;
+}
+.lockly-game-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  filter: brightness(1.1);
+  z-index: 2;
+  position: relative;
+}
+.lockly-game-card:active {
+  transform: translateY(-2px) scale(1.01);
+  filter: brightness(0.95);
+  transition-duration: 0.08s;
+}
+.lockly-game-card .lockly-thumb {
+  transition: box-shadow 0.2s ease;
+}
+.lockly-game-card:hover .lockly-thumb {
+  box-shadow: 0 10px 32px rgba(0,0,0,.5), 0 6px 20px rgba(0,0,0,.6) !important;
+}
+
+
+/* Card label below thumb */
+.lockly-card-label-name {
+  transition: color 0.15s ease;
+}
+.lockly-game-card:hover .lockly-card-label-name {
+  color: #f4a91f !important;
+}
+
+/* ── Originals section header links ── */
+.lockly-link {
+  transition: color 0.15s ease, opacity 0.15s ease;
+  cursor: pointer;
+}
+.lockly-link:hover {
+  color: #f4a91f !important;
+  opacity: 1;
+}
+.lockly-nav-btn {
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+              box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.lockly-nav-btn:hover {
+  background: #1e2d48 !important;
+  border-color: rgba(244,169,31,0.45) !important;
+  color: #f4a91f !important;
+  box-shadow: 0 0 8px rgba(244,169,31,0.15);
+}
+
+/* ══ GameInfoPanel ═════════════════════════════════════════════════════════════ */
+.gip-panel {
+  transition: border-color 0.2s ease;
+}
+.gip-panel:hover {
+  border-color: #2a4060 !important;
+}
+
+/* Header row — clicking it toggles the panel */
+.gip-header {
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 6px;
+  margin: -6px;
+  transition: background 0.15s ease;
+}
+.gip-header:hover {
+  background: rgba(255,255,255,0.03);
+}
+.gip-header:active {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Section heading left-bar accent */
+.gip-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 11.5px;
+  color: #cddcf0;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 9px;
+  padding-left: 12px;
+  position: relative;
+}
+.gip-section-heading::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  width: 3px;
+  background: linear-gradient(to bottom, #f4a91f, rgba(244,169,31,0.35));
+  border-radius: 2px;
+}
+
+/* Provably Fair link */
+.gip-pf-link {
+  color: #f4a91f;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+  font-weight: 500;
+}
+.gip-pf-link:hover {
+  color: #ffc840;
+  text-shadow: 0 0 14px rgba(244,169,31,0.45);
+}
+
+/* Toggle button — left-aligned, visibly gold */
+.gip-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: #f4a91f;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  padding: 10px 0 2px;
+  margin-top: 14px;
+  border-top: 1px solid #1a2a3e;
+  width: 100%;
+  text-align: left;
+  transition: color 0.15s ease;
+}
+.gip-toggle-btn:hover {
+  color: #f4a91f;
+}
+.gip-toggle-btn .gip-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: inherit;
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+  margin-left: 2px;
+}
+.gip-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Bullet row */
+.gip-bullet {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  color: #8090b0;
+  line-height: 1.6;
+  padding: 3px 0;
+}
+.gip-bullet::before {
+  content: '◆';
+  font-size: 6px;
+  color: #f4a91f;
+  flex-shrink: 0;
+  margin-top: 3px;
+  opacity: 0.75;
+}
+
+.banner-text-in {
+  animation: bannerIn 0.55s cubic-bezier(0.22,1,0.36,1) both;
+}
+.banner-circle-float {
+  animation: bannerFloat 5.5s ease-in-out infinite;
+}
+.banner-sweep {
+  animation: bannerSweep 4s ease-in-out infinite;
+}
+.banner-title-glow {
+  animation: bannerTitleGlow 3s ease-in-out infinite;
+}
+.banner-dot-active {
+  animation: dotGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes livePing {
+  0%   { box-shadow: 0 0 0 0   rgba(87,227,90,0.75); }
+  70%  { box-shadow: 0 0 0 9px rgba(87,227,90,0);    }
+  100% { box-shadow: 0 0 0 0   rgba(87,227,90,0);    }
+}
+.live-dot {
+  animation: livePing 1.6s ease-out infinite;
+}
+
+@keyframes winSlideIn {
+  from { margin-left: -132px; opacity: 0; }
+  to   { margin-left: 0;      opacity: 1; }
+}
+.win-slide-in {
+  animation: winSlideIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes casinoMenuSlide {
+  from { max-height: 0; opacity: 0; transform: translateY(-6px); }
+  to   { max-height: 400px; opacity: 1; transform: translateY(0); }
+}
+.casino-submenu {
+  animation: casinoMenuSlide 0.25s cubic-bezier(0.22,1,0.36,1) both;
+  overflow: hidden;
+}
+
+/**
+ * Using the elevate system.
+ * Automatic contrast adjustment.
+ *
+ * <element className="hover-elevate" />
+ * <element className="active-elevate-2" />
+ *
+ * // Using the tailwind utility when a data attribute is "on"
+ * <element className="toggle-elevate data-[state=on]:toggle-elevated" />
+ * // Or manually controlling the toggle state
+ * <element className="toggle-elevate toggle-elevated" />
+ *
+ * Elevation systems have to handle many states.
+ * - not-hovered, vs. hovered vs. active  (three mutually exclusive states)
+ * - toggled or not
+ * - focused or not (this is not handled with these utilities)
+ *
+ * Even without handling focused or not, this is six possible combinations that
+ * need to be distinguished from eachother visually.
+ */
+@layer utilities {
+
+  /* Hide ugly search cancel button in Chrome until we can style it properly */
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  /* Placeholder styling for contentEditable div */
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
+   * buttons/badges can remove the automatic brightness adjustment on interactions
+   * and program their own. */
+  .no-default-hover-elevate {}
+
+  .no-default-active-elevate {}
+
+
+  /**
+   * Toggleable backgrounds go behind the content. Hoverable/active goes on top.
+   * This way they can stack/compound. Both will overlap the parent's borders!
+   * So borders will be automatically adjusted both on toggle, and hover/active,
+   * and they will be compounded.
+   */
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: -1;
+    /* sits behind content but above backdrop */
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  /* Does not work on elements with overflow:hidden! */
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: 999;
+    /* sits in front of content */
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+}
+
+@keyframes chatSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes chatDot {
+  0%, 80%, 100% { transform: scale(.6); opacity: .4; }
+  40%           { transform: scale(1);  opacity: 1; }
+}
+
+@keyframes chatScreenIn {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Dice interactive feedback ── */
+.dice-root button {
+  transition: filter .12s ease, transform .1s ease, box-shadow .12s ease !important;
+}
+.dice-root button:hover:not(:disabled) {
+  filter: brightness(1.22);
+  transform: scale(1.04);
+  box-shadow: 0 0 8px rgba(255,255,255,.12);
+}
+.dice-root button:active:not(:disabled) {
+  filter: brightness(0.88);
+  transform: scale(0.95);
+  box-shadow: none;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.dice-root input[type="text"],
+.dice-root input[type="number"] {
+  transition: box-shadow .15s ease;
+}
+.dice-root input[type="text"]:focus,
+.dice-root input[type="number"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26,107,199,.6);
+  border-radius: 4px;
+}
+.dice-root input[type="range"] {
+  cursor: pointer;
+  transition: opacity .12s;
+}
+.dice-root input[type="range"]:hover {
+  opacity: .88;
+}
+.dice-root input[type="range"]:active {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes kenoPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1.07); }
+}
+.keno-hit {
+  animation: kenoPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes kenoHitCell {
+  0%   { transform: scale(1.04); box-shadow: 0 0 22px rgba(34,238,102,.5); }
+  30%  { transform: scale(1.18); box-shadow: 0 0 38px rgba(34,238,102,.85), 0 0 60px rgba(34,238,102,.4); }
+  60%  { transform: scale(1.10); }
+  100% { transform: scale(1.04); box-shadow: 0 0 22px rgba(34,238,102,.5); }
+}
+@keyframes kenoGemAppear {
+  0%   { opacity: 0; transform: scale(0.5) rotate(-8deg); }
+  55%  { opacity: 1; transform: scale(1.12) rotate(3deg); }
+  75%  { transform: scale(0.96) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes txPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.75); }
+}
+@keyframes kenoCenterPop {
+  0%   { opacity:0; transform: scale(0.65); }
+  65%  { transform: scale(1.06); }
+  100% { opacity:1; transform: scale(1); }
+}
+
+/* ── Hilo card-in animation ── */
+/* Hilo — initial deal: card slides from upper-left (shoe) with bounce */
+@keyframes hiloCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px) translateX(-22px) rotate(-10deg) scale(0.76);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(6px) translateX(1px) rotate(1.8deg) scale(1.025);
+  }
+  76% {
+    transform: translateY(-3px) translateX(0) rotate(-0.6deg) scale(0.988);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+  }
+}
+
+/* Hilo — flip reveal: second half of bjFlip (edge→face), exactly matching Blackjack */
+@keyframes hiloCardFlip {
+  0%   { transform: perspective(700px) rotateY(90deg); }
+  100% { transform: perspective(700px) rotateY(0deg); }
+}
+
+/* Hilo — small history card entrance (deal/skip) */
+@keyframes hiloCardSmallIn {
+  0%   { opacity: 0; transform: translateX(-18px) scale(0.88) rotate(-4deg); }
+  65%  { opacity: 1; transform: translateX(2px) scale(1.03) rotate(0.5deg); }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+}
+
+/* Hilo — exit upward (skip): abrupt yank out of deck */
+@keyframes hiloCardExitUp {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  18%  { opacity: 1; transform: translateY(-12px) rotate(-4deg) scale(1.04); }
+  100% { opacity: 0; transform: translateY(-110px) rotate(-20deg) scale(0.74); }
+}
+
+/* Hilo — back card peek up after skip exit */
+@keyframes hiloCardBackAppear {
+  0%   { opacity: 0.4; transform: translateY(16px) scale(0.92); }
+  100% { opacity: 1;   transform: translateY(0) scale(1); }
+}
+
+/* Hilo — exit left: first half of bjFlip (face → edge, 90°) */
+@keyframes hiloCardExitLeft {
+  0%   { transform: perspective(700px) rotateY(0deg); }
+  100% { transform: perspective(700px) rotateY(90deg); }
+}
+
+/* Hilo — small history card flip from right (newly guessed card) */
+@keyframes hiloCardSmallFlipRight {
+  0%   { opacity: 0; transform: perspective(400px) translateX(30px) rotateY(80deg) scale(0.85); }
+  58%  { opacity: 1; transform: perspective(400px) translateX(-3px) rotateY(-5deg) scale(1.02); }
+  78%  { transform: perspective(400px) translateX(0) rotateY(2deg) scale(0.99); }
+  100% { opacity: 1; transform: perspective(400px) translateX(0) rotateY(0deg) scale(1); }
+}
+
+/* ── Card flip animation ── */
+@keyframes bjFlip {
+  0%   { transform: perspective(700px) rotateY(0deg); }
+  42%  { transform: perspective(700px) rotateY(90deg); }
+  58%  { transform: perspective(700px) rotateY(90deg); }
+  100% { transform: perspective(700px) rotateY(0deg); }
+}
+.bj-flip-anim {
+  animation: bjFlip 0.44s cubic-bezier(0.4,0,0.6,1) both;
+}
+
+/* ── Global interactive cursor ── */
+button:not(:disabled),
+[role="button"],
+label[for],
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"],
+select {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ── Mines / Plinko / Keno interactive button feedback ── */
+.mines-root button,
+.plinko-root button,
+.keno-root button {
+  transition: filter .12s ease, transform .1s ease !important;
+}
+.mines-root button:hover:not(:disabled),
+.plinko-root button:hover:not(:disabled),
+.keno-root button:hover:not(:disabled) {
+  filter: brightness(1.18);
+  transform: scale(1.04);
+}
+.mines-root button:active:not(:disabled),
+.plinko-root button:active:not(:disabled),
+.keno-root button:active:not(:disabled) {
+  filter: brightness(0.88);
+  transform: scale(0.96);
+}
+
+/* ── Blackjack action buttons (Pedir / Plantarse / 2× Doblar / Separar) ── */
+.bj-action-btn:not(:disabled):hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+.bj-action-btn:not(:disabled):active {
+  filter: brightness(0.92);
+  transform: translateY(1px);
+  box-shadow: none !important;
+}
+
+/* ── Blackjack deal button ── */
+.bj-deal-btn:not(:disabled):hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+.bj-deal-btn:not(:disabled):active {
+  filter: brightness(0.9);
+  transform: translateY(1px);
+}
+
+/* ── Blackjack bet shortcut buttons (Min ½ 2× Max) ── */
+.bj-bet-btn:not(:disabled):hover {
+  background: #243050 !important;
+  color: #c0d0e8 !important;
+  border-color: #3a4a68 !important;
+}
+.bj-bet-btn:not(:disabled):active {
+  background: #1a2438 !important;
+  transform: scale(0.97);
+}
+/* ── Header icon buttons (rewards + bell) ── */
+.hdr-icon-btn:hover {
+  background: #3d4a62 !important;
+  transform: scale(1.08);
+}
+.hdr-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* ── Notification toast slide-in animation ── */
+@keyframes notifSlideIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ── Notification toast slide-out animation ── */
+@keyframes notifSlideOut {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(50px) scale(0.93); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Global interactive feedback — pointer + hover/active for every
+   clickable element in the casino UI.
+
+   Strategy: React renders `cursor:"pointer"` as the inline style
+   attribute value `cursor: pointer`, so the CSS attribute selector
+   [style*="cursor: pointer"] catches every one of those divs/spans
+   automatically. Native <button> elements are handled separately.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1. Pointer cursor on all native <button> elements */
+button:not(:disabled) {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* 2. Smooth transition base — applied to every element with explicit
+      cursor:pointer so hover/active changes animate in */
+[style*="cursor: pointer"],
+button:not(:disabled) {
+  transition:
+    filter 0.12s ease,
+    transform 0.08s ease,
+    opacity 0.12s ease,
+    background 0.12s ease,
+    background-color 0.12s ease;
+}
+
+/* 3. Hover: brightness boost removed — buttons keep their color on hover */
+
+/* 4. Active (click-down): quick scale-down gives tactile feedback */
+[style*="cursor: pointer"]:active,
+button:not(:disabled):active {
+  transform: scale(0.96);
+  filter: brightness(0.97);
+  transition: transform 0.06s ease, filter 0.06s ease;
+}
+
+/* Affiliate Program — hover effects */
+.aff-faq-btn:hover {
+  background: rgba(255,255,255,0.045) !important;
+}
+.aff-contact-link:hover {
+  color: #f6b531 !important;
+}
+.aff-contact-link:hover .aff-contact-icon {
+  background: rgba(246,181,49,0.18) !important;
+  border-color: rgba(246,181,49,0.45) !important;
+}
+.aff-info-btn:hover {
+  color: #8fa3be !important;
+}
+.aff-tab-btn:hover {
+  color: #e2e8f0 !important;
+}
+
+/* Primary gold button */
+.aff-primary-btn {
+  transition: filter 0.15s ease, transform 0.1s ease !important;
+}
+.aff-primary-btn:hover {
+  filter: brightness(1.12) !important;
+}
+
+/* Outline / secondary button */
+.aff-outline-btn {
+  transition: background 0.15s ease, border-color 0.15s ease !important;
+}
+.aff-outline-btn:hover {
+  background: rgba(255,255,255,0.11) !important;
+  border-color: rgba(255,255,255,0.22) !important;
+}
+
+/* Period dropdown toggle button */
+.aff-period-btn {
+  transition: background 0.15s ease, border-color 0.15s ease !important;
+}
+.aff-period-btn:hover {
+  background: #131f31 !important;
+  border-color: #2d3f57 !important;
+}
+
+/* Custom date range boxes */
+.aff-date-box {
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+}
+.aff-date-box:hover {
+  border-color: #2d3f57 !important;
+  background: #131f31 !important;
+}
+
+/* 5. Exceptions — elements that manage their own visual state and
+      should not get the global brightness override */
+input[type="range"][style*="cursor: pointer"]:hover,
+input[style*="cursor: pointer"]:hover,
+img[style*="cursor: pointer"]:hover {
+  filter: none;
+}
+
+/* 6. Affiliate date picker — expand native calendar icon to fill entire input,
+      hide it visually, so clicking anywhere on the field opens the calendar */
+input.aff-date-input {
+  position: relative;
+  cursor: pointer;
+}
+input.aff-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ── VIP info tooltip ────────────────────────────────────────────────────── */
+.rb-tip { position: relative; display: inline-flex; cursor: default; }
+.rb-tip-box {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #1a2640;
+  border: 1px solid #2a3a54;
+  border-radius: 9px;
+  padding: 10px 13px;
+  font-size: 12px;
+  color: #c8d8ec;
+  line-height: 1.55;
+  white-space: normal;
+  width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+.rb-tip:hover .rb-tip-box { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@keyframes vip-bounce {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-8px) scale(1.12); }
+}
+@keyframes vip-reveal {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes vip-bar-fill {
+  from { width: 0%; }
+}
+
+/* ── Inter font — scoped to Rewards / VIP section only ─────── */
+.vip-section,
+.vip-section * {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ── Rakeback: blur locked amounts ──────────────────────────── */
+.rb-amount-blur {
+  filter: blur(5px);
+  transition: filter .4s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Available stripe pulse ─────────────────────────────────── */
+@keyframes rb-stripe-anim {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.rb-stripe-pulse {
+  background-size: 200% 100% !important;
+  animation: rb-stripe-anim 2.4s ease infinite;
+}
+
+/* ── Pulsing green dot ───────────────────────────────────────── */
+@keyframes rb-dot-anim {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+.rb-dot-pulse { animation: rb-dot-anim 1.4s ease-in-out infinite; }
+
+/* ── "Growing" text subtle fade ─────────────────────────────── */
+@keyframes rb-grow-anim {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+.rb-grow-pulse { animation: rb-grow-anim 2s ease-in-out infinite; }
+
+/* ── Rakeback card hover glow ───────────────────────────────── */
+.rb-card:hover { border-color: #2e3a52 !important; }
+
+/* ── Current rank card pulse glow ───────────────────────────── */
+@keyframes rank-glow-pulse {
+  0%, 100% { box-shadow: 0 0 18px var(--rank-glow, #f4a91f30); }
+  50%       { box-shadow: 0 0 30px var(--rank-glow, #f4a91f55); }
+}
+.rank-card-current { animation: rank-glow-pulse 2.5s ease-in-out infinite; }
+
+/* ── Rewards section responsive grid ───────────────────────── */
+@media (max-width: 680px) {
+  .rb-pools-grid { grid-template-columns: 1fr !important; }
+  .rb-rewards-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Cashier panel interactive states ───────────────────────── */
+.cashier-tab:hover { color: #b0bccc !important; }
+.cashier-drop:hover { border-color: #4a6080 !important; background: #1e2e42 !important; transition: border-color .15s, background .15s; }
+.cashier-item:hover { background: rgba(90,154,255,.18) !important; }
+.cashier-btn:hover { filter: brightness(1.18); transition: filter .15s; }
+.cashier-btn { transition: filter .15s; }
+.cashier-input:focus { border-color: #4a6080 !important; outline: none; }
