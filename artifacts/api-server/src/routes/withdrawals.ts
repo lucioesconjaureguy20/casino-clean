@@ -248,6 +248,26 @@ async function patchWithdrawal(id: string, patch: Record<string, unknown>) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
+// 0. GET /api/withdraw/my-withdrawals
+//    - Returns the authenticated user's withdrawals (for polling)
+// ═════════════════════════════════════════════════════════════════════════════
+
+router.get("/withdraw/my-withdrawals", requireAuth, async (req: Request, res: Response) => {
+  const userId = req.authUser!.id;
+  const r = await sbAdmin(
+    `withdrawals?user_id=eq.${encodeURIComponent(userId)}&order=created_at.desc&select=id,amount,currency,network,wallet,status,tx_hash,created_at&limit=20`,
+    { headers: { Prefer: "count=none" } },
+  );
+  if (!r.ok) {
+    const err = await r.text();
+    console.error("[WITHDRAW my-withdrawals] error:", err);
+    return res.status(502).json({ error: "Error al obtener retiros." });
+  }
+  const rows: any[] = await r.json();
+  return res.json({ withdrawals: rows });
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
 // 1. POST /api/withdraw/create
 //    - Validate wallet + amount + balance
 //    - Lock funds: balance -= amount, locked_amount += amount

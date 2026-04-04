@@ -1872,6 +1872,90 @@ export default function App() {
     return () => clearInterval(id);
   }, []);
 
+  // ── Polling: detect when user's withdrawal changes to paid/rejected ───────
+  useEffect(() => {
+    if (!currentUser) return;
+    const SEEN_KEY = `withdraw_notified_${currentUser}`;
+    const getSeenMap = (): Record<string, string> => {
+      try { return JSON.parse(localStorage.getItem(SEEN_KEY) || "{}"); } catch { return {}; }
+    };
+
+    const checkWithdrawals = async () => {
+      const sess = supaSessionRef.current;
+      if (!sess?.access_token) return;
+      try {
+        const res = await fetch("/api/withdraw/my-withdrawals", {
+          headers: { Authorization: `Bearer ${sess.access_token}` },
+        });
+        if (!res.ok) return;
+        const { withdrawals } = await res.json();
+        if (!Array.isArray(withdrawals)) return;
+
+        const seen = getSeenMap();
+        let changed = false;
+
+        for (const w of withdrawals) {
+          const prevStatus = seen[w.id];
+          const curStatus  = w.status;
+          if (prevStatus === curStatus) continue;
+
+          seen[w.id] = curStatus;
+          changed = true;
+
+          const usd = `$${parseFloat(w.amount).toFixed(2)}`;
+          const coin = w.currency;
+
+          if (curStatus === "paid" && prevStatus !== undefined) {
+            // Build notification
+            const notif: AppNotification = {
+              id: `w_paid_${w.id}`,
+              type: "withdraw",
+              title: "Retiro enviado",
+              message: `${usd} ${coin} fueron procesados y enviados a tu wallet.${w.tx_hash ? ` TX: ${w.tx_hash}` : ""}`,
+              createdAt: new Date().toISOString(),
+              read: false,
+            };
+            const existing = ls.getNotifs(currentUser);
+            if (!existing.find(n => n.id === notif.id)) {
+              const updated = [notif, ...existing].slice(0, 50);
+              ls.saveNotifs(currentUser, updated);
+              setNotifications(updated);
+              setToastExiting(false);
+              setToast({ title: notif.title, message: notif.message, type: "withdraw" });
+              if (toastTimerRef.current)     clearTimeout(toastTimerRef.current);
+              if (toastExitTimerRef.current) clearTimeout(toastExitTimerRef.current);
+              toastTimerRef.current     = setTimeout(() => setToastExiting(true), 12500);
+              toastExitTimerRef.current = setTimeout(() => { setToast(null); setToastExiting(false); }, 13000);
+            }
+          } else if (curStatus === "rejected" && prevStatus !== undefined) {
+            const notif: AppNotification = {
+              id: `w_rej_${w.id}`,
+              type: "info",
+              title: "Retiro rechazado",
+              message: `Tu solicitud de retiro de ${usd} ${coin} fue rechazada. Contactá al soporte.`,
+              createdAt: new Date().toISOString(),
+              read: false,
+            };
+            const existing = ls.getNotifs(currentUser);
+            if (!existing.find(n => n.id === notif.id)) {
+              const updated = [notif, ...existing].slice(0, 50);
+              ls.saveNotifs(currentUser, updated);
+              setNotifications(updated);
+            }
+          }
+        }
+
+        if (changed) localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+      } catch {
+        // Silently fail — polling is best-effort
+      }
+    };
+
+    checkWithdrawals(); // Check immediately on mount
+    const id = setInterval(checkWithdrawals, 30_000); // Then every 30s
+    return () => clearInterval(id);
+  }, [currentUser]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Persist liveWins across reloads ──────────────────────────────────────
   useEffect(() => {
     try { localStorage.setItem("mander_live_wins", JSON.stringify(liveWins)); } catch {}
@@ -3350,6 +3434,15 @@ export default function App() {
           serverTxId = data.withdrawal?.id;
           serverDisplayId = data.transaction_display_id ?? data.withdrawal?.id;
           console.log("[Withdraw Supabase] OK — withdrawal_id:", serverTxId, "display_id:", serverDisplayId);
+          // Register in seen map so polling can detect status transitions
+          if (serverTxId) {
+            try {
+              const SEEN_KEY = `withdraw_notified_${currentUser}`;
+              const seen: Record<string, string> = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}");
+              seen[serverTxId] = "pending";
+              localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+            } catch {}
+          }
         } else {
           const errBody = await res.json().catch(() => ({}));
           const errMsg = (errBody as any)?.error ?? `Error ${res.status}`;
