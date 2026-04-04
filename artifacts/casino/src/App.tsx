@@ -5884,6 +5884,9 @@ export default function App() {
                         <img src={`https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={110} height={110} style={{ display:"block" }} alt="QR"/>
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"4px" }}>
+                        <div style={{ textAlign:"right" as const,fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
+                          <strong style={{ color:"#c8d6ea" }}>{pendingDeposit.network} only</strong>, do not use other networks
+                        </div>
                         <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:"6px",fontSize:"12px",color:"#7c8caa" }}>
                           <span>Min. deposit:</span>
                           <span style={{ color:"#fff",fontWeight:600 }}>{minDepositNative(pendingDeposit.coin!, pendingDeposit.network!).toFixed(8)} {pendingDeposit.coin}</span>
