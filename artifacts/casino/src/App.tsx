@@ -5881,7 +5881,7 @@ export default function App() {
                     {/* QR left | address+Copy stacked right */}
                     <div style={{ display:"flex",alignItems:"stretch",gap:"12px" }}>
                       <div style={{ flexShrink:0,background:"#fff",borderRadius:"7px",padding:"4px",display:"inline-flex" }}>
-                        <img src={`https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={110} height={110} style={{ display:"block" }} alt="QR"/>
+                        <img src={`https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={148} height={148} style={{ display:"block" }} alt="QR"/>
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"4px" }}>
                         <div style={{ textAlign:"right" as const,fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
@@ -5892,7 +5892,7 @@ export default function App() {
                           <span style={{ color:"#fff",fontWeight:600 }}>{minDepositNative(pendingDeposit.coin!, pendingDeposit.network!).toFixed(8)} {pendingDeposit.coin}</span>
                         </div>
                         <div onClick={()=>{ navigator.clipboard.writeText(pendingDeposit!.address!); setAddressCopied(true); setTimeout(()=>setAddressCopied(false),2000); }}
-                          style={{ background:"#0d1622",border:`1px solid ${addressCopied?"#2a6a44":"#2e3f58"}`,borderRadius:"8px",padding:"8px 12px",color:"#d4e0f0",fontWeight:500,fontSize:"13.5px",wordBreak:"break-all" as const,lineHeight:1.6,display:"flex",alignItems:"center",gap:"10px",cursor:"pointer",transition:"border-color .2s" }}>
+                          style={{ background:"#0d1622",border:`1px solid ${addressCopied?"#2a6a44":"#2e3f58"}`,borderRadius:"8px",padding:"8px 12px",color:"#d4e0f0",fontWeight:500,fontSize:"11px",wordBreak:"break-all" as const,lineHeight:1.6,display:"flex",alignItems:"center",gap:"10px",cursor:"pointer",transition:"border-color .2s" }}>
                           <span style={{ flex:1 }}>{pendingDeposit.address}</span>
                           <span style={{ flexShrink:0,color:addressCopied?"#4ade80":"#8a9ab8",transition:"color .2s" }}>
                             {addressCopied
