@@ -1802,13 +1802,6 @@ function AlertsTab({ token }: { token: string }) {
         </div>
       )}
 
-      {/* SQL note */}
-      <div style={{ marginTop: 18, background: "#0d1525", border: "1px solid #1e2a3d", borderRadius: 10, padding: "10px 16px", fontSize: 11, color: "#475569" }}>
-        <span style={{ color: "#f59e0b", fontWeight: 600 }}>Para activar bloqueo de usuarios</span> — ejecutar una vez en Supabase SQL Editor:{" "}
-        <code style={{ background: "#131d30", padding: "1px 7px", borderRadius: 4, color: "#22d3ee", fontFamily: "monospace" }}>
-          ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_blocked boolean DEFAULT false;
-        </code>
-      </div>
     </>
   );
 }
