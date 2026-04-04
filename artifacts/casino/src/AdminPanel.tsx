@@ -890,6 +890,15 @@ function AlertsTab({ token }: { token: string }) {
   const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
   const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
   const [view, setView]           = useState<"alerts" | "blocked">("alerts");
+  const [expanded, setExpanded]   = useState<Set<string>>(new Set());
+
+  function toggleExpand(id: string) {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -1111,6 +1120,13 @@ function AlertsTab({ token }: { token: string }) {
       {/* ══════════════ VISTA: BLOQUEADOS ══════════════ */}
       {view === "blocked" && (data?.blockedUsers.length ?? 0) > 0 && (
         <div style={{ marginBottom: 24 }}>
+          <style>{`
+            @keyframes blockExpand {
+              from { opacity: 0; transform: translateY(-6px); }
+              to   { opacity: 1; transform: translateY(0);    }
+            }
+          `}</style>
+
           {/* Section header */}
           <div style={{
             display: "flex", alignItems: "center", gap: 10, marginBottom: 12,
@@ -1124,82 +1140,118 @@ function AlertsTab({ token }: { token: string }) {
             }}>{data!.blockedUsers.length}</span>
           </div>
 
-          {/* One card per blocked user */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {/* Accordion list */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {data!.blockedUsers.map(bu => {
               const userAlerts = (data?.alerts ?? []).filter(a => a.userId === bu.id);
-              const busy = acting === bu.id;
+              const busy       = acting === bu.id;
+              const open       = expanded.has(bu.id);
+
               return (
                 <div key={bu.id} style={{
-                  background: "#0d0808", border: "2px solid #7f1d1d",
-                  borderRadius: 12, overflow: "hidden",
+                  background: "#0d0808", border: `2px solid ${open ? "#991b1b" : "#3f1515"}`,
+                  borderRadius: 12, overflow: "hidden", transition: "border-color .2s",
                 }}>
-                  {/* User header row */}
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
-                    padding: "12px 16px", background: "#1a0808", borderBottom: "1px solid #2d1010",
-                  }}>
-                    <span style={{ fontSize: 16 }}>🔒</span>
+                  {/* ── Row header (clickable to expand) ── */}
+                  <div
+                    onClick={() => toggleExpand(bu.id)}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+                      padding: "13px 16px", background: open ? "#1f0808" : "#160606",
+                      cursor: "pointer", userSelect: "none", transition: "background .2s",
+                    }}
+                  >
+                    {/* Chevron arrow */}
+                    <svg
+                      viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="#7f1d1d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                      style={{ flexShrink: 0, transition: "transform .25s cubic-bezier(0.22,1,0.36,1)", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+
+                    <span style={{ fontSize: 15 }}>🔒</span>
                     <span style={{ fontWeight: 800, fontSize: 14, color: "#f87171" }}>@{bu.username}</span>
                     <span style={{
                       background: "#7f1d1d", color: "#fca5a5", borderRadius: 5,
                       padding: "1px 7px", fontSize: 10, fontWeight: 700, letterSpacing: "0.4px",
                     }}>BLOQUEADO</span>
+
+                    {/* Alert count badge */}
+                    {userAlerts.length > 0 && (
+                      <span style={{
+                        background: "#1e2a3d", border: "1px solid #2a3550",
+                        borderRadius: 20, padding: "1px 8px", fontSize: 11, color: "#94a3b8", fontWeight: 600,
+                      }}>
+                        {userAlerts.length} alerta{userAlerts.length !== 1 ? "s" : ""}
+                      </span>
+                    )}
+                    {userAlerts.length === 0 && (
+                      <span style={{ fontSize: 11, color: "#475569", fontStyle: "italic" }}>sin alertas en este período</span>
+                    )}
+
+                    {/* Unblock button — stop propagation so it doesn't toggle */}
                     <button
-                      onClick={() => unblockUser(bu.id, bu.username)}
+                      onClick={e => { e.stopPropagation(); unblockUser(bu.id, bu.username); }}
                       disabled={busy}
                       style={{
                         marginLeft: "auto", background: "#14532d", border: "1px solid #166534",
                         borderRadius: 7, color: "#86efac", cursor: busy ? "not-allowed" : "pointer",
                         fontSize: 12, fontWeight: 700, padding: "6px 14px", opacity: busy ? 0.6 : 1,
-                        fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap",
+                        fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                       }}
                     >{busy ? "…" : "Desbloquear"}</button>
                   </div>
 
-                  {/* Alert rows for this user */}
-                  <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
-                    {userAlerts.length === 0 ? (
-                      <div style={{ fontSize: 12, color: "#475569", fontStyle: "italic", padding: "4px 0" }}>
-                        Sin alertas en el período seleccionado — posiblemente fue bloqueado en base a actividad histórica.
-                      </div>
-                    ) : userAlerts.map(a => {
-                      const s  = SEV[a.severity];
-                      const tm = TYPE_META[a.type] ?? { label: a.type, icon: "❓" };
-                      return (
-                        <div key={a.id} style={{
-                          display: "flex", gap: 10, alignItems: "flex-start",
-                          background: "#110c0c", border: `1px solid ${s.border}`,
-                          borderLeft: `3px solid ${s.color}`, borderRadius: 8, padding: "10px 12px",
-                        }}>
-                          <span style={{ fontSize: 20, lineHeight: 1, flexShrink: 0 }}>{tm.icon}</span>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
-                              <span style={{
-                                background: s.bg, color: s.color, border: `1px solid ${s.border}`,
-                                borderRadius: 5, padding: "1px 6px", fontSize: 10, fontWeight: 700,
-                              }}>{s.dot} {s.label.toUpperCase()}</span>
-                              <span style={{ fontSize: 11, color: "#475569" }}>{tm.icon} {tm.label}</span>
-                              <span style={{ marginLeft: "auto", fontSize: 11, color: "#334155", whiteSpace: "nowrap" }}>
-                                {fmt(a.createdAt)}
-                              </span>
-                            </div>
-                            <div style={{ fontSize: 12, fontWeight: 600, color: s.color, marginBottom: 2 }}>{a.title}</div>
-                            <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>{a.detail}</div>
-                            {a.wallet && (
-                              <div style={{ fontSize: 11, color: "#334155", marginTop: 4, display: "flex", gap: 6, alignItems: "center" }}>
-                                <span style={{ color: "#475569" }}>Wallet:</span>
-                                <code style={{ background: "#0d1525", padding: "2px 6px", borderRadius: 4, color: "#94a3b8", fontFamily: "monospace", fontSize: 10 }}>
-                                  {a.wallet.slice(0, 14)}…{a.wallet.slice(-6)}
-                                </code>
-                                {a.network && <span style={{ color: "#334155" }}>· {a.network}</span>}
-                              </div>
-                            )}
-                          </div>
+                  {/* ── Expandable alerts panel ── */}
+                  {open && (
+                    <div style={{
+                      padding: "10px 16px 14px", display: "flex", flexDirection: "column", gap: 8,
+                      borderTop: "1px solid #2d1010",
+                      animation: "blockExpand .25s cubic-bezier(0.22,1,0.36,1)",
+                    }}>
+                      {userAlerts.length === 0 ? (
+                        <div style={{ fontSize: 12, color: "#475569", fontStyle: "italic", padding: "6px 0" }}>
+                          Sin alertas en el período seleccionado — posiblemente fue bloqueado en base a actividad histórica.
                         </div>
-                      );
-                    })}
-                  </div>
+                      ) : userAlerts.map(a => {
+                        const s  = SEV[a.severity];
+                        const tm = TYPE_META[a.type] ?? { label: a.type, icon: "❓" };
+                        return (
+                          <div key={a.id} style={{
+                            display: "flex", gap: 10, alignItems: "flex-start",
+                            background: "#110c0c", border: `1px solid ${s.border}`,
+                            borderLeft: `3px solid ${s.color}`, borderRadius: 8, padding: "10px 12px",
+                          }}>
+                            <span style={{ fontSize: 20, lineHeight: 1, flexShrink: 0 }}>{tm.icon}</span>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
+                                <span style={{
+                                  background: s.bg, color: s.color, border: `1px solid ${s.border}`,
+                                  borderRadius: 5, padding: "1px 6px", fontSize: 10, fontWeight: 700,
+                                }}>{s.dot} {s.label.toUpperCase()}</span>
+                                <span style={{ fontSize: 11, color: "#475569" }}>{tm.icon} {tm.label}</span>
+                                <span style={{ marginLeft: "auto", fontSize: 11, color: "#334155", whiteSpace: "nowrap" }}>
+                                  {fmt(a.createdAt)}
+                                </span>
+                              </div>
+                              <div style={{ fontSize: 12, fontWeight: 600, color: s.color, marginBottom: 2 }}>{a.title}</div>
+                              <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>{a.detail}</div>
+                              {a.wallet && (
+                                <div style={{ fontSize: 11, color: "#334155", marginTop: 4, display: "flex", gap: 6, alignItems: "center" }}>
+                                  <span style={{ color: "#475569" }}>Wallet:</span>
+                                  <code style={{ background: "#0d1525", padding: "2px 6px", borderRadius: 4, color: "#94a3b8", fontFamily: "monospace", fontSize: 10 }}>
+                                    {a.wallet.slice(0, 14)}…{a.wallet.slice(-6)}
+                                  </code>
+                                  {a.network && <span style={{ color: "#334155" }}>· {a.network}</span>}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               );
             })}
