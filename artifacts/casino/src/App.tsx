@@ -3585,6 +3585,9 @@ export default function App() {
     return matchCat && matchQ;
   });
 
+  const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
+  const statusLabel = (s: string) => s==="completed"||s==="approved" ? "Completado" : s==="pending" ? "Pendiente" : s==="expired" ? "Expirado" : "Rechazado";
+
   // ─────────────────────────────────────────────────────────────────────
   // ─── APP ────────────────────────────────────────────────────────────
   return (
