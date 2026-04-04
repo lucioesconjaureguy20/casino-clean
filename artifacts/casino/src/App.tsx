@@ -6696,8 +6696,10 @@ export default function App() {
                 display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
               }}>
                 <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#60a5fa" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
+                  <path d="M5 22h14"/>
+                  <path d="M5 2h14"/>
+                  <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                  <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
                 </svg>
               </div>
               <div>
