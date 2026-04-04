@@ -443,6 +443,7 @@ router.get("/profile", requireAuth, async (req: Request, res: Response) => {
       .map(s => s.trim().toLowerCase())
       .filter(Boolean);
     const isAdmin = adminUsernames.includes((profileRow.username || "").toLowerCase());
+    console.log(`[ADMIN CHECK] ADMIN_USERNAMES="${process.env.ADMIN_USERNAMES}" username="${profileRow.username}" isAdmin=${isAdmin}`);
 
     return res.json({
       profile: {
