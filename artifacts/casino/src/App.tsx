@@ -1906,6 +1906,49 @@ export default function App() {
           const coin = w.currency;
 
           if (curStatus === "paid" && prevStatus !== undefined) {
+            // Re-fetch server transactions so the UI shows "completed" immediately
+            try {
+              const txRes = await fetch("/api/transactions", {
+                headers: { Authorization: `Bearer ${sess.access_token}` },
+              });
+              if (txRes.ok) {
+                const { transactions: serverTxs } = await txRes.json();
+                const localTxs: Transaction[] = ls.getTx(currentUser);
+                const localById = new Map(localTxs.map((t: Transaction) => [t.id, t]));
+                const localByAddress = new Map(
+                  localTxs.filter((t: Transaction) => t.address).map((t: Transaction) => [t.address!, t])
+                );
+                const STATUS_RANK: Record<string, number> = { pending: 0, failed: 1, cancelled: 1, completed: 2 };
+                const serverIds = new Set<string>();
+                const serverAddresses = new Set<string>();
+                const mapped: Transaction[] = (serverTxs as any[]).map((tx: any) => {
+                  serverIds.add(tx.id);
+                  if (tx.external_tx_id) serverAddresses.add(tx.external_tx_id);
+                  const localTx =
+                    localById.get(tx.id) ??
+                    (tx.external_tx_id ? localByAddress.get(tx.external_tx_id) : undefined);
+                  const serverRank = STATUS_RANK[tx.status] ?? 0;
+                  const localRank  = localTx ? (STATUS_RANK[localTx.status] ?? 0) : -1;
+                  const finalStatus = localRank > serverRank ? localTx!.status : tx.status;
+                  return {
+                    id: tx.id, type: tx.type === "withdrawal" ? "withdraw" : tx.type,
+                    coin: tx.currency, network: tx.network, usdAmount: tx.amount,
+                    coinAmount: localTx?.coinAmount, address: tx.external_tx_id || localTx?.address || "",
+                    status: finalStatus, createdAt: tx.created_at,
+                    display_id: tx.display_id ?? localTx?.display_id,
+                  } as Transaction;
+                });
+                const localOnly = localTxs.filter(
+                  (t: Transaction) => t.id && !serverIds.has(t.id) && (!t.address || !serverAddresses.has(t.address))
+                );
+                const merged = [...mapped, ...localOnly].sort(
+                  (a: Transaction, b: Transaction) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                );
+                ls.saveTx(currentUser, merged);
+                setTransactions(merged);
+              }
+            } catch { /* non-fatal */ }
+
             // Build notification
             const notif: AppNotification = {
               id: `w_paid_${w.id}`,
