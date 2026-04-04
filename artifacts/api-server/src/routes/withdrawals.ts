@@ -593,11 +593,11 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
 
   // ── Step 5: Update existing pending transaction or insert new one ─────────
   const txPatch = {
-    status:         "completed",
-    amount:         -Math.abs(parsed),
-    external_tx_id: (tx_hash as string | undefined)?.trim() || null,
-    notes:          `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
-    completed_at:   new Date().toISOString(),
+    status:        "completed",
+    amount:        -Math.abs(parsed),
+    notes:         `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
+    completed_at:  new Date().toISOString(),
+    // external_tx_id intentionally NOT updated — keeps the original wallet address
   };
 
   // Try to find the existing pending withdrawal transaction for this user+currency

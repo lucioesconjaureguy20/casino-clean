@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, Fragment } from "react";
 import { createPortal } from "react-dom";
 import { supabase, authSignUp, authLogin, authLogout, authForgotPassword, getOrRefreshSession, clearSession, type AuthSession } from "./auth";
 import BlackjackGame, { BJStats, bjStatsDefault } from "./BlackjackGame";
@@ -574,7 +574,7 @@ interface DiceStats {
 
 interface Transaction {
   id?: string; type: string; coin: string; network: string; usdAmount: number; coinAmount?: number;
-  address?: string; status: string; createdAt: string; display_id?: number;
+  address?: string; status: string; createdAt: string; display_id?: number; tx_hash?: string;
 }
 
 // ── Contadores globales de IDs visibles por tipo de transacción ───────────────
@@ -1016,6 +1016,7 @@ export default function App() {
   const [rwPage, setRwPage] = useState(0);
   const [txFilter, setTxFilter] = useState<"deposit"|"withdraw">("deposit");
   const [txPage, setTxPage] = useState(0);
+  const [expandedTxId, setExpandedTxId] = useState<string|null>(null);
   const [bhFilter, setBhFilter] = useState<string>("all");
   const [bhPage, setBhPage] = useState(0);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
@@ -1522,6 +1523,11 @@ export default function App() {
             const STATUS_RANK: Record<string, number> = { pending: 0, failed: 1, cancelled: 1, completed: 2 };
             const serverIds      = new Set<string>();
             const serverAddresses = new Set<string>();
+            const parseTxHash = (notes: string | null | undefined): string | undefined => {
+              if (!notes) return undefined;
+              const m = notes.match(/TX:\s*([^\s,]+)/);
+              return m && m[1] !== "—" ? m[1] : undefined;
+            };
             const mapped: Transaction[] = (serverTxs as any[]).map((tx: any) => {
               serverIds.add(tx.id);
               if (tx.external_tx_id) serverAddresses.add(tx.external_tx_id);
@@ -1536,12 +1542,13 @@ export default function App() {
                 type:       tx.type === "withdrawal" ? "withdraw" : tx.type,
                 coin:       tx.currency,
                 network:    tx.network,
-                usdAmount:  tx.amount,
+                usdAmount:  Math.abs(tx.amount),
                 coinAmount: localTx?.coinAmount,
                 address:    tx.external_tx_id || localTx?.address || "",
                 status:     finalStatus,
                 createdAt:  tx.created_at,
                 display_id: tx.display_id ?? localTx?.display_id,
+                tx_hash:    parseTxHash(tx.notes) ?? localTx?.tx_hash,
               } as Transaction;
             });
             const localOnly = localTxs.filter(
@@ -1921,6 +1928,11 @@ export default function App() {
                 const STATUS_RANK: Record<string, number> = { pending: 0, failed: 1, cancelled: 1, completed: 2 };
                 const serverIds = new Set<string>();
                 const serverAddresses = new Set<string>();
+                const parseTxHashP = (notes: string | null | undefined): string | undefined => {
+                  if (!notes) return undefined;
+                  const m = notes.match(/TX:\s*([^\s,]+)/);
+                  return m && m[1] !== "—" ? m[1] : undefined;
+                };
                 const mapped: Transaction[] = (serverTxs as any[]).map((tx: any) => {
                   serverIds.add(tx.id);
                   if (tx.external_tx_id) serverAddresses.add(tx.external_tx_id);
@@ -1932,10 +1944,11 @@ export default function App() {
                   const finalStatus = localRank > serverRank ? localTx!.status : tx.status;
                   return {
                     id: tx.id, type: tx.type === "withdrawal" ? "withdraw" : tx.type,
-                    coin: tx.currency, network: tx.network, usdAmount: tx.amount,
+                    coin: tx.currency, network: tx.network, usdAmount: Math.abs(tx.amount),
                     coinAmount: localTx?.coinAmount, address: tx.external_tx_id || localTx?.address || "",
                     status: finalStatus, createdAt: tx.created_at,
                     display_id: tx.display_id ?? localTx?.display_id,
+                    tx_hash: parseTxHashP(tx.notes) ?? localTx?.tx_hash,
                   } as Transaction;
                 });
                 const localOnly = localTxs.filter(
@@ -5087,18 +5100,32 @@ export default function App() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {pageData.map((tx,i)=>(
-                                    <tr key={i} style={{ borderBottom:"1px solid #1a2236" }}
+                                  {pageData.map((tx,i)=>{
+                                    const txKey = tx.id ?? `${tx.createdAt}_${i}`;
+                                    const isExpanded = expandedTxId === txKey;
+                                    const canExpand = tx.type === "withdraw" && (tx.address || tx.tx_hash);
+                                    return (
+                                    <Fragment key={txKey}>
+                                    <tr style={{ borderBottom: isExpanded ? "none" : "1px solid #1a2236", cursor: canExpand ? "pointer" : "default" }}
+                                      onClick={()=>{ if(canExpand) setExpandedTxId(isExpanded ? null : txKey); }}
                                       onMouseEnter={e=>(e.currentTarget.style.background="#1a2438")}
                                       onMouseLeave={e=>(e.currentTarget.style.background="transparent")}>
                                       <td style={{ padding:"13px 16px", whiteSpace:"nowrap" as const }}>
-                                        {tx.display_id ? (
-                                          <span style={{ fontFamily:"monospace", fontSize:"12px", fontWeight:700, color:"#5b8dee", background:"#1a2a4a", border:"1px solid #2a3a6a", borderRadius:"5px", padding:"3px 7px" }}>
-                                            #{tx.display_id}
-                                          </span>
-                                        ) : (
-                                          <span style={{ color:"#4a5e7a", fontSize:"12px" }}>—</span>
-                                        )}
+                                        <div style={{ display:"flex", alignItems:"center", gap:"6px" }}>
+                                          {tx.display_id ? (
+                                            <span style={{ fontFamily:"monospace", fontSize:"12px", fontWeight:700, color:"#5b8dee", background:"#1a2a4a", border:"1px solid #2a3a6a", borderRadius:"5px", padding:"3px 7px" }}>
+                                              #{tx.display_id}
+                                            </span>
+                                          ) : (
+                                            <span style={{ color:"#4a5e7a", fontSize:"12px" }}>—</span>
+                                          )}
+                                          {canExpand && (
+                                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#4a5e7a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                              style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>
+                                              <polyline points="6 9 12 15 18 9"/>
+                                            </svg>
+                                          )}
+                                        </div>
                                       </td>
                                       <td style={{ padding:"13px 16px", fontSize:"13px", color:"#7a8faa", whiteSpace:"nowrap" as const }}>{fmtDate(tx.createdAt)}</td>
                                       <td style={{ padding:"13px 16px" }}>
@@ -5139,7 +5166,70 @@ export default function App() {
                                         </span>
                                       </td>
                                     </tr>
-                                  ))}
+                                    {/* ── Expanded detail row ── */}
+                                    {isExpanded && (
+                                      <tr style={{ borderBottom:"1px solid #1a2236" }}>
+                                        <td colSpan={7} style={{ padding:"0 16px 14px 16px", background:"#111828" }}>
+                                          <div style={{ borderRadius:"10px", border:"1px solid #1e2e44", background:"#0e1623", padding:"14px 16px", display:"flex", flexDirection:"column" as const, gap:"10px" }}>
+                                            <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"1px", color:"#3a4e68", textTransform:"uppercase" as const, marginBottom:"2px" }}>Detalle del retiro</div>
+                                            {/* Monto */}
+                                            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                                              <span style={{ fontSize:"12px", color:"#4a5e7a" }}>Monto</span>
+                                              <span style={{ fontSize:"13px", fontWeight:700, color:"#f4a91f" }}>-${tx.usdAmount.toFixed(2)} {tx.coin}</span>
+                                            </div>
+                                            {/* Red */}
+                                            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                                              <span style={{ fontSize:"12px", color:"#4a5e7a" }}>Red</span>
+                                              <span style={{ fontSize:"12px", color:"#c8d8ec", fontWeight:600 }}>{tx.network}</span>
+                                            </div>
+                                            {/* Wallet */}
+                                            {tx.address && (
+                                              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:"12px" }}>
+                                                <span style={{ fontSize:"12px", color:"#4a5e7a", flexShrink:0 }}>Wallet destino</span>
+                                                <div style={{ display:"flex", alignItems:"center", gap:"6px", minWidth:0 }}>
+                                                  <span style={{ fontSize:"11px", color:"#8aa0c0", fontFamily:"monospace", wordBreak:"break-all" as const }}>{tx.address}</span>
+                                                  <button onClick={e=>{ e.stopPropagation(); navigator.clipboard.writeText(tx.address!); }}
+                                                    style={{ background:"none", border:"none", cursor:"pointer", padding:"2px", flexShrink:0, color:"#4a5e7a" }}
+                                                    title="Copiar wallet">
+                                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                                      <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                                    </svg>
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            )}
+                                            {/* TX Hash */}
+                                            {tx.tx_hash ? (
+                                              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:"12px" }}>
+                                                <span style={{ fontSize:"12px", color:"#4a5e7a", flexShrink:0 }}>TX Hash</span>
+                                                <div style={{ display:"flex", alignItems:"center", gap:"6px", minWidth:0 }}>
+                                                  <span style={{ fontSize:"11px", color:"#22c55e", fontFamily:"monospace", wordBreak:"break-all" as const }}>{tx.tx_hash}</span>
+                                                  <button onClick={e=>{ e.stopPropagation(); navigator.clipboard.writeText(tx.tx_hash!); }}
+                                                    style={{ background:"none", border:"none", cursor:"pointer", padding:"2px", flexShrink:0, color:"#4a5e7a" }}
+                                                    title="Copiar TX hash">
+                                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                                      <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                                    </svg>
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            ) : tx.status === "completed" ? (
+                                              <div style={{ display:"flex", justifyContent:"space-between" }}>
+                                                <span style={{ fontSize:"12px", color:"#4a5e7a" }}>TX Hash</span>
+                                                <span style={{ fontSize:"12px", color:"#3a4e68" }}>No disponible</span>
+                                              </div>
+                                            ) : null}
+                                            {/* Estado */}
+                                            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                                              <span style={{ fontSize:"12px", color:"#4a5e7a" }}>Estado</span>
+                                              <span style={{ fontSize:"12px", fontWeight:600, color: statusColor(tx.status) }}>{statusLabel(tx.status)}</span>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
+                                    </Fragment>
+                                  );})}
                                 </tbody>
                               </table>
                             </div>
