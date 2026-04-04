@@ -153,7 +153,7 @@ router.post("/deposit/create", async (req: Request, res: Response) => {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
     return res.status(503).json({ error: "Servicio no disponible." });
 
-  const { user_id, amount, currency, network } = req.body ?? {};
+  const { user_id, amount, currency, network, address } = req.body ?? {};
 
   if (!user_id || !amount || !currency || !network) {
     return res.status(400).json({
@@ -176,6 +176,7 @@ router.post("/deposit/create", async (req: Request, res: Response) => {
       amount,
       currency: currency.trim().toUpperCase(),
       network,
+      address:  address || "",
       status:   "pending",
     };
 
