@@ -3587,6 +3587,7 @@ export default function App() {
 
   const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
   const statusLabel = (s: string) => s==="completed"||s==="approved" ? "Completado" : s==="pending" ? "Pendiente" : s==="expired" ? "Expirado" : "Rechazado";
+  const fmtDate = (s: string) => { const d = new Date(s); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`; };
 
   // ─────────────────────────────────────────────────────────────────────
   // ─── APP ────────────────────────────────────────────────────────────
