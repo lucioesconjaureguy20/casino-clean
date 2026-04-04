@@ -889,6 +889,7 @@ function AlertsTab({ token }: { token: string }) {
   const [acting, setActing]       = useState<string | null>(null);
   const [blockInputs, setBlockInputs] = useState<Record<string, string>>({});
   const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
+  const [view, setView]           = useState<"alerts" | "blocked">("alerts");
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -993,19 +994,18 @@ function AlertsTab({ token }: { token: string }) {
       )}
 
       {/* ── Header row ── */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "#e2e8f0" }}>Alertas y Monitoreo</h2>
           <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 13 }}>
             {loading
               ? "Analizando actividad…"
               : data
-                ? `${counts.critical + counts.medium + counts.low} activas · ${reviewed.size} revisadas · actualizado ${new Date(data.generatedAt).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`
+                ? `${counts.critical + counts.medium + counts.low} activas · actualizado ${new Date(data.generatedAt).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`
                 : "Sin datos"}
           </p>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {/* Period selector */}
           {PERIODS.map(p => (
             <button key={p.id} onClick={() => setPeriod(p.id)} style={btnFilter(period === p.id, "#f59e0b")}>
               {p.label}
@@ -1017,58 +1017,99 @@ function AlertsTab({ token }: { token: string }) {
         </div>
       </div>
 
+      {/* ── Sub-view toggle ── */}
+      <div style={{ display: "flex", gap: 0, marginBottom: 20, background: "#0d1117", border: "1px solid #1e2a3d", borderRadius: 10, padding: 4 }}>
+        <button
+          onClick={() => setView("alerts")}
+          style={{
+            flex: 1, padding: "9px 0", borderRadius: 7, border: "none", cursor: "pointer",
+            fontWeight: 700, fontSize: 13, fontFamily: "'Inter', sans-serif",
+            background: view === "alerts" ? "#1e2a3d" : "transparent",
+            color: view === "alerts" ? "#e2e8f0" : "#475569",
+            transition: "all .15s",
+          }}
+        >
+          🚨 Alertas {!loading && data && counts.critical + counts.medium + counts.low > 0 && (
+            <span style={{
+              background: "#7f1d1d", color: "#fca5a5", borderRadius: 20,
+              padding: "1px 7px", fontSize: 11, marginLeft: 6,
+            }}>{counts.critical + counts.medium + counts.low}</span>
+          )}
+        </button>
+        <button
+          onClick={() => setView("blocked")}
+          style={{
+            flex: 1, padding: "9px 0", borderRadius: 7, border: "none", cursor: "pointer",
+            fontWeight: 700, fontSize: 13, fontFamily: "'Inter', sans-serif",
+            background: view === "blocked" ? "#1a0808" : "transparent",
+            color: view === "blocked" ? "#f87171" : "#475569",
+            transition: "all .15s",
+          }}
+        >
+          🚫 Bloqueados {!loading && (data?.blockedUsers.length ?? 0) > 0 && (
+            <span style={{
+              background: "#450a0a", color: "#fca5a5", borderRadius: 20,
+              padding: "1px 7px", fontSize: 11, marginLeft: 6,
+            }}>{data!.blockedUsers.length}</span>
+          )}
+        </button>
+      </div>
+
       {error && (
         <div style={{ background: "#1e1215", border: "1px solid #7f1d1d", borderRadius: 10, padding: "12px 16px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>
           {error}
         </div>
       )}
 
-      {/* ── Summary bar ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 20 }}>
-        {(["critical","medium","low"] as AlertSeverity[]).map(sev => {
-          const s = SEV[sev]; const c = counts[sev];
-          return (
-            <button key={sev} onClick={() => setSevFilter(sevFilter === sev ? "all" : sev)} style={{
-              background:  sevFilter === sev ? s.bg : "#111827",
-              border:      `1px solid ${sevFilter === sev ? s.border : "#1e2a3d"}`,
-              borderRadius: 12, padding: "16px 20px", cursor: "pointer", textAlign: "left",
-              transition: "all .15s", fontFamily: "'Inter', sans-serif",
-            }}>
-              <div style={{ fontSize: 13, color: "#64748b", fontWeight: 600, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ fontSize: 16 }}>{s.dot}</span> {s.label}
-              </div>
-              <div style={{ fontSize: 32, fontWeight: 900, color: c > 0 ? s.color : "#334155", lineHeight: 1 }}>{c}</div>
-              <div style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>alertas activas</div>
-            </button>
-          );
-        })}
-      </div>
+      {/* ══════════════ VISTA: ALERTAS ══════════════ */}
+      {view === "alerts" && <>
 
-      {/* ── Filters row ── */}
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16, alignItems: "center" }}>
-        {/* Type pills */}
-        <button onClick={() => setTypeFilter("all")} style={btnFilter(typeFilter === "all")}>
-          Todos los tipos
-        </button>
-        {ALL_TYPES.map(t => {
-          const m = TYPE_META[t];
-          return (
-            <button key={t} onClick={() => setTypeFilter(typeFilter === t ? "all" : t)} style={btnFilter(typeFilter === t, "#f59e0b")}>
-              {m.icon} {m.label}
-            </button>
-          );
-        })}
-        {/* User search */}
-        <input
-          type="text" placeholder="🔍 Buscar usuario…"
-          value={userSearch}
-          onChange={e => setUserSearch(e.target.value)}
-          style={{ ...inputStyle, width: 170, fontSize: 12, marginLeft: "auto" }}
-        />
-      </div>
+        {/* ── Summary bar ── */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 20 }}>
+          {(["critical","medium","low"] as AlertSeverity[]).map(sev => {
+            const s = SEV[sev]; const c = counts[sev];
+            return (
+              <button key={sev} onClick={() => setSevFilter(sevFilter === sev ? "all" : sev)} style={{
+                background:  sevFilter === sev ? s.bg : "#111827",
+                border:      `1px solid ${sevFilter === sev ? s.border : "#1e2a3d"}`,
+                borderRadius: 12, padding: "16px 20px", cursor: "pointer", textAlign: "left",
+                transition: "all .15s", fontFamily: "'Inter', sans-serif",
+              }}>
+                <div style={{ fontSize: 13, color: "#64748b", fontWeight: 600, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 16 }}>{s.dot}</span> {s.label}
+                </div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: c > 0 ? s.color : "#334155", lineHeight: 1 }}>{c}</div>
+                <div style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>alertas activas</div>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* ── Bloqueados section ── */}
-      {(data?.blockedUsers.length ?? 0) > 0 && (
+        {/* ── Filters row ── */}
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16, alignItems: "center" }}>
+          <button onClick={() => setTypeFilter("all")} style={btnFilter(typeFilter === "all")}>
+            Todos los tipos
+          </button>
+          {ALL_TYPES.map(t => {
+            const m = TYPE_META[t];
+            return (
+              <button key={t} onClick={() => setTypeFilter(typeFilter === t ? "all" : t)} style={btnFilter(typeFilter === t, "#f59e0b")}>
+                {m.icon} {m.label}
+              </button>
+            );
+          })}
+          <input
+            type="text" placeholder="🔍 Buscar usuario…"
+            value={userSearch}
+            onChange={e => setUserSearch(e.target.value)}
+            style={{ ...inputStyle, width: 170, fontSize: 12, marginLeft: "auto" }}
+          />
+        </div>
+
+      </>}
+
+      {/* ══════════════ VISTA: BLOQUEADOS ══════════════ */}
+      {view === "blocked" && (data?.blockedUsers.length ?? 0) > 0 && (
         <div style={{ marginBottom: 24 }}>
           {/* Section header */}
           <div style={{
@@ -1166,13 +1207,13 @@ function AlertsTab({ token }: { token: string }) {
         </div>
       )}
 
-      {/* ── Loading spinner ── */}
+      {/* ── Loading spinner (both views) ── */}
       {loading && (
         <div style={{ textAlign: "center", padding: "60px 0", color: "#64748b" }}>Analizando actividad sospechosa…</div>
       )}
 
-      {/* ── Empty state ── */}
-      {!loading && visible.length === 0 && (
+      {/* ── VISTA ALERTAS: empty + cards ── */}
+      {view === "alerts" && !loading && visible.length === 0 && (
         <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
           <div style={{ color: "#e2e8f0", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>Sin alertas activas</div>
@@ -1182,8 +1223,17 @@ function AlertsTab({ token }: { token: string }) {
         </div>
       )}
 
-      {/* ── Alert cards ── */}
-      {!loading && visible.length > 0 && (
+      {/* ── VISTA BLOQUEADOS: empty state ── */}
+      {view === "blocked" && !loading && (data?.blockedUsers.length ?? 0) === 0 && (
+        <div style={{ ...card, padding: "60px 0", textAlign: "center" }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
+          <div style={{ color: "#e2e8f0", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>Sin usuarios bloqueados</div>
+          <div style={{ color: "#64748b", fontSize: 13 }}>No hay ningún usuario con la cuenta bloqueada actualmente.</div>
+        </div>
+      )}
+
+      {/* ── Alert cards (solo vista alertas) ── */}
+      {view === "alerts" && !loading && visible.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {visible.map(alert => {
             const s     = SEV[alert.severity];
