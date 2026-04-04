@@ -5800,6 +5800,10 @@ export default function App() {
             {/* Deposit */}
             {currentUser && cashierTab==="deposit" && (
               <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",flex:1 }}>
+                {/* Section heading */}
+                <div style={{ marginBottom:"20px" }}>
+                  <span style={{ fontSize:"22px",fontWeight:700,color:"#fff" }}>Deposit</span>
+                </div>
                 {/* Currency + Network — 2-column grid */}
                 <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px" }}>
                   {/* Currency */}
