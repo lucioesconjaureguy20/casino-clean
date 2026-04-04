@@ -5905,7 +5905,7 @@ export default function App() {
                 </div>
 
                 {/* Security warning */}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"10px" }}>
+                <div style={{ display:"flex",alignItems:"flex-start",gap:"10px",background:"rgba(255,180,0,.06)",borderRadius:"10px",padding:"12px 16px",fontSize:"13px",color:"#b89a5a",border:"1px solid rgba(255,180,0,.18)",marginTop:"40px" }}>
                   <span style={{ flexShrink:0,marginTop:"1px",fontSize:"15px" }}>⚠️</span>
                   <span>
                     <strong style={{ color:"#f6c94e" }}>Security notice:</strong> Only send <strong style={{ color:"#fff" }}>{pendingDeposit?.coin ?? depositCoin}</strong> to this address via <strong style={{ color:"#fff" }}>{pendingDeposit?.network ?? depositNetwork}</strong>. Sending any other coin or using a different network will result in <strong style={{ color:"#ff7070" }}>permanent loss of funds</strong>.
