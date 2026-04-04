@@ -123,7 +123,6 @@ async function syncProfileBalance(manderId: string): Promise<void> {
 // nativeOverride: si se pasa, usar ese monto nativo exacto (evita imprecisión por precio fallback)
 async function updateBalance(
   manderId: string,
-  username: string,
   currency: string,
   deltaUsd: number,
   txType: string,
@@ -154,7 +153,7 @@ async function updateBalance(
     const newBalance = Math.max(0, Number(existing.balance || 0) + deltaNative);
     const patchRes = await sbAdmin(
       `balances?id=eq.${existing.id}`,
-      { method: "PATCH", body: JSON.stringify({ balance: newBalance, updated_at: now, username }) },
+      { method: "PATCH", body: JSON.stringify({ balance: newBalance, updated_at: now }) },
     );
     if (!patchRes.ok) {
       console.error("[BALANCE] error al actualizar balance:", await patchRes.text());
@@ -165,7 +164,7 @@ async function updateBalance(
     const initialBalance = Math.max(0, deltaNative);
     const insRes = await sbAdmin("balances", {
       method: "POST",
-      body: JSON.stringify({ mander_id: manderId, username, currency: cur, balance: initialBalance, updated_at: now }),
+      body: JSON.stringify({ mander_id: manderId, currency: cur, balance: initialBalance, updated_at: now }),
     });
     if (!insRes.ok) {
       console.error("[BALANCE] error al crear balance:", await insRes.text());
@@ -224,7 +223,7 @@ router.post("/transactions", requireAuth, async (req: Request, res: Response) =>
     const finalStatus = status || "pending";
     const txRow = {
       mander_id:      profile.mander_id,
-      username:       profile.username || req.authUser!.user_metadata?.username || "",
+      user_id:        req.authUser!.id,
       display_id:     displayId,
       type,
       amount,
@@ -256,7 +255,7 @@ router.post("/transactions", requireAuth, async (req: Request, res: Response) =>
     // Si la transacción nace directamente como "completed", acreditar/debitar el balance
     if (finalStatus === "completed") {
       const delta = type === "withdrawal" ? -Math.abs(amount) : Math.abs(amount);
-      await updateBalance(profile.mander_id, profile.username, currency, delta, type);
+      await updateBalance(profile.mander_id, currency, delta, type);
     }
 
     return res.json({ transaction: row });
@@ -374,7 +373,7 @@ router.patch("/transactions/:id/status", requireAuth, async (req: Request, res: 
         const match = ((currentTx.notes as string) || "").match(/coinAmount:([0-9.]+)/);
         if (match) nativeOverride = parseFloat(match[1]);
       }
-      await updateBalance(profile.mander_id, profile.username, currentTx.currency, delta, currentTx.type, nativeOverride);
+      await updateBalance(profile.mander_id, currentTx.currency, delta, currentTx.type, nativeOverride);
     }
 
     return res.json({ transaction: row });
