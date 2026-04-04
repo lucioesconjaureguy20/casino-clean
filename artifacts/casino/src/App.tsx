@@ -6689,7 +6689,7 @@ export default function App() {
             boxShadow:"0 16px 50px rgba(0,0,0,.7)",
             animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
           }}>
-            <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", gap:"12px", marginBottom:"20px" }}>
               <div style={{
                 width:52, height:52, borderRadius:"50%",
                 background:"rgba(59,130,246,0.1)", border:"1px solid rgba(59,130,246,0.22)",
@@ -6703,8 +6703,8 @@ export default function App() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontWeight:700, fontSize:"16px", color:"#cbd5e1" }}>Retiros en revisión</div>
-                <div style={{ fontSize:"12px", color:"#475569", marginTop:"2px" }}>Tu cuenta está siendo verificada</div>
+                <div style={{ fontWeight:700, fontSize:"17px", color:"#cbd5e1" }}>Retiros en revisión</div>
+                <div style={{ fontSize:"12px", color:"#475569", marginTop:"3px" }}>Tu cuenta está siendo verificada</div>
               </div>
             </div>
             <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.75, margin:"0 0 10px" }}>
