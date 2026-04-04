@@ -3974,10 +3974,10 @@ export default function App() {
 
               {/* Notifications panel */}
               {notifPanelOpen && (
-                <div style={{ position:"absolute",top:"calc(100% + 8px)",right:0,width:"340px",background:"#1a2235",border:"1px solid #2a3650",borderRadius:"14px",overflow:"hidden",zIndex:200,boxShadow:"0 16px 48px rgba(0,0,0,.6)" }}>
+                <div style={{ position:"absolute",top:"calc(100% + 8px)",right:0,width:"360px",background:"#1a2235",border:"1px solid #2a3650",borderRadius:"14px",overflow:"hidden",zIndex:200,boxShadow:"0 16px 48px rgba(0,0,0,.6)" }}>
                   {/* Header */}
                   <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 16px",background:"#131c2e",borderBottom:"1px solid #1e2e44" }}>
-                    <span style={{ fontWeight:800,fontSize:"13px",letterSpacing:"1.5px",color:"#e8f0ff",textTransform:"uppercase" }}>Notificaciones</span>
+                    <span style={{ fontWeight:800,fontSize:"13px",letterSpacing:"1.5px",color:"#e8f0ff",textTransform:"uppercase",flex:1,marginRight:"16px" }}>Notificaciones</span>
                     <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
                       <button
                         onClick={()=>{ const upd = notifications.map(n=>({...n,read:true})); ls.saveNotifs(currentUser,upd); setNotifications(upd); }}
