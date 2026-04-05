@@ -2177,8 +2177,8 @@ function TransactionsTab({ token }: { token: string }) {
   };
   const inputStyle: React.CSSProperties = { ...selStyle, width: "100%", boxSizing: "border-box" };
 
-  const hasPrev = offset > 0;
-  const hasNext = offset + LIMIT < total;
+  const totalPages  = Math.ceil(total / LIMIT);
+  const currentPage = Math.floor(offset / LIMIT);
 
   return (
     <div>
@@ -2349,7 +2349,7 @@ function TransactionsTab({ token }: { token: string }) {
           </table>
 
           {/* Pagination */}
-          {(hasPrev || hasNext) && (
+          {totalPages > 1 && (
             <div style={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
               padding: "14px 20px", borderTop: "1px solid #1e2a3d",
@@ -2357,35 +2357,55 @@ function TransactionsTab({ token }: { token: string }) {
               <span style={{ color: "#64748b", fontSize: 13 }}>
                 Mostrando {offset + 1}–{Math.min(offset + LIMIT, total)} de {total}
               </span>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                {/* ‹ prev */}
                 <button
-                  onClick={() => search(offset - LIMIT)}
-                  disabled={!hasPrev || loading}
+                  onClick={() => search((currentPage - 1) * LIMIT)}
+                  disabled={currentPage === 0 || loading}
                   style={{
-                    background: hasPrev ? "#1e2a3d" : "transparent",
-                    border: "1px solid #1e2a3d", borderRadius: 7,
-                    color: hasPrev ? "#e2e8f0" : "#475569",
-                    padding: "7px 16px", fontSize: 13, fontWeight: 600,
-                    cursor: hasPrev ? "pointer" : "not-allowed",
-                    fontFamily: "'Inter', sans-serif",
+                    width: 32, height: 32, borderRadius: 7,
+                    border: "1px solid #1e2a3d", background: "transparent",
+                    color: currentPage === 0 ? "#1e2a3d" : "#8aa0c0",
+                    cursor: currentPage === 0 ? "default" : "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16,
                   }}
-                >
-                  ← Anterior
-                </button>
+                >‹</button>
+
+                {/* Numbered pages (up to 5 visible) */}
+                {(() => {
+                  const start = Math.min(currentPage, Math.max(0, totalPages - 5));
+                  return Array.from({ length: Math.min(5, totalPages) }, (_, i) => start + i).map(idx => (
+                    <button
+                      key={idx}
+                      onClick={() => search(idx * LIMIT)}
+                      style={{
+                        width: 32, height: 32, borderRadius: 7, border: "none",
+                        background: idx === currentPage
+                          ? "linear-gradient(160deg,#f6b531,#d4870a)"
+                          : "#1a2436",
+                        color: idx === currentPage ? "#fff" : "#8aa0c0",
+                        fontWeight: idx === currentPage ? 700 : 400,
+                        cursor: "pointer", fontSize: 13,
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    >
+                      {idx + 1}
+                    </button>
+                  ));
+                })()}
+
+                {/* › next */}
                 <button
-                  onClick={() => search(offset + LIMIT)}
-                  disabled={!hasNext || loading}
+                  onClick={() => search((currentPage + 1) * LIMIT)}
+                  disabled={currentPage === totalPages - 1 || loading}
                   style={{
-                    background: hasNext ? "#1e2a3d" : "transparent",
-                    border: "1px solid #1e2a3d", borderRadius: 7,
-                    color: hasNext ? "#e2e8f0" : "#475569",
-                    padding: "7px 16px", fontSize: 13, fontWeight: 600,
-                    cursor: hasNext ? "pointer" : "not-allowed",
-                    fontFamily: "'Inter', sans-serif",
+                    width: 32, height: 32, borderRadius: 7,
+                    border: "1px solid #1e2a3d", background: "transparent",
+                    color: currentPage === totalPages - 1 ? "#1e2a3d" : "#8aa0c0",
+                    cursor: currentPage === totalPages - 1 ? "default" : "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16,
                   }}
-                >
-                  Siguiente →
-                </button>
+                >›</button>
               </div>
             </div>
           )}
