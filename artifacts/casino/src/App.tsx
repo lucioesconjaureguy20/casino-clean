@@ -3315,6 +3315,24 @@ export default function App() {
     setSupaSession(freshSess);
     const sess = freshSess;
 
+    // ── Sweep inline: expirar depósitos locales/falsos antes de buscar reusable ─
+    if (autoMode && currentUser) {
+      let allTx: Transaction[] = ls.getTx(currentUser);
+      const hasFakeNow = allTx.some(
+        t => t.type === "deposit" && t.status === "pending" &&
+             (!t.address || t.address.length < 26 || (t.id ?? "").startsWith("local_"))
+      );
+      if (hasFakeNow) {
+        allTx = allTx.map(t =>
+          (t.type === "deposit" && t.status === "pending" &&
+           (!t.address || t.address.length < 26 || (t.id ?? "").startsWith("local_")))
+            ? { ...t, status: "expired" as const }
+            : t
+        );
+        ls.saveTx(currentUser, allTx);
+      }
+    }
+
     // ── Reutilizar depósito existente si todavía no expiró (24 h) ────────────
     if (autoMode) {
       const EXPIRY_MS = 24 * 60 * 60 * 1000;
