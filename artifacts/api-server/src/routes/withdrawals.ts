@@ -594,6 +594,31 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
     return res.status(500).json({ error: "Error al rechazar el retiro." });
   }
 
+  // Update the pending transaction record to cancelled
+  try {
+    const existingTxRes = await sbAdmin(
+      `transactions?user_id=eq.${encodeURIComponent(w.user_id)}&type=eq.withdrawal&status=eq.pending&currency=eq.${encodeURIComponent(cur)}&order=created_at.desc&limit=1`,
+      { headers: { Prefer: "count=none" } },
+    );
+    if (existingTxRes.ok) {
+      const existingRows: any[] = await existingTxRes.json();
+      if (existingRows.length > 0) {
+        await sbAdmin(`transactions?id=eq.${existingRows[0].id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            status: "cancelled",
+            amount: 0,
+            notes: "Retiro rechazado por administrador. Fondos restaurados al balance.",
+            completed_at: new Date().toISOString(),
+          }),
+        });
+        console.log(`[WITHDRAW reject] TX record updated to cancelled — tx_id=${existingRows[0].id}`);
+      }
+    }
+  } catch (e) {
+    console.error("[WITHDRAW reject] Failed to update tx record (non-fatal):", e);
+  }
+
   console.log(`[WITHDRAW reject] id=${withdrawal_id}`);
   return res.json({
     ok: true,
