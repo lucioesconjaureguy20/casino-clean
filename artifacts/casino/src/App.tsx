@@ -3283,7 +3283,7 @@ export default function App() {
           t.coin === coin &&
           t.network === network &&
           t.address &&
-          t.address.length > 10 &&
+          t.address.length >= 26 &&  // direcciones reales: TRC20=34, BTC≥26, ETH=42, SOL≥32
           nowTs - new Date(t.createdAt).getTime() < EXPIRY_MS,
       );
       if (reusable) {
