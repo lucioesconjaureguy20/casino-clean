@@ -376,38 +376,38 @@ const COINGECKO_IDS: Record<string, string> = {
 type NetLimit = { minDep: number; maxDep: number; minWith: number; maxWith: number; wFee: number; };
 const networkLimits: Record<string, Record<string, NetLimit>> = {
   USDT: {
-    TRC20:    { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:1   },
-    ERC20:    { minDep:10, maxDep:10000,  minWith:10, maxWith:5000,  wFee:2   },
-    BEP20:    { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:0.5 },
+    TRC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:1   },
+    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8   },
+    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5 },
   },
   BTC: {
-    BTC:      { minDep:50, maxDep:100000, minWith:50, maxWith:50000, wFee:1   },
+    BTC:      { minDep:50,  maxDep:100000, minWith:50,  maxWith:50000, wFee:2   },
   },
   ETH: {
-    ERC20:    { minDep:10, maxDep:50000,  minWith:10, maxWith:25000, wFee:1.5 },
-    Arbitrum: { minDep:5,  maxDep:50000,  minWith:5,  maxWith:25000, wFee:0.5 },
-    Optimism: { minDep:5,  maxDep:50000,  minWith:5,  maxWith:25000, wFee:0.5 },
+    ERC20:    { minDep:50,  maxDep:50000,  minWith:50,  maxWith:25000, wFee:8   },
+    Arbitrum: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.5 },
+    Optimism: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.5 },
   },
   TRX: {
-    TRC20:    { minDep:5,  maxDep:20000,  minWith:5,  maxWith:10000, wFee:0.2 },
+    TRC20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.2 },
   },
   BNB: {
-    BEP20:    { minDep:5,  maxDep:20000,  minWith:5,  maxWith:10000, wFee:0.5 },
-    Beacon:   { minDep:5,  maxDep:20000,  minWith:5,  maxWith:10000, wFee:0.5 },
+    BEP20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5 },
+    Beacon:   { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5 },
   },
   SOL: {
-    SOL:      { minDep:5,  maxDep:5000,   minWith:5,  maxWith:2000,  wFee:0.1 },
+    SOL:      { minDep:5,   maxDep:5000,   minWith:5,   maxWith:2000,  wFee:0.1 },
   },
   POL: {
-    ERC20:    { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:0.2 },
+    ERC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.2 },
   },
   USDC: {
-    ERC20:    { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:0.5 },
-    BEP20:    { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:0.5 },
-    SOL:      { minDep:5,  maxDep:10000,  minWith:5,  maxWith:5000,  wFee:0.1 },
+    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8   },
+    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5 },
+    SOL:      { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.1 },
   },
   LTC: {
-    LTC:      { minDep:10, maxDep:50000,  minWith:10, maxWith:20000, wFee:1   },
+    LTC:      { minDep:10,  maxDep:50000,  minWith:10,  maxWith:20000, wFee:1   },
   },
 };
 function getNetLimit(coin: string, network: string): NetLimit {
