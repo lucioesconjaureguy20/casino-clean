@@ -2124,7 +2124,7 @@ export default function App() {
     if (cashierTab !== "deposit" || !currentUser) return;
     generateDeposit(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cashierTab, currentUser?.id, depositCoin, depositNetwork]);
+  }, [cashierTab, currentUser, depositCoin, depositNetwork]);
 
   // ── Safety timeout: if spinner hangs more than 20s, kill it ──────────────
   useEffect(() => {
@@ -3318,13 +3318,13 @@ export default function App() {
         // Mostrar la dirección guardada sin llamar a NOWPayments de nuevo
         setPendingDeposit(reusable);
         pendingDepositServerIdRef.current = reusable.id ?? null;
-        autoGenKeySet.current.add(`${currentUser!.id}:${coin}:${network}`);
+        autoGenKeySet.current.add(`${currentUser}:${coin}:${network}`);
         return;
       }
     }
 
     // Guard: evitar llamadas duplicadas en esta sesión
-    const dbKey = `${currentUser!.id}:${coin}:${network}`;
+    const dbKey = `${currentUser}:${coin}:${network}`;
     if (autoGenKeySet.current.has(dbKey)) return;
     autoGenKeySet.current.add(dbKey);
 
@@ -6329,12 +6329,33 @@ export default function App() {
                   <span style={{ color:"#9ea8bc",fontSize:"13px",fontWeight:600,letterSpacing:"0.3px" }}>Deposit address</span>
                 </div>
 
-                {/* Address card — loading or loaded */}
-                {!pendingDeposit ? (
+                {/* Address card — loading / error / loaded */}
+                {depositGenerating ? (
                   <div style={{ background:"#1e2a3a",borderRadius:"14px",padding:"32px 20px",marginBottom:"18px",display:"flex",alignItems:"center",justifyContent:"center",minHeight:"148px" }}>
                     <div style={{ textAlign:"center" as const }}>
                       <div style={{ width:34,height:34,border:"3px solid #2a3a52",borderTop:"3px solid #5a9aff",borderRadius:"50%",animation:"spin 0.8s linear infinite",margin:"0 auto 12px" }}/>
                       <span style={{ color:"#6a7a96",fontSize:"13px" }}>Generating address...</span>
+                    </div>
+                  </div>
+                ) : !pendingDeposit ? (
+                  <div style={{ background:"#1e2a3a",borderRadius:"14px",padding:"28px 20px",marginBottom:"18px",display:"flex",alignItems:"center",justifyContent:"center",minHeight:"148px" }}>
+                    <div style={{ textAlign:"center" as const }}>
+                      {depositError ? (
+                        <>
+                          <div style={{ fontSize:"28px",marginBottom:"10px" }}>⚠️</div>
+                          <p style={{ color:"#e05a5a",fontSize:"13px",marginBottom:"14px",maxWidth:"260px",lineHeight:1.5 }}>{depositError}</p>
+                          <button
+                            onClick={() => { setDepositError(""); autoGenKeySet.current.delete(`${currentUser}:${depositCoin}:${depositNetwork}`); generateDeposit(true); }}
+                            style={{ background:"#f6b531",border:"none",borderRadius:"8px",color:"#16202e",fontWeight:700,fontSize:"13px",padding:"9px 22px",cursor:"pointer" }}>
+                            Reintentar
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ width:34,height:34,border:"3px solid #2a3a52",borderTop:"3px solid #5a9aff",borderRadius:"50%",animation:"spin 0.8s linear infinite",margin:"0 auto 12px" }}/>
+                          <span style={{ color:"#6a7a96",fontSize:"13px" }}>Generating address...</span>
+                        </>
+                      )}
                     </div>
                   </div>
                 ) : (
