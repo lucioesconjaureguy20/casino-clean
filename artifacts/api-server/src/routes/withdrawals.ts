@@ -310,7 +310,6 @@ async function callNowPaymentsPayout(
             ? `https://${process.env.REPLIT_DEV_DOMAIN}/api/webhooks/nowpayments`
             : "https://manderbet-casino1.onrender.com/api/webhooks/nowpayments"),
     }],
-    batch_withdrawal_id: String(withdrawalId),
   };
 
   console.log(`[NP payout] →`, JSON.stringify(body));
