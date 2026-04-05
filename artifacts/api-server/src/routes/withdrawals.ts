@@ -606,8 +606,7 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
         await sbAdmin(`transactions?id=eq.${existingRows[0].id}`, {
           method: "PATCH",
           body: JSON.stringify({
-            status: "cancelled",
-            amount: 0,
+            status: "failed",
             notes: "Retiro rechazado por administrador. Fondos restaurados al balance.",
             completed_at: new Date().toISOString(),
           }),
