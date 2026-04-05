@@ -6543,13 +6543,17 @@ export default function App() {
                     <input type="number" value={withdrawAmount} onChange={e=>setWithdrawAmount(e.target.value)}
                       placeholder="0.00"
                       style={{ width:"100%",padding:"13px 60px 13px 40px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",color:"#fff",fontSize:"15px",boxSizing:"border-box" as const,outline:"none" }}/>
-                    <button onClick={()=>{ const bal=(coinBalances as Record<string,number>)[withdrawCoin]||0; const fee=getNetLimit(withdrawCoin,withdrawNetwork).wFee/getPriceUsd(withdrawCoin); setWithdrawAmount(String(Math.max(0,bal-fee).toFixed(8))); }} className="cashier-btn"
+                    <button onClick={()=>{ const bal=(coinBalances as Record<string,number>)[withdrawCoin]||0; setWithdrawAmount(String(bal.toFixed(8))); }} className="cashier-btn"
                       style={{ position:"absolute",right:"8px",top:"50%",transform:"translateY(-50%)",background:"#253548",border:"1px solid #3a4d65",borderRadius:"6px",color:"#fff",fontWeight:700,fontSize:"12px",padding:"5px 12px",cursor:"pointer" }}>Max</button>
                   </div>
                 </div>
                 {/* Min + Fee info */}
                 <p style={{ color:"#7c8caa",fontSize:"12px",margin:"0 0 6px" }}>The min withdrawal amount is <strong style={{ color:"#c0cfe4" }}>{(getNetLimit(withdrawCoin,withdrawNetwork).minWith/getPriceUsd(withdrawCoin)).toFixed(8)} {withdrawCoin}</strong></p>
-                <p style={{ color:"#7c8caa",fontSize:"12px",margin:"0 0 24px" }}>Transaction Fee: <strong style={{ color:"#fff" }}>{(getNetLimit(withdrawCoin,withdrawNetwork).wFee/getPriceUsd(withdrawCoin)).toFixed(8)} {withdrawCoin}</strong></p>
+                <p style={{ color:"#7c8caa",fontSize:"12px",margin:"0 0 6px" }}>Transaction Fee: <strong style={{ color:"#fff" }}>{(getNetLimit(withdrawCoin,withdrawNetwork).wFee/getPriceUsd(withdrawCoin)).toFixed(8)} {withdrawCoin}</strong> <span style={{color:"#7c8caa"}}>(deducted from amount sent)</span></p>
+                {withdrawAmount && parseFloat(withdrawAmount) > 0 && (
+                  <p style={{ color:"#4caf50",fontSize:"12px",margin:"0 0 24px" }}>You will receive: <strong>{Math.max(0, parseFloat(withdrawAmount) - getNetLimit(withdrawCoin,withdrawNetwork).wFee/getPriceUsd(withdrawCoin)).toFixed(8)} {withdrawCoin}</strong></p>
+                )}
+                {!withdrawAmount || parseFloat(withdrawAmount) <= 0 ? <div style={{marginBottom:"24px"}}/> : null}
                 {withdrawError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 16px" }}>{withdrawError}</p>}
                 <button onClick={submitWithdraw} className="cashier-btn" style={{ width:"100%",padding:"15px",borderRadius:"10px",background:"linear-gradient(180deg,#4caf50,#388e3c)",color:"#fff",fontWeight:700,fontSize:"15px",border:"none",cursor:"pointer",letterSpacing:"0.3px",marginTop:"4px" }}>Withdraw</button>
               </div>
