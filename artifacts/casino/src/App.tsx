@@ -376,38 +376,38 @@ const COINGECKO_IDS: Record<string, string> = {
 type NetLimit = { minDep: number; maxDep: number; minWith: number; maxWith: number; wFee: number; };
 const networkLimits: Record<string, Record<string, NetLimit>> = {
   USDT: {
-    TRC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:1   },
-    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8   },
-    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5 },
+    TRC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:1    }, // gas Tron ~$0.50
+    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8    }, // gas Ethereum ~$5-15
+    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5  }, // gas BSC ~$0.10-0.30
   },
   BTC: {
-    BTC:      { minDep:50,  maxDep:100000, minWith:50,  maxWith:50000, wFee:2   },
+    BTC:      { minDep:50,  maxDep:100000, minWith:50,  maxWith:50000, wFee:3    }, // gas Bitcoin ~$1-5
   },
   ETH: {
-    ERC20:    { minDep:50,  maxDep:50000,  minWith:50,  maxWith:25000, wFee:8   },
-    Arbitrum: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.5 },
-    Optimism: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.5 },
+    ERC20:    { minDep:50,  maxDep:50000,  minWith:50,  maxWith:25000, wFee:8    }, // gas Ethereum ~$5-15
+    Arbitrum: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.3  }, // gas Arbitrum ~$0.10-0.20
+    Optimism: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.3  }, // gas Optimism ~$0.10-0.20
   },
   TRX: {
-    TRC20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.2 },
+    TRC20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5  }, // gas Tron ~$0.10-0.30
   },
   BNB: {
-    BEP20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5 },
-    Beacon:   { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5 },
+    BEP20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5  }, // gas BSC ~$0.10-0.30
+    Beacon:   { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.3  }, // gas Beacon ~$0.05-0.15
   },
   SOL: {
-    SOL:      { minDep:5,   maxDep:5000,   minWith:5,   maxWith:2000,  wFee:0.1 },
+    SOL:      { minDep:5,   maxDep:5000,   minWith:5,   maxWith:2000,  wFee:0.1  }, // gas Solana ~$0.001
   },
   POL: {
-    ERC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.2 },
+    ERC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.2  }, // gas Polygon ~$0.01-0.05
   },
   USDC: {
-    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8   },
-    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5 },
-    SOL:      { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.1 },
+    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:8    }, // gas Ethereum ~$5-15
+    BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5  }, // gas BSC ~$0.10-0.30
+    SOL:      { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.1  }, // gas Solana ~$0.001
   },
   LTC: {
-    LTC:      { minDep:10,  maxDep:50000,  minWith:10,  maxWith:20000, wFee:1   },
+    LTC:      { minDep:10,  maxDep:50000,  minWith:10,  maxWith:20000, wFee:0.5  }, // gas LTC ~$0.01-0.10
   },
 };
 function getNetLimit(coin: string, network: string): NetLimit {
