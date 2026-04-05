@@ -1,10 +1,27 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Request, type Response, type NextFunction } from "express";
 import { getPriceUsd } from "../lib/prices";
+import { verifyGameToken } from "../lib/gameToken.js";
 
 const router = Router();
 
 const SUPABASE_URL         = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_ANON_KEY    = process.env.SUPABASE_ANON_KEY!;
+const NOWPAYMENTS_API_KEY  = process.env.NOWPAYMENTS_API_KEY;
+const NOWPAYMENTS_BASE     = "https://api.nowpayments.io/v1";
+
+// ── NOWPayments currency code map (coin + network → NP code) ─────────────────
+const NP_CURRENCY: Record<string, Record<string, string>> = {
+  USDT:  { TRC20: "usdttrc20", ERC20: "usdterc20", BEP20: "usdtbsc" },
+  ETH:   { ERC20: "eth",       Arbitrum: "etharb",  Optimism: "ethop" },
+  BTC:   { BTC:   "btc" },
+  SOL:   { SOL:   "sol" },
+  BNB:   { BEP20: "bnbbsc",   Beacon: "bnb" },
+  TRX:   { TRC20: "trx" },
+  POL:   { ERC20: "maticmainnet" },
+  USDC:  { ERC20: "usdcerc20", BEP20: "usdcbsc", SOL: "usdcsol" },
+  LTC:   { LTC:   "ltc" },
+};
 
 // ── Supabase admin helper ─────────────────────────────────────────────────────
 function adminHeaders(extra: Record<string, string> = {}) {
@@ -142,6 +159,141 @@ async function insertTransaction(
   else
     console.log(`[DEPOSIT tx] registrado: ${amount} ${currency} mander=${manderId}`);
 }
+
+// ── Auth middleware ───────────────────────────────────────────────────────────
+async function requireAuth(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer "))
+    return res.status(401).json({ error: "Sesión expirada o inválida." });
+  const token = authHeader.slice(7);
+  try {
+    const gameUser = verifyGameToken(token) as any;
+    if (gameUser) {
+      (req as any).authUser = { id: gameUser.profileId, email: "", user_metadata: { username: gameUser.username } };
+      return next();
+    }
+  } catch {}
+  try {
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) return res.status(401).json({ error: "Sesión expirada o inválida." });
+    const u = await r.json();
+    (req as any).authUser = { id: u.id, email: u.email ?? "", user_metadata: u.user_metadata ?? {} };
+    return next();
+  } catch {
+    return res.status(401).json({ error: "Sesión expirada o inválida." });
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// POST /api/deposit/nowpayments
+// Crea un pago en NOWPayments y devuelve la dirección real + monto exacto.
+// Body: { currency, network, amount_usd }
+// ──────────────────────────────────────────────────────────────────────────────
+router.post("/deposit/nowpayments", requireAuth, async (req: Request, res: Response) => {
+  if (!NOWPAYMENTS_API_KEY)
+    return res.status(503).json({ error: "Pasarela de pago no configurada." });
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY)
+    return res.status(503).json({ error: "Servicio no disponible." });
+
+  const { currency, network, amount_usd } = req.body ?? {};
+  const authUser = (req as any).authUser;
+
+  if (!currency || !network || !amount_usd)
+    return res.status(400).json({ error: "Campos requeridos: currency, network, amount_usd." });
+
+  const parsedUsd = Number(amount_usd);
+  if (!Number.isFinite(parsedUsd) || parsedUsd <= 0)
+    return res.status(400).json({ error: "amount_usd debe ser un número positivo." });
+
+  const cur = String(currency).trim().toUpperCase();
+  const net = String(network).trim();
+  const npCurrency = NP_CURRENCY[cur]?.[net];
+  if (!npCurrency)
+    return res.status(400).json({ error: `Red no soportada: ${cur} ${net}` });
+
+  // 1. Obtener perfil
+  const profile = await getProfile(authUser.id);
+  if (!profile) return res.status(404).json({ error: "Usuario no encontrado." });
+
+  // 2. Crear registro pending en deposits primero para obtener el UUID (order_id)
+  const insRes = await sbAdmin("deposits", {
+    method: "POST",
+    body: JSON.stringify({
+      user_id:  authUser.id,
+      amount:   0,
+      currency: cur,
+      network:  net,
+      address:  "pending",
+      status:   "pending",
+    }),
+  });
+  if (!insRes.ok) {
+    const err = await insRes.text();
+    console.error("[NP deposit] Supabase insert error:", err);
+    return res.status(500).json({ error: "Error al crear depósito." });
+  }
+  const [depositRow] = await insRes.json();
+  const depositId = depositRow.id;
+
+  // 3. Construir ipn_callback_url
+  const appUrl = process.env.APP_URL ||
+    (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "");
+  const ipnUrl = appUrl ? `${appUrl}/api/webhooks/nowpayments` : undefined;
+
+  // 4. Llamar a NOWPayments API
+  try {
+    const npBody: Record<string, any> = {
+      price_amount:   parsedUsd,
+      price_currency: "usd",
+      pay_currency:   npCurrency,
+      order_id:       depositId,
+    };
+    if (ipnUrl) npBody.ipn_callback_url = ipnUrl;
+
+    const npRes = await fetch(`${NOWPAYMENTS_BASE}/payment`, {
+      method: "POST",
+      headers: {
+        "x-api-key":    NOWPAYMENTS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(npBody),
+    });
+
+    const npData: any = await npRes.json();
+    if (!npRes.ok) {
+      console.error("[NP deposit] NOWPayments error:", npRes.status, npData);
+      // Limpiar el registro pending
+      await sbAdmin(`deposits?id=eq.${depositId}`, { method: "DELETE" });
+      return res.status(502).json({ error: npData?.message ?? "Error al crear pago en NOWPayments." });
+    }
+
+    // 5. Actualizar el registro con la dirección real y payment_id
+    await sbAdmin(`deposits?id=eq.${depositId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        address: npData.pay_address,
+        tx_hash: npData.payment_id?.toString() ?? null,
+      }),
+    });
+
+    console.log(`[NP deposit] OK — deposit_id=${depositId} payment_id=${npData.payment_id} addr=${npData.pay_address}`);
+
+    return res.status(201).json({
+      deposit_id:   depositId,
+      payment_id:   npData.payment_id,
+      pay_address:  npData.pay_address,
+      pay_amount:   npData.pay_amount,
+      pay_currency: npData.pay_currency,
+      status:       npData.payment_status,
+    });
+  } catch (e: any) {
+    console.error("[NP deposit] fetch error:", e.message);
+    await sbAdmin(`deposits?id=eq.${depositId}`, { method: "DELETE" }).catch(() => {});
+    return res.status(500).json({ error: "Error de conexión con NOWPayments." });
+  }
+});
 
 // ──────────────────────────────────────────────────────────────────────────────
 // POST /api/deposit/create

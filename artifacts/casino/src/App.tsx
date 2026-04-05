@@ -1065,6 +1065,7 @@ export default function App() {
   const [depositNetwork, setDepositNetwork] = useState("TRC20");
   const [depositAmount, setDepositAmount] = useState("");
   const [depositError, setDepositError] = useState("");
+  const [depositGenerating, setDepositGenerating] = useState(false);
   const [depositView, setDepositView] = useState<"select"|"generated">("select");
   const [pendingDeposit, setPendingDeposit] = useState<Transaction|null>(null);
   const [addressCopied, setAddressCopied] = useState(false);
@@ -3236,6 +3237,8 @@ export default function App() {
     setDepositError(""); setWithdrawError("");
     setDepositView("select");
     setDepositAmount("");
+    setDepositGenerating(false);
+    autoGenKeySet.current.clear(); // permite regenerar dirección al reabrir
     setWithdrawAmount(""); setWithdrawAddress("");
   }
 
@@ -3260,111 +3263,78 @@ export default function App() {
       if (coinAmt > maxNative) return setDepositError(`Máximo: ${maxNative} ${coin} ($${lim.maxDep} USD)`);
     }
     const usdAmt = +(coinAmt * livePrice).toFixed(2);
-    const localId = `local_${Date.now()}`;
-    const address = makeFakeAddress(coin, network);
-    pendingDepositServerIdRef.current = null; // resetear ref al iniciar un nuevo depósito
-
-    // Expirar depósitos pendientes anteriores para evitar acumulación en localStorage
-    const prevTxList = ls.getTx(currentUser);
-    const PENDING_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 horas
-    const now = Date.now();
-    const cleanedTxList = prevTxList.map((t: Transaction) => {
-      if (t.type === "deposit" && t.status === "pending") {
-        const age = now - new Date(t.createdAt).getTime();
-        if (age > PENDING_EXPIRY_MS) return { ...t, status: "expired" as const };
-      }
-      return t;
-    });
-    if (cleanedTxList.some((t: Transaction, i: number) => t.status !== prevTxList[i].status)) {
-      ls.saveTx(currentUser, cleanedTxList);
-      setTransactions([...cleanedTxList]);
-    }
-    if (pendingDeposit) setPendingDeposit(null);
-    const pd: Transaction = {
-      id: localId,
-      type:"deposit", coin, network,
-      coinAmount:coinAmt, usdAmount:usdAmt,
-      address,
-      status:"pending", createdAt:new Date().toISOString(),
-      display_id: nextDisplayId("deposit"), // ID local temporal para UI inmediata
-    };
-    // Guardar inmediatamente en localStorage para UI instantánea
-    const tx = ls.getTx(currentUser);
-    tx.push(pd);
-    ls.saveTx(currentUser, tx);
-    setTransactions([...tx]);
-    setPendingDeposit(pd);
-    setDepositView("generated");
-
-    // ── Sync a Supabase en segundo plano ──────────────────────────────────
+    // ── NOWPayments: obtener dirección real ───────────────────────────────
     const sess = supaSessionRef.current;
-    if (!sess?.access_token) { console.warn("[Deposit Supabase] sin sesión, solo local"); return; }
+    if (!sess?.access_token) {
+      setDepositError("Necesitás iniciar sesión para depositar.");
+      return;
+    }
 
-    // Guard: solo insertar en DB una vez por user+coin+network en esta sesión
+    // Guard: evitar llamadas duplicadas en esta sesión
     const dbKey = `${currentUser!.id}:${coin}:${network}`;
     if (autoGenKeySet.current.has(dbKey)) return;
     autoGenKeySet.current.add(dbKey);
 
+    setDepositGenerating(true);
+    pendingDepositServerIdRef.current = null;
+    if (pendingDeposit) setPendingDeposit(null);
+
     try {
-      console.log("[Deposit Supabase] POST →", { type: "deposit", amount: usdAmt, currency: coin });
-      const res = await fetch("/api/transactions", {
+      const npRes = await fetch("/api/deposit/nowpayments", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${sess.access_token}` },
-        body: JSON.stringify({
-          type: "deposit", amount: usdAmt, currency: coin,
-          network, external_tx_id: address,
-          notes: `coinAmount:${coinAmt}`,
-        }),
+        body: JSON.stringify({ currency: coin, network, amount_usd: usdAmt }),
       });
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        console.error("[Deposit Supabase] POST falló", res.status, errBody);
+      if (genId !== depositGenCounter.current) return; // usuario cambió de red/moneda
+      const npData = await npRes.json();
+      if (!npRes.ok) {
+        autoGenKeySet.current.delete(dbKey); // permitir reintento
+        setDepositError(npData?.error ?? "Error al generar dirección de pago. Intentá de nuevo.");
         return;
       }
-      const { transaction: serverTx } = await res.json();
-      // Si el usuario cambió de red mientras esperaba el POST, descartar esta respuesta
-      if (genId !== depositGenCounter.current) return;
-      console.log("[Deposit Supabase] POST OK — id:", serverTx.id, "display_id:", serverTx.display_id);
 
-      // Guardar UUID real en ref INMEDIATAMENTE (antes del next render)
-      pendingDepositServerIdRef.current = serverTx.id;
+      const address    = npData.pay_address;
+      const exactCoinAmt = npData.pay_amount ?? coinAmt;
+      pendingDepositServerIdRef.current = npData.deposit_id;
 
-      // Reemplazar id local + display_id en localStorage
-      const allTx = ls.getTx(currentUser);
-      const updated = allTx.map((t: Transaction) =>
-        t.id === localId ? { ...t, id: serverTx.id, display_id: serverTx.display_id } : t
-      );
-      ls.saveTx(currentUser, updated);
-      setTransactions([...updated]);
-      setPendingDeposit(prev => prev ? { ...prev, id: serverTx.id, display_id: serverTx.display_id } : prev);
-
-      // ── Race condition fix: si el usuario ya confirmó mientras esperaba el POST ──
-      // Buscar la tx actual en localStorage — si ya está "completed", hacer PATCH ahora
-      const freshTx = updated.find((t: Transaction) => t.id === serverTx.id);
-      if (freshTx?.status === "completed") {
-        console.log("[Deposit Supabase] TX ya confirmada localmente, PATCHeando ahora →", serverTx.id);
-        const freshSess = supaSessionRef.current;
-        if (freshSess?.access_token) {
-          try {
-            const patchRes = await fetch(`/api/transactions/${serverTx.id}/status`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json", Authorization: `Bearer ${freshSess.access_token}` },
-              body: JSON.stringify({ status: "completed" }),
-            });
-            if (patchRes.ok) {
-              const { transaction: upd } = await patchRes.json();
-              console.log("[Deposit Supabase] PATCH diferido OK →", upd?.id, upd?.status);
-              // NO llamar fetchRemoteBalance aquí: el balance ya fue actualizado optimistamente
-              // en confirmDeposit y el balance/sync enviará el valor post-apuesta correcto.
-              // Llamarlo causaría race condition si el usuario apostó mientras el POST estaba en vuelo.
-            } else {
-              const errBody = await patchRes.json().catch(() => ({}));
-              console.error("[Deposit Supabase] PATCH diferido falló", patchRes.status, errBody);
-            }
-          } catch (e) { console.error("[Deposit Supabase] PATCH diferido error:", e); }
+      // Expirar depósitos pendientes anteriores
+      const prevTxList = ls.getTx(currentUser);
+      const PENDING_EXPIRY_MS = 24 * 60 * 60 * 1000;
+      const nowTs = Date.now();
+      const cleanedTxList = prevTxList.map((t: Transaction) => {
+        if (t.type === "deposit" && t.status === "pending") {
+          if (nowTs - new Date(t.createdAt).getTime() > PENDING_EXPIRY_MS)
+            return { ...t, status: "expired" as const };
         }
+        return t;
+      });
+      if (cleanedTxList.some((t: Transaction, i: number) => t.status !== prevTxList[i].status)) {
+        ls.saveTx(currentUser, cleanedTxList);
+        setTransactions([...cleanedTxList]);
       }
-    } catch (e) { console.error("[Deposit Supabase] fetch error:", e); }
+
+      const pd: Transaction = {
+        id: npData.deposit_id ?? `local_${Date.now()}`,
+        type: "deposit", coin, network,
+        coinAmount: exactCoinAmt, usdAmount: usdAmt,
+        address,
+        status: "pending", createdAt: new Date().toISOString(),
+        display_id: nextDisplayId("deposit"),
+      };
+      const tx = ls.getTx(currentUser);
+      tx.push(pd);
+      ls.saveTx(currentUser, tx);
+      setTransactions([...tx]);
+      setPendingDeposit(pd);
+      setDepositView("generated");
+      console.log("[NP deposit] dirección generada:", address, "payment_id:", npData.payment_id);
+    } catch (e) {
+      if (genId !== depositGenCounter.current) return;
+      autoGenKeySet.current.delete(dbKey);
+      setDepositError("Error de conexión. Intentá de nuevo.");
+    } finally {
+      if (genId === depositGenCounter.current) setDepositGenerating(false);
+    }
   }
 
   function addNotif(type: AppNotification["type"], title: string, message: string) {

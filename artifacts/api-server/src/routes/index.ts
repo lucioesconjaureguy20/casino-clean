@@ -10,6 +10,7 @@ import adminRouter from "./admin";
 import withdrawalsRouter from "./withdrawals";
 import statsRouter from "./stats";
 import alertsRouter from "./alerts";
+import nowpaymentsWebhookRouter from "./nowpayments-webhook";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use("/api/admin", adminRouter);
 router.use("/api", withdrawalsRouter);
 router.use("/api", statsRouter);
 router.use("/api", alertsRouter);
+router.use("/api", nowpaymentsWebhookRouter);
 
 export default router;
