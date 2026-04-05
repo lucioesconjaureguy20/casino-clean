@@ -43,6 +43,22 @@ interface Withdrawal {
 
 interface ConfirmInputs { amount: string; txHash: string; }
 
+// ── Fee por red (USD) — mismo valor que networkLimits en App.tsx ──────────────
+const WITHDRAWAL_FEES: Record<string, Record<string, number>> = {
+  USDT:  { TRC20: 1,   ERC20: 2,   BEP20: 0.5 },
+  ETH:   { ERC20: 2,   Arbitrum: 0.3, Optimism: 0.3 },
+  BTC:   { BTC: 3 },
+  TRX:   { TRC20: 0.5 },
+  BNB:   { BEP20: 0.5, Beacon: 0.3 },
+  SOL:   { SOL: 0.1 },
+  POL:   { ERC20: 0.2 },
+  USDC:  { ERC20: 2,   BEP20: 0.5, SOL: 0.1 },
+  LTC:   { LTC: 0.5 },
+};
+function getWFee(currency: string, network: string): number {
+  return WITHDRAWAL_FEES[currency]?.[network] ?? 0;
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function fmt(iso: string) {
@@ -924,8 +940,23 @@ function WithdrawalsTab({ token }: { token: string }) {
                         <div style={{ fontSize: 10, color: "#475569", fontFamily: "monospace" }}>{w.mander_id?.slice(0,12)}…</div>
                       </td>
                       <td style={td}>
-                        <div style={{ fontWeight: 700, fontSize: 14, color: "#e2e8f0" }}>{fmtBal(w.amount)}</div>
-                        <div style={{ fontSize: 11, color: "#64748b" }}>{w.currency}</div>
+                        <div style={{ fontWeight: 700, fontSize: 14, color: "#e2e8f0" }}>{fmtBal(w.amount)} USD</div>
+                        {(() => {
+                          const fee = getWFee(w.currency, w.network);
+                          const net = Math.max(0, w.amount - fee);
+                          return (
+                            <div style={{ marginTop: 3 }}>
+                              <div style={{ fontSize: 12, color: "#4ade80", fontWeight: 600 }}>
+                                Enviar: {fmtBal(net)} USD
+                              </div>
+                              {fee > 0 && (
+                                <div style={{ fontSize: 10, color: "#64748b" }}>
+                                  Fee {w.network}: −${fee}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </td>
                       <td style={{ ...td, fontSize: 12 }}>{w.network}</td>
                       <td style={td}>
