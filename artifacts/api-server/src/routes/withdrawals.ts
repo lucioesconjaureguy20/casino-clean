@@ -232,12 +232,79 @@ function validateWallet(wallet: string, network: string): string | null {
 
 async function fetchWithdrawal(id: string) {
   const r = await sbAdmin(
-    `withdrawals?id=eq.${encodeURIComponent(id)}&select=id,user_id,mander_id,amount,currency,network,status,tx_hash&limit=1`,
+    `withdrawals?id=eq.${encodeURIComponent(id)}&select=id,user_id,mander_id,amount,currency,network,wallet,status,tx_hash&limit=1`,
     { headers: { Prefer: "count=none" } },
   );
   if (!r.ok) return null;
   const rows: any[] = await r.json();
   return rows[0] ?? null;
+}
+
+// ── NOWPayments currency code map (coin + network → NP code) ─────────────────
+const NP_CURRENCY_W: Record<string, Record<string, string>> = {
+  USDT:  { TRC20: "usdttrc20", ERC20: "usdterc20", BEP20: "usdtbsc" },
+  ETH:   { ERC20: "eth",       Arbitrum: "etharb" },
+  BTC:   { BTC:   "btc" },
+  SOL:   { SOL:   "sol" },
+  BNB:   { BEP20: "bnbbsc" },
+  TRX:   { TRC20: "trx" },
+  POL:   { ERC20: "maticmainnet" },
+  USDC:  { BEP20: "usdcbsc", SOL: "usdcsol" },
+  LTC:   { LTC:   "ltc" },
+};
+
+// ── Withdrawal fees per network (USD) ─────────────────────────────────────────
+const WITHDRAW_FEES: Record<string, number> = {
+  TRC20: 1, ERC20: 2, BEP20: 0.5, BTC: 3, SOL: 0.1,
+  Arbitrum: 0.3, LTC: 0.5, TRX: 0.5, "ERC20-POL": 0.2,
+};
+
+// ── Call NOWPayments Payout API ───────────────────────────────────────────────
+async function callNowPaymentsPayout(
+  address: string,
+  currency: string,
+  network: string,
+  amountCrypto: number,
+  withdrawalId: string | number,
+): Promise<{ ok: true; payoutId: string; hash?: string } | { ok: false; error: string }> {
+  const npKey = process.env.NOWPAYMENTS_API_KEY;
+  if (!npKey) return { ok: false, error: "NOWPAYMENTS_API_KEY no configurada." };
+
+  const npCode = NP_CURRENCY_W[currency]?.[network];
+  if (!npCode) return { ok: false, error: `Moneda no soportada: ${currency}/${network}` };
+
+  const body = {
+    withdrawals: [{
+      address,
+      currency:    npCode,
+      amount:      amountCrypto,
+      extra_id:    null,
+      ipn_callback_url: process.env.NOWPAYMENTS_IPN_URL ?? "",
+    }],
+    batch_withdrawal_id: String(withdrawalId),
+  };
+
+  console.log(`[NP payout] →`, JSON.stringify(body));
+
+  const res = await fetch("https://api.nowpayments.io/v1/payout", {
+    method:  "POST",
+    headers: {
+      "x-api-key":    npKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  const data: any = await res.json();
+  console.log(`[NP payout] ← status=${res.status}`, JSON.stringify(data));
+
+  if (!res.ok) {
+    return { ok: false, error: data?.message ?? `NOWPayments error ${res.status}` };
+  }
+
+  const payout = data?.withdrawals?.[0];
+  const payoutId = payout?.id ?? data?.id ?? String(Date.now());
+  return { ok: true, payoutId: String(payoutId), hash: payout?.hash ?? undefined };
 }
 
 async function patchWithdrawal(id: string, patch: Record<string, unknown>) {
@@ -517,6 +584,7 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
 // ═════════════════════════════════════════════════════════════════════════════
 
 router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Response) => {
+  // tx_hash is now optional — if not provided, NOWPayments auto-payout is attempted
   const { withdrawal_id, tx_hash } = req.body;
   if (!withdrawal_id) return res.status(400).json({ error: "withdrawal_id requerido." });
 
@@ -553,12 +621,42 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
     // Non-blocking: locked_amount may be 0 if column was added after withdrawal was created
   }
 
+  // ── Step 2b: Auto-payout via NOWPayments (if no manual tx_hash provided) ──
+  let finalTxHash: string | null = (tx_hash as string | undefined)?.trim() || null;
+  let autoPaid = false;
+
+  if (!finalTxHash && w.wallet) {
+    const netFee = WITHDRAW_FEES[w.network ?? ""] ?? 0;
+    const sendAmount = Math.max(0, parsed - netFee);
+
+    if (sendAmount <= 0) {
+      return res.status(400).json({ error: `El monto (${parsed}) es menor que el fee de red ($${netFee}). No se puede enviar.` });
+    }
+
+    console.log(`[WITHDRAW pay] auto-payout → ${sendAmount} ${cur} to ${w.wallet} via ${w.network}`);
+    const payoutResult = await callNowPaymentsPayout(
+      w.wallet, cur, w.network ?? "", sendAmount, withdrawal_id,
+    );
+
+    if (!payoutResult.ok) {
+      console.error(`[WITHDRAW pay] NOWPayments payout failed: ${payoutResult.error}`);
+      return res.status(502).json({
+        error: `Error al enviar vía NOWPayments: ${payoutResult.error}`,
+        hint: "Verificá que tenés saldo en NOWPayments y que la API key tiene permisos de payout.",
+      });
+    }
+
+    finalTxHash = payoutResult.hash ?? `np_payout_${payoutResult.payoutId}`;
+    autoPaid = true;
+    console.log(`[WITHDRAW pay] auto-payout OK → payout_id=${payoutResult.payoutId} hash=${finalTxHash}`);
+  }
+
   // ── Step 3: Atomic claim — conditional PATCH (prevents double-pay race) ──
   const claimRes = await sbAdmin(
     `withdrawals?id=eq.${encodeURIComponent(withdrawal_id)}&status=in.(pending,approved)`,
     {
       method: "PATCH",
-      body: JSON.stringify({ status: "paid", tx_hash: (tx_hash as string | undefined)?.trim() || null }),
+      body: JSON.stringify({ status: "paid", tx_hash: finalTxHash }),
     },
   );
 
@@ -595,7 +693,9 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
   const txPatch = {
     status:        "completed",
     amount:        -Math.abs(parsed),
-    notes:         `Retiro pagado. TX: ${(tx_hash as string | undefined)?.trim() || "—"}`,
+    notes:         autoPaid
+      ? `Retiro enviado automáticamente vía NOWPayments. TX: ${finalTxHash ?? "—"}`
+      : `Retiro pagado manualmente. TX: ${finalTxHash ?? "—"}`,
     completed_at:  new Date().toISOString(),
     // external_tx_id intentionally NOT updated — keeps the original wallet address
   };
@@ -645,7 +745,10 @@ router.post("/admin/withdraw/pay", requireAdmin, async (req: Request, res: Respo
 
   return res.json({
     ok: true,
-    message: `Retiro pagado exitosamente. ${parsed} ${cur} procesados.`,
+    message: autoPaid
+      ? `Retiro enviado automáticamente. ${parsed} ${cur} enviados a la wallet del usuario vía NOWPayments.`
+      : `Retiro marcado como pagado. ${parsed} ${cur} procesados.`,
+    tx_hash: finalTxHash,
   });
 });
 

@@ -994,20 +994,18 @@ function WithdrawalsTab({ token }: { token: string }) {
                           </div>
                         )}
                         {w.status === "approved" && (
-                          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
-                            <input type="text" placeholder="TX hash (opcional)"
-                              value={txVal}
-                              onChange={e => setTxInputs(prev => ({ ...prev, [w.id]: e.target.value }))}
-                              style={{ ...inputStyle, width: 140, fontSize: 11 }}
-                            />
-                            <button onClick={() => action("/admin/withdraw/pay", w.id, txVal ? { tx_hash: txVal } : {})} disabled={busy} style={{
+                          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                            <button onClick={() => action("/admin/withdraw/pay", w.id)} disabled={busy} style={{
                               background: "#0d2224", border: "1px solid #0891b2", borderRadius: 7,
                               color: "#22d3ee", cursor: busy ? "not-allowed" : "pointer",
-                              fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                              fontSize: 12, fontWeight: 600, padding: "7px 14px",
                               fontFamily: "'Inter', sans-serif", transition: "all .15s", whiteSpace: "nowrap",
                             }}>
-                              {busy ? "..." : "Pagar ✓"}
+                              {busy ? "Enviando…" : "⚡ Enviar automático"}
                             </button>
+                            <div style={{ fontSize: 10, color: "#475569", textAlign: "center" }}>
+                              vía NOWPayments
+                            </div>
                           </div>
                         )}
                         {(w.status === "paid" || w.status === "rejected") && (
