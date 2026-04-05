@@ -1,9 +1,13 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
+import { verifyGameToken } from "../lib/gameToken.js";
 
 const router = Router();
 
-const SUPABASE_URL = process.env.SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
+const SUPABASE_URL          = process.env.SUPABASE_URL!;
+const SUPABASE_SERVICE_KEY  = process.env.SUPABASE_SERVICE_KEY!;
+const SUPABASE_ANON_KEY     = process.env.SUPABASE_ANON_KEY!;
+const ADMIN_USERNAMES       = () =>
+  (process.env.ADMIN_USERNAMES || "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
 
 function sbAdmin(path: string, opts: RequestInit = {}) {
   return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -229,6 +233,133 @@ router.get("/user/:userId/stats", async (req: Request, res: Response) => {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error("[ADMIN user stats] exception:", msg);
+    return res.status(500).json({ error: msg });
+  }
+});
+
+// ── Auth middleware (admin only) ──────────────────────────────────────────────
+async function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer "))
+    return res.status(401).json({ error: "Sesión inválida." });
+  const token = authHeader.slice(7);
+
+  let userId: string | null = null;
+  try { const g = verifyGameToken(token) as any; if (g) userId = g.profileId; } catch {}
+
+  if (!userId) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+      });
+      if (r.ok) userId = (await r.json()).id;
+    } catch {}
+  }
+
+  if (!userId) return res.status(401).json({ error: "Sesión inválida." });
+
+  let pr = await sbAdmin(`profiles?id=eq.${encodeURIComponent(userId)}&select=username&limit=1`);
+  if (!pr.ok) return res.status(403).json({ error: "Perfil no encontrado." });
+  const rows: any[] = await pr.json();
+  if (!rows[0]) return res.status(403).json({ error: "Perfil no encontrado." });
+  if (!ADMIN_USERNAMES().includes(rows[0].username.toLowerCase()))
+    return res.status(403).json({ error: "Acceso denegado." });
+
+  (req as any).adminUserId = userId;
+  next();
+}
+
+// ── GET /api/admin/transactions-search ───────────────────────────────────────
+// Query params: username, type, status, from, to, limit (default 50), offset (default 0)
+router.get("/transactions-search", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { username, type, status, from, to } = req.query as Record<string, string>;
+    const limit  = Math.min(parseInt((req.query.limit  as string) || "50", 10), 200);
+    const offset = Math.max(parseInt((req.query.offset as string) || "0",  10), 0);
+
+    // If username filter — resolve mander_id first
+    let manderFilter = "";
+    let resolvedUsername = "";
+    if (username?.trim()) {
+      const uname = username.trim().toLowerCase();
+      const pr = await sbAdmin(
+        `profiles?username=ilike.${encodeURIComponent(uname)}&select=mander_id,username&limit=1`,
+        { headers: { Prefer: "count=none" } },
+      );
+      if (pr.ok) {
+        const rows: any[] = await pr.json();
+        if (rows[0]) {
+          manderFilter    = `&mander_id=eq.${encodeURIComponent(rows[0].mander_id)}`;
+          resolvedUsername = rows[0].username;
+        } else {
+          return res.json({ transactions: [], total: 0, limit, offset });
+        }
+      }
+    }
+
+    // Build filter string
+    let filters = manderFilter;
+    if (type   && type   !== "all") filters += `&type=eq.${encodeURIComponent(type)}`;
+    if (status && status !== "all") filters += `&status=eq.${encodeURIComponent(status)}`;
+    if (from)  filters += `&created_at=gte.${encodeURIComponent(from)}`;
+    if (to) {
+      // to = end of that day
+      const toDate = new Date(to);
+      toDate.setHours(23, 59, 59, 999);
+      filters += `&created_at=lte.${encodeURIComponent(toDate.toISOString())}`;
+    }
+
+    const txRes = await sbAdmin(
+      `transactions?select=id,display_id,mander_id,type,status,amount,currency,created_at,notes,external_tx_id${filters}&order=created_at.desc&limit=${limit}&offset=${offset}`,
+      { headers: { Prefer: "count=exact" } },
+    );
+    if (!txRes.ok) {
+      const txt = await txRes.text();
+      return res.status(502).json({ error: "Error al buscar transacciones.", detail: txt });
+    }
+
+    // Parse total from Content-Range header e.g. "0-49/1234"
+    const contentRange = txRes.headers.get("content-range") ?? "";
+    const total = parseInt(contentRange.split("/")[1] ?? "0", 10) || 0;
+
+    const txs: any[] = await txRes.json();
+
+    // If no username filter, look up usernames for all mander_ids in result
+    let usernameMap: Record<string, string> = {};
+    if (resolvedUsername) {
+      const mid = txs[0]?.mander_id;
+      if (mid) usernameMap[mid] = resolvedUsername;
+    } else if (txs.length > 0) {
+      const mids = [...new Set(txs.map((t: any) => t.mander_id).filter(Boolean))];
+      const idsParam = `(${mids.map(id => `"${id}"`).join(",")})`;
+      const pr = await sbAdmin(
+        `profiles?mander_id=in.${idsParam}&select=mander_id,username`,
+        { headers: { Prefer: "count=none" } },
+      );
+      if (pr.ok) {
+        const rows: any[] = await pr.json();
+        for (const r of rows) usernameMap[r.mander_id] = r.username;
+      }
+    }
+
+    const result = txs.map((t: any) => ({
+      id:           t.id,
+      display_id:   t.display_id ?? null,
+      mander_id:    t.mander_id,
+      username:     usernameMap[t.mander_id] ?? t.mander_id,
+      type:         t.type,
+      status:       t.status,
+      amount:       t.amount,
+      currency:     t.currency,
+      created_at:   t.created_at,
+      notes:        t.notes ?? null,
+      wallet:       t.external_tx_id ?? null,
+    }));
+
+    return res.json({ transactions: result, total, limit, offset });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[ADMIN tx-search] exception:", msg);
     return res.status(500).json({ error: msg });
   }
 });

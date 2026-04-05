@@ -2087,19 +2087,346 @@ function StatsTab({ token }: { token: string }) {
   );
 }
 
+// ── TransactionsTab ───────────────────────────────────────────────────────────
+
+interface TxSearchRow {
+  id: string;
+  display_id: string | null;
+  mander_id: string;
+  username: string;
+  type: string;
+  status: string;
+  amount: number;
+  currency: string;
+  created_at: string;
+  notes: string | null;
+  wallet: string | null;
+}
+
+const TX_TYPE_LABELS: Record<string, string> = {
+  deposit: "Depósito", withdrawal: "Retiro", bonus: "Bono",
+  bet: "Apuesta", win: "Ganancia", refund: "Reembolso",
+};
+const TX_TYPE_COLORS: Record<string, string> = {
+  deposit: "#22c55e", withdrawal: "#f59e0b", bonus: "#a855f7",
+  bet: "#64748b", win: "#22c55e", refund: "#38bdf8",
+};
+const TX_STATUS_LABELS: Record<string, string> = {
+  pending: "Pendiente", completed: "Completado", rejected: "Rechazado",
+  paid: "Pagado", approved: "Aprobado", failed: "Fallido",
+};
+const TX_STATUS_COLORS: Record<string, string> = {
+  pending: "#f59e0b", completed: "#22c55e", rejected: "#ef4444",
+  paid: "#22c55e", approved: "#38bdf8", failed: "#ef4444",
+};
+
+function TransactionsTab({ token }: { token: string }) {
+  const [username, setUsername] = useState("");
+  const [type,     setType]     = useState("all");
+  const [status,   setStatus]   = useState("all");
+  const [from,     setFrom]     = useState("");
+  const [to,       setTo]       = useState("");
+  const [rows,     setRows]     = useState<TxSearchRow[]>([]);
+  const [total,    setTotal]    = useState(0);
+  const [offset,   setOffset]   = useState(0);
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
+  const [searched, setSearched] = useState(false);
+  const LIMIT = 50;
+
+  const search = useCallback(async (off = 0) => {
+    setLoading(true);
+    setError("");
+    try {
+      const params = new URLSearchParams({ limit: String(LIMIT), offset: String(off) });
+      if (username.trim()) params.set("username", username.trim());
+      if (type   !== "all") params.set("type",   type);
+      if (status !== "all") params.set("status", status);
+      if (from) params.set("from", from);
+      if (to)   params.set("to",   to);
+
+      const r = await fetch(`/api/admin/transactions-search?${params}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await r.json();
+      if (!r.ok) { setError(data.error || "Error al buscar."); return; }
+      setRows(data.transactions ?? []);
+      setTotal(data.total ?? 0);
+      setOffset(off);
+      setSearched(true);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [username, type, status, from, to, token]);
+
+  const clearFilters = () => {
+    setUsername(""); setType("all"); setStatus("all"); setFrom(""); setTo("");
+    setRows([]); setTotal(0); setOffset(0); setSearched(false); setError("");
+  };
+
+  const fmtDate = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "2-digit" })
+      + " " + d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+  };
+
+  const selStyle: React.CSSProperties = {
+    background: "#0d1117", border: "1px solid #1e2a3d", borderRadius: 8,
+    color: "#e2e8f0", padding: "8px 12px", fontSize: 14, outline: "none",
+    fontFamily: "'Inter', sans-serif",
+  };
+  const inputStyle: React.CSSProperties = { ...selStyle, width: "100%", boxSizing: "border-box" };
+
+  const hasPrev = offset > 0;
+  const hasNext = offset + LIMIT < total;
+
+  return (
+    <div>
+      {/* Filter bar */}
+      <div style={{
+        background: "#111827", border: "1px solid #1e2a3d", borderRadius: 12,
+        padding: "20px 24px", marginBottom: 20,
+      }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 140px 160px 140px 140px", gap: 12, marginBottom: 14 }}>
+          <div>
+            <label style={{ display: "block", color: "#64748b", fontSize: 12, marginBottom: 5, fontWeight: 600 }}>
+              USUARIO
+            </label>
+            <input
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && search(0)}
+              placeholder="Buscar por username..."
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", color: "#64748b", fontSize: 12, marginBottom: 5, fontWeight: 600 }}>
+              TIPO
+            </label>
+            <select value={type} onChange={e => setType(e.target.value)} style={{ ...selStyle, width: "100%" }}>
+              <option value="all">Todos</option>
+              <option value="deposit">Depósito</option>
+              <option value="withdrawal">Retiro</option>
+              <option value="bonus">Bono</option>
+              <option value="bet">Apuesta</option>
+              <option value="win">Ganancia</option>
+            </select>
+          </div>
+          <div>
+            <label style={{ display: "block", color: "#64748b", fontSize: 12, marginBottom: 5, fontWeight: 600 }}>
+              ESTADO
+            </label>
+            <select value={status} onChange={e => setStatus(e.target.value)} style={{ ...selStyle, width: "100%" }}>
+              <option value="all">Todos</option>
+              <option value="pending">Pendiente</option>
+              <option value="completed">Completado</option>
+              <option value="approved">Aprobado</option>
+              <option value="paid">Pagado</option>
+              <option value="rejected">Rechazado</option>
+              <option value="failed">Fallido</option>
+            </select>
+          </div>
+          <div>
+            <label style={{ display: "block", color: "#64748b", fontSize: 12, marginBottom: 5, fontWeight: 600 }}>
+              DESDE
+            </label>
+            <input type="date" value={from} onChange={e => setFrom(e.target.value)} style={{ ...inputStyle, colorScheme: "dark" }} />
+          </div>
+          <div>
+            <label style={{ display: "block", color: "#64748b", fontSize: 12, marginBottom: 5, fontWeight: 600 }}>
+              HASTA
+            </label>
+            <input type="date" value={to} onChange={e => setTo(e.target.value)} style={{ ...inputStyle, colorScheme: "dark" }} />
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button
+            onClick={() => search(0)}
+            disabled={loading}
+            style={{
+              background: "#f59e0b", border: "none", borderRadius: 8, padding: "9px 22px",
+              color: "#000", fontWeight: 700, fontSize: 14, cursor: "pointer",
+              fontFamily: "'Inter', sans-serif", opacity: loading ? 0.6 : 1,
+            }}
+          >
+            {loading ? "Buscando…" : "Buscar"}
+          </button>
+          {searched && (
+            <button
+              onClick={clearFilters}
+              style={{
+                background: "transparent", border: "1px solid #1e2a3d", borderRadius: 8,
+                padding: "9px 18px", color: "#64748b", fontWeight: 600, fontSize: 14,
+                cursor: "pointer", fontFamily: "'Inter', sans-serif",
+              }}
+            >
+              Limpiar
+            </button>
+          )}
+          {searched && !loading && (
+            <span style={{ color: "#64748b", fontSize: 14, alignSelf: "center", marginLeft: 4 }}>
+              {total === 0 ? "Sin resultados" : `${total} transacción${total !== 1 ? "es" : ""} encontrada${total !== 1 ? "s" : ""}`}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {error && (
+        <div style={{
+          background: "#1f1315", border: "1px solid #7f1d1d", borderRadius: 10,
+          padding: "14px 18px", color: "#f87171", fontSize: 14, marginBottom: 16,
+        }}>
+          {error}
+        </div>
+      )}
+
+      {/* Results table */}
+      {rows.length > 0 && (
+        <div style={{ background: "#111827", border: "1px solid #1e2a3d", borderRadius: 12, overflow: "hidden" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #1e2a3d" }}>
+                {["Fecha", "Usuario", "Tipo", "Estado", "Monto", "Notas"].map(h => (
+                  <th key={h} style={{
+                    textAlign: "left", padding: "12px 16px", color: "#64748b",
+                    fontSize: 12, fontWeight: 700, letterSpacing: "0.05em",
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((tx, i) => (
+                <tr
+                  key={tx.id}
+                  style={{
+                    borderBottom: i < rows.length - 1 ? "1px solid #1e2a3d" : "none",
+                    background: i % 2 === 0 ? "transparent" : "#0d1117",
+                  }}
+                >
+                  <td style={{ padding: "11px 16px", color: "#94a3b8", fontSize: 13, whiteSpace: "nowrap" }}>
+                    {fmtDate(tx.created_at)}
+                  </td>
+                  <td style={{ padding: "11px 16px" }}>
+                    <span style={{ color: "#e2e8f0", fontSize: 13, fontWeight: 600 }}>
+                      {tx.username}
+                    </span>
+                    {tx.display_id && (
+                      <span style={{ color: "#475569", fontSize: 11, marginLeft: 6 }}>#{tx.display_id}</span>
+                    )}
+                  </td>
+                  <td style={{ padding: "11px 16px" }}>
+                    <span style={{
+                      background: (TX_TYPE_COLORS[tx.type] || "#64748b") + "22",
+                      color: TX_TYPE_COLORS[tx.type] || "#64748b",
+                      borderRadius: 6, padding: "3px 9px", fontSize: 12, fontWeight: 700,
+                    }}>
+                      {TX_TYPE_LABELS[tx.type] || tx.type}
+                    </span>
+                  </td>
+                  <td style={{ padding: "11px 16px" }}>
+                    <span style={{
+                      background: (TX_STATUS_COLORS[tx.status] || "#64748b") + "22",
+                      color: TX_STATUS_COLORS[tx.status] || "#64748b",
+                      borderRadius: 6, padding: "3px 9px", fontSize: 12, fontWeight: 700,
+                    }}>
+                      {TX_STATUS_LABELS[tx.status] || tx.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: "11px 16px", whiteSpace: "nowrap" }}>
+                    <span style={{
+                      color: tx.type === "bet" ? "#ef4444" :
+                             tx.type === "deposit" || tx.type === "win" || tx.type === "bonus" ? "#22c55e" : "#f59e0b",
+                      fontWeight: 700, fontSize: 14,
+                    }}>
+                      {tx.type === "bet" ? "-" : "+"}${Math.abs(Number(tx.amount)).toFixed(2)}
+                    </span>
+                    <span style={{ color: "#475569", fontSize: 12, marginLeft: 5 }}>{tx.currency}</span>
+                  </td>
+                  <td style={{ padding: "11px 16px", color: "#64748b", fontSize: 12, maxWidth: 200 }}>
+                    <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {tx.notes || "—"}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination */}
+          {(hasPrev || hasNext) && (
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "14px 20px", borderTop: "1px solid #1e2a3d",
+            }}>
+              <span style={{ color: "#64748b", fontSize: 13 }}>
+                Mostrando {offset + 1}–{Math.min(offset + LIMIT, total)} de {total}
+              </span>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => search(offset - LIMIT)}
+                  disabled={!hasPrev || loading}
+                  style={{
+                    background: hasPrev ? "#1e2a3d" : "transparent",
+                    border: "1px solid #1e2a3d", borderRadius: 7,
+                    color: hasPrev ? "#e2e8f0" : "#475569",
+                    padding: "7px 16px", fontSize: 13, fontWeight: 600,
+                    cursor: hasPrev ? "pointer" : "not-allowed",
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                >
+                  ← Anterior
+                </button>
+                <button
+                  onClick={() => search(offset + LIMIT)}
+                  disabled={!hasNext || loading}
+                  style={{
+                    background: hasNext ? "#1e2a3d" : "transparent",
+                    border: "1px solid #1e2a3d", borderRadius: 7,
+                    color: hasNext ? "#e2e8f0" : "#475569",
+                    padding: "7px 16px", fontSize: 13, fontWeight: 600,
+                    cursor: hasNext ? "pointer" : "not-allowed",
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                >
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {searched && !loading && rows.length === 0 && !error && (
+        <div style={{
+          background: "#111827", border: "1px solid #1e2a3d", borderRadius: 12,
+          padding: "48px 24px", textAlign: "center", color: "#475569",
+        }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
+          <div style={{ fontWeight: 600, marginBottom: 6 }}>Sin resultados</div>
+          <div style={{ fontSize: 13 }}>Probá con otros filtros</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── AdminPanel ────────────────────────────────────────────────────────────────
 
-type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts";
+type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts" | "transactions";
 
 export default function AdminPanel({ token }: { token: string }) {
   const [tab, setTab] = useState<TabId>("stats");
 
   const tabs: { id: TabId; label: string; icon: string }[] = [
-    { id: "stats",       label: "Estadísticas", icon: "📊" },
-    { id: "alerts",      label: "Alertas",      icon: "🚨" },
-    { id: "deposits",    label: "Depósitos",    icon: "⬇" },
-    { id: "withdrawals", label: "Retiros",      icon: "⬆" },
-    { id: "users",       label: "Usuarios",     icon: "👤" },
+    { id: "stats",        label: "Estadísticas",  icon: "📊" },
+    { id: "alerts",       label: "Alertas",       icon: "🚨" },
+    { id: "deposits",     label: "Depósitos",     icon: "⬇" },
+    { id: "withdrawals",  label: "Retiros",       icon: "⬆" },
+    { id: "users",        label: "Usuarios",      icon: "👤" },
+    { id: "transactions", label: "Transacciones", icon: "🔍" },
   ];
 
   return (
@@ -2138,11 +2465,12 @@ export default function AdminPanel({ token }: { token: string }) {
         </div>
 
         {/* Content */}
-        {tab === "stats"       && <StatsTab token={token} />}
-        {tab === "alerts"      && <AlertsTab token={token} />}
-        {tab === "deposits"    && <DepositsTab />}
-        {tab === "withdrawals" && <WithdrawalsTab token={token} />}
-        {tab === "users"       && <UsersTab token={token} />}
+        {tab === "stats"         && <StatsTab token={token} />}
+        {tab === "alerts"        && <AlertsTab token={token} />}
+        {tab === "deposits"      && <DepositsTab />}
+        {tab === "withdrawals"   && <WithdrawalsTab token={token} />}
+        {tab === "users"         && <UsersTab token={token} />}
+        {tab === "transactions"  && <TransactionsTab token={token} />}
       </div>
     </div>
   );
