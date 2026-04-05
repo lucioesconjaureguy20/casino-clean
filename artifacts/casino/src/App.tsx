@@ -2144,7 +2144,7 @@ export default function App() {
     if (!depositGenerating) return;
     const t = setTimeout(() => {
       setDepositGenerating(false);
-      setDepositError("Tiempo de espera agotado. Cerrá y volvé a abrir el cashier.");
+      setDepositError("Tiempo de espera agotado. Intentá de nuevo.");
     }, 20_000);
     return () => clearTimeout(t);
   }, [depositGenerating]);
@@ -3373,7 +3373,11 @@ export default function App() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${sess.access_token}` },
         body: JSON.stringify({ currency: coin, network, amount_usd: usdAmt }),
       });
-      if (genId !== depositGenCounter.current) return; // usuario cambió de red/moneda
+      if (genId !== depositGenCounter.current) {
+        // Esta respuesta llegó tarde — limpiar el guard para que el intento vigente pueda reintentar si falla
+        autoGenKeySet.current.delete(dbKey);
+        return;
+      }
       const npData = await npRes.json();
       if (!npRes.ok) {
         autoGenKeySet.current.delete(dbKey); // permitir reintento
