@@ -244,8 +244,26 @@ router.post("/deposit/nowpayments", requireAuth, async (req: Request, res: Respo
 
   // 4. Llamar a NOWPayments API
   try {
+    // Obtener el mínimo real de NOWPayments para este par de monedas
+    let effectiveUsd = parsedUsd;
+    try {
+      const minRes = await fetch(
+        `${NOWPAYMENTS_BASE}/min-amount?currency_from=usd&currency_to=${npCurrency}`,
+        { headers: { "x-api-key": NOWPAYMENTS_API_KEY! } }
+      );
+      if (minRes.ok) {
+        const minData: any = await minRes.json();
+        const minUsd = Number(minData?.min_amount);
+        if (Number.isFinite(minUsd) && minUsd > effectiveUsd) {
+          // Añadir 5% de margen para evitar errores por fluctuación de precio
+          effectiveUsd = +(minUsd * 1.05).toFixed(2);
+          console.log(`[NP deposit] min override: ${parsedUsd} → ${effectiveUsd} USD (min=${minUsd})`);
+        }
+      }
+    } catch (_) { /* si falla la consulta de mínimo, seguimos con el amount original */ }
+
     const npBody: Record<string, any> = {
-      price_amount:   parsedUsd,
+      price_amount:   effectiveUsd,
       price_currency: "usd",
       pay_currency:   npCurrency,
       order_id:       depositId,

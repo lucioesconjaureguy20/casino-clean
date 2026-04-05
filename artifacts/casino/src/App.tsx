@@ -1413,17 +1413,30 @@ export default function App() {
     const dice = ls.getDice(u);
     const userBets = ls.getBets(u);
     let userTx = ls.getTx(u);
-    // Expirar depósitos con direcciones falsas (< 26 chars = pre-NOWPayments)
+    // Expirar depósitos generados localmente (id=local_*) o con direcciones cortas/inválidas
+    // pre-NOWPayments: id = local_<timestamp>, o address.length < 26
     const hasFake = userTx.some(
       tx => tx.type === "deposit" && tx.status === "pending" &&
-            (!tx.address || tx.address.length < 26)
+            (
+              !tx.address ||
+              tx.address.length < 26 ||
+              (tx.id ?? "").startsWith("local_")
+            )
     );
     if (hasFake) {
-      userTx = userTx.map(tx =>
-        tx.type === "deposit" && tx.status === "pending" && (!tx.address || tx.address.length < 26)
-          ? { ...tx, status: "expired" as const }
-          : tx
-      );
+      userTx = userTx.map(tx => {
+        if (
+          tx.type === "deposit" && tx.status === "pending" &&
+          (
+            !tx.address ||
+            tx.address.length < 26 ||
+            (tx.id ?? "").startsWith("local_")
+          )
+        ) {
+          return { ...tx, status: "expired" as const };
+        }
+        return tx;
+      });
       ls.saveTx(u, userTx);
     }
     // Asignar display_id a transacciones históricas que no lo tengan aún
@@ -3277,16 +3290,19 @@ export default function App() {
     const minNative = minDepositNative(coin, network);
     const livePrice = getPriceUsd(coin);
     const maxNative = +(lim.maxDep / livePrice).toPrecision(6);
+    let usdAmt: number;
     let coinAmt: number;
     if (autoMode) {
-      coinAmt = minNative;
+      // Usar $10 fijo para superar cualquier mínimo de NOWPayments (su mínimo varía por moneda)
+      usdAmt = 10;
+      coinAmt = +(usdAmt / livePrice).toPrecision(6);
     } else {
       coinAmt = parseFloat(depositAmount);
       if (!coinAmt||coinAmt<=0) return setDepositError("Ingresá un monto válido");
       if (coinAmt < minNative) return setDepositError(`Mínimo: ${minNative} ${coin} ($${lim.minDep} USD)`);
       if (coinAmt > maxNative) return setDepositError(`Máximo: ${maxNative} ${coin} ($${lim.maxDep} USD)`);
+      usdAmt = +(coinAmt * livePrice).toFixed(2);
     }
-    const usdAmt = +(coinAmt * livePrice).toFixed(2);
     // ── NOWPayments: obtener dirección real ───────────────────────────────
     // Refrescar sesión activamente antes de llamar al API
     let freshSess = await getOrRefreshSession();
@@ -3312,6 +3328,7 @@ export default function App() {
           t.network === network &&
           t.address &&
           t.address.length >= 26 &&  // direcciones reales: TRC20=34, BTC≥26, ETH=42, SOL≥32
+          !((t.id ?? "").startsWith("local_")) &&  // no reutilizar depósitos pre-NOWPayments
           nowTs - new Date(t.createdAt).getTime() < EXPIRY_MS,
       );
       if (reusable) {
