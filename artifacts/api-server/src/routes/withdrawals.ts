@@ -259,6 +259,28 @@ const WITHDRAW_FEES: Record<string, number> = {
   Arbitrum: 0.3, LTC: 0.5, TRX: 0.5, "ERC20-POL": 0.2,
 };
 
+// ── NOWPayments JWT auth ──────────────────────────────────────────────────────
+async function getNowPaymentsJWT(): Promise<string | null> {
+  const email    = process.env.NOWPAYMENTS_EMAIL;
+  const password = process.env.NOWPAYMENTS_PASSWORD;
+  if (!email || !password) {
+    console.error("[NP auth] NOWPAYMENTS_EMAIL or NOWPAYMENTS_PASSWORD not set");
+    return null;
+  }
+  const res = await fetch("https://api.nowpayments.io/v1/auth", {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify({ email, password }),
+  });
+  const data: any = await res.json();
+  if (!res.ok || !data?.token) {
+    console.error(`[NP auth] Failed to get JWT: status=${res.status}`, JSON.stringify(data));
+    return null;
+  }
+  console.log(`[NP auth] JWT obtained successfully`);
+  return data.token as string;
+}
+
 // ── Call NOWPayments Payout API ───────────────────────────────────────────────
 async function callNowPaymentsPayout(
   address: string,
@@ -272,6 +294,10 @@ async function callNowPaymentsPayout(
 
   const npCode = NP_CURRENCY_W[currency]?.[network];
   if (!npCode) return { ok: false, error: `Moneda no soportada: ${currency}/${network}` };
+
+  // Get JWT token for Custody payout auth
+  const jwt = await getNowPaymentsJWT();
+  if (!jwt) return { ok: false, error: "No se pudo autenticar con NOWPayments. Verificá NOWPAYMENTS_EMAIL y NOWPAYMENTS_PASSWORD." };
 
   const body = {
     withdrawals: [{
@@ -289,8 +315,9 @@ async function callNowPaymentsPayout(
   const res = await fetch("https://api.nowpayments.io/v1/payout", {
     method:  "POST",
     headers: {
-      "x-api-key":    npKey,
-      "Content-Type": "application/json",
+      "x-api-key":     npKey,
+      "Authorization": `Bearer ${jwt}`,
+      "Content-Type":  "application/json",
     },
     body: JSON.stringify(body),
   });
