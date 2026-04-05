@@ -287,16 +287,24 @@ router.post("/deposit/nowpayments", requireAuth, async (req: Request, res: Respo
       return res.status(502).json({ error: npData?.message ?? "Error al crear pago en NOWPayments." });
     }
 
+    // Validar que la dirección devuelta sea mínimamente válida (>= 26 chars)
+    const payAddress: string = npData.pay_address ?? "";
+    if (payAddress.length < 26) {
+      console.error(`[NP deposit] dirección inválida recibida de NOWPayments: "${payAddress}" (${payAddress.length} chars)`);
+      await sbAdmin(`deposits?id=eq.${depositId}`, { method: "DELETE" });
+      return res.status(502).json({ error: `NOWPayments devolvió una dirección inválida para ${cur} ${net}. Intentá con otra red.` });
+    }
+
     // 5. Actualizar el registro con la dirección real y payment_id
     await sbAdmin(`deposits?id=eq.${depositId}`, {
       method: "PATCH",
       body: JSON.stringify({
-        address: npData.pay_address,
+        address: payAddress,
         tx_hash: npData.payment_id?.toString() ?? null,
       }),
     });
 
-    console.log(`[NP deposit] OK — deposit_id=${depositId} payment_id=${npData.payment_id} addr=${npData.pay_address}`);
+    console.log(`[NP deposit] OK — deposit_id=${depositId} payment_id=${npData.payment_id} addr=${payAddress} (${payAddress.length} chars)`);
 
     return res.status(201).json({
       deposit_id:   depositId,
