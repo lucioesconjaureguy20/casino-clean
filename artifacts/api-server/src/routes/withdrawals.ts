@@ -305,7 +305,10 @@ async function callNowPaymentsPayout(
       currency:    npCode,
       amount:      amountCrypto,
       extra_id:    null,
-      ipn_callback_url: process.env.NOWPAYMENTS_IPN_URL ?? "",
+      ipn_callback_url: process.env.NOWPAYMENTS_IPN_URL
+        ?? (process.env.REPLIT_DEV_DOMAIN
+            ? `https://${process.env.REPLIT_DEV_DOMAIN}/api/webhooks/nowpayments`
+            : "https://manderbet-casino1.onrender.com/api/webhooks/nowpayments"),
     }],
     batch_withdrawal_id: String(withdrawalId),
   };
