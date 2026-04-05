@@ -126,16 +126,33 @@ export async function authRefreshSession(refresh_token: string): Promise<AuthSes
 }
 
 // ─── getOrRefreshSession ──────────────────────────────────────────────────────
-// Primary: asks the official Supabase client (handles token refresh automatically).
-// Fallback: uses the manually stored session with our own refresh logic.
+// Primary: Supabase client session. If expired, refreshes via SDK.
+// Fallback: stored session with manual refresh.
+// Returns null if token is expired and cannot be refreshed → caller shows login error.
 export async function getOrRefreshSession(): Promise<AuthSession | null> {
+  // 1. Ask the Supabase SDK for its cached session
   const { data } = await supabase.auth.getSession();
   if (data.session) {
     const session = mapSupabaseSession(data.session);
-    saveSession(session);
-    return session;
+    // 1a. Token still valid — return directly
+    if (isSessionValid(session)) {
+      saveSession(session);
+      return session;
+    }
+    // 1b. Token expired — try to refresh via Supabase SDK
+    const { data: rd, error: re } = await supabase.auth.refreshSession();
+    if (!re && rd.session) {
+      const refreshed = mapSupabaseSession(rd.session);
+      saveSession(refreshed);
+      return refreshed;
+    }
+    // Refresh failed — clear stale session so caller shows login error
+    clearSession();
+    await supabase.auth.signOut().catch(() => {});
+    return null;
   }
 
+  // 2. No Supabase session — fall back to manually stored session
   const stored = loadSession();
   if (!stored) return null;
   if (isSessionValid(stored)) return stored;
