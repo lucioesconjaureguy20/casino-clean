@@ -5192,20 +5192,20 @@ export default function App() {
                               </table>
                             </div>
                             {totalPages > 1 && (
-                              <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:"6px", padding:"16px", borderTop:"1px solid #1a2236" }}>
-                                <button onClick={()=>setTxPage(p=>Math.max(0,p-1))} disabled={page===0}
-                                  style={{ width:"32px", height:"32px", borderRadius:"7px", border:"1px solid #253045", background:"transparent", color:page===0?"#253045":"#8aa0c0", cursor:page===0?"default":"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"16px" }}>‹</button>
-                                {Array.from({length:totalPages},(_,i)=>(
-                                  <button key={i} onClick={()=>setTxPage(i)}
-                                    style={{ width:"32px", height:"32px", borderRadius:"7px", border:"none",
-                                      background: i===page ? "linear-gradient(160deg,#f6b531,#d4870a)" : "#1a2436",
-                                      color: i===page ? "#fff" : "#8aa0c0", fontWeight: i===page ? 700 : 400,
-                                      fontSize:"13px", cursor:"pointer" }}>
-                                    {i+1}
+                              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"14px 16px", borderTop:"1px solid #1a2236" }}>
+                                <span style={{ color:"#64748b", fontSize:13 }}>
+                                  Página {page+1} de {totalPages}
+                                </span>
+                                <div style={{ display:"flex", gap:8 }}>
+                                  <button onClick={()=>setTxPage(p=>Math.max(0,p-1))} disabled={page===0}
+                                    style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                                    ← Anterior
                                   </button>
-                                ))}
-                                <button onClick={()=>setTxPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
-                                  style={{ width:"32px", height:"32px", borderRadius:"7px", border:"1px solid #253045", background:"transparent", color:page===totalPages-1?"#253045":"#8aa0c0", cursor:page===totalPages-1?"default":"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"16px" }}>›</button>
+                                  <button onClick={()=>setTxPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
+                                    style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                                    Siguiente →
+                                  </button>
+                                </div>
                               </div>
                             )}
                           </>
