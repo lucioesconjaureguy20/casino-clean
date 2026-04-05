@@ -1725,6 +1725,24 @@ export default function App() {
     //   after email confirmation, and for PASSWORD_RECOVERY as a belt-and-
     //   suspenders fallback for opening the reset modal.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      // Keep supaSession fresh whenever the token is refreshed automatically
+      if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && session) {
+        const refreshed: AuthSession = {
+          access_token:  session.access_token,
+          refresh_token: session.refresh_token,
+          expires_at:    (session.expires_at ?? 0) * 1000,
+          user: {
+            id:                 session.user.id,
+            email:              session.user.email ?? "",
+            user_metadata:      session.user.user_metadata as { username?: string } | undefined,
+            email_confirmed_at: session.user.email_confirmed_at,
+          },
+        };
+        supaSessionRef.current = refreshed;
+        setSupaSession(refreshed);
+        saveSession(refreshed);
+      }
+
       if (event === "PASSWORD_RECOVERY") {
         setResetNewPass("");
         setResetConfirmPass("");
