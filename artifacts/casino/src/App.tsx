@@ -1413,6 +1413,19 @@ export default function App() {
     const dice = ls.getDice(u);
     const userBets = ls.getBets(u);
     let userTx = ls.getTx(u);
+    // Expirar depósitos con direcciones falsas (< 26 chars = pre-NOWPayments)
+    const hasFake = userTx.some(
+      tx => tx.type === "deposit" && tx.status === "pending" &&
+            (!tx.address || tx.address.length < 26)
+    );
+    if (hasFake) {
+      userTx = userTx.map(tx =>
+        tx.type === "deposit" && tx.status === "pending" && (!tx.address || tx.address.length < 26)
+          ? { ...tx, status: "expired" as const }
+          : tx
+      );
+      ls.saveTx(u, userTx);
+    }
     // Asignar display_id a transacciones históricas que no lo tengan aún
     const needsPatch = userTx.some(tx => (tx.type==="deposit"||tx.type==="withdraw") && !tx.display_id);
     if (needsPatch) {
@@ -3314,6 +3327,7 @@ export default function App() {
       const npData = await npRes.json();
       if (!npRes.ok) {
         autoGenKeySet.current.delete(dbKey); // permitir reintento
+        setDepositGenerating(false);
         setDepositError(npData?.error ?? "Error al generar dirección de pago. Intentá de nuevo.");
         return;
       }
