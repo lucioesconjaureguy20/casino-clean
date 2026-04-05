@@ -2126,6 +2126,16 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cashierTab, currentUser?.id, depositCoin, depositNetwork]);
 
+  // ── Safety timeout: if spinner hangs more than 20s, kill it ──────────────
+  useEffect(() => {
+    if (!depositGenerating) return;
+    const t = setTimeout(() => {
+      setDepositGenerating(false);
+      setDepositError("Tiempo de espera agotado. Cerrá y volvé a abrir el cashier.");
+    }, 20_000);
+    return () => clearTimeout(t);
+  }, [depositGenerating]);
+
   // ── Fake wins simulation ─────────────────────────────────────────────────
   useEffect(() => {
     if (!currentUser) return;
@@ -3368,8 +3378,9 @@ export default function App() {
       setDepositView("generated");
       console.log("[NP deposit] dirección generada:", address, "payment_id:", npData.payment_id);
     } catch (e) {
-      if (genId !== depositGenCounter.current) return;
       autoGenKeySet.current.delete(dbKey);
+      setDepositGenerating(false);
+      if (genId !== depositGenCounter.current) return;
       setDepositError("Error de conexión. Intentá de nuevo.");
     } finally {
       if (genId === depositGenCounter.current) setDepositGenerating(false);
