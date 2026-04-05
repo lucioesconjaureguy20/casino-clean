@@ -2132,7 +2132,7 @@ function TransactionsTab({ token }: { token: string }) {
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState("");
   const [searched, setSearched] = useState(false);
-  const LIMIT = 50;
+  const LIMIT = 40;
 
   const search = useCallback(async (off = 0) => {
     setLoading(true);

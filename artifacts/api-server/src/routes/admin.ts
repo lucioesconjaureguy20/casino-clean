@@ -274,7 +274,7 @@ async function requireAdmin(req: Request, res: Response, next: NextFunction) {
 router.get("/transactions-search", requireAdmin, async (req: Request, res: Response) => {
   try {
     const { username, type, status, from, to } = req.query as Record<string, string>;
-    const limit  = Math.min(parseInt((req.query.limit  as string) || "50", 10), 200);
+    const limit  = Math.min(parseInt((req.query.limit  as string) || "40", 10), 200);
     const offset = Math.max(parseInt((req.query.offset as string) || "0",  10), 0);
 
     // If username filter — resolve mander_id first
