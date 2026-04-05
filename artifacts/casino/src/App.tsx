@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback, Fragment } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { createPortal } from "react-dom";
 import { supabase, authSignUp, authLogin, authLogout, authForgotPassword, getOrRefreshSession, clearSession, type AuthSession } from "./auth";
 import BlackjackGame, { BJStats, bjStatsDefault } from "./BlackjackGame";
@@ -6286,8 +6287,8 @@ export default function App() {
                   <div style={{ background:"#1e2a3a",borderRadius:"12px",padding:"12px 14px",marginBottom:"14px" }}>
                     {/* QR left | address+Copy stacked right */}
                     <div style={{ display:"flex",alignItems:"stretch",gap:"12px" }}>
-                      <div style={{ flexShrink:0,background:"#fff",borderRadius:"7px",padding:"4px",display:"inline-flex" }}>
-                        <img src={`https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl=${encodeURIComponent(pendingDeposit.address!)}&choe=UTF-8`} width={148} height={148} style={{ display:"block" }} alt="QR"/>
+                      <div style={{ flexShrink:0,background:"#fff",borderRadius:"7px",padding:"6px",display:"inline-flex" }}>
+                        <QRCodeSVG value={pendingDeposit.address!} size={136} level="M" />
                       </div>
                       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:"2px" }}>
                         <div style={{ fontSize:"11.5px",color:"#8a9ab8",lineHeight:1.4 }}>
