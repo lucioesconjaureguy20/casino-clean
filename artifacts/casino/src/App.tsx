@@ -593,6 +593,14 @@ function nextDisplayId(type: "deposit"|"withdraw"): number {
   localStorage.setItem(key, String(next));
   return next;
 }
+/** Longitud mínima de dirección válida según la red.
+ *  BEP20/ERC20 usan formato 0x... (42 chars); TRC20 empieza con T (34 chars). */
+function minAddrLen(network: string): number {
+  if (["BEP20","ERC20","Arbitrum","Optimism"].includes(network)) return 42;
+  if (network === "TRC20") return 34;
+  if (["SOL","Solana"].includes(network)) return 32;
+  return 26; // BTC, LTC, TRX, etc.
+}
 
 interface Bet { amount: number; winAmount: number; createdAt: string; }
 interface LiveWin { user: string; game: string; betUsd: number; win: boolean; profitUsd: number; createdAt: string; }
@@ -1419,7 +1427,7 @@ export default function App() {
       tx => tx.type === "deposit" && tx.status === "pending" &&
             (
               !tx.address ||
-              tx.address.length < 26 ||
+              tx.address.length < minAddrLen(tx.network ?? "") ||
               String(tx.id ?? "").startsWith("local_")
             )
     );
@@ -1429,7 +1437,7 @@ export default function App() {
           tx.type === "deposit" && tx.status === "pending" &&
           (
             !tx.address ||
-            tx.address.length < 26 ||
+            tx.address.length < minAddrLen(tx.network ?? "") ||
             String(tx.id ?? "").startsWith("local_")
           )
         ) {
@@ -3320,12 +3328,12 @@ export default function App() {
       let allTx: Transaction[] = ls.getTx(currentUser);
       const hasFakeNow = allTx.some(
         t => t.type === "deposit" && t.status === "pending" &&
-             (!t.address || t.address.length < 26 || String(t.id ?? "").startsWith("local_"))
+             (!t.address || t.address.length < minAddrLen(t.network ?? "") || String(t.id ?? "").startsWith("local_"))
       );
       if (hasFakeNow) {
         allTx = allTx.map(t =>
           (t.type === "deposit" && t.status === "pending" &&
-           (!t.address || t.address.length < 26 || String(t.id ?? "").startsWith("local_")))
+           (!t.address || t.address.length < minAddrLen(t.network ?? "") || String(t.id ?? "").startsWith("local_")))
             ? { ...t, status: "expired" as const }
             : t
         );
@@ -3345,7 +3353,7 @@ export default function App() {
           t.coin === coin &&
           t.network === network &&
           t.address &&
-          t.address.length >= 26 &&  // direcciones reales: TRC20=34, BTC≥26, ETH=42, SOL≥32
+          t.address.length >= minAddrLen(t.network ?? "") &&  // mínimo por red: BEP20/ERC20=42, TRC20=34, SOL=32, BTC=26
           !(String(t.id ?? "").startsWith("local_")) &&  // no reutilizar depósitos pre-NOWPayments
           nowTs - new Date(t.createdAt).getTime() < EXPIRY_MS,
       );

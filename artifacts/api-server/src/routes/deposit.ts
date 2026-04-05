@@ -10,6 +10,16 @@ const SUPABASE_ANON_KEY    = process.env.SUPABASE_ANON_KEY!;
 const NOWPAYMENTS_API_KEY  = process.env.NOWPAYMENTS_API_KEY;
 const NOWPAYMENTS_BASE     = "https://api.nowpayments.io/v1";
 
+// ── Longitud mínima de dirección válida por red ───────────────────────────────
+const MIN_ADDR_LEN: Record<string, number> = {
+  BEP20: 42, ERC20: 42, Arbitrum: 42, Optimism: 42,
+  TRC20: 34,
+  SOL: 32, Solana: 32,
+};
+function minAddrLenForNet(network: string): number {
+  return MIN_ADDR_LEN[network] ?? 26;
+}
+
 // ── NOWPayments currency code map (coin + network → NP code) ─────────────────
 const NP_CURRENCY: Record<string, Record<string, string>> = {
   USDT:  { TRC20: "usdttrc20", ERC20: "usdterc20", BEP20: "usdtbsc" },
@@ -287,10 +297,11 @@ router.post("/deposit/nowpayments", requireAuth, async (req: Request, res: Respo
       return res.status(502).json({ error: npData?.message ?? "Error al crear pago en NOWPayments." });
     }
 
-    // Validar que la dirección devuelta sea mínimamente válida (>= 26 chars)
+    // Validar que la dirección devuelta sea mínimamente válida (longitud por red)
     const payAddress: string = npData.pay_address ?? "";
-    if (payAddress.length < 26) {
-      console.error(`[NP deposit] dirección inválida recibida de NOWPayments: "${payAddress}" (${payAddress.length} chars)`);
+    const minLen = minAddrLenForNet(net);
+    if (payAddress.length < minLen) {
+      console.error(`[NP deposit] dirección inválida recibida (${payAddress.length} chars, mín=${minLen} para ${net}): "${payAddress}"`);
       await sbAdmin(`deposits?id=eq.${depositId}`, { method: "DELETE" });
       return res.status(502).json({ error: `NOWPayments devolvió una dirección inválida para ${cur} ${net}. Intentá con otra red.` });
     }
