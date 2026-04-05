@@ -23,13 +23,13 @@ function minAddrLenForNet(network: string): number {
 // ── NOWPayments currency code map (coin + network → NP code) ─────────────────
 const NP_CURRENCY: Record<string, Record<string, string>> = {
   USDT:  { TRC20: "usdttrc20", ERC20: "usdterc20", BEP20: "usdtbsc" },
-  ETH:   { ERC20: "eth",       Arbitrum: "etharb",  Optimism: "ethop" },
+  ETH:   { ERC20: "eth",       Arbitrum: "etharb" },
   BTC:   { BTC:   "btc" },
   SOL:   { SOL:   "sol" },
-  BNB:   { BEP20: "bnbbsc",   Beacon: "bnb" },
+  BNB:   { BEP20: "bnbbsc" },
   TRX:   { TRC20: "trx" },
   POL:   { ERC20: "maticmainnet" },
-  USDC:  { ERC20: "usdcerc20", BEP20: "usdcbsc", SOL: "usdcsol" },
+  USDC:  { BEP20: "usdcbsc", SOL: "usdcsol" },
   LTC:   { LTC:   "ltc" },
 };
 

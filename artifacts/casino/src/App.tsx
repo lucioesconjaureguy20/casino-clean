@@ -339,11 +339,11 @@ const coinDisplayMap: Record<string, { name: string; badgeClass: string; badgeTe
 const coinConfig: Record<string, { priceUsd: number; minDepositUsd: number; minWithdrawUsd: number; networks: string[] }> = {
   USDT: { priceUsd: 1.00,    minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["TRC20","ERC20","BEP20"] },
   BTC:  { priceUsd: 66431,   minDepositUsd: 50,  minWithdrawUsd: 50,  networks: ["BTC"] },
-  BNB:  { priceUsd: 585,     minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["BEP20","Beacon"] },
+  BNB:  { priceUsd: 585,     minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["BEP20"] },
   TRX:  { priceUsd: 0.315,   minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["TRC20"] },
   LTC:  { priceUsd: 52,      minDepositUsd: 10,  minWithdrawUsd: 10,  networks: ["LTC"] },
-  ETH:  { priceUsd: 2044,    minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["ERC20","Arbitrum","Optimism"] },
-  USDC: { priceUsd: 1.00,    minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["ERC20","BEP20","SOL"] },
+  ETH:  { priceUsd: 2044,    minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["ERC20","Arbitrum"] },
+  USDC: { priceUsd: 1.00,    minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["BEP20","SOL"] },
   SOL:  { priceUsd: 79,      minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["SOL"] },
   POL:  { priceUsd: 0.093,   minDepositUsd: 5,   minWithdrawUsd: 5,   networks: ["ERC20"] },
 };
@@ -387,14 +387,12 @@ const networkLimits: Record<string, Record<string, NetLimit>> = {
   ETH: {
     ERC20:    { minDep:50,  maxDep:50000,  minWith:50,  maxWith:25000, wFee:2    }, // gas Ethereum
     Arbitrum: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.3  }, // gas Arbitrum ~$0.10-0.20
-    Optimism: { minDep:5,   maxDep:50000,  minWith:5,   maxWith:25000, wFee:0.3  }, // gas Optimism ~$0.10-0.20
   },
   TRX: {
     TRC20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5  }, // gas Tron ~$0.10-0.30
   },
   BNB: {
     BEP20:    { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.5  }, // gas BSC ~$0.10-0.30
-    Beacon:   { minDep:5,   maxDep:20000,  minWith:5,   maxWith:10000, wFee:0.3  }, // gas Beacon ~$0.05-0.15
   },
   SOL: {
     SOL:      { minDep:5,   maxDep:5000,   minWith:5,   maxWith:2000,  wFee:0.1  }, // gas Solana ~$0.001
@@ -403,7 +401,6 @@ const networkLimits: Record<string, Record<string, NetLimit>> = {
     ERC20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.2  }, // gas Polygon ~$0.01-0.05
   },
   USDC: {
-    ERC20:    { minDep:50,  maxDep:10000,  minWith:50,  maxWith:5000,  wFee:2    }, // gas Ethereum
     BEP20:    { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.5  }, // gas BSC ~$0.10-0.30
     SOL:      { minDep:5,   maxDep:10000,  minWith:5,   maxWith:5000,  wFee:0.1  }, // gas Solana ~$0.001
   },
