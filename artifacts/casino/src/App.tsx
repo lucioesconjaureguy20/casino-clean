@@ -1420,7 +1420,7 @@ export default function App() {
             (
               !tx.address ||
               tx.address.length < 26 ||
-              (tx.id ?? "").startsWith("local_")
+              String(tx.id ?? "").startsWith("local_")
             )
     );
     if (hasFake) {
@@ -1430,7 +1430,7 @@ export default function App() {
           (
             !tx.address ||
             tx.address.length < 26 ||
-            (tx.id ?? "").startsWith("local_")
+            String(tx.id ?? "").startsWith("local_")
           )
         ) {
           return { ...tx, status: "expired" as const };
@@ -3320,12 +3320,12 @@ export default function App() {
       let allTx: Transaction[] = ls.getTx(currentUser);
       const hasFakeNow = allTx.some(
         t => t.type === "deposit" && t.status === "pending" &&
-             (!t.address || t.address.length < 26 || (t.id ?? "").startsWith("local_"))
+             (!t.address || t.address.length < 26 || String(t.id ?? "").startsWith("local_"))
       );
       if (hasFakeNow) {
         allTx = allTx.map(t =>
           (t.type === "deposit" && t.status === "pending" &&
-           (!t.address || t.address.length < 26 || (t.id ?? "").startsWith("local_")))
+           (!t.address || t.address.length < 26 || String(t.id ?? "").startsWith("local_")))
             ? { ...t, status: "expired" as const }
             : t
         );
@@ -3346,7 +3346,7 @@ export default function App() {
           t.network === network &&
           t.address &&
           t.address.length >= 26 &&  // direcciones reales: TRC20=34, BTC≥26, ETH=42, SOL≥32
-          !((t.id ?? "").startsWith("local_")) &&  // no reutilizar depósitos pre-NOWPayments
+          !(String(t.id ?? "").startsWith("local_")) &&  // no reutilizar depósitos pre-NOWPayments
           nowTs - new Date(t.createdAt).getTime() < EXPIRY_MS,
       );
       if (reusable) {
