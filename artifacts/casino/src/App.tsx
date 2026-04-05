@@ -3271,6 +3271,30 @@ export default function App() {
       return;
     }
 
+    // ── Reutilizar depósito existente si todavía no expiró (24 h) ────────────
+    if (autoMode) {
+      const EXPIRY_MS = 24 * 60 * 60 * 1000;
+      const nowTs = Date.now();
+      const existingTxs: Transaction[] = ls.getTx(currentUser);
+      const reusable = existingTxs.find(
+        (t) =>
+          t.type === "deposit" &&
+          t.status === "pending" &&
+          t.coin === coin &&
+          t.network === network &&
+          t.address &&
+          t.address.length > 10 &&
+          nowTs - new Date(t.createdAt).getTime() < EXPIRY_MS,
+      );
+      if (reusable) {
+        // Mostrar la dirección guardada sin llamar a NOWPayments de nuevo
+        setPendingDeposit(reusable);
+        pendingDepositServerIdRef.current = reusable.id ?? null;
+        autoGenKeySet.current.add(`${currentUser!.id}:${coin}:${network}`);
+        return;
+      }
+    }
+
     // Guard: evitar llamadas duplicadas en esta sesión
     const dbKey = `${currentUser!.id}:${coin}:${network}`;
     if (autoGenKeySet.current.has(dbKey)) return;
