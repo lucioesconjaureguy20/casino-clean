@@ -2105,19 +2105,17 @@ interface TxSearchRow {
 
 const TX_TYPE_LABELS: Record<string, string> = {
   deposit: "Depósito", withdrawal: "Retiro", bonus: "Bono",
-  bet: "Apuesta", win: "Ganancia", refund: "Reembolso",
+  bet: "Apuesta", win: "Ganancia",
 };
 const TX_TYPE_COLORS: Record<string, string> = {
   deposit: "#22c55e", withdrawal: "#f59e0b", bonus: "#a855f7",
-  bet: "#64748b", win: "#22c55e", refund: "#38bdf8",
+  bet: "#64748b", win: "#22c55e",
 };
 const TX_STATUS_LABELS: Record<string, string> = {
-  pending: "Pendiente", completed: "Completado", rejected: "Rechazado",
-  paid: "Pagado", approved: "Aprobado", failed: "Fallido",
+  pending: "Pendiente", completed: "Completado",
 };
 const TX_STATUS_COLORS: Record<string, string> = {
-  pending: "#f59e0b", completed: "#22c55e", rejected: "#ef4444",
-  paid: "#22c55e", approved: "#38bdf8", failed: "#ef4444",
+  pending: "#f59e0b", completed: "#22c55e",
 };
 
 function TransactionsTab({ token }: { token: string }) {
@@ -2212,7 +2210,6 @@ function TransactionsTab({ token }: { token: string }) {
               <option value="withdrawal">Retiro</option>
               <option value="bonus">Bono</option>
               <option value="bet">Apuesta</option>
-              <option value="win">Ganancia</option>
             </select>
           </div>
           <div>
@@ -2223,10 +2220,6 @@ function TransactionsTab({ token }: { token: string }) {
               <option value="all">Todos</option>
               <option value="pending">Pendiente</option>
               <option value="completed">Completado</option>
-              <option value="approved">Aprobado</option>
-              <option value="paid">Pagado</option>
-              <option value="rejected">Rechazado</option>
-              <option value="failed">Fallido</option>
             </select>
           </div>
           <div>
