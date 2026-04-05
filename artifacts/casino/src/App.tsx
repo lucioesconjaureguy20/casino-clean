@@ -3288,11 +3288,16 @@ export default function App() {
     }
     const usdAmt = +(coinAmt * livePrice).toFixed(2);
     // ── NOWPayments: obtener dirección real ───────────────────────────────
-    const sess = supaSessionRef.current;
-    if (!sess?.access_token) {
-      setDepositError("Necesitás iniciar sesión para depositar.");
+    // Refrescar sesión activamente antes de llamar al API
+    let freshSess = await getOrRefreshSession();
+    if (!freshSess?.access_token) {
+      setDepositError("Tu sesión expiró. Cerrá sesión e iniciá sesión nuevamente.");
       return;
     }
+    // Sincronizar ref y estado con el token fresco
+    supaSessionRef.current = freshSess;
+    setSupaSession(freshSess);
+    const sess = freshSess;
 
     // ── Reutilizar depósito existente si todavía no expiró (24 h) ────────────
     if (autoMode) {
