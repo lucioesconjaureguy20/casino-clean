@@ -5394,7 +5394,7 @@ export default function App() {
                               </div>
                             )}
                           </div>
-                          {g.soon && <div style={{ position:"absolute",top:"10px",left:"10px",zIndex:10,background:"linear-gradient(90deg,#f6b531,#f4821f)",borderRadius:"7px",padding:"4px 12px",fontSize:"9px",fontWeight:900,color:"#0e1320",letterSpacing:"1.2px",textTransform:"uppercase",boxShadow:"0 2px 8px rgba(246,181,49,0.5)" }}>⏳ Próximamente</div>}
+                          {g.soon && <div style={{ position:"absolute",top:"10px",left:"10px",zIndex:10,background:"linear-gradient(90deg,#f6b531,#f4821f)",borderRadius:"7px",padding:"4px 10px",fontSize:"9px",fontWeight:900,color:"#0e1320",letterSpacing:"1.2px",textTransform:"uppercase",boxShadow:"0 2px 8px rgba(246,181,49,0.5)",display:"flex",alignItems:"center",gap:"5px" }}><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#0e1320" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>Próximamente</div>}
                           </div>
                           <div style={{ paddingLeft:"2px" }}>
                             <div style={{ fontSize:"14px",fontWeight:700,color:"#c8d8f0" }}>{g.title}</div>
