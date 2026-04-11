@@ -1107,6 +1107,70 @@ input.aff-date-input::-webkit-calendar-picker-indicator {
 .cashier-btn { transition: filter .15s; }
 .cashier-input:focus { border-color: #4a6080 !important; outline: none; }
 
+/* ── Global clickable feedback ──────────────────────────────────────────── */
+
+/* Cursor pointer on ALL interactive elements */
+button,
+a,
+[role="button"],
+[role="tab"],
+[role="menuitem"],
+[role="option"],
+[role="checkbox"],
+[role="radio"],
+[role="switch"],
+select,
+label[for],
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="file"],
+summary,
+[tabindex]:not([tabindex="-1"]),
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Disabled elements override back to default */
+button:disabled,
+input:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+/* Subtle hover feedback for buttons & role="button" elements
+   (won't override components that already have their own hover styles) */
+button:not(:disabled):not([style*="cursor"]):hover,
+a:not([style*="cursor"]):hover,
+[role="button"]:not([style*="cursor"]):hover {
+  filter: brightness(1.12);
+  transition: filter 0.15s, opacity 0.15s, transform 0.12s;
+}
+
+/* Interactive rows / list items */
+[role="option"]:hover,
+[role="menuitem"]:hover,
+[role="tab"]:hover {
+  filter: brightness(1.1);
+  transition: filter 0.15s;
+}
+
+/* Divs/spans/lists with inline cursor:pointer also get hover brightness */
+*[style*="cursor: pointer"]:hover,
+*[style*="cursor:pointer"]:hover {
+  filter: brightness(1.1);
+  transition: filter 0.15s;
+}
+
+/* Remove focus-visible outline inconsistencies */
+:focus-visible {
+  outline: 2px solid rgba(246, 181, 49, 0.6);
+  outline-offset: 2px;
+}
+
 @keyframes betRowSlideIn {
   from { opacity: 0; transform: translateX(-14px); background: rgba(33,217,122,0.10); }
   60%  { background: rgba(33,217,122,0.06); }
