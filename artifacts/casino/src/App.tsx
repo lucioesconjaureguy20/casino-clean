@@ -5600,7 +5600,7 @@ export default function App() {
 
                 {/* Recent Wins */}
                 <div style={{ padding:"0 0 6px",marginBottom:"14px" }}>
-                  <div style={{ display:"flex",alignItems:"center",gap:"10px",fontWeight:600,margin:"0 8px 8px" }}>
+                  <div style={{ display:"flex",alignItems:"center",gap:"10px",fontWeight:600,margin:"4px 8px 8px" }}>
                     <span className="live-dot" style={{ width:"12px",height:"12px",borderRadius:"50%",background:"#57e35a",display:"inline-block",flexShrink:0 }}/>
                     {t("recentWins")}
                   </div>
