@@ -820,7 +820,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
               flexWrap: "wrap",
               marginBottom: "20px",
             }}>
-              <span style={{ fontSize: "13px", color: "#fff" }}>
+              <span style={{ fontSize: "13px", color: "#94a3b8" }}>
                 Para unirte al programa de afiliados, registrate en Mander.
               </span>
               <button onClick={onRegister} style={{
@@ -838,13 +838,13 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
           {/* Introduction */}
           <div style={{ marginBottom: "40px" }}>
             <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "12px" }}>Introduction</p>
-            <p style={{ color: "#fff", fontSize: "13px", lineHeight: 1.7, margin: "0 0 8px" }}>
+            <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: "0 0 8px" }}>
               Welcome to the Affiliate Program! Your gateway to effortless earnings in the world of crypto gaming.
               Whether you're a content creator, community builder, or casual promoter, we help you earn real rewards
               every time your referrals play casino games. You don't need to gamble or take any risk — just share
               your link and let the gameplay do the rest.
             </p>
-            <p style={{ color: "#fff", fontSize: "13px", lineHeight: 1.7, margin: 0 }}>
+            <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: 0 }}>
               We believe in "Play more, risk less, win big." As an affiliate, you live that promise, earning passively
               while others play. Whether you choose to play with your earnings or cash them out, you're always in control.
             </p>
@@ -863,7 +863,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                   </div>
                   <div>
                     <div style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{title}</div>
-                    <div style={{ color: "#fff", fontSize: "12px", lineHeight: 1.5 }}>{desc}</div>
+                    <div style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.5 }}>{desc}</div>
                   </div>
                 </div>
               ))}
@@ -905,7 +905,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                   <div style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                     {s.title}
                   </div>
-                  <div style={{ color: "#fff", fontSize: "12px", lineHeight: 1.6 }}>
+                  <div style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.6 }}>
                     {s.desc}
                   </div>
                 </div>
@@ -932,7 +932,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                 q: "¿Necesitas ayuda o una oferta personalizada?",
                 a: (
                   <div>
-                    <p style={{ margin: "0 0 12px", color: "#fff", fontSize: "13px", lineHeight: 1.7 }}>
+                    <p style={{ margin: "0 0 12px", color: "#94a3b8", fontSize: "13px", lineHeight: 1.7 }}>
                       Si tienes dudas o quieres trabajar con nosotros de forma más directa, puedes contactarnos:
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -1002,7 +1002,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                       {faqOpen === i && (
                         <div style={{
                           padding: "0 20px 18px",
-                          color: "#fff", fontSize: "13px", lineHeight: 1.7,
+                          color: "#94a3b8", fontSize: "13px", lineHeight: 1.7,
                           whiteSpace: "pre-line",
                           animation: "pwdReqIn 0.18s ease",
                         }}>
