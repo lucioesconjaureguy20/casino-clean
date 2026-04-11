@@ -778,9 +778,9 @@ export default function BaccaratGame({
           <div>
             <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>Fichas</div>
             <div style={{ display:"flex", alignItems:"center", gap:"4px",
-              background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px" }}>
+              background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px", overflow:"visible" }}>
               {arrowBtn(canLeft && !isDealing, () => setChipOffset(o => o - 1), "‹")}
-              <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"hidden" }}>
+              <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"visible" }}>
                 {visChips.map(v => {
                   const meta = CHIP_META[chipKey(v)];
                   const sel  = chipUsd === v;

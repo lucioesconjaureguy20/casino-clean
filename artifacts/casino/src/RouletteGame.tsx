@@ -1151,9 +1151,9 @@ export default function RouletteGame({
                 Fichas
               </div>
               <div style={{ display:"flex", alignItems:"center", gap:"4px",
-                background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px" }}>
+                background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px", overflow:"visible" }}>
                 {arrowBtn(canLeft, () => setChipOffset(o => o - 1), "‹")}
-                <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"hidden" }}>
+                <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"visible" }}>
                   {visChips.map(v => {
                     const meta = CHIP_META[chipKey(v)];
                     const sel  = chipUsd === v;
