@@ -8163,13 +8163,13 @@ export default function App() {
                   {currentUser && <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Enter your username<br/>to start the chat</p>}
               </div>
               {!currentUser ? (
-                <>
+                <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
                   <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6, textAlign:"center" }}>Debes iniciar sesión para usar el soporte</p>
                   <button
                     onClick={()=>{ setChatOpen(false); setTimeout(()=>setAuthModal("login"),150); }}
                     style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
                   >Iniciar sesión</button>
-                </>
+                </div>
               ) : (
                 <>
                   <input
