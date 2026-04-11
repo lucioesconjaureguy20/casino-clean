@@ -59,6 +59,14 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Limpiar Mesa", selectedNums:"Números Seleccionados",
     minBet:"Mínimo de apuesta:", minBetsCount:"Ingresá un número de apuestas válido (mínimo 1)",
     noBetsYet:"Sin apuestas todavía",
+    recentWins:"Ganancias Recientes", noRecentWins:"Sin apuestas todavía — ¡jugá una partida para verlas aquí!",
+    viewAll:"Ver todo", comingSoon:"Próximamente", availableNow:"Disponible ahora",
+    completed:"Completado", pending:"Pendiente", expired:"Expirado", rejected:"Rechazado",
+    colDate:"FECHA", colGame:"JUEGO", colBet:"APUESTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGO", accumulated:"Acumulado", noBalance:"Sin saldo",
+    email:"Correo electrónico", displayName:"Nombre para mostrar", forgotPass:"¿Olvidaste tu contraseña?",
+    claimNow:"Reclamar ahora", regSuccess:"¡Cuenta creada! Revisá tu correo para confirmar.",
+    backToLogin:"Volver al inicio de sesión", mustLogin:"Debés iniciar sesión para usar el soporte",
+    sendRecovery:"Enviar correo de recuperación", sending:"Enviando...",
   },
   en: {
     login:"Sign In", register:"Register", username:"Username", password:"Password",
@@ -100,6 +108,14 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Clear Board", selectedNums:"Selected Numbers",
     minBet:"Minimum bet:", minBetsCount:"Enter a valid number of bets (min 1)",
     noBetsYet:"No bets yet",
+    recentWins:"Recent Wins", noRecentWins:"No bets yet — play a game to see them here!",
+    viewAll:"View All", comingSoon:"Coming Soon", availableNow:"Available Now",
+    completed:"Completed", pending:"Pending", expired:"Expired", rejected:"Rejected",
+    colDate:"DATE", colGame:"GAME", colBet:"BET", colMultiplier:"MULTIPLIER", colPayout:"PAYOUT", accumulated:"Accumulated", noBalance:"No Balance",
+    email:"Email", displayName:"Display Name", forgotPass:"Forgot your password?",
+    claimNow:"Claim now", regSuccess:"Account created! Check your email to confirm.",
+    backToLogin:"Back to Sign In", mustLogin:"You must sign in to use support",
+    sendRecovery:"Send recovery email", sending:"Sending...",
   },
   pt: {
     login:"Entrar", register:"Registrar", username:"Usuário", password:"Senha",
@@ -141,6 +157,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Limpar Mesa", selectedNums:"Números Selecionados",
     minBet:"Aposta mínima:", minBetsCount:"Insira um número válido de apostas (mínimo 1)",
     noBetsYet:"Sem apostas ainda",
+    recentWins:"Vitórias Recentes", noRecentWins:"Sem apostas ainda — jogue um jogo para vê-las aqui!",
+    viewAll:"Ver todos", comingSoon:"Em Breve", availableNow:"Disponível agora",
+    completed:"Concluído", pending:"Pendente", expired:"Expirado", rejected:"Rejeitado",
+    colDate:"DATA", colGame:"JOGO", colBet:"APOSTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGAMENTO", accumulated:"Acumulado",
   },
   de: {
     login:"Anmelden", register:"Registrieren", username:"Benutzername", password:"Passwort",
@@ -182,6 +202,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Brett leeren", selectedNums:"Ausgewählte Zahlen",
     minBet:"Mindesteinsatz:", minBetsCount:"Gib eine gültige Anzahl von Wetten ein (min. 1)",
     noBetsYet:"Noch keine Wetten",
+    recentWins:"Aktuelle Gewinne", noRecentWins:"Noch keine Wetten — spiel ein Spiel, um sie hier zu sehen!",
+    viewAll:"Alle anzeigen", comingSoon:"Demnächst", availableNow:"Jetzt verfügbar",
+    completed:"Abgeschlossen", pending:"Ausstehend", expired:"Abgelaufen", rejected:"Abgelehnt",
+    colDate:"DATUM", colGame:"SPIEL", colBet:"EINSATZ", colMultiplier:"MULTIPLIKATOR", colPayout:"AUSZAHLUNG", accumulated:"Akkumuliert",
   },
   fr: {
     login:"Connexion", register:"S'inscrire", username:"Nom d'utilisateur", password:"Mot de passe",
@@ -223,6 +247,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Effacer la table", selectedNums:"Numéros sélectionnés",
     minBet:"Mise minimale:", minBetsCount:"Entrez un nombre de mises valide (min 1)",
     noBetsYet:"Aucune mise pour l'instant",
+    recentWins:"Gains Récents", noRecentWins:"Aucune mise pour l'instant — jouez pour les voir ici!",
+    viewAll:"Voir tout", comingSoon:"Bientôt", availableNow:"Disponible maintenant",
+    completed:"Terminé", pending:"En attente", expired:"Expiré", rejected:"Rejeté",
+    colDate:"DATE", colGame:"JEU", colBet:"MISE", colMultiplier:"MULTIPLICATEUR", colPayout:"PAIEMENT", accumulated:"Accumulé",
   },
   id: {
     login:"Masuk", register:"Daftar", username:"Nama Pengguna", password:"Kata Sandi",
@@ -264,6 +292,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Bersihkan Papan", selectedNums:"Angka Terpilih",
     minBet:"Taruhan minimum:", minBetsCount:"Masukkan jumlah taruhan yang valid (min 1)",
     noBetsYet:"Belum ada taruhan",
+    recentWins:"Kemenangan Terkini", noRecentWins:"Belum ada taruhan — mainkan permainan untuk melihatnya di sini!",
+    viewAll:"Lihat Semua", comingSoon:"Segera Hadir", availableNow:"Tersedia Sekarang",
+    completed:"Selesai", pending:"Tertunda", expired:"Kedaluwarsa", rejected:"Ditolak",
+    colDate:"TANGGAL", colGame:"GAME", colBet:"TARUHAN", colMultiplier:"PENGGANDA", colPayout:"PEMBAYARAN", accumulated:"Akumulasi",
   },
   it: {
     login:"Accedi", register:"Registrati", username:"Nome utente", password:"Password",
@@ -305,6 +337,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Cancella tavolo", selectedNums:"Numeri selezionati",
     minBet:"Scommessa minima:", minBetsCount:"Inserisci un numero valido di scommesse (min 1)",
     noBetsYet:"Nessuna scommessa",
+    recentWins:"Vincite Recenti", noRecentWins:"Nessuna scommessa ancora — gioca per vederle qui!",
+    viewAll:"Vedi tutto", comingSoon:"Prossimamente", availableNow:"Disponibile ora",
+    completed:"Completato", pending:"In attesa", expired:"Scaduto", rejected:"Rifiutato",
+    colDate:"DATA", colGame:"GIOCO", colBet:"SCOMMESSA", colMultiplier:"MOLTIPLICATORE", colPayout:"VINCITA", accumulated:"Accumulato",
   },
   ko: {
     login:"로그인", register:"회원가입", username:"사용자명", password:"비밀번호",
@@ -346,6 +382,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"보드 초기화", selectedNums:"선택된 숫자",
     minBet:"최소 베팅:", minBetsCount:"유효한 베팅 횟수를 입력하세요 (최소 1)",
     noBetsYet:"베팅 내역 없음",
+    recentWins:"최근 승리", noRecentWins:"아직 베팅 없음 — 게임을 시작하여 여기서 확인하세요!",
+    viewAll:"전체 보기", comingSoon:"출시 예정", availableNow:"지금 이용 가능",
+    completed:"완료됨", pending:"대기 중", expired:"만료됨", rejected:"거부됨",
+    colDate:"날짜", colGame:"게임", colBet:"베팅", colMultiplier:"배수", colPayout:"지급금", accumulated:"누적",
   },
   nl: {
     login:"Inloggen", register:"Registreren", username:"Gebruikersnaam", password:"Wachtwoord",
@@ -387,6 +427,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Bord wissen", selectedNums:"Geselecteerde nummers",
     minBet:"Minimale inzet:", minBetsCount:"Voer een geldig aantal inzetten in (min 1)",
     noBetsYet:"Nog geen inzetten",
+    recentWins:"Recente Winsten", noRecentWins:"Nog geen inzetten — speel een spel om ze hier te zien!",
+    viewAll:"Alles zien", comingSoon:"Binnenkort", availableNow:"Nu beschikbaar",
+    completed:"Voltooid", pending:"In afwachting", expired:"Verlopen", rejected:"Afgewezen",
+    colDate:"DATUM", colGame:"SPEL", colBet:"INZET", colMultiplier:"VERMENIGVULDIGER", colPayout:"UITBETALING", accumulated:"Geaccumuleerd",
   },
   pl: {
     login:"Zaloguj się", register:"Zarejestruj się", username:"Nazwa użytkownika", password:"Hasło",
@@ -428,6 +472,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Wyczyść planszę", selectedNums:"Wybrane numery",
     minBet:"Minimalny zakład:", minBetsCount:"Wprowadź prawidłową liczbę zakładów (min 1)",
     noBetsYet:"Brak zakładów",
+    recentWins:"Ostatnie Wygrane", noRecentWins:"Brak zakładów — zagraj, żeby je tu zobaczyć!",
+    viewAll:"Zobacz wszystko", comingSoon:"Wkrótce", availableNow:"Dostępne teraz",
+    completed:"Zakończono", pending:"Oczekujące", expired:"Wygasło", rejected:"Odrzucono",
+    colDate:"DATA", colGame:"GRA", colBet:"ZAKŁAD", colMultiplier:"MNOŻNIK", colPayout:"WYPŁATA", accumulated:"Zgromadzono",
   },
   ru: {
     login:"Войти", register:"Регистрация", username:"Имя пользователя", password:"Пароль",
@@ -469,6 +517,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Очистить поле", selectedNums:"Выбранные числа",
     minBet:"Минимальная ставка:", minBetsCount:"Введите допустимое количество ставок (мин 1)",
     noBetsYet:"Ставок ещё нет",
+    recentWins:"Недавние Выигрыши", noRecentWins:"Ставок пока нет — сыграйте, чтобы увидеть их здесь!",
+    viewAll:"Смотреть все", comingSoon:"Скоро", availableNow:"Доступно сейчас",
+    completed:"Завершено", pending:"В ожидании", expired:"Истёк", rejected:"Отклонено",
+    colDate:"ДАТА", colGame:"ИГРА", colBet:"СТАВКА", colMultiplier:"МНОЖИТЕЛЬ", colPayout:"ВЫПЛАТА", accumulated:"Накоплено",
   },
   tr: {
     login:"Giriş Yap", register:"Kayıt Ol", username:"Kullanıcı Adı", password:"Şifre",
@@ -510,6 +562,10 @@ const LANGS: Record<string, Record<string, string>> = {
     clearBoard:"Tabloyu Temizle", selectedNums:"Seçilen Numaralar",
     minBet:"Minimum bahis:", minBetsCount:"Geçerli bir bahis sayısı girin (min 1)",
     noBetsYet:"Henüz bahis yok",
+    recentWins:"Son Kazanımlar", noRecentWins:"Henüz bahis yok — burada görmek için oyun oynayın!",
+    viewAll:"Tümünü Gör", comingSoon:"Yakında", availableNow:"Şu An Mevcut",
+    completed:"Tamamlandı", pending:"Bekliyor", expired:"Süresi Doldu", rejected:"Reddedildi",
+    colDate:"TARİH", colGame:"OYUN", colBet:"BAHİS", colMultiplier:"ÇARPAN", colPayout:"ÖDEME", accumulated:"Birikmiş",
   },
 };
 
@@ -4805,7 +4861,7 @@ export default function App() {
   });
 
   const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
-  const statusLabel = (s: string) => s==="completed"||s==="approved" ? "Completado" : s==="pending" ? "Pendiente" : s==="expired" ? "Expirado" : "Rechazado";
+  const statusLabel = (s: string) => s==="completed"||s==="approved" ? t("completed") : s==="pending" ? t("pending") : s==="expired" ? t("expired") : t("rejected");
   const fmtDate = (s: string) => { const d = new Date(s); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`; };
 
   // ─── Live bets from ALL casino users (polled every 4 s) ──────────────────
@@ -5211,7 +5267,7 @@ export default function App() {
                                 <div style={{ flex:1, minWidth:0 }}>
                                   <div style={{ fontSize:"13px",fontWeight:700,color:"#c8d8ec",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{row.label}</div>
                                   <div style={{ fontSize:"11px",color: avail ? "#00d95f" : "#4a5a70",marginTop:"1px",fontWeight:600 }}>
-                                    {fmtMoney(row.amount)} {avail ? "Disponible" : row.amount > 0 ? "Pendiente" : "Sin saldo"}
+                                    {fmtMoney(row.amount)} {avail ? t("availableNow") : row.amount > 0 ? t("pending") : ""}
                                   </div>
                                 </div>
                                 {/* Action */}
@@ -5396,14 +5452,14 @@ export default function App() {
                 style={{ minHeight:"40px",padding:"0 20px",borderRadius:"10px",fontWeight:600,fontSize:"14px",color:"#c8d4e8",background:"#1e2538",border:"1px solid #3a4560",cursor:"pointer",transition:"background .15s, border-color .15s" }}
                 onMouseEnter={e=>{ e.currentTarget.style.background="#263048"; e.currentTarget.style.borderColor="#5a6a88"; }}
                 onMouseLeave={e=>{ e.currentTarget.style.background="#1e2538"; e.currentTarget.style.borderColor="#3a4560"; }}>
-                Iniciar sesión
+                {t("login")}
               </button>
               <button
                 onClick={()=>setAuthModal("register")}
                 style={{ minHeight:"40px",padding:"0 20px",borderRadius:"10px",fontWeight:700,fontSize:"14px",color:"#fff",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",cursor:"pointer",transition:"filter .15s" }}
                 onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.12)"}
                 onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                Registrarse
+                {t("register")}
               </button>
             </>)}
           </div>
@@ -5546,12 +5602,12 @@ export default function App() {
                 <div style={{ background:"#161d2b",border:"1px solid #20283a",borderRadius:"14px",padding:"10px 8px 6px",marginBottom:"14px" }}>
                   <div style={{ display:"flex",alignItems:"center",gap:"10px",fontWeight:600,margin:"0 8px 8px" }}>
                     <span className="live-dot" style={{ width:"12px",height:"12px",borderRadius:"50%",background:"#57e35a",display:"inline-block",flexShrink:0 }}/>
-                    Recent Wins
+                    {t("recentWins")}
                   </div>
                   <div style={{ display:"flex",gap:"10px",overflow:"hidden",padding:"10px 4px 2px" }}>
                     {liveWins.filter(w=>w.win).length === 0 ? (
                       <div style={{ color:"#4a5568",fontSize:"13px",padding:"10px 4px",fontStyle:"italic" }}>
-                        Aún no hay apuestas — ¡jugá una partida para verlas aquí!
+                        {t("noRecentWins")}
                       </div>
                     ) : liveWins.filter(w=>w.win).map((w,i)=>{ const winKey = `${w.createdAt}${w.user}${w.profitUsd}_${i}`;
                       const gameInfo: Record<string,{bg:string;provider:string;img?:string;imgPosition?:string;action:()=>void}> = {
@@ -5593,7 +5649,7 @@ export default function App() {
                     onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.12)"}
                     onMouseLeave={e=>e.currentTarget.style.filter="none"}>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/><path d="M7 9l-2-2M17 9l2-2"/></svg>
-                    Originals
+                    {t("originals")}
                   </button>
                 </div>
 
@@ -5699,7 +5755,7 @@ export default function App() {
                               </div>
                             )}
                           </div>
-                          {g.soon && <div style={{ position:"absolute",top:"10px",left:"10px",zIndex:10,background:"linear-gradient(90deg,#f6b531,#f4821f)",borderRadius:"7px",padding:"4px 10px",fontSize:"9px",fontWeight:900,color:"#0e1320",letterSpacing:"1.2px",textTransform:"uppercase",boxShadow:"0 2px 8px rgba(246,181,49,0.5)",display:"flex",alignItems:"center",gap:"5px" }}><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#0e1320" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>Próximamente</div>}
+                          {g.soon && <div style={{ position:"absolute",top:"10px",left:"10px",zIndex:10,background:"linear-gradient(90deg,#f6b531,#f4821f)",borderRadius:"7px",padding:"4px 10px",fontSize:"9px",fontWeight:900,color:"#0e1320",letterSpacing:"1.2px",textTransform:"uppercase",boxShadow:"0 2px 8px rgba(246,181,49,0.5)",display:"flex",alignItems:"center",gap:"5px" }}><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#0e1320" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>{t("comingSoon")}</div>}
                           </div>
                           <div style={{ paddingLeft:"2px" }}>
                             <div style={{ fontSize:"14px",fontWeight:700,color:"#c8d8f0" }}>{g.title}</div>
@@ -5769,7 +5825,7 @@ export default function App() {
               hideHistory={true}
             /></div>
             <GameInfoPanel game="dice" onFairness={() => { setSection("fairness"); setFairnessGame("Dice"); }}/>
-            <MoreFromLockly currentGame="dice" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+            <MoreFromLockly currentGame="dice" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={diceBetHistory as ApuestaRecord[]} gameLabel="Dados" gameIcon={<img src="/dice-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="dice"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
@@ -5805,7 +5861,7 @@ export default function App() {
               currentUser={currentUser||undefined}
             /></div>
             <GameInfoPanel game="plinko" onFairness={() => { setSection("fairness"); setFairnessGame("Plinko"); }}/>
-            <MoreFromLockly currentGame="plinko" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+            <MoreFromLockly currentGame="plinko" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={plinkoBetHistory as ApuestaRecord[]} gameLabel="Plinko" gameIcon={<img src="/plinko-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="plinko"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
@@ -5890,7 +5946,7 @@ export default function App() {
               lang={lang}
             /></div>
             <GameInfoPanel game="keno" onFairness={() => { setSection("fairness"); setFairnessGame("Keno"); }}/>
-            <MoreFromLockly currentGame="keno" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+            <MoreFromLockly currentGame="keno" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={kenoBetHistory as ApuestaRecord[]} gameLabel="Keno" gameIcon={<img src="/keno-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="keno"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
@@ -5920,7 +5976,7 @@ export default function App() {
               />
               </div>
               <GameInfoPanel game="blackjack" onFairness={() => { setSection("fairness"); setFairnessGame("Blackjack"); }}/>
-              <MoreFromLockly currentGame="blackjack" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+              <MoreFromLockly currentGame="blackjack" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={bjBetHistory as ApuestaRecord[]} gameLabel="Blackjack" gameIcon={<img src="/blackjack-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="blackjack"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
               <CasinoFooter onHome={showHomeView} />
               </>
@@ -5957,7 +6013,7 @@ export default function App() {
                 />
               </div>
               <GameInfoPanel game="mines" onFairness={() => { setSection("fairness"); setFairnessGame("Mines"); }}/>
-              <MoreFromLockly currentGame="mines" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+              <MoreFromLockly currentGame="mines" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={minesBetHistory as ApuestaRecord[]} gameLabel="Mines" gameIcon={<img src="/mines-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="mines"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
               <CasinoFooter onHome={showHomeView} />
               </>
@@ -5991,7 +6047,7 @@ export default function App() {
                 onGameActive={setHiloGameActive}
               />
               <GameInfoPanel game="hilo" onFairness={() => { setSection("fairness"); setFairnessGame("Hilo"); }}/>
-              <MoreFromLockly currentGame="hilo" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+              <MoreFromLockly currentGame="hilo" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={hiloBetHistory as ApuestaRecord[]} gameLabel="Hilo" gameIcon={<img src="/hilo-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="hilo"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
               <CasinoFooter onHome={showHomeView} />
               </>
@@ -6036,7 +6092,7 @@ export default function App() {
               />
               </div>
               <GameInfoPanel game="roulette" onFairness={() => { setSection("fairness"); setFairnessGame("Roulette"); }}/>
-              <MoreFromLockly currentGame="roulette" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+              <MoreFromLockly currentGame="roulette" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={rouletteBetHistory as ApuestaRecord[]} gameLabel="Ruleta" gameIcon={<img src="/roulette-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="ruleta"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
               <CasinoFooter onHome={showHomeView} />
               </>
@@ -6078,7 +6134,7 @@ export default function App() {
                 />
               </div>
               <GameInfoPanel game="baccarat" onFairness={() => { setSection("fairness"); setFairnessGame("Baccarat"); }}/>
-              <MoreFromLockly currentGame="baccarat" onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
+              <MoreFromLockly currentGame="baccarat" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={baccaratBetHistory as ApuestaRecord[]} gameLabel="Baccarat" gameIcon={<img src="/baccarat-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="baccarat"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
               <CasinoFooter onHome={showHomeView} />
               </>
@@ -6261,13 +6317,13 @@ export default function App() {
                     <div style={{ overflowX:"auto", marginTop:"10px" }}>
                       {pageData.length === 0 ? (
                         <div style={{ padding:"40px 16px", textAlign:"center" as const, color:"#3a4e68", fontSize:"13px", fontStyle:"italic" }}>
-                          {filtered.length === 0 ? "Aún no hay apuestas registradas." : "No hay apuestas en esta página."}
+                          {filtered.length === 0 ? t("noHistory") : t("noBetsYet")}
                         </div>
                       ) : (
                       <table style={{ width:"100%", borderCollapse:"collapse" as const, minWidth:"600px" }}>
                         <thead>
                           <tr style={{ borderBottom:"1px solid #20283a" }}>
-                            {["FECHA","JUEGO","APUESTA","MULTIPLICADOR","PAGO"].map(h=>(
+                            {[t("colDate"),t("colGame"),t("colBet"),t("colMultiplier"),t("colPayout")].map(h=>(
                               <th key={h} style={{ padding:"11px 16px", textAlign:"left" as const, fontSize:"11px", fontWeight:700, color:"#4a5e7a", letterSpacing:"0.8px", whiteSpace:"nowrap" as const }}>{h}</th>
                             ))}
                           </tr>
@@ -6367,12 +6423,12 @@ export default function App() {
                       return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`;
                     };
                     const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
-                    const statusLabel = (s: string) => s==="completed"||s==="approved" ? "Completado" : s==="pending" ? "Pendiente" : s==="expired" ? "Expirado" : "Rechazado";
+                    const statusLabel = (s: string) => s==="completed"||s==="approved" ? t("completed") : s==="pending" ? t("pending") : s==="expired" ? t("expired") : t("rejected");
                     return (
                       <>
                         {filtered.length === 0 ? (
                           <div style={{ padding:"40px 16px", textAlign:"center" as const, color:"#4a5e7a", fontSize:"13px" }}>
-                            Aún no hay transacciones
+                            {t("noTransactions")}
                           </div>
                         ) : (
                           <>
@@ -6777,7 +6833,7 @@ export default function App() {
                               {/* ── Amount ── */}
                               <div style={{ marginBottom:"14px", position:"relative" as const, flex:1 }}>
                                 <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"0.8px", textTransform:"uppercase" as const, fontWeight:700, marginBottom:"6px" }}>
-                                  {c.locked ? "Acumulado (bloqueado)" : "Disponible"}
+                                  {c.locked ? `${t("accumulated")} (🔒)` : t("availableNow")}
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
                                   <div style={{ fontSize:"30px", fontWeight:900, color: isAvail ? "#00d95f" : c.locked ? c.accent+"99" : "#263040", letterSpacing:"-0.5px", transition:"color .3s", userSelect:"none" as const }}>
@@ -6816,11 +6872,11 @@ export default function App() {
                                   onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.opacity="0.88"; b.style.transform="translateY(-1px)"; }}
                                   onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.opacity="1"; b.style.transform="translateY(0)"; }}>
                                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                  Reclamar ahora
+                                  {t("claimNow")}
                                 </button>
                               ) : (
                                 <button disabled style={{ width:"100%", height:"40px", background:"#0e1826", border:`1px solid ${border}`, borderRadius:"10px", fontSize:"12px", fontWeight:700, color:"#2a3a4c", cursor:"not-allowed", display:"flex", alignItems:"center", justifyContent:"center", gap:"7px" }}>
-                                  Sin saldo
+                                  {t("noBalance")}
                                 </button>
                               )}
                             </div>
@@ -7207,7 +7263,7 @@ export default function App() {
                   <div style={{ width:"48px",height:"48px",borderRadius:"12px",background:`${activeGame.color}18`,border:`1px solid ${activeGame.color}40`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>{fIcons[activeGame.key]?.(26, activeGame.color)}</div>
                   <div>
                     <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"16px",marginBottom:"2px" }}>Cómo funciona {activeGame.label}</div>
-                    <div style={{ color:"#94a3b8",fontSize:"12px" }}>Mander Originals · {activeGame.soon ? "Próximamente" : "Disponible ahora"}</div>
+                    <div style={{ color:"#94a3b8",fontSize:"12px" }}>Mander Originals · {activeGame.soon ? t("comingSoon") : t("availableNow")}</div>
                   </div>
                   {!activeGame.soon && <span style={{ marginLeft:"auto",background:`${activeGame.color}18`,color:activeGame.color,fontSize:"11px",fontWeight:600,padding:"4px 10px",borderRadius:"999px",border:`1px solid ${activeGame.color}30`,whiteSpace:"nowrap" as const }}>✓ Auditado</span>}
                 </div>
@@ -7554,7 +7610,7 @@ export default function App() {
                 {(["deposit","withdraw"] as const).map(tab=>(
                   <button key={tab} onClick={()=>setCashierTab(tab)} className="cashier-tab"
                     style={{ background:"transparent",border:"none",borderBottom:cashierTab===tab?"2px solid #f6b531":"2px solid transparent",color:cashierTab===tab?"#f6b531":"#7c8caa",fontWeight:600,fontSize:"14px",padding:"10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:"6px",marginBottom:"-1px",transition:"color .15s" }}>
-                    {tab==="deposit" ? "↓" : "↑"} {tab==="deposit" ? "Deposit" : "Withdraw"}
+                    {tab==="deposit" ? "↓" : "↑"} {tab==="deposit" ? t("deposit") : t("withdraw")}
                   </button>
                 ))}
               </div>
@@ -7805,7 +7861,7 @@ export default function App() {
                         const isConfirmed = dep.status === "confirmed" || dep.status === "completed";
                         const statusColor = isPending ? "#f6a623" : isConfirmed ? "#4ade80" : "#ff7070";
                         const statusIcon  = isPending ? "⏳" : isConfirmed ? "✅" : "❌";
-                        const statusLabel = isPending ? "Pendiente" : isConfirmed ? "Completado" : "Fallido";
+                        const statusLabel = isPending ? t("pending") : isConfirmed ? t("completed") : t("rejected");
                         const usdVal = parseFloat(String(dep.amount)) * getPriceUsd(dep.currency?.trim().toUpperCase());
                         const dateStr = dep.confirmed_at
                           ? new Date(dep.confirmed_at).toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})
@@ -8469,11 +8525,11 @@ export default function App() {
               </div>
               {!currentUser ? (
                 <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
-                  <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6, textAlign:"center" }}>Debes iniciar sesión para usar el soporte</p>
+                  <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6, textAlign:"center" }}>{t("mustLogin")}</p>
                   <button
                     onClick={()=>{ setChatOpen(false); setTimeout(()=>setAuthModal("login"),150); }}
                     style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
-                  >Iniciar sesión</button>
+                  >{t("login")}</button>
                 </div>
               ) : (
                 <>
@@ -8997,7 +9053,7 @@ export default function App() {
               {authModal !== "forgot" && authModal !== "reset" && (
                 <div style={{ display:"flex",borderBottom:"1px solid #1e2a40",flexShrink:0,justifyContent:"center",paddingLeft:"32px",paddingRight:"32px" }}>
                   {(["register","login"] as const).map(tab=>{
-                    const label = tab==="login" ? "Iniciar sesión" : "Registro";
+                    const label = tab==="login" ? t("login") : t("register");
                     const active = authModal===tab;
                     return (
                       <button key={tab} onClick={()=>{ setLoginError(""); setRegError(""); setAuthModal(tab); }}
@@ -9026,7 +9082,7 @@ export default function App() {
                       <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>Nueva contraseña <span style={{ color:"#f4a91f" }}>*</span></label>
                       <div style={{ position:"relative",marginBottom:"10px" }}>
                         <input value={resetNewPass} onChange={e=>setResetNewPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doResetPassword()}
-                          type={showResetNew?"text":"password"} placeholder="Contraseña"
+                          type={showResetNew?"text":"password"} placeholder={t("password")}
                           style={{ width:"100%",padding:"10px 48px 10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box" }}/>
                         <button onClick={()=>setShowResetNew(v=>!v)}
                           style={{ position:"absolute",right:"14px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#6a7a99",cursor:"pointer",fontSize:"18px",padding:0 }}>
@@ -9101,24 +9157,24 @@ export default function App() {
                       style={{ width:"100%",padding:"11px 0",borderRadius:"10px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"filter .15s",letterSpacing:"0.3px",marginBottom:"20px" }}
                       onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.1)"}
                       onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                      {authLoading ? "Enviando..." : "Enviar correo de recuperación"}
+                      {authLoading ? t("sending") : t("sendRecovery")}
                     </button>
                     <div style={{ textAlign:"center" }}>
                       <span onClick={()=>{ setForgotEmail(""); setForgotMsg(""); setForgotError(""); setAuthModal("login"); }}
                         style={{ color:"#e2e8f0",fontSize:"13px",cursor:"pointer",textDecoration:"underline",fontWeight:500 }}>
-                        Volver al Inicio de Sesión
+                        {t("backToLogin")}
                       </span>
                     </div>
                   </div>
                 </>) : authModal === "login" ? (<>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>Usuario <span style={{ color:"#f4a91f" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("username")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <input value={loginUser} onChange={e=>setLoginUser(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doLogin()}
-                    placeholder="Ingresa tu usuario"
+                    placeholder={t("username")}
                     style={{ width:"100%",padding:"10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"16px" }}/>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>Contraseña <span style={{ color:"#f4a91f" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("password")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <div style={{ position:"relative",marginBottom:"8px" }}>
                     <input value={loginPass} onChange={e=>setLoginPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doLogin()}
-                      type={showLoginPass?"text":"password"} placeholder="Contraseña"
+                      type={showLoginPass?"text":"password"} placeholder={t("password")}
                       style={{ width:"100%",padding:"10px 48px 10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box" }}/>
                     <button onClick={()=>setShowLoginPass(v=>!v)}
                       style={{ position:"absolute",right:"14px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#6a7a99",cursor:"pointer",fontSize:"18px",padding:0 }}>
@@ -9126,21 +9182,21 @@ export default function App() {
                     </button>
                   </div>
                   <div style={{ textAlign:"right",marginBottom:"28px" }}>
-                    <span onClick={()=>{ setForgotEmail(""); setForgotMsg(""); setForgotError(""); setAuthModal("forgot"); }} style={{ color:"#f4a91f",fontSize:"12px",cursor:"pointer",fontWeight:500 }}>¿Olvidaste tu contraseña?</span>
+                    <span onClick={()=>{ setForgotEmail(""); setForgotMsg(""); setForgotError(""); setAuthModal("forgot"); }} style={{ color:"#f4a91f",fontSize:"12px",cursor:"pointer",fontWeight:500 }}>{t("forgotPass")}</span>
                   </div>
                   {loginError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{loginError}</p>}
                   <button onClick={()=>doLogin()} disabled={authLoading}
                     style={{ width:"100%",padding:"11px 0",borderRadius:"10px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"filter .15s",letterSpacing:"0.3px" }}
                     onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.1)"}
                     onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                    {authLoading ? "Cargando..." : "Iniciar sesión"}
+                    {authLoading ? "..." : t("enter")}
                   </button>
                 </>) : (<>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>Nombre para mostrar <span style={{ color:"#f4a91f" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("displayName")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <input value={regUser} onChange={e=>setRegUser(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doRegister()} maxLength={20}
-                    placeholder="3 a 20 caracteres"
+                    placeholder={t("displayName")}
                     style={{ width:"100%",padding:"10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"12px" }}/>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>Correo electrónico <span style={{ color:"#f4a91f" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("email")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   {(() => {
                     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail.trim());
                     const emailInvalid = regEmail.length > 0 && !emailValid;
@@ -9160,11 +9216,11 @@ export default function App() {
                       )}
                     </>);
                   })()}
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>Contraseña <span style={{ color:"#f4a91f" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("password")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <div style={{ position:"relative",marginBottom:(regPassFocused||regPass)?"10px":"16px" }}>
                     <input value={regPass} onChange={e=>setRegPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doRegister()}
                       onFocus={()=>setRegPassFocused(true)} onBlur={()=>setRegPassFocused(false)}
-                      type={showRegPass?"text":"password"} placeholder="Contraseña"
+                      type={showRegPass?"text":"password"} placeholder={t("password")}
                       style={{ width:"100%",padding:"10px 48px 10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box" }}/>
                     <button onClick={()=>setShowRegPass(v=>!v)}
                       style={{ position:"absolute",right:"14px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#6a7a99",cursor:"pointer",fontSize:"18px",padding:0 }}>
@@ -9208,12 +9264,12 @@ export default function App() {
                     </span>
                   </label>
                   {regError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{regError}</p>}
-                  {regSuccess && <p style={{ color:"#29c46d",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>¡Cuenta creada! Revisá tu correo para confirmar y luego iniciá sesión.</p>}
+                  {regSuccess && <p style={{ color:"#29c46d",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{t("regSuccess")}</p>}
                   <button onClick={()=>doRegister()} disabled={authLoading}
                     style={{ width:"100%",padding:"11px 0",borderRadius:"10px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"filter .15s",letterSpacing:"0.3px" }}
                     onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.1)"}
                     onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                    {authLoading ? "Creando cuenta..." : "Crear cuenta"}
+                    {authLoading ? "..." : t("createAccountBtn")}
                   </button>
                 </>)}
               </div>
@@ -9684,8 +9740,10 @@ interface MoreFromLocklyProps {
   currentGame: "dice"|"plinko"|"keno"|"blackjack"|"mines"|"slot"|"hilo"|"roulette"|"baccarat";
   onGames: { dice:()=>void; plinko:()=>void; keno:()=>void; blackjack:()=>void; mines:()=>void; slot?:()=>void; hilo?:()=>void; roulette?:()=>void; baccarat?:()=>void };
   onVerTodo?: () => void;
+  lang?: string;
 }
-function MoreFromLockly({ currentGame, onGames, onVerTodo }: MoreFromLocklyProps) {
+function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFromLocklyProps) {
+  const t = (key: string) => tl(lang, key);
   const scrollRef = useRef<HTMLDivElement>(null);
   const ALL = [
     { key:"dice"      as const, label:"Dados",     sub:"Mander Originals", bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:"/dice-card.jpg",       accentBg:"#1a5cd6" },
@@ -9718,7 +9776,7 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo }: MoreFromLocklyProps
             style={{ background:"none", border:"none", cursor:"pointer", color:"#6a8fb0", fontSize:"12px", fontWeight:600, letterSpacing:"0.3px", padding:"4px 0", transition:"color .15s" }}
             onMouseEnter={e=>(e.currentTarget.style.color="#f4a91f")}
             onMouseLeave={e=>(e.currentTarget.style.color="#6a8fb0")}>
-            Ver todo
+            {t("viewAll")}
           </button>
           <div style={{ width:"1px", height:"14px", background:"#1e2e44" }}/>
           {(["left","right"] as const).map(dir=>(
