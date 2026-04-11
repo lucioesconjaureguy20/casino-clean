@@ -936,14 +936,14 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                       Si tienes dudas o quieres trabajar con nosotros de forma más directa, puedes contactarnos:
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      <a href="mailto:support@manderbet.com" className="aff-contact-link" style={{
+                      <a href="mailto:partners@manderbet.com" className="aff-contact-link" style={{
                         display: "inline-flex", alignItems: "center", gap: "10px",
                         color: "#e2e8f0", fontSize: "13px", textDecoration: "none", transition: "color 0.15s ease",
                       }}>
                         <div className="aff-contact-icon" style={{ width: "30px", height: "30px", borderRadius: "8px", background: "rgba(246,181,49,0.1)", border: "1px solid rgba(246,181,49,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.15s ease, border-color 0.15s ease" }}>
                           <IconMail size={15} color="#f6b531" />
                         </div>
-                        <span><span style={{ color: "#94a3b8" }}>Email:</span> support@manderbet.com</span>
+                        <span><span style={{ color: "#94a3b8" }}>Email:</span> partners@manderbet.com</span>
                       </a>
                     </div>
                   </div>
