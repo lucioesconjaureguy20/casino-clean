@@ -10,12 +10,17 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@types/busboy": "^1.5.4",
+    "@types/pg": "^8.18.0",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
+    "busboy": "^1.6.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
+    "openai": "^6.34.0",
+    "pg": "^8.20.0",
     "pino": "^9",
     "pino-http": "^10"
   },
