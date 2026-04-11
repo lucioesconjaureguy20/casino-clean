@@ -542,18 +542,18 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   };
 
   const features = [
-    { Icon: IconTrendUp, title: t("affFeat1"), desc: "Cada vez que tus referidos juegan en el casino, generas un 15% de comisión sobre sus pérdidas netas." },
-    { Icon: IconCalendarClock, title: t("affFeat2"), desc: "Las ganancias se calculan y acreditan a tu saldo a principio de cada mes." },
-    { Icon: IconBarChart, title: t("affFeat3"), desc: "Full transparency with detailed reports, and player activity at your fingertips." },
-    { Icon: IconShieldCheck, title: t("affFeat4"), desc: "No necesitas depositar ni apostar. Solo invita y empieza a generar comisiones." },
-    { Icon: IconGlobe, title: t("affFeat5"), desc: "Accept players from around the world and get paid fast and reliably." },
-    { Icon: IconZap, title: t("affFeat6"), desc: "Gana siempre el mismo porcentaje, sin niveles ni condiciones ocultas." },
+    { Icon: IconTrendUp, title: t("affFeat1"), desc: t("affFeat1Desc") },
+    { Icon: IconCalendarClock, title: t("affFeat2"), desc: t("affFeat2Desc") },
+    { Icon: IconBarChart, title: t("affFeat3"), desc: t("affFeat3Desc") },
+    { Icon: IconShieldCheck, title: t("affFeat4"), desc: t("affFeat4Desc") },
+    { Icon: IconGlobe, title: t("affFeat5"), desc: t("affFeat5Desc") },
+    { Icon: IconZap, title: t("affFeat6"), desc: t("affFeat6Desc") },
   ];
 
   const steps = [
-    { num: "1", title: t("affStep1"), desc: "Accedé al panel y copiá tu link de referido. Compartilo en redes, grupos o donde quieras." },
-    { num: "2", title: t("affStep2"), desc: "Cuando alguien se registra y deposita usando tu link, queda vinculado a vos para siempre." },
-    { num: "3", title: t("affStep3"), desc: "Generás el 15% de las pérdidas netas de tus referidos, acreditado a tu saldo cada mes." },
+    { num: "1", title: t("affStep1"), desc: t("affStep1Desc") },
+    { num: "2", title: t("affStep2"), desc: t("affStep2Desc") },
+    { num: "3", title: t("affStep3"), desc: t("affStep3Desc") },
   ];
 
   const statCards = [

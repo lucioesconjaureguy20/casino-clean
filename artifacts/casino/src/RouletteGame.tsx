@@ -1252,7 +1252,7 @@ export default function RouletteGame({
                 transition:"all .2s" }}
               onMouseEnter={e => { if (canSpin) { e.currentTarget.style.transform="scale(1.03)"; e.currentTarget.style.boxShadow="0 6px 32px rgba(26,159,255,.65)"; }}}
               onMouseLeave={e => { e.currentTarget.style.transform=""; e.currentTarget.style.boxShadow=canSpin?"0 4px 22px rgba(26,159,255,.35)":"none"; }}>
-              {isSpinning ? "⏳ Girando..." : (hasBets && !!currentUser && balance < totalBetUsd - 0.0001) ? "Saldo insuficiente" : "Apostar"}
+              {isSpinning ? gt(_lang, "rolling") : (hasBets && !!currentUser && balance < totalBetUsd - 0.0001) ? gt(_lang, "insufficientBalance") : gt(_lang, "bet")}
             </button>
           ) : (
             <button
@@ -1280,7 +1280,7 @@ export default function RouletteGame({
                   ? "0 4px 22px rgba(192,57,43,.4)"
                   : (hasBets || Object.keys(lastBets).length > 0) ? "0 4px 22px rgba(26,159,255,.35)" : "none";
               }}>
-              {autoStopping ? "⏳ Deteniendo…" : autoRunning ? "Detener Auto" : "Iniciar Auto"}
+              {autoStopping ? gt(_lang, "stoppingAuto") : autoRunning ? gt(_lang, "stopAuto") : gt(_lang, "startAuto")}
             </button>
           )
         ) : (
@@ -1446,7 +1446,7 @@ export default function RouletteGame({
                 style={{ position:"fixed",inset:0,zIndex:9998 }}/>
             )}
             <button onClick={() => { setShowVol(v => !v); setStatsOpen(false); }}
-              title="Volumen"
+              title={gt(_lang, "volume")}
               style={{ position:"relative", zIndex:10000, width:"38px", height:"38px", borderRadius:"8px", fontFamily:"inherit",
                 background: showVol ? "#1f6fd0" : "#0e1826",
                 border: showVol ? "1px solid #3a8aff" : "1px solid #203a50",
