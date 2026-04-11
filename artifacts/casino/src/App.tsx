@@ -7989,18 +7989,18 @@ export default function App() {
 
       {searchOpen && (
         <div onClick={e=>{ if(e.target===e.currentTarget) setSearchOpen(false); }}
-          style={{ position:"fixed",inset:0,background:"rgba(6,10,20,.78)",display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"14px",zIndex:1200 }}>
-          <div style={{ width:"min(1380px,100%)",background:"#2f3444",border:"1px solid #41495d",borderRadius:"20px",padding:"18px",maxHeight:"92vh",overflowY:"auto" }}>
-            <div style={{ display:"flex",gap:"12px",alignItems:"center",marginBottom:"14px" }}>
+          style={{ position:"fixed",inset:0,background:"rgba(6,10,20,.72)",display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:"16px",paddingLeft:`calc(${sidebarCollapsed?"60px":"198px"} + 16px)`,paddingRight:"16px",zIndex:1200 }}>
+          <div style={{ width:"min(820px,100%)",background:"#2f3444",border:"1px solid #41495d",borderRadius:"16px",padding:"14px",maxHeight:"88vh",overflowY:"auto" }}>
+            <div style={{ display:"flex",gap:"10px",alignItems:"center",marginBottom:"12px" }}>
               <div style={{ flex:1,position:"relative" }}>
-                <span style={{ position:"absolute",left:"18px",top:"50%",transform:"translateY(-50%)",fontSize:"24px",color:"#aab4c5" }}>⌕</span>
+                <span style={{ position:"absolute",left:"14px",top:"50%",transform:"translateY(-50%)",fontSize:"20px",color:"#aab4c5" }}>⌕</span>
                 <input value={searchQ} onChange={e=>setSearchQ(e.target.value)}
                   autoFocus placeholder="Search casino games"
-                  style={{ width:"100%",background:"#2d3344",border:"2px solid #656d7e",borderRadius:"999px",padding:"16px 18px 16px 52px",color:"white",fontSize:"18px",fontWeight:500,boxSizing:"border-box" }} />
+                  style={{ width:"100%",background:"#2d3344",border:"2px solid #656d7e",borderRadius:"999px",padding:"12px 14px 12px 42px",color:"white",fontSize:"15px",fontWeight:500,boxSizing:"border-box" }} />
               </div>
-              <button onClick={()=>setSearchOpen(false)} style={{ width:"52px",height:"52px",borderRadius:"10px",background:"#4a5164",color:"white",border:"none",fontSize:"26px",cursor:"pointer" }}>×</button>
+              <button onClick={()=>setSearchOpen(false)} style={{ width:"42px",height:"42px",borderRadius:"9px",background:"#4a5164",color:"white",border:"none",fontSize:"22px",cursor:"pointer",flexShrink:0 }}>×</button>
             </div>
-            <div style={{ display:"flex",gap:"8px",flexWrap:"wrap",marginBottom:"18px" }}>
+            <div style={{ display:"flex",gap:"6px",flexWrap:"wrap",marginBottom:"14px" }}>
               {searchCategories.map(cat=>{
                 const isActive = searchCategory===cat;
                 return (
@@ -8011,18 +8011,18 @@ export default function App() {
                       background: isActive ? "linear-gradient(135deg,#1e2840,#263352)" : "transparent",
                       color: isActive ? "#f4a91f" : "#dce3ee",
                       border: isActive ? "1px solid #f4a91f" : "1px solid #252f45",
-                      padding:"9px 15px",
-                      borderRadius:"9px",
+                      padding:"7px 12px",
+                      borderRadius:"8px",
                       fontWeight:500,
                       cursor:"pointer",
-                      fontSize:"13px",
+                      fontSize:"12px",
                       boxShadow: isActive ? "0 0 10px rgba(244,169,31,.2), inset 0 0 8px rgba(244,169,31,.06)" : "none",
                       transition:"all .15s ease",
                     }}>{cat}</button>
                 );
               })}
             </div>
-            <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:"16px" }}>
+            <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:"12px" }}>
               {filteredSlots.map((s,i)=>{
                 const thumbMap: Record<string,string> = {
                   dice:"/dice-card.jpg", plinko:"/plinko-thumb.jpg", keno:"/keno-thumb.jpg",
@@ -8032,14 +8032,14 @@ export default function App() {
                 const thumb = thumbMap[s.type] || null;
                 return (
                 <div key={i} onClick={()=>{ setSearchOpen(false); if(s.type==="dice") showDiceOnly(); else if(s.type==="keno") showKenoOnly(); else if(s.type==="plinko") showPlinkoOnly(); else if(s.type==="blackjack") showBlackjackOnly(); else if(s.type==="mines") showMinesOnly(); else if(s.type==="hilo") showHiloOnly(); else if(s.type==="roulette") showRouletteOnly(); else if(s.type==="baccarat") showBaccaratOnly(); else showSlotOnly(); }}
-                  style={{ background:"#394055",borderRadius:"12px",overflow:"hidden",cursor:"pointer" }}>
-                  <div style={{ height:"192px",position:"relative",background:s.bg }}>
+                  style={{ background:"#394055",borderRadius:"10px",overflow:"hidden",cursor:"pointer" }}>
+                  <div style={{ height:"150px",position:"relative",background:s.bg }}>
                     {thumb && <img src={thumb} alt={s.name} style={{ width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 75%",display:"block" }} />}
-                    {!thumb && <div style={{ width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"22px",fontWeight:600,color:"white" }}>{s.name}</div>}
+                    {!thumb && <div style={{ width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",fontWeight:600,color:"white" }}>{s.name}</div>}
                   </div>
-                  <div style={{ padding:"10px 0 0" }}>
-                    <div style={{ fontSize:"18px",fontWeight:600 }}>{s.name}</div>
-                    <div style={{ color:"#c9d0dc",fontSize:"16px",fontWeight:500 }}>{s.provider}</div>
+                  <div style={{ padding:"8px 8px 10px" }}>
+                    <div style={{ fontSize:"14px",fontWeight:600 }}>{s.name}</div>
+                    <div style={{ color:"#c9d0dc",fontSize:"12px",fontWeight:500 }}>{s.provider}</div>
                   </div>
                 </div>
                 );
