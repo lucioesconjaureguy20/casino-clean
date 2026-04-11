@@ -825,7 +825,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
               </span>
               <button onClick={onRegister} style={{
                 background: "linear-gradient(135deg,#f6b531,#d4870a)",
-                border: "none", borderRadius: "999px",
+                border: "none", borderRadius: "8px",
                 padding: "9px 20px",
                 color: "#111", fontWeight: 700, fontSize: "13px",
                 cursor: "pointer", whiteSpace: "nowrap",
