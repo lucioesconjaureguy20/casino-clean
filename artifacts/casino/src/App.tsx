@@ -8158,7 +8158,7 @@ export default function App() {
           {chatScreen === "chat" && !chatVerified && (
             <div style={{ flex:1, padding:"32px 24px", display:"flex", flexDirection:"column", gap:"16px", justifyContent:"center", animation:"chatScreenIn .25s ease-out" }}>
               <div style={{ textAlign:"center", marginBottom:"8px" }}>
-                <div style={{ width:"64px", height:"64px", borderRadius:"50%", background:"linear-gradient(135deg,#f4a91f,#c4780a)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"28px", margin:"0 auto 14px" }}>🎧</div>
+                <img src="/mander-logo.png" alt="Mander" style={{ width:"72px", height:"72px", objectFit:"contain", margin:"0 auto 14px", display:"block" }} />
                 <div style={{ fontWeight:600, fontSize:"18px", color:"#fff", marginBottom:"6px" }}>Live Support</div>
                 <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Enter your username<br/>to start the chat</p>
               </div>
