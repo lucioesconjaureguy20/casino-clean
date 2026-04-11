@@ -8161,7 +8161,7 @@ export default function App() {
                 <img src="/mander-logo.png" alt="Mander" style={{ width:"210px", height:"210px", objectFit:"contain", display:"block", margin:"0 auto", marginBottom:"-138px", position:"relative", zIndex:0, top:"-70px", pointerEvents:"none" }} />
                 <div style={{ fontWeight:600, fontSize:"18px", color:"#fff", marginBottom:"6px" }}>Live Support</div>
                 {!currentUser
-                  ? <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Debes iniciar sesión para usar el soporte</p>
+                  ? <p style={{ margin:0, marginTop:"18px", fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Debes iniciar sesión para usar el soporte</p>
                   : <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Enter your username<br/>to start the chat</p>
                 }
               </div>
