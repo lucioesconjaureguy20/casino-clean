@@ -5281,22 +5281,15 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Category tabs + search */}
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 320px",gap:"16px",marginBottom:"16px" }}>
-                  <div style={{ display:"flex",gap:"6px",flexWrap:"wrap",background:"#161d2b",border:"1px solid #20283a",borderRadius:"12px",padding:"8px" }}>
-                    <button onClick={()=>{ setHomeCategory("Originals"); showHomeView(); }}
-                      style={{ display:"flex",alignItems:"center",gap:"8px",background:"linear-gradient(135deg,#1e2840,#263352)",color:"#f4a91f",border:"1px solid #f4a91f",padding:"9px 16px",borderRadius:"9px",fontWeight:600,cursor:"pointer",fontSize:"13px",letterSpacing:"0.4px",boxShadow:"0 0 10px rgba(244,169,31,.25), inset 0 0 8px rgba(244,169,31,.07)",transition:"all .15s ease" }}
-                      onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.12)"}
-                      onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/><path d="M7 9l-2-2M17 9l2-2"/></svg>
-                      Originals
-                    </button>
-                  </div>
-                  <div style={{ position:"relative" }}>
-                    <span style={{ position:"absolute",left:"16px",top:"50%",transform:"translateY(-50%)",color:"#aab4c5",fontSize:"22px" }}>⌕</span>
-                    <input onClick={()=>setSearchOpen(true)} readOnly placeholder="Search"
-                      style={{ width:"100%",height:"100%",padding:"0 16px 0 46px",background:"#161d2b",border:"1px solid #20283a",borderRadius:"12px",color:"white",cursor:"pointer",boxSizing:"border-box" }} />
-                  </div>
+                {/* Category tabs */}
+                <div style={{ display:"flex",gap:"6px",flexWrap:"wrap",background:"#161d2b",border:"1px solid #20283a",borderRadius:"12px",padding:"8px",marginBottom:"16px" }}>
+                  <button onClick={()=>{ setHomeCategory("Originals"); showHomeView(); }}
+                    style={{ display:"flex",alignItems:"center",gap:"8px",background:"linear-gradient(135deg,#1e2840,#263352)",color:"#f4a91f",border:"1px solid #f4a91f",padding:"9px 16px",borderRadius:"9px",fontWeight:600,cursor:"pointer",fontSize:"13px",letterSpacing:"0.4px",boxShadow:"0 0 10px rgba(244,169,31,.25), inset 0 0 8px rgba(244,169,31,.07)",transition:"all .15s ease" }}
+                    onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.12)"}
+                    onMouseLeave={e=>e.currentTarget.style.filter="none"}>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/><path d="M7 9l-2-2M17 9l2-2"/></svg>
+                    Originals
+                  </button>
                 </div>
 
                 {/* Game row — filtered by homeCategory */}
