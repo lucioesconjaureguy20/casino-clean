@@ -5590,7 +5590,7 @@ export default function App() {
                           onClick={()=>setAuthModal("register")}
                           onMouseEnter={e=>{ e.currentTarget.style.filter="brightness(1.12)"; e.currentTarget.style.transform="scale(1.03)"; }}
                           onMouseLeave={e=>{ e.currentTarget.style.filter=""; e.currentTarget.style.transform=""; }}
-                          style={{ width:"100%",padding:"14px 0",borderRadius:"10px",border:"none",background:"linear-gradient(180deg,#f6b531,#ea9807)",color:"#111",fontWeight:700,fontSize:"15px",cursor:"pointer",transition:"filter .15s,transform .15s",fontFamily:"inherit" }}>
+                          style={{ width:"100%",padding:"14px 0",borderRadius:"10px",border:"none",background:"linear-gradient(180deg,#f6b531,#ea9807)",color:"#fff",fontWeight:700,fontSize:"15px",cursor:"pointer",transition:"filter .15s,transform .15s",fontFamily:"inherit" }}>
                           Únete ahora
                         </button>
                       </div>
