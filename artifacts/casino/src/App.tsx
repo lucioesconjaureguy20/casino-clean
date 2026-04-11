@@ -7881,7 +7881,7 @@ export default function App() {
         }}
         style={{
           position:"fixed", bottom:"28px", right:"28px", zIndex:999,
-          width:"60px", height:"60px", borderRadius:"50%",
+          width:"46px", height:"46px", borderRadius:"50%",
           background:"linear-gradient(135deg,#1e2d45,#253550)",
           border:"2px solid #f4a91f",
           boxShadow:"0 4px 20px rgba(0,0,0,.6), 0 0 0 3px rgba(244,169,31,.12)",
@@ -7892,7 +7892,7 @@ export default function App() {
         onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1)";}}
         title="Live Support"
       >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#f4a91f" strokeWidth="1.5"/>
           <path d="M7.5 10.5C7.5 7.46 9.69 5 12 5s4.5 2.46 4.5 5.5" stroke="#f4a91f" strokeWidth="1.5" strokeLinecap="round"/>
           <rect x="5.5" y="10.5" width="3" height="5" rx="1.5" fill="#f4a91f"/>
