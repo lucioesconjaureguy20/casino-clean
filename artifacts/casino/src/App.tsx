@@ -5599,7 +5599,7 @@ export default function App() {
                 </div>
 
                 {/* Recent Wins */}
-                <div style={{ background:"#161d2b",border:"1px solid #20283a",borderRadius:"14px",padding:"10px 8px 6px",marginBottom:"14px" }}>
+                <div style={{ padding:"0 0 6px",marginBottom:"14px" }}>
                   <div style={{ display:"flex",alignItems:"center",gap:"10px",fontWeight:600,margin:"0 8px 8px" }}>
                     <span className="live-dot" style={{ width:"12px",height:"12px",borderRadius:"50%",background:"#57e35a",display:"inline-block",flexShrink:0 }}/>
                     {t("recentWins")}
