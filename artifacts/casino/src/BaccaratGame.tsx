@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { gt } from "./lib/gameLabels";
 
 // ── Wait helper ────────────────────────────────────────────────────────────────
 const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
@@ -776,7 +777,7 @@ export default function BaccaratGame({
 
           {/* Chip selector — Roulette-identical */}
           <div>
-            <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>Fichas</div>
+            <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "chips")}</div>
             <div style={{ display:"flex", alignItems:"center", gap:"4px",
               background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px", overflow:"visible" }}>
               {arrowBtn(canLeft && !isDealing, () => setChipOffset(o => o - 1), "‹")}
@@ -806,7 +807,7 @@ export default function BaccaratGame({
 
           {/* Total bet — Roulette-identical box */}
           <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"10px 12px" }}>
-            <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>APUESTA TOTAL</div>
+            <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "totalBet")}</div>
             <div style={{ fontSize:"16px", fontWeight:800, color: hasBets?"#e0e8f4":"#4a6080", opacity:currencyFade }}>
               {fmtMoney(totalBet)}
             </div>
@@ -872,7 +873,7 @@ export default function BaccaratGame({
           ) : (
             <>
               <div>
-                <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>Número de rondas</div>
+                <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(lang, "numRounds")}</div>
                 <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 10px" }}>
                   <input
                     value={autoRunning ? (autoInfinite ? "∞" : String(autoRemaining)) : (autoInfinite ? "∞" : autoCount)}
@@ -959,7 +960,7 @@ export default function BaccaratGame({
                       <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
                     </svg>
                   </span>
-                  <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>Estadísticas en vivo</strong>
+                  <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>{gt(lang, "liveStats")}</strong>
                 </div>
                 <button onClick={() => setStatsOpen(false)}
                   style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1 }}>×</button>
@@ -996,7 +997,7 @@ export default function BaccaratGame({
                   const n=allPts.length;
                   if (n<2) return (
                     <div style={{ height:"160px", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1520", borderRadius:"10px", border:"1px solid #1a3347" }}>
-                      <span style={{ color:"#2a4a6a", fontSize:"12px" }}>Sin historial</span>
+                      <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{gt(lang, "noHistoryShort")}</span>
                     </div>
                   );
                   const cums=allPts.map(p=>p.cum);
@@ -1056,7 +1057,7 @@ export default function BaccaratGame({
           {/* Footer: Stats + Volume (identical to Roulette) */}
           <div style={{ marginTop:"auto", display:"flex", gap:"8px", position:"relative" }}>
             <button onClick={() => { setStatsOpen(v=>!v); setShowVol(false); }}
-              title="Estadísticas en Vivo"
+              title={gt(lang, "liveStatsTitle")}
               style={{ width:"38px", height:"38px", borderRadius:"8px", fontFamily:"inherit",
                 background: statsOpen?"#1f6fd0":"#0e1826",
                 border: statsOpen?"1px solid #3a8aff":"1px solid #203a50",

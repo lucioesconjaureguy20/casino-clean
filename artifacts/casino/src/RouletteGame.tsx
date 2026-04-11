@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { gt } from "./lib/gameLabels";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const WHEEL_NUMBERS = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
@@ -1148,7 +1149,7 @@ export default function RouletteGame({
           return (
             <div>
               <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>
-                Fichas
+                {gt(_lang, "chips")}
               </div>
               <div style={{ display:"flex", alignItems:"center", gap:"4px",
                 background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 4px", overflow:"visible" }}>
@@ -1185,7 +1186,7 @@ export default function RouletteGame({
 
         {/* Total bet */}
         <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"10px 12px" }}>
-          <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>APUESTA TOTAL</div>
+          <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
           <div style={{ fontSize:"16px", fontWeight:800, color: totalBetUsd > 0 ? "#e0e8f4" : "#4a6080", opacity: currencyFade }}>
             {totalBetUsd > 0 ? fmtMoney(totalBetUsd) : `${fmtMoney(0)}`}
           </div>
@@ -1310,7 +1311,7 @@ export default function RouletteGame({
                     <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
                   </svg>
                 </span>
-                <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>Estadísticas en vivo</strong>
+                <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>{gt(_lang, "liveStats")}</strong>
               </div>
               <button onClick={() => setStatsOpen(false)}
                 style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
@@ -1352,7 +1353,7 @@ export default function RouletteGame({
                 const n = allPts.length;
                 if (n < 2) return (
                   <div style={{ position:"relative", background:"#0a1520", borderRadius:"12px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1a3347" }}>
-                    <span style={{ color:"#2a4a6a", fontSize:"12px" }}>Sin historial</span>
+                    <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{gt(_lang, "noHistoryShort")}</span>
                   </div>
                 );
                 const cums = allPts.map(p => p.cum);
@@ -1426,7 +1427,7 @@ export default function RouletteGame({
         {/* Footer: Stats + Volume icon buttons */}
         <div style={{ marginTop:"auto", display:"flex", gap:"8px", position:"relative" }}>
           <button onClick={() => { setStatsOpen(v => !v); setShowVol(false); }}
-            title="Estadísticas en Vivo"
+            title={gt(_lang, "liveStatsTitle")}
             style={{ width:"38px", height:"38px", borderRadius:"8px", fontFamily:"inherit",
               background: statsOpen ? "#1f6fd0" : "#0e1826",
               border: statsOpen ? "1px solid #3a8aff" : "1px solid #203a50",
@@ -1489,7 +1490,7 @@ export default function RouletteGame({
               const bg = last === 0 ? "#1a6b30" : RED_NUMS.has(last) ? "#c0392b" : "#111827";
               return (
                 <>
-                  <div style={{ fontSize:"9px", color:"#4a6080", fontWeight:700, letterSpacing:"0.5px", textTransform:"uppercase" }}>Último</div>
+                  <div style={{ fontSize:"9px", color:"#4a6080", fontWeight:700, letterSpacing:"0.5px", textTransform:"uppercase" }}>{gt(_lang, "lastResult")}</div>
                   <div style={{ width:"72px", height:"72px", borderRadius:"50%", background:bg,
                     border:"3px solid rgba(255,255,255,0.3)",
                     display:"flex", alignItems:"center", justifyContent:"center",
