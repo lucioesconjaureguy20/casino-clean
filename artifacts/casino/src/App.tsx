@@ -6289,8 +6289,8 @@ export default function App() {
                   { key:"baccarat",   label:"Baccarat" },
                 ];
 
-                const PAGE_SIZE = 20;
-                const filtered = (bhFilter==="all" ? all : all.filter(b=>b.game===bhFilter)).slice(0, 20);
+                const PAGE_SIZE = 30;
+                const filtered = bhFilter==="all" ? all : all.filter(b=>b.game===bhFilter);
                 const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
                 const page = Math.min(bhPage, totalPages-1);
                 const pageData = filtered.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
