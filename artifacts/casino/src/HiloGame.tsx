@@ -1029,7 +1029,7 @@ export default function HiloGame({
                   visibility: phase === "idle" ? "visible" : "hidden",
                   marginTop:"12px",
                 }}>
-                  Ingresa tu apuesta y<br/>presiona "Apostar"
+                  {T("hiloPrompt")}
                 </div>
               </div>
 
@@ -1106,7 +1106,7 @@ export default function HiloGame({
                   fontSize:"10px", color:"#3a5070", marginBottom:"10px",
                   fontWeight:700, letterSpacing:"1.2px", textTransform:"uppercase",
                 }}>
-                  Historial de cartas
+                  {T("hiloCardHistory")}
                 </div>
                 <div ref={histScrollRef} style={{
                   display:"flex", gap:"10px",
@@ -1187,7 +1187,7 @@ export default function HiloGame({
           >
             <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
               <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
-              <strong style={{ fontSize:"13px", color:"#d8e8f5" }}>Estadísticas</strong>
+              <strong style={{ fontSize:"13px", color:"#d8e8f5" }}>{T("statsTitle")}</strong>
             </div>
             <button
               onClick={() => setShowStats(false)}
@@ -1197,10 +1197,10 @@ export default function HiloGame({
           <div style={{ padding:"12px" }}>
             <div style={{ background:"#0d1a28", borderRadius:"10px", padding:"12px", display:"flex", flexDirection:"column", gap:"8px" }}>
               {([
-                { label:"Ganancia",  value: fmtMoney(hiloStats.profit),  color: hiloStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
-                { label:"Victorias", value: String(hiloStats.wins),       color:"#16ff5c" },
-                { label:"Apostado",  value: fmtMoney(hiloStats.wagered),  color:"#d8e8f5" },
-                { label:"Derrotas",  value: String(hiloStats.losses),     color:"#ff5959" },
+                { label:T("bjNetProfit"),  value: fmtMoney(hiloStats.profit),  color: hiloStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
+                { label:T("bjWins"),       value: String(hiloStats.wins),       color:"#16ff5c" },
+                { label:T("bjWagered"),    value: fmtMoney(hiloStats.wagered),  color:"#d8e8f5" },
+                { label:T("bjLosses"),     value: String(hiloStats.losses),     color:"#ff5959" },
               ] as { label:string; value:string; color:string }[]).map(s => (
                 <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                   <span style={{ color:"#7a9db8", fontSize:"11.5px" }}>{s.label}</span>
@@ -1239,7 +1239,7 @@ export default function HiloGame({
               const tipTop  = Math.max(tipYpct - 14, 2);
               if (n < 2) return (
                 <div style={{ marginTop:"10px", position:"relative", background:"#0a1520", borderRadius:"12px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a", fontSize:"12px" }}>Sin historial</span>
+                  <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
