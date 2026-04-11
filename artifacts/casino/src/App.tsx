@@ -9372,10 +9372,10 @@ function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _
     return [];
   }, [liveBets, activeTab]);
 
-  // Tab 0: backend data (realistic win ratio from generator); fallback to local merged list
+  // Tab 0: backend data (realistic win ratio from generator); fallback to local merged list — max 20 rows
   const tab0Data = useMemo<LiveCasinoBet[]>(() => {
-    if (rawBets && rawBets.length > 0) return rawBets;
-    return [...(liveBets ?? [])].sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    if (rawBets && rawBets.length > 0) return rawBets.slice(0, 20);
+    return [...(liveBets ?? [])].sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 20);
   }, [rawBets, liveBets]);
 
   const nowRef = useRef(Date.now());
