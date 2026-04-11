@@ -25,3 +25,35 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Casino App (`artifacts/casino`)
+
+**Brand**: Mander Originals — 8 original games, crypto payments (Plisio), Supabase auth, VIP system, affiliate program.
+
+### i18n System
+
+- **12 languages**: es, en, pt, de, fr, id, it, ko, nl, pl, ru, tr
+- **LANGS object** in `App.tsx` (lines ~27–1340): all UI string translations, 260+ keys per language
+- **Helper files**: `lib/gameLabels.ts`, `lib/gameContent.ts`, `lib/fairnessContent.ts`
+- **Usage pattern**:
+  - `App.tsx` level: `const t = useCallback((key) => tl(lang, key), [lang])`
+  - Game components (DiceGame, PlinkoGame, KenoGame, etc.): `const t = (key: string) => tl(lang, key);`
+  - `ProfilePage`: `const T = (k: string) => gt(lang, k)`
+  - `CasinoFooter`: `tl(lang, key)` directly
+- **Goal**: ZERO hardcoded user-facing text — all strings go through `t()` / `tl()` / `gt()`
+- **Accepted exceptions**: AdminPanel.tsx (internal tool, Spanish OK), footer legal paragraphs, brand name "Mander Originals"
+
+### Known Non-Blocking Issues
+
+- Plisio poller HTTP 401 errors (invalid API key in dev environment)
+- Pre-existing TypeScript errors: `ticketId` type mismatch, `0|1|2|3` union, RouletteGame canvas null, `auth.ts` `data` unknown, BlackjackGame comparison, ProfilePage `T` undefined
+
+### Recent i18n Work (completed)
+
+Added 33 new LANGS keys across all 12 language blocks:
+- Auto mode: `advanced`, `onWin`, `onLose`, `stopOnWin`, `stopOnLoss`
+- Wallet: `walletSettings`
+- UI controls: `resetAction`, `increaseAction`, `zeroOff`, `statsLabel`, `volume`, `invertDir`
+- Chat: `writeMessage`, `attachFile`, `emojisLabel`
+- Auth: `confirmPassPH`, `setNewPass`, `enterCodePH`, `emailValidErr`, `recoveryMsg`, `emailFmtErr`, `emailFmt`, `emailValidOk`, `resetPassTitle`, `pwdMin8`, `pwdUpper`, `pwdNum`, `pwdSym`, `referralCodeLabel`, `optional`
+- Lobby: `searchCurrency`, `searchCurrencies`, `searchGames`, `comingSoonShort`

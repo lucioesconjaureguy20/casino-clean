@@ -134,6 +134,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Billetera", generatingAddr:"Generando dirección...", audited:"✓ Auditado", close:"Cerrar",
     showLess:"Mostrar menos", howToPlayMore:"Cómo jugar y más",
     usefulLinks:"Enlaces útiles", amlPolicy:"Política AML",
+    resetAction:"Reiniciar", increaseAction:"Aumentar",
+    zeroOff:"0 = desactivado", statsLabel:"Estadísticas", volume:"Volumen", invertDir:"Invertir dirección",
+    searchCurrency:"Buscar moneda...", searchCurrencies:"Buscar monedas...", searchGames:"Buscar juegos...",
+    writeMessage:"Escribe un mensaje...", attachFile:"Adjuntar archivo", emojisLabel:"Emojis",
+    confirmPassPH:"Confirmar contraseña", setNewPass:"Establecer nueva contraseña", enterCodePH:"Ingresa tu código",
+    emailValidErr:"Ingresa un correo válido.", recoveryMsg:"Si el correo está registrado, recibirás un enlace de recuperación.",
+    emailFmtErr:"Formato incorrecto. Ejemplo: nombre@dominio.com", emailFmt:"Formato: nombre@dominio.com", emailValidOk:"✓ Correo válido",
+    comingSoonShort:"Pronto", resetPassTitle:"Restablecer contraseña",
+    pwdMin8:"8 caracteres", pwdUpper:"1 mayúscula", pwdNum:"1 número", pwdSym:"1 símbolo",
+    referralCodeLabel:"Código de referido o bono", optional:"(opcional)",
+    advanced:"Avanzado", onWin:"Al ganar", onLose:"Al perder", stopOnWin:"Parar al ganar", stopOnLoss:"Parar al perder",
+    walletSettings:"Configuración de Billetera",
   },
   en: {
     login:"Sign In", register:"Register", username:"Username", password:"Password",
@@ -248,6 +260,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Wallet", generatingAddr:"Generating address...", audited:"✓ Audited", close:"Close",
     showLess:"Show less", howToPlayMore:"How to play & more",
     usefulLinks:"Useful links", amlPolicy:"AML Policy",
+    resetAction:"Reset", increaseAction:"Increase",
+    zeroOff:"0 = disabled", statsLabel:"Statistics", volume:"Volume", invertDir:"Invert direction",
+    searchCurrency:"Search currency...", searchCurrencies:"Search currencies...", searchGames:"Search games...",
+    writeMessage:"Write a message...", attachFile:"Attach file", emojisLabel:"Emojis",
+    confirmPassPH:"Confirm password", setNewPass:"Set new password", enterCodePH:"Enter your code",
+    emailValidErr:"Enter a valid email.", recoveryMsg:"If the email is registered, you'll receive a recovery link.",
+    emailFmtErr:"Invalid format. Example: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Valid email",
+    comingSoonShort:"Soon", resetPassTitle:"Reset password",
+    pwdMin8:"8 characters", pwdUpper:"1 uppercase", pwdNum:"1 number", pwdSym:"1 symbol",
+    referralCodeLabel:"Referral or bonus code", optional:"(optional)",
+    advanced:"Advanced", onWin:"On win", onLose:"On loss", stopOnWin:"Stop on win", stopOnLoss:"Stop on loss",
+    walletSettings:"Wallet Settings",
   },
   pt: {
     login:"Entrar", register:"Registrar", username:"Usuário", password:"Senha",
@@ -342,6 +366,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Carteira", generatingAddr:"Gerando endereço...", audited:"✓ Auditado", close:"Fechar",
     showLess:"Mostrar menos", howToPlayMore:"Como jogar e mais",
     usefulLinks:"Links úteis", amlPolicy:"Política AML",
+    resetAction:"Reiniciar", increaseAction:"Aumentar",
+    zeroOff:"0 = desativado", statsLabel:"Estatísticas", volume:"Volume", invertDir:"Inverter direção",
+    searchCurrency:"Buscar moeda...", searchCurrencies:"Buscar moedas...", searchGames:"Buscar jogos...",
+    writeMessage:"Escreva uma mensagem...", attachFile:"Anexar arquivo", emojisLabel:"Emojis",
+    confirmPassPH:"Confirmar senha", setNewPass:"Definir nova senha", enterCodePH:"Digite seu código",
+    emailValidErr:"Digite um e-mail válido.", recoveryMsg:"Se o e-mail estiver cadastrado, você receberá um link de recuperação.",
+    emailFmtErr:"Formato inválido. Exemplo: user@domain.com", emailFmt:"Formato: user@domain.com", emailValidOk:"✓ E-mail válido",
+    comingSoonShort:"Em breve", resetPassTitle:"Redefinir senha",
+    pwdMin8:"8 caracteres", pwdUpper:"1 maiúscula", pwdNum:"1 número", pwdSym:"1 símbolo",
+    referralCodeLabel:"Código de indicação ou bônus", optional:"(opcional)",
+    advanced:"Avançado", onWin:"Ao ganhar", onLose:"Ao perder", stopOnWin:"Parar ao ganhar", stopOnLoss:"Parar ao perder",
+    walletSettings:"Configurações de Carteira",
   },
   de: {
     login:"Anmelden", register:"Registrieren", username:"Benutzername", password:"Passwort",
@@ -436,6 +472,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Wallet", generatingAddr:"Adresse wird generiert...", audited:"✓ Geprüft", close:"Schließen",
     showLess:"Weniger anzeigen", howToPlayMore:"Spielanleitung & mehr",
     usefulLinks:"Nützliche Links", amlPolicy:"AML-Richtlinie",
+    resetAction:"Zurücksetzen", increaseAction:"Erhöhen",
+    zeroOff:"0 = deaktiviert", statsLabel:"Statistiken", volume:"Lautstärke", invertDir:"Richtung umkehren",
+    searchCurrency:"Währung suchen...", searchCurrencies:"Währungen suchen...", searchGames:"Spiele suchen...",
+    writeMessage:"Nachricht schreiben...", attachFile:"Datei anhängen", emojisLabel:"Emojis",
+    confirmPassPH:"Passwort bestätigen", setNewPass:"Neues Passwort festlegen", enterCodePH:"Code eingeben",
+    emailValidErr:"Gültige E-Mail eingeben.", recoveryMsg:"Falls die E-Mail registriert ist, erhalten Sie einen Wiederherstellungslink.",
+    emailFmtErr:"Ungültiges Format. Beispiel: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Gültige E-Mail",
+    comingSoonShort:"Bald", resetPassTitle:"Passwort zurücksetzen",
+    pwdMin8:"8 Zeichen", pwdUpper:"1 Großbuchstabe", pwdNum:"1 Zahl", pwdSym:"1 Symbol",
+    referralCodeLabel:"Empfehlungs- oder Bonuscode", optional:"(optional)",
+    advanced:"Erweitert", onWin:"Bei Gewinn", onLose:"Bei Verlust", stopOnWin:"Bei Gewinn stoppen", stopOnLoss:"Bei Verlust stoppen",
+    walletSettings:"Wallet-Einstellungen",
   },
   fr: {
     login:"Connexion", register:"S'inscrire", username:"Nom d'utilisateur", password:"Mot de passe",
@@ -530,6 +578,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portefeuille", generatingAddr:"Génération de l'adresse...", audited:"✓ Audité", close:"Fermer",
     showLess:"Afficher moins", howToPlayMore:"Comment jouer et plus",
     usefulLinks:"Liens utiles", amlPolicy:"Politique AML",
+    resetAction:"Réinitialiser", increaseAction:"Augmenter",
+    zeroOff:"0 = désactivé", statsLabel:"Statistiques", volume:"Volume", invertDir:"Inverser la direction",
+    searchCurrency:"Rechercher devise...", searchCurrencies:"Rechercher devises...", searchGames:"Rechercher jeux...",
+    writeMessage:"Écrire un message...", attachFile:"Joindre un fichier", emojisLabel:"Emojis",
+    confirmPassPH:"Confirmer le mot de passe", setNewPass:"Définir un nouveau mot de passe", enterCodePH:"Entrer votre code",
+    emailValidErr:"Saisissez un e-mail valide.", recoveryMsg:"Si l'email est enregistré, vous recevrez un lien de récupération.",
+    emailFmtErr:"Format invalide. Exemple: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Email valide",
+    comingSoonShort:"Bientôt", resetPassTitle:"Réinitialiser le mot de passe",
+    pwdMin8:"8 caractères", pwdUpper:"1 majuscule", pwdNum:"1 chiffre", pwdSym:"1 symbole",
+    referralCodeLabel:"Code de parrainage ou bonus", optional:"(optionnel)",
+    advanced:"Avancé", onWin:"Lors d'un gain", onLose:"Lors d'une perte", stopOnWin:"Arrêter à un gain", stopOnLoss:"Arrêter à une perte",
+    walletSettings:"Paramètres du portefeuille",
   },
   id: {
     login:"Masuk", register:"Daftar", username:"Nama Pengguna", password:"Kata Sandi",
@@ -624,6 +684,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Dompet", generatingAddr:"Membuat alamat...", audited:"✓ Diaudit", close:"Tutup",
     showLess:"Tampilkan lebih sedikit", howToPlayMore:"Cara bermain & lainnya",
     usefulLinks:"Tautan berguna", amlPolicy:"Kebijakan AML",
+    resetAction:"Reset", increaseAction:"Naikkan",
+    zeroOff:"0 = nonaktif", statsLabel:"Statistik", volume:"Volume", invertDir:"Balikkan arah",
+    searchCurrency:"Cari mata uang...", searchCurrencies:"Cari mata uang...", searchGames:"Cari permainan...",
+    writeMessage:"Tulis pesan...", attachFile:"Lampirkan file", emojisLabel:"Emoji",
+    confirmPassPH:"Konfirmasi kata sandi", setNewPass:"Tetapkan kata sandi baru", enterCodePH:"Masukkan kode Anda",
+    emailValidErr:"Masukkan email yang valid.", recoveryMsg:"Jika email terdaftar, Anda akan menerima link pemulihan.",
+    emailFmtErr:"Format tidak valid. Contoh: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Email valid",
+    comingSoonShort:"Segera", resetPassTitle:"Reset kata sandi",
+    pwdMin8:"8 karakter", pwdUpper:"1 huruf besar", pwdNum:"1 angka", pwdSym:"1 simbol",
+    referralCodeLabel:"Kode referral atau bonus", optional:"(opsional)",
+    advanced:"Lanjutan", onWin:"Saat menang", onLose:"Saat kalah", stopOnWin:"Berhenti saat menang", stopOnLoss:"Berhenti saat kalah",
+    walletSettings:"Pengaturan Dompet",
   },
   it: {
     login:"Accedi", register:"Registrati", username:"Nome utente", password:"Password",
@@ -718,6 +790,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portafoglio", generatingAddr:"Generazione indirizzo...", audited:"✓ Verificato", close:"Chiudi",
     showLess:"Mostra meno", howToPlayMore:"Come giocare e altro",
     usefulLinks:"Link utili", amlPolicy:"Politica AML",
+    resetAction:"Reimposta", increaseAction:"Aumenta",
+    zeroOff:"0 = disabilitato", statsLabel:"Statistiche", volume:"Volume", invertDir:"Inverti direzione",
+    searchCurrency:"Cerca valuta...", searchCurrencies:"Cerca valute...", searchGames:"Cerca giochi...",
+    writeMessage:"Scrivi un messaggio...", attachFile:"Allega file", emojisLabel:"Emoji",
+    confirmPassPH:"Conferma password", setNewPass:"Imposta nuova password", enterCodePH:"Inserisci il tuo codice",
+    emailValidErr:"Inserisci un'email valida.", recoveryMsg:"Se l'email è registrata, riceverai un link di recupero.",
+    emailFmtErr:"Formato non valido. Esempio: user@domain.com", emailFmt:"Formato: user@domain.com", emailValidOk:"✓ Email valida",
+    comingSoonShort:"Presto", resetPassTitle:"Reimposta password",
+    pwdMin8:"8 caratteri", pwdUpper:"1 maiuscola", pwdNum:"1 numero", pwdSym:"1 simbolo",
+    referralCodeLabel:"Codice referral o bonus", optional:"(opzionale)",
+    advanced:"Avanzato", onWin:"Al vincere", onLose:"Al perdere", stopOnWin:"Ferma al vincere", stopOnLoss:"Ferma al perdere",
+    walletSettings:"Impostazioni portafoglio",
   },
   ko: {
     login:"로그인", register:"회원가입", username:"사용자명", password:"비밀번호",
@@ -812,6 +896,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"지갑", generatingAddr:"주소 생성 중...", audited:"✓ 검증됨", close:"닫기",
     showLess:"접기", howToPlayMore:"게임 방법 및 기타",
     usefulLinks:"유용한 링크", amlPolicy:"AML 정책",
+    resetAction:"초기화", increaseAction:"증가",
+    zeroOff:"0 = 비활성", statsLabel:"통계", volume:"볼륨", invertDir:"방향 반전",
+    searchCurrency:"통화 검색...", searchCurrencies:"통화 검색...", searchGames:"게임 검색...",
+    writeMessage:"메시지 작성...", attachFile:"파일 첨부", emojisLabel:"이모지",
+    confirmPassPH:"비밀번호 확인", setNewPass:"새 비밀번호 설정", enterCodePH:"코드 입력",
+    emailValidErr:"유효한 이메일을 입력하세요.", recoveryMsg:"이메일이 등록되어 있으면 복구 링크를 받게 됩니다.",
+    emailFmtErr:"잘못된 형식. 예: user@domain.com", emailFmt:"형식: user@domain.com", emailValidOk:"✓ 이메일 유효",
+    comingSoonShort:"곧", resetPassTitle:"비밀번호 재설정",
+    pwdMin8:"8자 이상", pwdUpper:"대문자 1개", pwdNum:"숫자 1개", pwdSym:"특수문자 1개",
+    referralCodeLabel:"추천 또는 보너스 코드", optional:"(선택사항)",
+    advanced:"고급", onWin:"이길 때", onLose:"질 때", stopOnWin:"이기면 중지", stopOnLoss:"지면 중지",
+    walletSettings:"지갑 설정",
   },
   nl: {
     login:"Inloggen", register:"Registreren", username:"Gebruikersnaam", password:"Wachtwoord",
@@ -906,6 +1002,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portemonnee", generatingAddr:"Adres genereren...", audited:"✓ Geauditeerd", close:"Sluiten",
     showLess:"Minder tonen", howToPlayMore:"Hoe te spelen en meer",
     usefulLinks:"Handige links", amlPolicy:"AML-beleid",
+    resetAction:"Herstellen", increaseAction:"Verhogen",
+    zeroOff:"0 = uitgeschakeld", statsLabel:"Statistieken", volume:"Volume", invertDir:"Richting omkeren",
+    searchCurrency:"Valuta zoeken...", searchCurrencies:"Valuta's zoeken...", searchGames:"Spellen zoeken...",
+    writeMessage:"Schrijf een bericht...", attachFile:"Bestand bijvoegen", emojisLabel:"Emoji's",
+    confirmPassPH:"Wachtwoord bevestigen", setNewPass:"Nieuw wachtwoord instellen", enterCodePH:"Voer uw code in",
+    emailValidErr:"Voer een geldig e-mailadres in.", recoveryMsg:"Als het e-mailadres is geregistreerd, ontvangt u een herstelkoppeling.",
+    emailFmtErr:"Ongeldig formaat. Voorbeeld: user@domain.com", emailFmt:"Formaat: user@domain.com", emailValidOk:"✓ Geldig e-mailadres",
+    comingSoonShort:"Binnenkort", resetPassTitle:"Wachtwoord opnieuw instellen",
+    pwdMin8:"8 tekens", pwdUpper:"1 hoofdletter", pwdNum:"1 getal", pwdSym:"1 symbool",
+    referralCodeLabel:"Verwijzings- of bonuscode", optional:"(optioneel)",
+    advanced:"Geavanceerd", onWin:"Bij winst", onLose:"Bij verlies", stopOnWin:"Stop bij winst", stopOnLoss:"Stop bij verlies",
+    walletSettings:"Portemonnee-instellingen",
   },
   pl: {
     login:"Zaloguj się", register:"Zarejestruj się", username:"Nazwa użytkownika", password:"Hasło",
@@ -1000,6 +1108,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portfel", generatingAddr:"Generowanie adresu...", audited:"✓ Zweryfikowany", close:"Zamknij",
     showLess:"Pokaż mniej", howToPlayMore:"Jak grać i więcej",
     usefulLinks:"Przydatne linki", amlPolicy:"Polityka AML",
+    resetAction:"Resetuj", increaseAction:"Zwiększ",
+    zeroOff:"0 = wyłączone", statsLabel:"Statystyki", volume:"Głośność", invertDir:"Odwróć kierunek",
+    searchCurrency:"Szukaj waluty...", searchCurrencies:"Szukaj walut...", searchGames:"Szukaj gier...",
+    writeMessage:"Napisz wiadomość...", attachFile:"Dołącz plik", emojisLabel:"Emoji",
+    confirmPassPH:"Potwierdź hasło", setNewPass:"Ustaw nowe hasło", enterCodePH:"Wprowadź kod",
+    emailValidErr:"Wprowadź prawidłowy email.", recoveryMsg:"Jeśli e-mail jest zarejestrowany, otrzymasz link do odzyskania.",
+    emailFmtErr:"Nieprawidłowy format. Przykład: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Prawidłowy email",
+    comingSoonShort:"Wkrótce", resetPassTitle:"Resetuj hasło",
+    pwdMin8:"8 znaków", pwdUpper:"1 wielka litera", pwdNum:"1 cyfra", pwdSym:"1 symbol",
+    referralCodeLabel:"Kod referralny lub bonusowy", optional:"(opcjonalny)",
+    advanced:"Zaawansowany", onWin:"Przy wygranej", onLose:"Przy przegranej", stopOnWin:"Zatrzymaj przy wygranej", stopOnLoss:"Zatrzymaj przy przegranej",
+    walletSettings:"Ustawienia portfela",
   },
   ru: {
     login:"Войти", register:"Регистрация", username:"Имя пользователя", password:"Пароль",
@@ -1094,6 +1214,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Кошелёк", generatingAddr:"Генерация адреса...", audited:"✓ Аудирован", close:"Закрыть",
     showLess:"Показать меньше", howToPlayMore:"Как играть и подробнее",
     usefulLinks:"Полезные ссылки", amlPolicy:"Политика AML",
+    resetAction:"Сбросить", increaseAction:"Увеличить",
+    zeroOff:"0 = откл.", statsLabel:"Статистика", volume:"Громкость", invertDir:"Инвертировать",
+    searchCurrency:"Найти валюту...", searchCurrencies:"Найти валюты...", searchGames:"Найти игры...",
+    writeMessage:"Написать сообщение...", attachFile:"Прикрепить файл", emojisLabel:"Эмодзи",
+    confirmPassPH:"Подтвердите пароль", setNewPass:"Установить новый пароль", enterCodePH:"Введите код",
+    emailValidErr:"Введите действительный email.", recoveryMsg:"Если email зарегистрирован, вы получите ссылку для восстановления.",
+    emailFmtErr:"Неверный формат. Пример: user@domain.com", emailFmt:"Формат: user@domain.com", emailValidOk:"✓ Email действителен",
+    comingSoonShort:"Скоро", resetPassTitle:"Сбросить пароль",
+    pwdMin8:"8 символов", pwdUpper:"1 заглавная", pwdNum:"1 цифра", pwdSym:"1 символ",
+    referralCodeLabel:"Код реферала или бонуса", optional:"(необязательно)",
+    advanced:"Расширенный", onWin:"При выигрыше", onLose:"При проигрыше", stopOnWin:"Остановить при выигрыше", stopOnLoss:"Остановить при проигрыше",
+    walletSettings:"Настройки кошелька",
   },
   tr: {
     login:"Giriş Yap", register:"Kayıt Ol", username:"Kullanıcı Adı", password:"Şifre",
@@ -1188,6 +1320,18 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Cüzdan", generatingAddr:"Adres oluşturuluyor...", audited:"✓ Denetlendi", close:"Kapat",
     showLess:"Daha az göster", howToPlayMore:"Nasıl oynanır ve daha fazlası",
     usefulLinks:"Faydalı bağlantılar", amlPolicy:"AML Politikası",
+    resetAction:"Sıfırla", increaseAction:"Artır",
+    zeroOff:"0 = devre dışı", statsLabel:"İstatistikler", volume:"Ses", invertDir:"Yönü çevir",
+    searchCurrency:"Para birimi ara...", searchCurrencies:"Para birimleri ara...", searchGames:"Oyun ara...",
+    writeMessage:"Mesaj yaz...", attachFile:"Dosya ekle", emojisLabel:"Emoji",
+    confirmPassPH:"Şifreyi onayla", setNewPass:"Yeni şifre belirle", enterCodePH:"Kodunuzu girin",
+    emailValidErr:"Geçerli bir e-posta girin.", recoveryMsg:"E-posta kayıtlıysa bir kurtarma bağlantısı alacaksınız.",
+    emailFmtErr:"Geçersiz format. Örnek: user@domain.com", emailFmt:"Format: user@domain.com", emailValidOk:"✓ Geçerli e-posta",
+    comingSoonShort:"Yakında", resetPassTitle:"Şifre sıfırlama",
+    pwdMin8:"8 karakter", pwdUpper:"1 büyük harf", pwdNum:"1 rakam", pwdSym:"1 sembol",
+    referralCodeLabel:"Referans veya bonus kodu", optional:"(isteğe bağlı)",
+    advanced:"Gelişmiş", onWin:"Kazanınca", onLose:"Kaybedince", stopOnWin:"Kazanınca dur", stopOnLoss:"Kaybedince dur",
+    walletSettings:"Cüzdan Ayarları",
   },
 };
 
@@ -5805,7 +5949,7 @@ export default function App() {
                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5a6a82" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                   <input autoFocus value={fiatCurrSearch} onChange={e=>{ e.stopPropagation(); setFiatCurrSearch(e.target.value); }}
                                     onClick={e=>e.stopPropagation()}
-                                    placeholder="Buscar moneda..."
+                                    placeholder={t("searchCurrency")}
                                     style={{ background:"transparent",border:"none",outline:"none",color:"#c0cde0",fontSize:"12px",width:"100%",fontFamily:"inherit" }} />
                                 </div>
                               </div>
@@ -7793,7 +7937,7 @@ export default function App() {
                 {fGames.map(g=>(
                   <button key={g.key} onClick={()=>setFairnessGame(g.key)}
                     style={{ padding:"8px 16px",borderRadius:"8px",border: fairnessGame===g.key ? `1px solid ${g.color}` : "1px solid #20283a",background: fairnessGame===g.key ? `${g.color}18` : "#161d2b",color: fairnessGame===g.key ? g.color : "#94a3b8",fontWeight: fairnessGame===g.key ? 700 : 500,fontSize:"13px",cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",gap:"6px",opacity:g.soon?0.6:1 }}>
-                    {fIcons[g.key]?.(16, fairnessGame===g.key ? g.color : "#94a3b8")}{g.label}{g.soon && <span style={{ fontSize:"10px",color:"#94a3b8" }}>·Pronto</span>}
+                    {fIcons[g.key]?.(16, fairnessGame===g.key ? g.color : "#94a3b8")}{g.label}{g.soon && <span style={{ fontSize:"10px",color:"#94a3b8" }}>·{t("comingSoonShort")}</span>}
                   </button>
                 ))}
               </div>
@@ -8594,7 +8738,7 @@ export default function App() {
               <div style={{ flex:1,position:"relative" }}>
                 <span style={{ position:"absolute",left:"14px",top:"50%",transform:"translateY(-50%)",fontSize:"20px",color:"#aab4c5" }}>⌕</span>
                 <input value={searchQ} onChange={e=>setSearchQ(e.target.value)}
-                  autoFocus placeholder="Search casino games"
+                  autoFocus placeholder={t("searchGames")}
                   style={{ width:"100%",background:"#2d3344",border:"2px solid #656d7e",borderRadius:"999px",padding:"12px 14px 12px 42px",color:"white",fontSize:"15px",fontWeight:500,boxSizing:"border-box" }} />
               </div>
               <button onClick={()=>setSearchOpen(false)} style={{ width:"42px",height:"42px",borderRadius:"9px",background:"#4a5164",color:"white",border:"none",fontSize:"22px",cursor:"pointer",flexShrink:0 }}>×</button>
@@ -8682,7 +8826,7 @@ export default function App() {
 
             {/* Header */}
             <div style={{ padding:"20px 24px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid #1f2a3c",flexShrink:0 }}>
-              <span style={{ fontWeight:600,fontSize:"14px",letterSpacing:"1.5px",color:"#fff",textTransform:"uppercase" }}>Configuración de Billetera</span>
+              <span style={{ fontWeight:600,fontSize:"14px",letterSpacing:"1.5px",color:"#fff",textTransform:"uppercase" }}>{t("walletSettings")}</span>
               <button onClick={()=>setWalletConfigOpen(false)}
                 style={{ background:"transparent",border:"none",color:"#6b7280",fontSize:"20px",cursor:"pointer",lineHeight:1,padding:"2px 6px" }}>✕</button>
             </div>
@@ -8692,7 +8836,7 @@ export default function App() {
               <div style={{ display:"flex",alignItems:"center",gap:"10px",background:"#1c2537",border:"1px solid #2a3650",borderRadius:"10px",padding:"10px 14px" }}>
                 <span style={{ color:"#6b7280",fontSize:"16px" }}>🔍</span>
                 <input value={walletSearch} onChange={e=>setWalletSearch(e.target.value)}
-                  placeholder="Buscar monedas..."
+                  placeholder={t("searchCurrencies")}
                   style={{ flex:1,background:"transparent",border:"none",outline:"none",color:"#e5e7eb",fontSize:"14px",fontFamily:"inherit" }} />
                 {walletSearch && (
                   <button onClick={()=>setWalletSearch("")} style={{ background:"transparent",border:"none",color:"#6b7280",cursor:"pointer",fontSize:"14px" }}>✕</button>
@@ -8794,7 +8938,7 @@ export default function App() {
         }}
         onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1.1)";}}
         onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1)";}}
-        title="Live Support"
+        title={t("support")}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#f4a91f" strokeWidth="1.5"/>
@@ -9080,7 +9224,7 @@ export default function App() {
                     value={chatAuthInput}
                     onChange={e=>setChatAuthInput(e.target.value)}
                     onKeyDown={e=>e.key==="Enter" && verifyChatUser()}
-                    placeholder="Username"
+                    placeholder={t("username")}
                     style={{ padding:"14px 16px", borderRadius:"14px", border:"1px solid #2a3650", background:"#1c2537", color:"#fff", fontSize:"15px", fontFamily:"inherit", outline:"none" }}
                     autoFocus
                   />
@@ -9323,7 +9467,7 @@ export default function App() {
                       value={chatInput}
                       onChange={e=>setChatInput(e.target.value)}
                       onKeyDown={e=>{ if(e.key==="Enter" && !e.shiftKey){ sendChatMessage(); setChatEmojiOpen(false); } }}
-                      placeholder="Write a message..."
+                      placeholder={t("writeMessage")}
                       disabled={chatLoading}
                       style={{ flex:1, background:"transparent", border:"none", outline:"none", color:"#d9e5f5", fontSize:"14px", fontFamily:"inherit" }}
                     />
@@ -9343,7 +9487,7 @@ export default function App() {
                   <input ref={chatFileRef} type="file" onChange={handleChatFile} style={{ display:"none" }} accept="image/*,.pdf,.doc,.docx,.txt,.zip" />
                   <button
                     onClick={()=>chatFileRef.current?.click()}
-                    title="Adjuntar archivo"
+                    title={t("attachFile")}
                     style={{ background:"transparent", border:"none", borderRadius:"8px", padding:"6px 8px", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"background .15s, opacity .15s", opacity:.65 }}
                     onMouseEnter={e=>{ e.currentTarget.style.background="#1a2640"; e.currentTarget.style.opacity="1"; }}
                     onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; e.currentTarget.style.opacity=".65"; }}
@@ -9352,7 +9496,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={()=>setChatEmojiOpen(o=>!o)}
-                    title="Emojis"
+                    title={t("emojisLabel")}
                     style={{ background: chatEmojiOpen ? "#1a2640" : "transparent", border:"none", borderRadius:"8px", padding:"5px 8px", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"background .15s, opacity .15s", opacity: chatEmojiOpen ? 1 : .65, color:"#d9e5f5" }}
                     onMouseEnter={e=>{ e.currentTarget.style.background="#1a2640"; e.currentTarget.style.opacity="1"; }}
                     onMouseLeave={e=>{ if(!chatEmojiOpen){ e.currentTarget.style.background="transparent"; e.currentTarget.style.opacity=".65"; } }}
@@ -9657,10 +9801,10 @@ export default function App() {
                         );
                       })()}
 
-                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>Confirmar contraseña <span style={{ color:"#f4a91f" }}>*</span></label>
+                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("confirmPassPH")} <span style={{ color:"#f4a91f" }}>*</span></label>
                       <div style={{ position:"relative",marginBottom:"20px" }}>
                         <input value={resetConfirmPass} onChange={e=>setResetConfirmPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doResetPassword()}
-                          type={showResetConfirm?"text":"password"} placeholder="Confirmar contraseña"
+                          type={showResetConfirm?"text":"password"} placeholder={t("confirmPassPH")}
                           style={{ width:"100%",padding:"10px 48px 10px 18px",borderRadius:"10px",border:`1px solid ${resetConfirmPass && resetConfirmPass!==resetNewPass?"#e53e3e":"#253048"}`,background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box" }}/>
                         <button onClick={()=>setShowResetConfirm(v=>!v)}
                           style={{ position:"absolute",right:"14px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#6a7a99",cursor:"pointer",fontSize:"18px",padding:0 }}>
@@ -9674,27 +9818,27 @@ export default function App() {
                         style={{ width:"100%",padding:"13px 0",borderRadius:"10px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#0d1421",fontWeight:800,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"filter .15s",letterSpacing:"0.3px" }}
                         onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.1)"}
                         onMouseLeave={e=>e.currentTarget.style.filter="none"}>
-                        {authLoading ? "Guardando..." : "Establecer nueva contraseña"}
+                        {authLoading ? t("affSaving") : t("setNewPass")}
                       </button>
                     </>)}
                   </div>
                 </>) : authModal === "forgot" ? (<>
                   <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-start",paddingTop:"30px" }}>
-                    <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 28px" }}>Restablecer contraseña</h2>
-                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>Correo electrónico <span style={{ color:"#e53e3e" }}>*</span></label>
-                    <input value={forgotEmail} onChange={e=>setForgotEmail(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"){if(!forgotEmail.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())){setForgotError("Ingresa un correo válido.");}else{setForgotError("");setForgotMsg("Si el correo está registrado, recibirás un enlace de recuperación.");}}}}
-                      type="email" placeholder="Correo electrónico"
+                    <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 28px" }}>{t("resetPassTitle")}</h2>
+                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("email")} <span style={{ color:"#e53e3e" }}>*</span></label>
+                    <input value={forgotEmail} onChange={e=>setForgotEmail(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"){if(!forgotEmail.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())){setForgotError(t("emailValidErr"));}else{setForgotError("");setForgotMsg(t("recoveryMsg"));}}}}
+                      type="email" placeholder={t("email")}
                       style={{ width:"100%",padding:"10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"16px" }}/>
                     {forgotError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"-8px 0 14px",textAlign:"center" }}>{forgotError}</p>}
                     {forgotMsg && <p style={{ color:"#29c46d",fontSize:"13px",margin:"-8px 0 14px",textAlign:"center" }}>{forgotMsg}</p>}
                     <button onClick={async ()=>{
-                      if (!forgotEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())) { setForgotError("Ingresa un correo válido."); return; }
+                      if (!forgotEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())) { setForgotError(t("emailValidErr")); return; }
                       setForgotError(""); setForgotMsg("");
                       setAuthLoading(true);
                       const r = await authForgotPassword(forgotEmail.trim());
                       setAuthLoading(false);
                       if (r.error) setForgotError(r.error);
-                      else setForgotMsg(r.message || "Si el correo está registrado, recibirás un enlace de recuperación.");
+                      else setForgotMsg(r.message || t("recoveryMsg"));
                     }}
                       disabled={authLoading}
                       style={{ width:"100%",padding:"11px 0",borderRadius:"10px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"filter .15s",letterSpacing:"0.3px",marginBottom:"20px" }}
@@ -9746,15 +9890,15 @@ export default function App() {
                     return (<>
                       <input value={regEmail} onChange={e=>setRegEmail(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doRegister()}
                         onFocus={()=>setRegEmailFocused(true)} onBlur={()=>setRegEmailFocused(false)}
-                        type="email" placeholder="Correo electrónico"
+                        type="email" placeholder={t("email")}
                         style={{ width:"100%",padding:"10px 18px",borderRadius:"10px",border:`1px solid ${emailInvalid?"#ff5b5b":"#253048"}`,background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:(regEmailFocused||regEmail)?"6px":"12px" }}/>
                       {(regEmailFocused || regEmail.length > 0) && (
                         <p style={{ fontSize:"12px",margin:"0 0 14px",color: emailInvalid ? "#ff5b5b" : "#6a7a99",animation:"pwdReqIn 0.2s ease",transformOrigin:"top center" }}>
                           {emailInvalid
-                            ? "Formato incorrecto. Ejemplo: nombre@dominio.com"
+                            ? t("emailFmtErr")
                             : emailValid
-                              ? "✓ Correo válido"
-                              : "Formato: nombre@dominio.com"}
+                              ? t("emailValidOk")
+                              : t("emailFmt")}
                         </p>
                       )}
                     </>);
@@ -9785,16 +9929,16 @@ export default function App() {
                     );
                     return (
                       <div style={{ display:"flex",flexWrap:"wrap",gap:"6px 16px",marginBottom:"16px",padding:"10px 14px",borderRadius:"8px",background:"#111c2e",border:"1px solid #1e2a3d",animation:"pwdReqIn 0.22s ease",transformOrigin:"top center" }}>
-                        {req(has8, "8 caracteres")}
-                        {req(hasUpper, "1 mayúscula")}
-                        {req(hasNum, "1 número")}
-                        {req(hasSym, "1 símbolo")}
+                        {req(has8, t("pwdMin8"))}
+                        {req(hasUpper, t("pwdUpper"))}
+                        {req(hasNum, t("pwdNum"))}
+                        {req(hasSym, t("pwdSym"))}
                       </div>
                     );
                   })()}
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>Código de referido o bono <span style={{ color:"#6a7a99",fontWeight:400 }}>(opcional)</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("referralCodeLabel")} <span style={{ color:"#6a7a99",fontWeight:400 }}>{t("optional")}</span></label>
                   <input value={regReferral} onChange={e=>setRegReferral(e.target.value)}
-                    placeholder="Ingresa tu código"
+                    placeholder={t("enterCodePH")}
                     style={{ width:"100%",padding:"10px 18px",borderRadius:"10px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"14px" }}/>
                   <label style={{ display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer",marginBottom:"20px",userSelect:"none" }}>
                     <input type="checkbox" checked={regTerms} onChange={e=>setRegTerms(e.target.checked)}
@@ -10553,7 +10697,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
 
             {/* ── Advanced toggle ── */}
             <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",padding:"8px 12px",background:"#152334",borderRadius:"10px",border:"1px solid #1e3548" }}>
-              <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>Avanzado</span>
+              <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>{t("advanced")}</span>
               <div onClick={()=>setShowAdvanced(v=>!v)}
                 style={{ width:"42px",height:"24px",borderRadius:"12px",background:showAdvanced?"#1f6fd0":"#2a3f54",cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0 }}>
                 <div style={{ position:"absolute",top:"3px",left:showAdvanced?"21px":"3px",width:"18px",height:"18px",borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px #0005" }}/>
@@ -10563,13 +10707,13 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
             {showAdvanced && <div>
             {/* ── On Win ── */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Al ganar</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("onWin")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnWin(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
                       background:autoOnWin===mode?"#1f6fd0":"#1a2438",color:autoOnWin===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
-                    {mode==="reset"?"Reiniciar":"Aumentar"}
+                    {mode==="reset"?t("resetAction"):t("increaseAction")}
                   </button>
                 ))}
               </div>
@@ -10585,13 +10729,13 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
 
             {/* ── On Lose ── */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Al perder</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("onLose")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnLose(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
                       background:autoOnLose===mode?"#1f6fd0":"#1a2438",color:autoOnLose===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
-                    {mode==="reset"?"Reiniciar":"Aumentar"}
+                    {mode==="reset"?t("resetAction"):t("increaseAction")}
                   </button>
                 ))}
               </div>
@@ -10607,22 +10751,22 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
 
             {/* ── Stop on Profit ── */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Parar al ganar</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("stopOnWin")}</div>
               <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopProfit} onChange={e=>setAutoStopProfit(e.target.value.replace(/[^\d.]/g,""))}
-                  type="text" inputMode="decimal" placeholder="0 = desactivado"
+                  type="text" inputMode="decimal" placeholder={t("zeroOff")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0 }}/>
               </div>
             </div>
 
             {/* ── Stop on Loss ── */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Parar al perder</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("stopOnLoss")}</div>
               <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopLoss} onChange={e=>setAutoStopLoss(e.target.value.replace(/[^\d.]/g,""))}
-                  type="text" inputMode="decimal" placeholder="0 = desactivado"
+                  type="text" inputMode="decimal" placeholder={t("zeroOff")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0 }}/>
               </div>
             </div>
@@ -10661,7 +10805,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
           <div style={{ marginTop:"auto",paddingTop:"18px",display:"flex",gap:"8px",position:"relative" }}>
             <button
               onClick={()=>setShowStats(v=>!v)}
-              title="Estadísticas"
+              title={t("statsLabel")}
               style={{ width:"38px",height:"38px",borderRadius:"8px",background:showStats?"#1f6fd0":"#0e1826",border:showStats?"1px solid #3a8aff":"1px solid #203a50",color:showStats?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
             </button>
@@ -10674,7 +10818,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
               )}
               <button
                 onClick={()=>setShowVol(v=>!v)}
-                title="Volumen"
+                title={t("volume")}
                 style={{ position:"relative",zIndex:100,width:"38px",height:"38px",borderRadius:"8px",background:showVol?"#1f6fd0":"#0e1826",border:showVol?"1px solid #3a8aff":"1px solid #203a50",color:showVol?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
                 {diceVol===0 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg> : diceVol<40 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> : <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>}
               </button>
@@ -10845,7 +10989,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
                     const cur = parseFloat(diceTarget)||50.5;
                     setDiceTarget(Math.min(98,Math.max(1,100-cur)).toFixed(2));
                   }}
-                  title="Invertir dirección"
+                  title={t("invertDir")}
                   style={{ position:"absolute",right:"8px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:diceAutoRunning?"#252f45":"#6db3f2",cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"17px",lineHeight:1,padding:"2px",display:"flex",alignItems:"center",opacity:diceAutoRunning?0.35:1,transition:"opacity .2s,color .2s" }}>
                   ↺
                 </button>
@@ -11626,7 +11770,7 @@ function PlinkoGame({
 
           {/* Stats + Volume buttons */}
           <div style={{ marginTop:"auto",paddingTop:"18px",display:"flex",gap:"8px" }}>
-            <button onClick={()=>setShowStats(v=>!v)} title="Estadísticas" style={{ width:"38px",height:"38px",borderRadius:"8px",background:showStats?"#1f6fd0":"#0e1826",border:showStats?"1px solid #3a8aff":"1px solid #203a50",color:showStats?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px" }}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></button>
+            <button onClick={()=>setShowStats(v=>!v)} title={t("statsLabel")} style={{ width:"38px",height:"38px",borderRadius:"8px",background:showStats?"#1f6fd0":"#0e1826",border:showStats?"1px solid #3a8aff":"1px solid #203a50",color:showStats?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px" }}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></button>
             {/* Volume button + popup */}
             <div style={{ position:"relative" }}>
               {showPlinkoVol && (
@@ -11635,7 +11779,7 @@ function PlinkoGame({
               )}
               <button
                 onClick={()=>setShowPlinkoVol(v=>!v)}
-                title="Volumen"
+                title={t("volume")}
                 style={{ position:"relative",zIndex:100,width:"38px",height:"38px",borderRadius:"8px",background:showPlinkoVol?"#1f6fd0":"#0e1826",border:showPlinkoVol?"1px solid #3a8aff":"1px solid #203a50",color:showPlinkoVol?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}
               >{plinkoVol===0 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg> : plinkoVol<40 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> : <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>}</button>
               {showPlinkoVol && (
@@ -12588,7 +12732,7 @@ function KenoGame({
           <div style={{ paddingTop:"14px", display:"flex", gap:"8px", position:"relative" }}>
             <button
               onClick={()=>setShowKenoStats(v=>!v)}
-              title="Estadísticas"
+              title={t("statsLabel")}
               style={{ width:"38px",height:"38px",borderRadius:"8px",background:showKenoStats?"#1f6fd0":"#0e1826",border:showKenoStats?"1px solid #3a8aff":"1px solid #203a50",color:showKenoStats?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
             </button>
@@ -12601,7 +12745,7 @@ function KenoGame({
               )}
               <button
                 onClick={()=>setShowKenoVol(v=>!v)}
-                title="Volumen"
+                title={t("volume")}
                 style={{ position:"relative",zIndex:100,width:"38px",height:"38px",borderRadius:"8px",background:showKenoVol?"#1f6fd0":"#0e1826",border:showKenoVol?"1px solid #3a8aff":"1px solid #203a50",color:showKenoVol?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
                 {kenoVol===0 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg> : kenoVol<40 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> : <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>}
               </button>
