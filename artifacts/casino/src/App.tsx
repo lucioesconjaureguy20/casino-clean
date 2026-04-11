@@ -883,7 +883,7 @@ function mergeIntoPinned(prev: LiveWin[], win: LiveWin, maxSize = 60): LiveWin[]
   return prev;
 }
 
-const searchCategories = ["All","Originals"];
+const searchCategories = ["Originals"];
 
 const FAKE_USERS = [
   "matiaslots","luchitox","fedeplay","tincho77","nicobets","franito","tomiwin",
@@ -1894,7 +1894,7 @@ export default function App() {
     return () => clearInterval(id);
   }, [chatId, chatScreen, chatVerified]);
   const [bannerSlide, setBannerSlide] = useState(0);
-  const [searchCategory, setSearchCategory] = useState("All");
+  const [searchCategory, setSearchCategory] = useState("Originals");
   const [searchQ, setSearchQ] = useState("");
 
   const [statsRange, setStatsRange] = useState<"7d"|"30d"|"all">("7d");
