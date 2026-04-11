@@ -146,6 +146,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Código de referido o bono", optional:"(opcional)",
     advanced:"Avanzado", onWin:"Al ganar", onLose:"Al perder", stopOnWin:"Parar al ganar", stopOnLoss:"Parar al perder",
     walletSettings:"Configuración de Billetera",
+    risk:"Riesgo", low:"Bajo", medium:"Medio", high:"Alto", classic:"Clásico",
+    rounds:"Tiradas", waitBalls:"Espera que caigan todas las pelotas",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Filas",
+    passUpdatedTitle:"¡Contraseña actualizada!", passUpdatedMsg:"Tu contraseña fue restablecida correctamente.", redirectingLogin:"Redirigiendo al inicio de sesión...",
+    setNewPassSubtitle:"Ingresá tu nueva contraseña para recuperar el acceso a tu cuenta.", newPassLabel:"Nueva contraseña",
+    fillBothFields:"Completá ambos campos.", passNoMatch:"Las contraseñas no coinciden.",
   },
   en: {
     login:"Sign In", register:"Register", username:"Username", password:"Password",
@@ -272,6 +278,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Referral or bonus code", optional:"(optional)",
     advanced:"Advanced", onWin:"On win", onLose:"On loss", stopOnWin:"Stop on win", stopOnLoss:"Stop on loss",
     walletSettings:"Wallet Settings",
+    risk:"Risk", low:"Low", medium:"Medium", high:"High", classic:"Classic",
+    rounds:"Rounds", waitBalls:"Wait for all balls to drop",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Rows",
+    passUpdatedTitle:"Password updated!", passUpdatedMsg:"Your password has been reset successfully.", redirectingLogin:"Redirecting to login...",
+    setNewPassSubtitle:"Enter your new password to recover access to your account.", newPassLabel:"New password",
+    fillBothFields:"Please fill in both fields.", passNoMatch:"Passwords don't match.",
   },
   pt: {
     login:"Entrar", register:"Registrar", username:"Usuário", password:"Senha",
@@ -378,6 +390,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Código de indicação ou bônus", optional:"(opcional)",
     advanced:"Avançado", onWin:"Ao ganhar", onLose:"Ao perder", stopOnWin:"Parar ao ganhar", stopOnLoss:"Parar ao perder",
     walletSettings:"Configurações de Carteira",
+    risk:"Risco", low:"Baixo", medium:"Médio", high:"Alto", classic:"Clássico",
+    rounds:"Rodadas", waitBalls:"Aguarde todas as bolas caírem",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Linhas",
+    passUpdatedTitle:"Senha atualizada!", passUpdatedMsg:"Sua senha foi redefinida com sucesso.", redirectingLogin:"Redirecionando para o login...",
+    setNewPassSubtitle:"Insira sua nova senha para recuperar o acesso à sua conta.", newPassLabel:"Nova senha",
+    fillBothFields:"Preencha os dois campos.", passNoMatch:"As senhas não coincidem.",
   },
   de: {
     login:"Anmelden", register:"Registrieren", username:"Benutzername", password:"Passwort",
@@ -484,6 +502,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Empfehlungs- oder Bonuscode", optional:"(optional)",
     advanced:"Erweitert", onWin:"Bei Gewinn", onLose:"Bei Verlust", stopOnWin:"Bei Gewinn stoppen", stopOnLoss:"Bei Verlust stoppen",
     walletSettings:"Wallet-Einstellungen",
+    risk:"Risiko", low:"Niedrig", medium:"Mittel", high:"Hoch", classic:"Klassisch",
+    rounds:"Runden", waitBalls:"Warte bis alle Bälle gefallen sind",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Reihen",
+    passUpdatedTitle:"Passwort aktualisiert!", passUpdatedMsg:"Ihr Passwort wurde erfolgreich zurückgesetzt.", redirectingLogin:"Weiterleitung zur Anmeldung...",
+    setNewPassSubtitle:"Geben Sie Ihr neues Passwort ein, um den Zugang zu Ihrem Konto wiederherzustellen.", newPassLabel:"Neues Passwort",
+    fillBothFields:"Bitte füllen Sie beide Felder aus.", passNoMatch:"Passwörter stimmen nicht überein.",
   },
   fr: {
     login:"Connexion", register:"S'inscrire", username:"Nom d'utilisateur", password:"Mot de passe",
@@ -590,6 +614,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Code de parrainage ou bonus", optional:"(optionnel)",
     advanced:"Avancé", onWin:"Lors d'un gain", onLose:"Lors d'une perte", stopOnWin:"Arrêter à un gain", stopOnLoss:"Arrêter à une perte",
     walletSettings:"Paramètres du portefeuille",
+    risk:"Risque", low:"Faible", medium:"Moyen", high:"Élevé", classic:"Classique",
+    rounds:"Tours", waitBalls:"Attendez que toutes les balles tombent",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Lignes",
+    passUpdatedTitle:"Mot de passe mis à jour!", passUpdatedMsg:"Votre mot de passe a été réinitialisé avec succès.", redirectingLogin:"Redirection vers la connexion...",
+    setNewPassSubtitle:"Entrez votre nouveau mot de passe pour récupérer l'accès à votre compte.", newPassLabel:"Nouveau mot de passe",
+    fillBothFields:"Veuillez remplir les deux champs.", passNoMatch:"Les mots de passe ne correspondent pas.",
   },
   id: {
     login:"Masuk", register:"Daftar", username:"Nama Pengguna", password:"Kata Sandi",
@@ -696,6 +726,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Kode referral atau bonus", optional:"(opsional)",
     advanced:"Lanjutan", onWin:"Saat menang", onLose:"Saat kalah", stopOnWin:"Berhenti saat menang", stopOnLoss:"Berhenti saat kalah",
     walletSettings:"Pengaturan Dompet",
+    risk:"Risiko", low:"Rendah", medium:"Sedang", high:"Tinggi", classic:"Klasik",
+    rounds:"Putaran", waitBalls:"Tunggu semua bola jatuh",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Baris",
+    passUpdatedTitle:"Kata sandi diperbarui!", passUpdatedMsg:"Kata sandi Anda telah berhasil direset.", redirectingLogin:"Mengarahkan ke login...",
+    setNewPassSubtitle:"Masukkan kata sandi baru Anda untuk memulihkan akses ke akun Anda.", newPassLabel:"Kata sandi baru",
+    fillBothFields:"Harap isi kedua kolom.", passNoMatch:"Kata sandi tidak cocok.",
   },
   it: {
     login:"Accedi", register:"Registrati", username:"Nome utente", password:"Password",
@@ -802,6 +838,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Codice referral o bonus", optional:"(opzionale)",
     advanced:"Avanzato", onWin:"Al vincere", onLose:"Al perdere", stopOnWin:"Ferma al vincere", stopOnLoss:"Ferma al perdere",
     walletSettings:"Impostazioni portafoglio",
+    risk:"Rischio", low:"Basso", medium:"Medio", high:"Alto", classic:"Classico",
+    rounds:"Round", waitBalls:"Aspetta che cadano tutte le palline",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Righe",
+    passUpdatedTitle:"Password aggiornata!", passUpdatedMsg:"La tua password è stata reimpostata con successo.", redirectingLogin:"Reindirizzamento al login...",
+    setNewPassSubtitle:"Inserisci la tua nuova password per recuperare l'accesso al tuo account.", newPassLabel:"Nuova password",
+    fillBothFields:"Compila entrambi i campi.", passNoMatch:"Le password non corrispondono.",
   },
   ko: {
     login:"로그인", register:"회원가입", username:"사용자명", password:"비밀번호",
@@ -908,6 +950,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"추천 또는 보너스 코드", optional:"(선택사항)",
     advanced:"고급", onWin:"이길 때", onLose:"질 때", stopOnWin:"이기면 중지", stopOnLoss:"지면 중지",
     walletSettings:"지갑 설정",
+    risk:"위험도", low:"낮음", medium:"중간", high:"높음", classic:"클래식",
+    rounds:"라운드", waitBalls:"모든 공이 떨어질 때까지 기다리세요",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"행",
+    passUpdatedTitle:"비밀번호 업데이트됨!", passUpdatedMsg:"비밀번호가 성공적으로 재설정되었습니다.", redirectingLogin:"로그인으로 리디렉션...",
+    setNewPassSubtitle:"계정에 다시 액세스하려면 새 비밀번호를 입력하세요.", newPassLabel:"새 비밀번호",
+    fillBothFields:"두 필드를 모두 입력하세요.", passNoMatch:"비밀번호가 일치하지 않습니다.",
   },
   nl: {
     login:"Inloggen", register:"Registreren", username:"Gebruikersnaam", password:"Wachtwoord",
@@ -1014,6 +1062,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Verwijzings- of bonuscode", optional:"(optioneel)",
     advanced:"Geavanceerd", onWin:"Bij winst", onLose:"Bij verlies", stopOnWin:"Stop bij winst", stopOnLoss:"Stop bij verlies",
     walletSettings:"Portemonnee-instellingen",
+    risk:"Risico", low:"Laag", medium:"Gemiddeld", high:"Hoog", classic:"Klassiek",
+    rounds:"Rondes", waitBalls:"Wacht tot alle ballen gevallen zijn",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Rijen",
+    passUpdatedTitle:"Wachtwoord bijgewerkt!", passUpdatedMsg:"Uw wachtwoord is succesvol gereset.", redirectingLogin:"Doorsturen naar inloggen...",
+    setNewPassSubtitle:"Voer uw nieuwe wachtwoord in om de toegang tot uw account te herstellen.", newPassLabel:"Nieuw wachtwoord",
+    fillBothFields:"Vul beide velden in.", passNoMatch:"Wachtwoorden komen niet overeen.",
   },
   pl: {
     login:"Zaloguj się", register:"Zarejestruj się", username:"Nazwa użytkownika", password:"Hasło",
@@ -1120,6 +1174,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Kod referralny lub bonusowy", optional:"(opcjonalny)",
     advanced:"Zaawansowany", onWin:"Przy wygranej", onLose:"Przy przegranej", stopOnWin:"Zatrzymaj przy wygranej", stopOnLoss:"Zatrzymaj przy przegranej",
     walletSettings:"Ustawienia portfela",
+    risk:"Ryzyko", low:"Niski", medium:"Średni", high:"Wysoki", classic:"Klasyczny",
+    rounds:"Rundy", waitBalls:"Poczekaj aż wszystkie kulki spadną",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Wiersze",
+    passUpdatedTitle:"Hasło zaktualizowane!", passUpdatedMsg:"Twoje hasło zostało pomyślnie zresetowane.", redirectingLogin:"Przekierowanie do logowania...",
+    setNewPassSubtitle:"Wprowadź nowe hasło, aby odzyskać dostęp do konta.", newPassLabel:"Nowe hasło",
+    fillBothFields:"Proszę wypełnić oba pola.", passNoMatch:"Hasła nie pasują do siebie.",
   },
   ru: {
     login:"Войти", register:"Регистрация", username:"Имя пользователя", password:"Пароль",
@@ -1226,6 +1286,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Код реферала или бонуса", optional:"(необязательно)",
     advanced:"Расширенный", onWin:"При выигрыше", onLose:"При проигрыше", stopOnWin:"Остановить при выигрыше", stopOnLoss:"Остановить при проигрыше",
     walletSettings:"Настройки кошелька",
+    risk:"Риск", low:"Низкий", medium:"Средний", high:"Высокий", classic:"Классический",
+    rounds:"Раундов", waitBalls:"Подождите, пока все шары упадут",
+    btnMin:"Мин", btnHalf:"½", btnDouble:"2×", btnMax:"Макс", rows:"Строки",
+    passUpdatedTitle:"Пароль обновлён!", passUpdatedMsg:"Ваш пароль был успешно сброшен.", redirectingLogin:"Перенаправление на вход...",
+    setNewPassSubtitle:"Введите новый пароль для восстановления доступа к аккаунту.", newPassLabel:"Новый пароль",
+    fillBothFields:"Пожалуйста, заполните оба поля.", passNoMatch:"Пароли не совпадают.",
   },
   tr: {
     login:"Giriş Yap", register:"Kayıt Ol", username:"Kullanıcı Adı", password:"Şifre",
@@ -1332,6 +1398,12 @@ const LANGS: Record<string, Record<string, string>> = {
     referralCodeLabel:"Referans veya bonus kodu", optional:"(isteğe bağlı)",
     advanced:"Gelişmiş", onWin:"Kazanınca", onLose:"Kaybedince", stopOnWin:"Kazanınca dur", stopOnLoss:"Kaybedince dur",
     walletSettings:"Cüzdan Ayarları",
+    risk:"Risk", low:"Düşük", medium:"Orta", high:"Yüksek", classic:"Klasik",
+    rounds:"Tur", waitBalls:"Tüm topların düşmesini bekleyin",
+    btnMin:"Min", btnHalf:"½", btnDouble:"2×", btnMax:"Max", rows:"Satır",
+    passUpdatedTitle:"Şifre güncellendi!", passUpdatedMsg:"Şifreniz başarıyla sıfırlandı.", redirectingLogin:"Giriş sayfasına yönlendiriliyor...",
+    setNewPassSubtitle:"Hesabınıza yeniden erişmek için yeni şifrenizi girin.", newPassLabel:"Yeni şifre",
+    fillBothFields:"Lütfen her iki alanı doldurun.", passNoMatch:"Şifreler eşleşmiyor.",
   },
 };
 
@@ -1751,10 +1823,10 @@ function generateManderId(): string {
 
 function validatePassword(password: string) {
   const errors: string[] = [];
-  if (password.length < 8) errors.push("8 caracteres");
-  if (!/[A-Z]/.test(password)) errors.push("1 mayúscula");
-  if (!/[0-9]/.test(password)) errors.push("1 número");
-  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) errors.push("1 símbolo");
+  if (password.length < 8) errors.push("pwdMin8");
+  if (!/[A-Z]/.test(password)) errors.push("pwdUpper");
+  if (!/[0-9]/.test(password)) errors.push("pwdNum");
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) errors.push("pwdSym");
   return errors;
 }
 
@@ -4325,7 +4397,7 @@ export default function App() {
       if (_reserved.has(regUser.trim().toLowerCase())) return setRegError(t("errUserExists"));
     }
     const errs = validatePassword(regPass);
-    if (errs.length) return setRegError("Falta: " + errs.join(", "));
+    if (errs.length) return setRegError(errs.map(k=>t(k)).join(", "));
     setAuthLoading(true);
     const result = await authSignUp(regEmail.trim(), regPass, regUser.trim());
     setAuthLoading(false);
@@ -4361,10 +4433,10 @@ export default function App() {
 
   async function doResetPassword() {
     setResetError("");
-    if (!resetNewPass || !resetConfirmPass) return setResetError("Completá ambos campos.");
-    if (resetNewPass !== resetConfirmPass) return setResetError("Las contraseñas no coinciden.");
+    if (!resetNewPass || !resetConfirmPass) return setResetError(t("fillBothFields"));
+    if (resetNewPass !== resetConfirmPass) return setResetError(t("passNoMatch"));
     const errs = validatePassword(resetNewPass);
-    if (errs.length > 0) return setResetError("La contraseña debe tener al menos: " + errs.join(", ") + ".");
+    if (errs.length > 0) return setResetError(errs.map(k=>t(k)).join(", "));
     setAuthLoading(true);
 
     // ── Garantizar que la sesión esté activa antes de updateUser ─────────────
@@ -8673,7 +8745,7 @@ export default function App() {
                       placeholder="0.00"
                       style={{ width:"100%",padding:"13px 60px 13px 40px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",color:"#fff",fontSize:"15px",boxSizing:"border-box" as const,outline:"none" }}/>
                     <button onClick={()=>{ const bal=(coinBalances as Record<string,number>)[withdrawCoin]||0; setWithdrawAmount(String(bal.toFixed(8))); }} className="cashier-btn"
-                      style={{ position:"absolute",right:"8px",top:"50%",transform:"translateY(-50%)",background:"#253548",border:"1px solid #3a4d65",borderRadius:"6px",color:"#fff",fontWeight:700,fontSize:"12px",padding:"5px 12px",cursor:"pointer" }}>Max</button>
+                      style={{ position:"absolute",right:"8px",top:"50%",transform:"translateY(-50%)",background:"#253548",border:"1px solid #3a4d65",borderRadius:"6px",color:"#fff",fontWeight:700,fontSize:"12px",padding:"5px 12px",cursor:"pointer" }}>{t("btnMax")}</button>
                   </div>
                 </div>
                 {/* Min + Fee info */}
@@ -9758,15 +9830,15 @@ export default function App() {
                     {resetSuccess ? (
                       <div style={{ textAlign:"center",paddingTop:"30px" }}>
                         <div style={{ fontSize:"48px",marginBottom:"16px" }}>✅</div>
-                        <h2 style={{ color:"#29c46d",fontWeight:900,fontSize:"20px",margin:"0 0 12px" }}>¡Contraseña actualizada!</h2>
-                        <p style={{ color:"#8a9ab8",fontSize:"14px",lineHeight:1.6,margin:"0 0 6px" }}>Tu contraseña fue restablecida correctamente.</p>
-                        <p style={{ color:"#6a7a99",fontSize:"13px" }}>Redirigiendo al inicio de sesión...</p>
+                        <h2 style={{ color:"#29c46d",fontWeight:900,fontSize:"20px",margin:"0 0 12px" }}>{t("passUpdatedTitle")}</h2>
+                        <p style={{ color:"#8a9ab8",fontSize:"14px",lineHeight:1.6,margin:"0 0 6px" }}>{t("passUpdatedMsg")}</p>
+                        <p style={{ color:"#6a7a99",fontSize:"13px" }}>{t("redirectingLogin")}</p>
                       </div>
                     ) : (<>
-                      <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 8px" }}>Establecer nueva contraseña</h2>
-                      <p style={{ color:"#6a7a99",fontSize:"13px",textAlign:"center",margin:"0 0 28px",lineHeight:1.5 }}>Ingresá tu nueva contraseña para recuperar el acceso a tu cuenta.</p>
+                      <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 8px" }}>{t("setNewPass")}</h2>
+                      <p style={{ color:"#6a7a99",fontSize:"13px",textAlign:"center",margin:"0 0 28px",lineHeight:1.5 }}>{t("setNewPassSubtitle")}</p>
 
-                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>Nueva contraseña <span style={{ color:"#f4a91f" }}>*</span></label>
+                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("newPassLabel")} <span style={{ color:"#f4a91f" }}>*</span></label>
                       <div style={{ position:"relative",marginBottom:"10px" }}>
                         <input value={resetNewPass} onChange={e=>setResetNewPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doResetPassword()}
                           type={showResetNew?"text":"password"} placeholder={t("password")}
@@ -10588,10 +10660,10 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
             {/* Quick-action buttons */}
             <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"8px" }}>
               {[
-                { label:"Min", action:()=>setDiceBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
-                { label:"½",   action:halveDiceBet },
-                { label:"2×",  action:doubleDiceBet },
-                { label:"Max", action:()=>setDiceBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
+                { label:t("btnMin"), action:()=>setDiceBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
+                { label:t("btnHalf"),   action:halveDiceBet },
+                { label:t("btnDouble"),  action:doubleDiceBet },
+                { label:t("btnMax"), action:()=>setDiceBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
               ].map(b=>(
                 <button key={b.label} onClick={b.action}
                   style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"8px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:"pointer" }}>
@@ -10659,10 +10731,10 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
             {/* Quick-action buttons */}
             <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"14px" }}>
               {[
-                { label:"Min", action:()=>setDiceBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
-                { label:"½",   action:halveDiceBet },
-                { label:"2×",  action:doubleDiceBet },
-                { label:"Max", action:()=>setDiceBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
+                { label:t("btnMin"), action:()=>setDiceBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
+                { label:t("btnHalf"),   action:halveDiceBet },
+                { label:t("btnDouble"),  action:doubleDiceBet },
+                { label:t("btnMax"), action:()=>setDiceBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
               ].map(b=>(
                 <button key={b.label} onClick={b.action}
                   style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"8px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:"pointer" }}>
@@ -11099,7 +11171,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
               const isProfit = diceStats.profit >= 0;
               if (n < 2) return (
                 <div style={{ position:"relative",background:"#0a1520",borderRadius:"12px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>Sin historial</span>
+                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{t("noHistoryShort")}</span>
                 </div>
               );
 
@@ -11681,10 +11753,10 @@ function PlinkoGame({
           {/* Quick bet buttons */}
           <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"14px" }}>
             {[
-              { label:"Min", action:()=>setPlinkoBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
-              { label:"½",   action:halvePlinkoBet },
-              { label:"2×",  action:doublePlinkoBet },
-              { label:"Max", action:()=>setPlinkoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
+              { label:t("btnMin"), action:()=>setPlinkoBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2)) },
+              { label:t("btnHalf"),   action:halvePlinkoBet },
+              { label:t("btnDouble"),  action:doublePlinkoBet },
+              { label:t("btnMax"), action:()=>setPlinkoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
             ].map(b=>(
               <button key={b.label} onClick={b.action} disabled={plinkoAutoRunning}
                 style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"8px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:"pointer",opacity:plinkoAutoRunning?0.55:1 }}>
@@ -11694,13 +11766,13 @@ function PlinkoGame({
           </div>
 
           {/* Rows */}
-          <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>Filas</div>
+          <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("rows")}</div>
           <div style={{ display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"4px",marginBottom:"14px" }}>
             {[8,10,12,14,16].map(r=>{
               const locked = plinkoAutoRunning || pendingBalls.length > 0;
               return (
                 <button key={r} onClick={()=>{ if(!locked) setPlinkoRows(r); }}
-                  title={pendingBalls.length>0?"Espera que caigan todas las pelotas":undefined}
+                  title={pendingBalls.length>0?t("waitBalls"):undefined}
                   style={{ background:plinkoRows===r?"#1f6fd0":"#1a2438",color:plinkoRows===r?"#fff":"#d0dcea",border:`1px solid ${plinkoRows===r?"#3a8aff":"#252f45"}`,borderRadius:"8px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRows!==r?0.45:1,boxShadow:plinkoRows===r?"0 2px 14px #3a8aff66":"none",transition:"all .15s" }}>
                   {r}
                 </button>
@@ -11709,20 +11781,20 @@ function PlinkoGame({
           </div>
           {pendingBalls.length > 0 && !plinkoAutoRunning && (
             <div style={{ fontSize:"10px",color:"#5a7a9a",marginTop:"-10px",marginBottom:"8px",textAlign:"center" }}>
-              🎱 {pendingBalls.length} pelota{pendingBalls.length!==1?"s":""} en juego — esperá que caigan
+              🎱 {pendingBalls.length} — {t("waitBalls")}
             </div>
           )}
 
           {/* Risk */}
-          <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>Riesgo</div>
+          <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("risk")}</div>
           <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"4px",marginBottom:"16px" }}>
-            {([["low","Bajo","#1f6fd0","#3a8aff"],["medium","Medio","#b07800","#f4a91f"],["high","Alto","#8b1a1a","#ff5a6a"]] as const).map(([r,label,bg,bd])=>{
+            {([["low","#1f6fd0","#3a8aff"],["medium","#b07800","#f4a91f"],["high","#8b1a1a","#ff5a6a"]] as [string,string,string][]).map(([r,bg,bd])=>{
               const locked = plinkoAutoRunning || pendingBalls.length > 0;
               return (
-                <button key={r} onClick={()=>{ if(!locked) setPlinkoRisk(r); }}
-                  title={pendingBalls.length>0?"Espera que caigan todas las pelotas":undefined}
+                <button key={r} onClick={()=>{ if(!locked) setPlinkoRisk(r as "low"|"medium"|"high"); }}
+                  title={pendingBalls.length>0?t("waitBalls"):undefined}
                   style={{ background:plinkoRisk===r?bg:"#1a2438",color:"#fff",border:`1px solid ${plinkoRisk===r?bd:"#252f45"}`,borderRadius:"8px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRisk!==r?0.45:1,boxShadow:plinkoRisk===r?`0 2px 14px ${bd}66`:"none",transition:"all .15s" }}>
-                  {label}
+                  {t(r)}
                 </button>
               );
             })}
@@ -11861,7 +11933,7 @@ function PlinkoGame({
               const hx = hIdx!==null ? xs[hIdx] : 0;
               if (n < 2) return (
                 <div style={{ position:"relative",background:"#0a1520",borderRadius:"12px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>Sin historial</span>
+                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{t("noHistoryShort")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
@@ -12564,7 +12636,7 @@ function KenoGame({
     return "#8090b0";
   };
 
-  const riskLabel: Record<string, string> = { classic: "Clásico", low: "Bajo", medium: "Medio", high: "Alto" };
+  const riskLabel: Record<string, string> = { classic: t("classic"), low: t("low"), medium: t("medium"), high: t("high") };
   const disabled = kenoIsDrawing || kenoAutoRunning || isAutoPickRunning;
 
   return (
@@ -12625,10 +12697,10 @@ function KenoGame({
             )}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"6px" }}>
               {([
-                ["Min", ()=>setKenoBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2))],
-                ["½",   halveBet],
-                ["2×",  doubleBet],
-                ["Max", ()=>setKenoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2))],
+                [t("btnMin"), ()=>setKenoBet((Math.ceil(convertUsd(0.01)*100)/100).toFixed(2))],
+                [t("btnHalf"),   halveBet],
+                [t("btnDouble"),  doubleBet],
+                [t("btnMax"), ()=>setKenoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2))],
               ] as [string, () => void][]).map(([label, action]) => (
                 <button key={label} onClick={action} disabled={disabled}
                   style={{ padding:"8px 0", borderRadius:"8px", fontWeight:500, fontSize:"13px", border:"1px solid #252f45", background:"#1a2438", color:disabled?"#3a4a60":"#d0dcea", cursor:disabled?"not-allowed":"pointer" }}>
@@ -12638,20 +12710,20 @@ function KenoGame({
             </div>
           </div>
 
-          {/* Riesgo — 4 in a row */}
+          {/* Risk — 4 in a row */}
           <div>
-            <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>Riesgo</div>
+            <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{t("risk")}</div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"4px" }}>
               {([
-                ["classic","Clásico","#4a1a8c","#9a5fff"],
-                ["low",    "Bajo",   "#1f6fd0","#3a8aff"],
-                ["medium", "Medio",  "#b07800","#f4a91f"],
-                ["high",   "Alto",   "#8b1a1a","#ff5a6a"],
-              ] as [string,string,string,string][]).map(([r,label,bg,bd])=>(
+                ["classic","#4a1a8c","#9a5fff"],
+                ["low",    "#1f6fd0","#3a8aff"],
+                ["medium", "#b07800","#f4a91f"],
+                ["high",   "#8b1a1a","#ff5a6a"],
+              ] as [string,string,string][]).map(([r,bg,bd])=>(
                 <button key={r} onClick={()=>{ if(!disabled) setKenoRisk(r as "low"|"medium"|"high"|"classic"); }}
                   disabled={disabled}
                   style={{ padding:"8px 0", background:kenoRisk===r?bg:"#1a2438", border:`1px solid ${kenoRisk===r?bd:"#252f45"}`, borderRadius:"8px", color:"#fff", fontWeight:500, fontSize:"13px", cursor:disabled?"not-allowed":"pointer", transition:"all .15s", boxShadow:kenoRisk===r?`0 2px 14px ${bd}66`:"none" }}>
-                  {label}
+                  {t(r)}
                 </button>
               ))}
             </div>
@@ -12660,7 +12732,7 @@ function KenoGame({
           {/* Auto rounds */}
           {autoTab === "auto" && (
             <div>
-              <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>Tiradas</div>
+              <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{t("rounds")}</div>
               <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"10px", padding:"6px 10px" }}>
                 <input
                   value={kenoAutoRunning ? (kenoInfinite ? "∞" : String(kenoAutoRemaining)) : (kenoInfinite ? "∞" : kenoAutoCount)}
@@ -12964,7 +13036,7 @@ function KenoGame({
               const hx = hIdx!==null ? xs[hIdx] : 0;
               if (n < 2) return (
                 <div style={{ position:"relative",background:"#0a1520",borderRadius:"12px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>Sin historial</span>
+                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{t("noHistoryShort")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
