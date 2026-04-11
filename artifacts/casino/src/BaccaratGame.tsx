@@ -770,7 +770,7 @@ export default function BaccaratGame({
                   border:tab===m?"1px solid #3a4a60":"1px solid transparent", borderRadius:"10px", padding:"10px",
                   fontWeight:500, cursor:(autoRunning||isDealing)?"not-allowed":"pointer", fontSize:"14px",
                   opacity:(autoRunning||isDealing)&&tab!==m?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
-                {m==="manual"?"Manual":"Automático"}
+                {m==="manual"?gt(lang,"tabManual"):gt(lang,"tabAuto")}
               </button>
             ))}
           </div>
@@ -864,9 +864,9 @@ export default function BaccaratGame({
                 {phase === "dealing" ? (
                   <span style={{display:"flex",alignItems:"center",gap:"6px",justifyContent:"center"}}>
                     <img src={`${import.meta.env.BASE_URL}emoji-repartiendo.png`} style={{width:20,height:20,objectFit:"contain",flexShrink:0,filter:"drop-shadow(0 0 4px rgba(26,159,255,.5))"}}/>
-                    Repartiendo...
+                    {gt(lang,"bacDealing")}
                   </span>
-                ) : "Apostar"}
+                ) : gt(lang,"bjBet")}
               </button>
 
             </>
@@ -938,7 +938,7 @@ export default function BaccaratGame({
                       fontWeight:800, fontSize:"14px",
                       cursor: btnDisabled ? "not-allowed" : "pointer",
                       transition:"all .2s", opacity: isDealing ? 0.45 : 1 }}>
-                    {autoStopping ? "⏳ Deteniendo…" : autoRunning ? "⏹ Detener Auto" : "Iniciar Auto"}
+                    {gt(lang, autoStopping ? "bacStopping" : autoRunning ? "stopAuto" : "startAuto")}
                   </button>
                 );
               })()}
@@ -1228,7 +1228,7 @@ export default function BaccaratGame({
                     color: result==="tie"?"#f4a91f":result==="player"?"#4a90ff":"#ff4a7a",
                     animation:"bacResultPop 0.35s cubic-bezier(0.08,0.6,0.2,1) both",
                   }}>
-                    {result==="player"?"Jugador":result==="banker"?"Banca":"Empate"}
+                    {result==="player"?gt(lang,"bacPlayer"):result==="banker"?gt(lang,"bacBanker"):gt(lang,"bacTie")}
                   </div>
                 )}
               </div>

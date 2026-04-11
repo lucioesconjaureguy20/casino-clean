@@ -459,22 +459,22 @@ export default function ProfilePage({
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
                 </svg>
-                <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>Tus Estadísticas</span>
+                <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>{T("profStatsTitle")}</span>
               </div>
               <div style={{ display: "flex", gap: "4px" }}>
                 {(["7d", "30d", "all"] as const).map(r => (
                   <button key={r} onClick={() => setStatsRange(r)}
                     style={{ padding: "4px 10px", borderRadius: "6px", border: "none", cursor: "pointer", fontSize: "11px", fontWeight: 700, background: statsRange === r ? "#f4a91f" : "#1a2338", color: statsRange === r ? "#111" : "#4a5e78", transition: "all .15s", fontFamily: "'Inter',sans-serif" }}>
-                    {r === "all" ? "Todo" : r}
+                    {r === "all" ? T("statsAll") : r}
                   </button>
                 ))}
               </div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "12px" }}>
               {([
-                { label: "Total Apostado",   value: fmtUsd2(totalWagered),                        valueColor: "#e2e8f0" },
-                { label: "Total Ganado",     value: fmtUsd2(totalWins),                            valueColor: "#e2e8f0" },
-                { label: "Total Apuestas",   value: totalBets.toLocaleString(),                    valueColor: "#e2e8f0" },
+                { label: T("profTotalWagered"),   value: fmtUsd2(totalWagered),                        valueColor: "#e2e8f0" },
+                { label: T("profTotalWon"),     value: fmtUsd2(totalWins),                            valueColor: "#e2e8f0" },
+                { label: T("profTotalBets"),   value: totalBets.toLocaleString(),                    valueColor: "#e2e8f0" },
               ] as { label: string; value: string; valueColor: string }[]).map(({ label, value, valueColor }) => (
                 <div key={label} style={{ background: "#0a1020", border: `1px solid ${cardBorder}`, borderRadius: "10px", padding: "16px 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "10px" }}>
@@ -486,12 +486,12 @@ export default function ProfilePage({
             </div>
             <div style={{ display: "flex", gap: "12px" }}>
               <HighlightCard
-                badge="Mayor Suerte"
+                badge={T("badgeLuck")}
                 record={bestLuck}
                 accentColor="#22c55e"
               />
               <HighlightCard
-                badge="Mayor Ganancia"
+                badge={T("badgeProfit")}
                 record={bestWin}
                 accentColor="#f4a91f"
               />
@@ -513,7 +513,7 @@ export default function ProfilePage({
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
               </svg>
-              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>Información de la Cuenta</span>
+              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>{T("profAccountInfo")}</span>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
@@ -554,7 +554,7 @@ export default function ProfilePage({
       {/* ── Detalles del Perfil (profile_details) ─────────────────── */}
       {(() => {
         const det = profileDetails as { country?: string; currency?: string; last_ip?: string; device_info?: string; notes?: string; referrer_id?: string; username?: string };
-        const DetailCard = ({ icon, label, value, mono = false, fallback = "Sin datos" }: {
+        const DetailCard = ({ icon, label, value, mono = false, fallback = T("noData") }: {
           icon: React.ReactNode; label: string; value?: string; mono?: boolean; fallback?: string;
         }) => (
           <div style={{ background: "#0a1020", border: `1px solid ${cardBorder}`, borderRadius: "10px", padding: "14px 16px" }}>
@@ -577,20 +577,20 @@ export default function ProfilePage({
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
-              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>Detalles del Perfil</span>
+              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>{T("profDetails")}</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
               <DetailCard
                 icon={<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#5a6e8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>}
-                label="Username" value={det.username} fallback="Sin username"
+                label="Username" value={det.username} fallback={T("noData")}
               />
               <DetailCard
                 icon={<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#5a6e8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>}
-                label="País" value={countryName(det.country)} fallback="No configurado"
+                label={T("profCountry")} value={countryName(det.country)} fallback={T("noData")}
               />
               <DetailCard
                 icon={<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#5a6e8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
-                label="Referido por" value={det.referrer_id} fallback="Sin referidor"
+                label={T("profReferredBy")} value={det.referrer_id} fallback={T("noData")}
               />
             </div>
           </div>
@@ -598,7 +598,7 @@ export default function ProfilePage({
       })()}
 
       {/* Configuración del perfil */}
-      <SectionCard title="Configuración del Perfil" icon={
+      <SectionCard title={T("profConfig")} icon={
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
         </svg>
@@ -625,7 +625,7 @@ export default function ProfilePage({
                 <div style={rowStyle}>
                   <input value="••••••••••" readOnly type="text" style={inputStyle} />
                   <div style={{ width: btnW, flexShrink: 0 }}>
-                    <ActionBtn small onClick={handleChangePassword}>Cambiar contraseña</ActionBtn>
+                    <ActionBtn small onClick={handleChangePassword}>{T("changePassword")}</ActionBtn>
                   </div>
                 </div>
               </div>
@@ -660,7 +660,7 @@ export default function ProfilePage({
                       ) : (
                         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                       )}
-                      {copied ? "Copiado" : "Copiar"}
+                      {T(copied ? "copied" : "copy")}
                     </button>
                   </div>
                 </div>
