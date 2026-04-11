@@ -4942,7 +4942,7 @@ export default function App() {
                     onMouseEnter={e=>{ e.currentTarget.style.background="#515a78"; e.currentTarget.style.transform="scale(1.15)"; }}
                     onMouseLeave={e=>{ e.currentTarget.style.background="#3a425a"; e.currentTarget.style.transform="scale(1)"; }}
                     style={{ width:"22px",height:"22px",borderRadius:"6px",background:"#3a425a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px",transition:"background .15s, transform .15s",cursor:"pointer" }}>
-                    {originalsMenuOpen ? "▴" : "▾"}
+                    <svg width="10" height="7" viewBox="0 0 12 8" fill="none" style={{display:"block",transition:"transform .2s",transform:originalsMenuOpen?"rotate(180deg)":"none"}}><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
                 )}
               </div>
@@ -5040,7 +5040,7 @@ export default function App() {
             {flagImg(lang, 20)}
             {!sidebarCollapsed && <>
               <span style={{ flex:1,textAlign:"left",fontSize:"13px",fontWeight:500,whiteSpace:"nowrap",overflow:"hidden" }}>{LANG_NAMES[lang]}</span>
-              <span style={{ fontSize:"10px",color:"#6a7a99",transform:langMenuOpen?"rotate(180deg)":"none",transition:"transform .2s",display:"inline-block" }}>▲</span>
+              <span style={{ color:"#6a7a99",transform:langMenuOpen?"rotate(180deg)":"none",transition:"transform .2s",display:"inline-flex",alignItems:"center" }}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </>}
           </button>
         </div>
@@ -5361,7 +5361,7 @@ export default function App() {
                 <div style={{ width:"26px",height:"26px",borderRadius:"50%",overflow:"hidden",flexShrink:0,border:"1.5px solid #f4a91f" }}>
                   <img src={getVipInfo(vipWagered).rank.image} alt="rank" style={{ width:"100%",height:"100%",objectFit:"cover" }}/>
                 </div>
-                {currentUser} ▾
+                {currentUser} <svg width="10" height="7" viewBox="0 0 12 8" fill="none" style={{display:"inline-block",verticalAlign:"middle",marginLeft:"2px"}}><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
               {profileDropOpen && (
                 <div style={{ position:"absolute",top:"calc(100% + 8px)",right:0,width:"220px",background:"#252b3b",border:"1px solid #3a4256",borderRadius:"12px",overflow:"hidden",zIndex:50,boxShadow:"0 16px 40px rgba(0,0,0,.35)" }}>
@@ -7587,7 +7587,7 @@ export default function App() {
                           ? <img src={coinDisplayMap[depositCoin].icon} width={22} height={22} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={depositCoin}/>
                           : <span style={{ fontSize:"16px",flexShrink:0 }}>{coinDisplayMap[depositCoin]?.badgeText}</span>}
                         <span style={{ flex:1,color:"#fff",fontWeight:600,fontSize:"14px" }}>{depositCoin}</span>
-                        <span style={{ color:"#7c8caa",fontSize:"10px" }}>▼</span>
+                        <span style={{ color:"#7c8caa",display:"inline-flex",alignItems:"center" }}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                       </div>
                       {showCoinDrop && (
                         <>
@@ -7624,7 +7624,7 @@ export default function App() {
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
                         <img src={networkIconMap[depositNetwork] ?? "/coins/eth.svg"} width={22} height={22} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={depositNetwork}/>
                         <span style={{ flex:1,color:"#fff",fontWeight:600,fontSize:"14px" }}>{depositNetwork}</span>
-                        <span style={{ color:"#7c8caa",fontSize:"10px" }}>▼</span>
+                        <span style={{ color:"#7c8caa",display:"inline-flex",alignItems:"center" }}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                       </div>
                       {showNetDrop && (
                         <>
@@ -7852,7 +7852,7 @@ export default function App() {
                           ? <img src={coinDisplayMap[withdrawCoin].icon} width={22} height={22} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={withdrawCoin}/>
                           : <span style={{ fontSize:"16px",flexShrink:0 }}>{coinDisplayMap[withdrawCoin]?.badgeText}</span>}
                         <span style={{ flex:1,color:"#fff",fontWeight:600,fontSize:"14px" }}>{withdrawCoin}</span>
-                        <span style={{ color:"#7c8caa",fontSize:"10px" }}>▼</span>
+                        <span style={{ color:"#7c8caa",display:"inline-flex",alignItems:"center" }}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                       </div>
                       {showCoinDrop && (
                         <>
@@ -7889,7 +7889,7 @@ export default function App() {
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
                         <img src={networkIconMap[withdrawNetwork] ?? "/coins/eth.svg"} width={22} height={22} style={{ borderRadius:"50%",objectFit:"contain",flexShrink:0 }} alt={withdrawNetwork}/>
                         <span style={{ flex:1,color:"#fff",fontWeight:600,fontSize:"14px" }}>{withdrawNetwork}</span>
-                        <span style={{ color:"#7c8caa",fontSize:"10px" }}>▼</span>
+                        <span style={{ color:"#7c8caa",display:"inline-flex",alignItems:"center" }}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                       </div>
                       {showWNetDrop && (
                         <>
@@ -9580,7 +9580,7 @@ function GameInfoPanel({ game, onFairness }: { game: keyof typeof GAME_META; onF
         {/* ── Toggle button ── */}
         <button className="gip-toggle-btn" onClick={() => setExpanded(e => !e)}>
           {expanded ? "Mostrar menos" : "Cómo jugar y más"}
-          <span className={`gip-arrow${expanded ? " open" : ""}`}>▾</span>
+          <span className={`gip-arrow${expanded ? " open" : ""}`}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
         </button>
       </div>
     </div>
