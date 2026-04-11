@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { gt } from "./lib/gameLabels";
 import { createPortal } from "react-dom";
 import { getVipInfo, VIP_RANKS } from "./vipSystem";
 
@@ -40,6 +41,7 @@ interface ProfilePageProps {
   onForgotPassword: () => void;
   userEmail?: string;
   accountStatus?: string;
+  lang?: string;
   profileDetails?: {
     country?: string; currency?: string; last_ip?: string;
     device_info?: string; notes?: string; referrer_id?: string; username?: string; created_at?: string;
@@ -179,8 +181,9 @@ function Toast({ visible }: { visible: boolean }) {
 export default function ProfilePage({
   currentUser, balance, fmtMoney, totalWagered, totalWins, winRate, totalBets,
   statsRange, setStatsRange, onLogout, onOpenCashier, displayCurrency, onPrivateModeChange,
-  vipWagered = 0, onForgotPassword, userEmail = "", accountStatus = "activo", profileDetails = {},
+  vipWagered = 0, onForgotPassword, userEmail = "", accountStatus = "activo", profileDetails = {}, lang,
 }: ProfilePageProps) {
+  const T = (k: string) => gt(lang, k);
   const xp = Math.floor(totalWagered);
   const { rank, pct, nextXp } = getRankInfo(xp);
 

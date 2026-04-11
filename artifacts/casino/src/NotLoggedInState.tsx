@@ -1,11 +1,15 @@
+import { gt } from "./lib/gameLabels";
+
 interface NotLoggedInStateProps {
   variant: "deposit" | "transactions";
   onLogin: () => void;
   onRegister: () => void;
+  lang?: string;
 }
 
-export default function NotLoggedInState({ variant, onLogin, onRegister }: NotLoggedInStateProps) {
+export default function NotLoggedInState({ variant, onLogin, onRegister, lang }: NotLoggedInStateProps) {
   const isDeposit = variant === "deposit";
+  const T = (k: string) => gt(lang, k);
 
   return (
     <div style={{
@@ -55,9 +59,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister }: NotLo
         color: "#e2e8f0",
         letterSpacing: "-0.2px",
       }}>
-        {isDeposit
-          ? "Inicia sesión para agregar fondos"
-          : "Inicia sesión para ver tus transacciones"}
+        {isDeposit ? T("nlsLoginDeposit") : T("nlsLoginTx")}
       </h3>
 
       <p style={{
@@ -67,9 +69,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister }: NotLo
         maxWidth: "260px",
         lineHeight: 1.65,
       }}>
-        {isDeposit
-          ? "Crea una cuenta o inicia sesión para depositar y gestionar tus fondos."
-          : "Inicia sesión para ver tu historial completo de depósitos y retiros."}
+        {isDeposit ? T("nlsDepositDesc") : T("nlsTxDesc")}
       </p>
 
       <div style={{ display: "flex", gap: "10px", width: "100%", maxWidth: "270px" }}>
@@ -96,7 +96,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister }: NotLo
             transition: "filter .15s, transform .15s",
             fontFamily: "inherit",
           }}>
-          Iniciar sesión
+          {T("nlsLogin")}
         </button>
         <button
           onClick={onRegister}
@@ -121,7 +121,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister }: NotLo
             transition: "background .15s, transform .15s",
             fontFamily: "inherit",
           }}>
-          Registro
+          {T("nlsRegister")}
         </button>
       </div>
     </div>

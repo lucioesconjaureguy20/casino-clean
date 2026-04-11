@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { gt } from "./lib/gameLabels";
 
 // ─── Grid dimensions ─────────────────────────────────────────────────────────
 const COLS = 6;
@@ -233,12 +234,14 @@ interface Props{
   balance:number;currentUser:string;onBack:()=>void;
   onBalanceChange:(n:number)=>void;
   addBet:(wagered:number,win:number,game:string)=>void;
+  lang?:string;
 }
 type Phase="idle"|"spinning"|"evaluating"|"showing_wins"|"exploding"|"tumbling"|
            "freespins_intro"|"freespins"|"freespins_evaluating";
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet}:Props){
+export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,lang}:Props){
+  const T=(k:string)=>gt(lang,k);
   const[grid,setGrid]           =useState<string[][]>(()=>makeGrid(BASE_WEIGHTS));
   const[cellKeys,setCellKeys]   =useState<number[][]>(()=>Array.from({length:COLS},(_,c)=>Array.from({length:ROWS},(_,r)=>c*ROWS+r)));
   const[winCells,setWinCells]   =useState<Set<string>>(new Set());

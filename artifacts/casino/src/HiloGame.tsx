@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { gt } from "./lib/gameLabels";
 import { Card } from "./BlackjackGame";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -188,6 +189,7 @@ export default function HiloGame({
   liveRates, lang: _lang = "es", hiloStats, setHiloStats,
   currentUser, onRequestLogin, onGameActive,
 }: HiloGameProps) {
+  const T = (k: string) => gt(_lang, k);
   // ── Restore active session from localStorage (if the player navigated away mid-game) ──
   const _savedSession = (() => {
     try {
@@ -618,7 +620,7 @@ export default function HiloGame({
             cursor:"pointer", fontSize:"18px", padding:"5px 12px", borderRadius:"8px", lineHeight:1,
           }}>←</button>
           <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="12" height="16" rx="2"/><polyline points="18 4 21 7 18 10"/><polyline points="18 14 21 17 18 20"/><line x1="21" y1="7" x2="21" y2="17"/></svg>HILO</div>
-          <div style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>Mander Originals</div>
+          <div style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
         </div>
 
         {/* ── Left control panel ── */}
@@ -629,7 +631,7 @@ export default function HiloGame({
 
           {/* Monto de Apuesta label */}
           <div style={{ display:"flex", alignItems:"center" }}>
-            <span style={{ color:"#5a6a88", fontWeight:500, fontSize:"12px" }}>Monto de Apuesta</span>
+            <span style={{ color:"#5a6a88", fontWeight:500, fontSize:"12px" }}>{T("betAmount")}</span>
           </div>
 
           {/* Bet input row */}
@@ -669,12 +671,12 @@ export default function HiloGame({
                 padding:"4px 8px", cursor: isPlaying ? "not-allowed" : "pointer",
                 letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase",
               }}
-            >Limpiar</button>
+            >{T("hiloClear")}</button>
           </div>
 
           {betNum > 0 && !!currentUser && !canBet && !isPlaying && (
             <div style={{ fontSize:"11.5px", color:"#e74c3c", fontWeight:600, marginBottom:"8px", paddingLeft:"2px" }}>
-              Saldo insuficiente
+              {T("insufficientBal")}
             </div>
           )}
           {!(betNum > 0 && !!currentUser && !canBet && !isPlaying) && <div style={{ marginBottom:"6px" }} />}
@@ -718,7 +720,7 @@ export default function HiloGame({
                 transition:"all .2s",
               }}
             >
-              {(!!currentUser && betNum > 0 && !canBet) ? "Saldo insuficiente" : "Apostar"}
+              {(!!currentUser && betNum > 0 && !canBet) ? T("insufficientBal") : T("hiloApostar")}
             </button>
           ) : (
             <button
@@ -736,7 +738,7 @@ export default function HiloGame({
                 transition:"all .2s",
               }}
             >
-              {canCashout ? `Retirar ${fmtMoney(potentialPayout)}` : "Apostar"}
+              {canCashout ? `${T("hiloRetire")} ${fmtMoney(potentialPayout)}` : T("hiloApostar")}
             </button>
           )}
 
@@ -756,7 +758,7 @@ export default function HiloGame({
             onMouseEnter={e => { if (isPlaying && !actionBusy) (e.currentTarget as HTMLElement).style.background = "#253550"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !actionBusy) ? "#1e2a3e" : "#111822"; }}
           >
-            Saltar Carta <span style={{ fontSize:"15px", letterSpacing:"-1px" }}>»</span>
+            {T("hiloSkip")} <span style={{ fontSize:"15px", letterSpacing:"-1px" }}>»</span>
           </button>
 
           {/* Divider */}
@@ -779,7 +781,7 @@ export default function HiloGame({
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !higherDis && !actionBusy) ? "#1a2438" : "#111822"; }}
           >
             <span style={{ display:"flex", alignItems:"center", gap:"6px" }}>
-              Mayor o Igual
+              {T("hiloHigherEq")}
               <span style={{ color:"#22c55e", fontSize:"14px" }}>↑</span>
             </span>
             <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !higherDis && !actionBusy) ? "#c8d8f0" : "#3a4a60" }}>
@@ -804,7 +806,7 @@ export default function HiloGame({
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !lowerDis && !actionBusy) ? "#1a2438" : "#111822"; }}
           >
             <span style={{ display:"flex", alignItems:"center", gap:"6px" }}>
-              Menor o Igual
+              {T("hiloLowerEq")}
               <span style={{ color:"#e63e3e", fontSize:"14px" }}>↓</span>
             </span>
             <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !lowerDis) ? "#c8d8f0" : "#3a4a60" }}>
@@ -850,7 +852,7 @@ export default function HiloGame({
             {/* Stats button */}
             <button
               onClick={() => { setShowStats(v => !v); setShowVol(false); }}
-              title="Estadísticas"
+              title={T("statsTitle")}
               style={{
                 width:"38px", height:"38px", borderRadius:"8px",
                 background: showStats ? "#1f6fd0" : "#0e1826",
@@ -870,7 +872,7 @@ export default function HiloGame({
               )}
               <button
                 onClick={() => { setShowVol(v => !v); setShowStats(false); }}
-                title="Volumen"
+                title={T("volumeTitle")}
                 style={{
                   position:"relative", zIndex:10000,
                   width:"38px", height:"38px", borderRadius:"8px",

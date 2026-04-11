@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { gt } from "./lib/gameLabels";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 export interface MinesStats {
@@ -108,8 +109,9 @@ export default function MinesGame({
   balance, fmtMoney, convertUsd, displayCurrency, currencyFade,
   onBack, onBalanceChange, addBet, onBetRecord, liveRates,
   minesStats, setMinesStats, currentUser, onResetStats, onRequestLogin,
-  onGameActive,
+  onGameActive, lang,
 }: MinesGameProps) {
+  const T = (k: string) => gt(lang, k);
 
   const rate          = liveRates[displayCurrency] || 1;
   const maxBetDisplay = +(Math.floor(convertUsd(balance) * 100) / 100).toFixed(2);
