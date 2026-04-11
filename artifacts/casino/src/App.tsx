@@ -5282,7 +5282,7 @@ export default function App() {
                 </div>
 
                 {/* Category tabs */}
-                <div style={{ display:"flex",gap:"6px",flexWrap:"wrap",background:"#161d2b",border:"1px solid #20283a",borderRadius:"12px",padding:"4px 6px",marginBottom:"16px" }}>
+                <div style={{ display:"flex",gap:"6px",flexWrap:"wrap",background:"#161d2b",border:"1px solid #20283a",borderRadius:"12px",padding:"4px 6px",marginBottom:"16px",justifyContent:"center" }}>
                   <button onClick={()=>{ setHomeCategory("Originals"); showHomeView(); }}
                     style={{ display:"flex",alignItems:"center",gap:"8px",background:"linear-gradient(135deg,#1e2840,#263352)",color:"#f4a91f",border:"1px solid #f4a91f",padding:"7.5px 14px",borderRadius:"9px",fontWeight:600,cursor:"pointer",fontSize:"13px",letterSpacing:"0.4px",boxShadow:"0 0 10px rgba(244,169,31,.25), inset 0 0 8px rgba(244,169,31,.07)",transition:"all .15s ease" }}
                     onMouseEnter={e=>e.currentTarget.style.filter="brightness(1.12)"}
