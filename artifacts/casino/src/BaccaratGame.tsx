@@ -389,7 +389,7 @@ export default function BaccaratGame({
   balance, fmtMoney, currencyFade,
   onBalanceChange, addBet, onBetRecord,
   baccaratStats, setBaccaratStats, currentUser, onRequestLogin,
-  stopAutoRef, onGameActive,
+  stopAutoRef, onGameActive, lang,
 }: BaccaratGameProps) {
 
   // Enable sounds only while this component is mounted (navigating away silences everything)

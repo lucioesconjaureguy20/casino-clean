@@ -849,7 +849,7 @@ export default function MinesGame({
         </button>
         <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="5"/><line x1="12" y1="8" x2="12" y2="5"/><line x1="7.5" y1="9.5" x2="5.5" y2="7.5"/><line x1="16.5" y1="9.5" x2="18.5" y2="7.5"/><line x1="7" y1="13" x2="4" y2="13"/><line x1="17" y1="13" x2="20" y2="13"/></svg>MINES</div>
         <div style={{ marginLeft:"auto" }}>
-          <div style={{ fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>Mander Originals</div>
+          <div style={{ fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
         </div>
       </div>
 
@@ -866,6 +866,7 @@ export default function MinesGame({
         <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"14px", padding:"5px", gap:"4px", marginBottom:"16px" }}>
           {(["Manual","Auto"] as const).map(tab=>{
             const active = (tab==="Auto") === autoMode;
+            const tabLabel = tab==="Auto" ? T("minesTabAuto") : T("minesTabManual");
             return (
               <button key={tab} onClick={()=>{
                 if(autoRunning) return;
@@ -888,14 +889,14 @@ export default function MinesGame({
                 setAutoMode(goingAuto);
               }}
                 style={{ flex:1, background:active?"#1e2c44":"transparent", border:active?"1px solid #3a4a60":"1px solid transparent", borderRadius:"10px", padding:"10px", color:active?"#eef3f8":"#5a6a88", fontWeight:500, fontSize:"14px", cursor:autoRunning?"not-allowed":"pointer", opacity:autoRunning&&!active?0.45:1, transition:"opacity .2s" }}>
-                {tab}
+                {tabLabel}
               </button>
             );
           })}
         </div>
 
         {/* Bet amount */}
-        <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"5px", fontSize:"13px", paddingLeft:"4px" }}>Monto de apuesta</div>
+        <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"5px", fontSize:"13px", paddingLeft:"4px" }}>{T("betAmount")}</div>
         <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0e1826", border:`1px solid ${betInvalid||balInsuff?"#e74c3c":"#252f45"}`, borderRadius:"10px", padding:"8px 14px", marginBottom:"6px", transition:"border .15s" }}>
           <span style={{ fontSize:"15px", color:"#5a6a88", fontWeight:500, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
           <input type="number" value={betDisplay} min={minBetDisplay} max={maxBetDisplay} step="0.01"
@@ -909,11 +910,11 @@ export default function MinesGame({
           />
           <button onClick={()=>!disabled&&setBetDisplay("0")} disabled={disabled}
             style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", color:"#6db3f2", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase", opacity:disabled?0.5:1 }}>
-            Limpiar
+            {T("hiloClear")}
           </button>
         </div>
         {betInvalid && <div style={{ fontSize:"11px", color:"#e74c3c", fontWeight:600, marginBottom:"5px", paddingLeft:"2px" }}>Mín: {fmtMoney(0.01)}</div>}
-        {!betInvalid && balInsuff && <div style={{ fontSize:"11px", color:"#e74c3c", fontWeight:600, marginBottom:"5px", paddingLeft:"2px" }}>Saldo insuficiente</div>}
+        {!betInvalid && balInsuff && <div style={{ fontSize:"11px", color:"#e74c3c", fontWeight:600, marginBottom:"5px", paddingLeft:"2px" }}>{T("insufficientBal")}</div>}
         {!betInvalid && !balInsuff && <div style={{ marginBottom:"5px" }} />}
 
         {/* Quick bet */}
@@ -932,7 +933,7 @@ export default function MinesGame({
         </div>
 
         {/* Grid size */}
-        <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>Tamaño del tablero</div>
+        <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>{T("minesBoardSize")}</div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"5px", marginBottom:"12px" }}>
           {GRID_SIZES.map(gs=>(
             <button key={gs} onClick={()=>{ if(!disabled && !autoSelecting){ resetAutoIfNeeded(); setGridSize(gs); } }} disabled={disabled || autoSelecting}
@@ -950,7 +951,7 @@ export default function MinesGame({
         </div>
 
         {/* Mines count — preset buttons */}
-        <div style={{ color:"#5a6a88", fontWeight:500, fontSize:"13px", marginBottom:"7px", paddingLeft:"4px" }}>Minas</div>
+        <div style={{ color:"#5a6a88", fontWeight:500, fontSize:"13px", marginBottom:"7px", paddingLeft:"4px" }}>{T("minesMines")}</div>
         <div style={{ display:"grid", gridTemplateColumns:`repeat(${presets.length + 1},1fr)`, gap:"5px", marginBottom:"14px" }}>
           {presets.map(n=>{
             const isSelected = mineCount===n && !customMineOpen;
@@ -994,32 +995,32 @@ export default function MinesGame({
                 cursor: (!betInvalid&&(!currentUser||!balInsuff)) ? "pointer" : "not-allowed",
                 marginBottom:"12px",
               }}>
-              {(currentUser&&balInsuff) ? "Saldo insuficiente" : "Apostar"}
+              {(currentUser&&balInsuff) ? T("insufficientBal") : T("hiloApostar")}
             </button>
           )}
           {phase === "playing" && revealedSafe > 0 && (
             <button onClick={()=>cashout()}
               style={{ width:"100%", padding:"14px", borderRadius:"10px", border:"none", background:"linear-gradient(180deg,#f4a91f,#d4890f)", color:"#000", fontWeight:700, fontSize:"15px", cursor:"pointer", boxShadow:"0 4px 20px rgba(244,169,31,0.4)", animation:"minesPulse 2s ease infinite", marginBottom:"12px" }}>
-              Cobrar {fmtMoney(cashoutAmount)}
+              {T("minesCobrar")} {fmtMoney(cashoutAmount)}
             </button>
           )}
           {phase === "playing" && revealedSafe === 0 && (
             <div style={{ width:"100%", padding:"12px", borderRadius:"10px", background:"#0e1826", border:"1px solid #1a2438", color:"#5a6a88", fontWeight:600, fontSize:"13px", textAlign:"center", marginBottom:"12px" }}>
-              Haz clic en una casilla
+              {T("minesClickCell")}
             </div>
           )}
           {phase === "playing" && (
             <div style={{ background:"#0a1420", border:"1px solid #1a2a40", borderRadius:"10px", padding:"10px 14px", animation:"minesFadeIn 0.25s ease" }}>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-                <span style={{ color:"#5a6a88", fontSize:"12px" }}>Multiplicador</span>
+                <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesMultiplier")}</span>
                 <span style={{ color:"#22c55e", fontWeight:700, fontSize:"14px" }}>{formatMult(currentMult)}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-                <span style={{ color:"#5a6a88", fontSize:"12px" }}>Próximo</span>
+                <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesNext")}</span>
                 <span style={{ color:"#f4a91f", fontWeight:600, fontSize:"13px" }}>{formatMult(nextMult)}</span>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between" }}>
-                <span style={{ color:"#5a6a88", fontSize:"12px" }}>Revelados</span>
+                <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesRevealed")}</span>
                 <span style={{ color:"#dce3ee", fontWeight:600, fontSize:"13px" }}>{revealedSafe}/{totalSafe}</span>
               </div>
             </div>
@@ -1051,7 +1052,7 @@ export default function MinesGame({
           {/* Pago en Victoria + Nro Apuestas */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"6px", marginBottom:"12px" }}>
             <div style={{ minWidth:0 }}>
-              <div style={{ color:"#5a6a88", fontSize:"10px", marginBottom:"4px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>Pago en Victoria</div>
+              <div style={{ color:"#5a6a88", fontSize:"10px", marginBottom:"4px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{T("minesCashout")}</div>
               <div style={{ display:"flex", alignItems:"center", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"0 8px", height:"32px", overflow:"hidden" }}>
                 <div style={{ color:"#22c55e", fontWeight:700, fontSize:"12px", opacity:currencyFade, lineHeight:1, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                   {autoSelectedCells.size > 0 ? fmtMoney((parseFloat(betDisplay)||0)/rate * calcMultiplier(totalCells,mineCount,autoSelectedCells.size)) : "—"}
@@ -1059,7 +1060,7 @@ export default function MinesGame({
               </div>
             </div>
             <div style={{ minWidth:0 }}>
-              <div style={{ color:"#5a6a88", fontSize:"10px", marginBottom:"4px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>Nº Apuestas</div>
+              <div style={{ color:"#5a6a88", fontSize:"10px", marginBottom:"4px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{T("minesNumBets")}</div>
               <div style={{ display:"flex", alignItems:"center", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"0 6px 0 8px", height:"32px", gap:"3px" }}>
                 <input
                   value={autoInfinite ? "Infinite" : autoNumBetsInput}
@@ -1088,7 +1089,7 @@ export default function MinesGame({
 
           {/* Configuración avanzada */}
           <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",padding:"8px 12px",background:"#152334",borderRadius:"10px",border:"1px solid #1e3548" }}>
-            <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>Avanzado</span>
+            <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>{T("minesAdvanced")}</span>
             <div onClick={()=>setAutoAdvOpen(v=>!v)}
               style={{ width:"42px",height:"24px",borderRadius:"12px",background:autoAdvOpen?"#1f6fd0":"#2a3f54",cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0 }}>
               <div style={{ position:"absolute",top:"3px",left:autoAdvOpen?"21px":"3px",width:"18px",height:"18px",borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px #0005" }}/>
@@ -1098,13 +1099,13 @@ export default function MinesGame({
           {autoAdvOpen && <div style={{ marginBottom:"10px" }}>
             {/* Al ganar */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Al ganar</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnWin")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnWin(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
                       background:autoOnWin===mode?"#1f6fd0":"#1a2438",color:autoOnWin===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
-                    {mode==="reset"?"Reiniciar":"Aumentar"}
+                    {mode==="reset"?T("minesReset"):T("minesIncrease")}
                   </button>
                 ))}
               </div>
@@ -1120,13 +1121,13 @@ export default function MinesGame({
 
             {/* Al perder */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Al perder</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnLoss")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnLose(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
                       background:autoOnLose===mode?"#1f6fd0":"#1a2438",color:autoOnLose===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
-                    {mode==="reset"?"Reiniciar":"Aumentar"}
+                    {mode==="reset"?T("minesReset"):T("minesIncrease")}
                   </button>
                 ))}
               </div>
@@ -1142,22 +1143,22 @@ export default function MinesGame({
 
             {/* Parar al ganar */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Parar al ganar</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopWin")}</div>
               <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopProfit} onChange={e=>setAutoStopProfit(e.target.value.replace(/[^\d.]/g,""))}
-                  type="text" inputMode="decimal" placeholder="0 = desactivado"
+                  type="text" inputMode="decimal" placeholder={T("minesDisabled")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0,outline:"none" }}/>
               </div>
             </div>
 
             {/* Parar al perder */}
             <div style={{ marginBottom:"4px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>Parar al perder</div>
+              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopLoss")}</div>
               <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopLoss} onChange={e=>setAutoStopLoss(e.target.value.replace(/[^\d.]/g,""))}
-                  type="text" inputMode="decimal" placeholder="0 = desactivado"
+                  type="text" inputMode="decimal" placeholder={T("minesDisabled")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0,outline:"none" }}/>
               </div>
             </div>
@@ -1174,12 +1175,12 @@ export default function MinesGame({
                 boxShadow:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"0 4px 22px rgba(26,159,255,0.35)":"none",
                 cursor:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"pointer":"not-allowed",
               }}>
-              {autoSelectedCells.size===0 ? "Selecciona casillas" : (currentUser&&balInsuff) ? "Saldo insuficiente" : "Iniciar Auto"}
+              {autoSelectedCells.size===0 ? T("minesSelectCells") : (currentUser&&balInsuff) ? T("insufficientBal") : T("minesStartAuto")}
             </button>
           ) : (
             <button onClick={()=>stopAutoMines()}
               style={{ width:"100%", border:"none", borderRadius:"10px", padding:"14px", fontWeight:700, fontSize:"15px", background:"linear-gradient(180deg,#ef4444,#b91c1c)", color:"#fff", cursor:"pointer", boxShadow:"0 4px 22px rgba(239,68,68,0.35)" }}>
-              Detener Auto
+              {T("minesStopAuto")}
             </button>
           )}
         </>)}
@@ -1188,7 +1189,7 @@ export default function MinesGame({
 
         {/* Icon buttons — fixed bottom of left panel */}
         <div style={{ flexShrink:0,padding:"8px 16px 16px 16px",display:"flex",gap:"8px",position:"relative" }}>
-          <button onClick={()=>setShowMinesStats(v=>!v)} title="Estadísticas"
+          <button onClick={()=>setShowMinesStats(v=>!v)} title={T("statsTitle")}
             style={{ width:"38px",height:"38px",borderRadius:"8px",background:showMinesStats?"#1f6fd0":"#0e1826",border:showMinesStats?"1px solid #3a8aff":"1px solid #203a50",color:showMinesStats?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
           </button>
@@ -1197,7 +1198,7 @@ export default function MinesGame({
               <div onClick={()=>setShowMinesVol(false)}
                 style={{ position:"fixed",inset:0,zIndex:9998 }}/>
             )}
-            <button onClick={()=>setShowMinesVol(v=>!v)} title="Volumen"
+            <button onClick={()=>setShowMinesVol(v=>!v)} title={T("volumeTitle")}
               style={{ position:"relative",zIndex:10000,width:"38px",height:"38px",borderRadius:"8px",background:showMinesVol?"#1f6fd0":"#0e1826",border:showMinesVol?"1px solid #3a8aff":"1px solid #203a50",color:showMinesVol?"#fff":"#7a9db8",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"17px",transition:"background .2s,border .2s,color .2s" }}>
               {minesVol===0 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg> : minesVol<40 ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> : <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>}
             </button>
@@ -1294,7 +1295,7 @@ export default function MinesGame({
             style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"#112232",borderBottom:"1px solid #1e3a52",cursor:"grab" }}>
             <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
               <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
-              <strong style={{ fontSize:"14px",color:"#d8e8f5" }}>Estadísticas en vivo</strong>
+              <strong style={{ fontSize:"14px",color:"#d8e8f5" }}>{T("liveStatsTitle")}</strong>
             </div>
             <button onClick={()=>setShowMinesStats(false)} style={{ background:"none",border:"none",color:"#7a9db8",fontSize:"18px",cursor:"pointer",lineHeight:1,padding:"0 2px" }}>×</button>
           </div>
@@ -1302,10 +1303,10 @@ export default function MinesGame({
           <div style={{ padding:"12px" }}>
             <div style={{ background:"#0d1a28",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",flexDirection:"column",gap:"8px" }}>
               {([
-                { label:"Beneficio", value:fmtMoney(minesStats.profit), color:minesStats.profit>=0?"#16ff5c":"#ff5959", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
-                { label:"Ganadas",   value:String(minesStats.wins),     color:"#16ff5c", extra:{} },
-                { label:"Apostado",  value:fmtMoney(minesStats.wagered),color:"#d8e8f5", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
-                { label:"Perdidas",  value:String(minesStats.losses),   color:"#ff5959", extra:{} },
+                { label:T("bjNetProfit"), value:fmtMoney(minesStats.profit), color:minesStats.profit>=0?"#16ff5c":"#ff5959", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
+                { label:T("bjWins"),     value:String(minesStats.wins),     color:"#16ff5c", extra:{} },
+                { label:T("bjWagered"),  value:fmtMoney(minesStats.wagered),color:"#d8e8f5", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
+                { label:T("bjLosses"),   value:String(minesStats.losses),   color:"#ff5959", extra:{} },
               ] as {label:string;value:string;color:string;extra:React.CSSProperties}[]).map(s=>(
                 <div key={s.label} style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
                   <span style={{ color:"#7a9db8",fontSize:"11.5px" }}>{s.label}</span>
@@ -1318,7 +1319,7 @@ export default function MinesGame({
               style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
               onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#3a8aff";b.style.background="#0d1f30";}}
               onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#7a9db8";b.style.borderColor="#1e3a52";b.style.background="transparent";}}
-            ><span style={{ fontSize:"14px" }}>↺</span> Reiniciar estadísticas</button>
+            ><span style={{ fontSize:"14px" }}>↺</span> {T("minesResetStats")}</button>
 
             {(()=>{
               const raw = minesStats.history.length>0 ? minesStats.history.slice().reverse() : null;
@@ -1331,7 +1332,7 @@ export default function MinesGame({
               const n=allPts.length;
               if(n<2) return (
                 <div style={{ position:"relative",background:"#0a1520",borderRadius:"12px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>Sin historial</span>
+                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const cums=allPts.map(p=>p.cum);

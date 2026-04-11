@@ -16,6 +16,8 @@ import type { RewardRecord } from "./vipSystem";
 import { getHouseEdge } from "./houseEdge";
 import Matter from "matter-js";
 import "flag-icons/css/flag-icons.min.css";
+import { getGameMeta, getGameInfo, getLearnMoreLabel } from "./lib/gameContent";
+import { getFairnessGames } from "./lib/fairnessContent";
 
 // ─── TRANSLATIONS ────────────────────────────────────────────────────────────
 const LANGS: Record<string, Record<string, string>> = {
@@ -103,6 +105,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Sin Riesgo", affFeat5:"Global & Crypto-Friendly", affFeat6:"Comisión Fija del 15%",
     affStep1:"Obtén tu enlace único", affStep2:"Tus referidos se unen", affStep3:"Acumulás ganancias",
     affCommissions:"Comisiones",
+    welcomeTo:"¡Bienvenido a", joinNow:"Únete ahora", nextPage:"Siguiente →", prevPage:"← Anterior",
+    rbInstant:"Rakeback Instantáneo", rbWeekly:"Bono Semanal", rbMonthly:"Bono Mensual",
+    rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Acumula rakeback en cada apuesta · Sube de rango · Desbloquea recompensas",
+    rankUpRewards:"Recompensas al Subir de Rango",
+    rankUpBonus:"Bono instantáneo al alcanzar cada nuevo tier",
+    withdrawsInReview:"Retiros en revisión",
+    accountBeingVerified:"Tu cuenta está siendo verificada",
+    withdrawPausedMsg:"Por el momento los retiros de tu cuenta están",
+    withdrawPausedStrong:"en pausa",
+    withdrawPausedMsg2:"mientras nuestro equipo realiza una revisión de rutina.",
+    withdrawPausedContact:"Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.",
+    copyWallet:"Copiar wallet", copyTxHash:"Copiar TX hash",
+    rbAddedBalance:"añadidos a tu saldo.", keepBettingMore:"Sigue apostando para aumentar tus recompensas",
+    notifications:"Notificaciones", noNotifs:"Sin notificaciones aún",
+    currentRank:"Tu Rango Actual", totalWageredLabel:"Total Apostado",
+    received:"Recibido", system:"Sistema",
+    nextRankLabel:"Sig.", untilNextRank:"Faltan",
+    loginForVip:"Inicia sesión para ver tu rango VIP y reclamar rakeback.",
+    unlockIn:"Desbloquea en", allRanks:"Todos los Rangos", yourCategory:"Tu categoría",
+    wagerMin:"Wager mín.", wagerMax:"Wager máx.", rakebackLabel2:"Rakeback",
+    notAvailable:"No disponible", dateLabel:"Fecha",
+    privacyTitle:"Política de Privacidad", fairnessTitle:"Juego Justo y Transparente",
+    termsTitle:"Términos de Servicio", lastUpdate:"Última actualización: Marzo 2025",
+    howWorks:"Cómo funciona", generateAddress:"Generá tu dirección para depositar",
+    walletTitle:"Billetera", generatingAddr:"Generando dirección...", audited:"✓ Auditado", close:"Cerrar",
+    showLess:"Mostrar menos", howToPlayMore:"Cómo jugar y más",
+    usefulLinks:"Enlaces útiles", amlPolicy:"Política AML",
   },
   en: {
     login:"Sign In", register:"Register", username:"Username", password:"Password",
@@ -188,6 +219,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"No Risk", affFeat5:"Global & Crypto-Friendly", affFeat6:"Fixed 15% Commission",
     affStep1:"Get your unique link", affStep2:"Your referrals join", affStep3:"Accumulate earnings",
     affCommissions:"Commissions",
+    welcomeTo:"Welcome to", joinNow:"Join Now", nextPage:"Next →", prevPage:"← Previous",
+    rbInstant:"Instant Rakeback", rbWeekly:"Weekly Bonus", rbMonthly:"Monthly Bonus",
+    rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Earn rakeback on every bet · Climb the ranks · Unlock rewards",
+    rankUpRewards:"Rank-Up Rewards",
+    rankUpBonus:"Instant bonus when reaching each new tier",
+    withdrawsInReview:"Withdrawals Under Review",
+    accountBeingVerified:"Your account is being verified",
+    withdrawPausedMsg:"Your withdrawals are currently",
+    withdrawPausedStrong:"on hold",
+    withdrawPausedMsg2:"while our team performs a routine review.",
+    withdrawPausedContact:"If you believe there was an error, you can contact us and we will review it promptly. Your balance is safe.",
+    copyWallet:"Copy wallet", copyTxHash:"Copy TX hash",
+    rbAddedBalance:"added to your balance.", keepBettingMore:"Keep betting to increase your rewards",
+    notifications:"Notifications", noNotifs:"No notifications yet",
+    currentRank:"Your Current Rank", totalWageredLabel:"Total Wagered",
+    received:"Received", system:"System",
+    nextRankLabel:"Next", untilNextRank:"Remaining",
+    loginForVip:"Log in to view your VIP rank and claim rakeback.",
+    unlockIn:"Unlocks at", allRanks:"All Ranks", yourCategory:"Your tier",
+    wagerMin:"Min wager", wagerMax:"Max wager", rakebackLabel2:"Rakeback",
+    notAvailable:"Not available", dateLabel:"Date",
+    privacyTitle:"Privacy Policy", fairnessTitle:"Provably Fair",
+    termsTitle:"Terms of Service", lastUpdate:"Last updated: March 2025",
+    howWorks:"How it works", generateAddress:"Generate your deposit address for",
+    walletTitle:"Wallet", generatingAddr:"Generating address...", audited:"✓ Audited", close:"Close",
+    showLess:"Show less", howToPlayMore:"How to play & more",
+    usefulLinks:"Useful links", amlPolicy:"AML Policy",
   },
   pt: {
     login:"Entrar", register:"Registrar", username:"Usuário", password:"Senha",
@@ -253,6 +313,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Sem Risco", affFeat5:"Global & Amigável com Crypto", affFeat6:"Comissão Fixa de 15%",
     affStep1:"Obtenha seu link único", affStep2:"Seus referidos se juntam", affStep3:"Acumule ganhos",
     affCommissions:"Comissões",
+    welcomeTo:"Bem-vindo ao", joinNow:"Entrar agora", nextPage:"Próximo →", prevPage:"← Anterior",
+    rbInstant:"Rakeback Instantâneo", rbWeekly:"Bônus Semanal", rbMonthly:"Bônus Mensal",
+    rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Ganhe rakeback em cada aposta · Suba de rank · Desbloqueie recompensas",
+    rankUpRewards:"Recompensas ao Subir de Rank",
+    rankUpBonus:"Bônus instantâneo ao alcançar cada novo tier",
+    withdrawsInReview:"Saques em revisão",
+    accountBeingVerified:"Sua conta está sendo verificada",
+    withdrawPausedMsg:"Por enquanto seus saques estão",
+    withdrawPausedStrong:"pausados",
+    withdrawPausedMsg2:"enquanto nossa equipe realiza uma revisão de rotina.",
+    withdrawPausedContact:"Se acredita que houve um erro, entre em contato e revisaremos em breve. Seu saldo está seguro.",
+    copyWallet:"Copiar carteira", copyTxHash:"Copiar TX hash",
+    rbAddedBalance:"adicionados ao seu saldo.", keepBettingMore:"Continue apostando para aumentar suas recompensas",
+    notifications:"Notificações", noNotifs:"Sem notificações ainda",
+    currentRank:"Seu Rank Atual", totalWageredLabel:"Total Apostado",
+    received:"Recebido", system:"Sistema",
+    nextRankLabel:"Prox.", untilNextRank:"Faltam",
+    loginForVip:"Faça login para ver seu rank VIP e reivindicar rakeback.",
+    unlockIn:"Desbloqueia em", allRanks:"Todos os Ranks", yourCategory:"Sua categoria",
+    wagerMin:"Aposta mín.", wagerMax:"Aposta máx.", rakebackLabel2:"Rakeback",
+    notAvailable:"Não disponível", dateLabel:"Data",
+    privacyTitle:"Política de Privacidade", fairnessTitle:"Jogo Justo e Transparente",
+    termsTitle:"Termos de Serviço", lastUpdate:"Última atualização: Março 2025",
+    howWorks:"Como funciona", generateAddress:"Gere seu endereço para depositar",
+    walletTitle:"Carteira", generatingAddr:"Gerando endereço...", audited:"✓ Auditado", close:"Fechar",
+    showLess:"Mostrar menos", howToPlayMore:"Como jogar e mais",
+    usefulLinks:"Links úteis", amlPolicy:"Política AML",
   },
   de: {
     login:"Anmelden", register:"Registrieren", username:"Benutzername", password:"Passwort",
@@ -318,6 +407,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Kein Risiko", affFeat5:"Global & Krypto-freundlich", affFeat6:"Feste 15% Provision",
     affStep1:"Hol deinen Link", affStep2:"Deine Empfehlungen melden sich an", affStep3:"Sammle Gewinne",
     affCommissions:"Provisionen",
+    welcomeTo:"Willkommen bei", joinNow:"Jetzt beitreten", nextPage:"Weiter →", prevPage:"← Zurück",
+    rbInstant:"Sofortiger Rakeback", rbWeekly:"Wöchentlicher Bonus", rbMonthly:"Monatlicher Bonus",
+    rbPools:"Rakeback-Pools", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Sammle Rakeback bei jedem Einsatz · Steige im Rang auf · Schalte Belohnungen frei",
+    rankUpRewards:"Belohnungen beim Aufstieg",
+    rankUpBonus:"Sofortbonus beim Erreichen jeder neuen Stufe",
+    withdrawsInReview:"Auszahlungen werden geprüft",
+    accountBeingVerified:"Ihr Konto wird verifiziert",
+    withdrawPausedMsg:"Ihre Auszahlungen sind derzeit",
+    withdrawPausedStrong:"pausiert",
+    withdrawPausedMsg2:"während unser Team eine Routineüberprüfung durchführt.",
+    withdrawPausedContact:"Wenn Sie glauben, dass ein Fehler vorliegt, kontaktieren Sie uns und wir prüfen es umgehend. Ihr Guthaben ist sicher.",
+    copyWallet:"Wallet kopieren", copyTxHash:"TX-Hash kopieren",
+    rbAddedBalance:"zu deinem Guthaben hinzugefügt.", keepBettingMore:"Weiter setzen, um deine Belohnungen zu erhöhen",
+    notifications:"Benachrichtigungen", noNotifs:"Noch keine Benachrichtigungen",
+    currentRank:"Dein aktueller Rang", totalWageredLabel:"Gesamteinsatz",
+    received:"Empfangen", system:"System",
+    nextRankLabel:"Nächste", untilNextRank:"Verbleibend",
+    loginForVip:"Melde dich an, um deinen VIP-Rang zu sehen und Rakeback zu beanspruchen.",
+    unlockIn:"Freischaltung bei", allRanks:"Alle Ränge", yourCategory:"Deine Stufe",
+    wagerMin:"Min. Einsatz", wagerMax:"Max. Einsatz", rakebackLabel2:"Rakeback",
+    notAvailable:"Nicht verfügbar", dateLabel:"Datum",
+    privacyTitle:"Datenschutzrichtlinie", fairnessTitle:"Nachweislich fair",
+    termsTitle:"Nutzungsbedingungen", lastUpdate:"Zuletzt aktualisiert: März 2025",
+    howWorks:"So funktioniert es", generateAddress:"Generiere deine Einzahlungsadresse für",
+    walletTitle:"Wallet", generatingAddr:"Adresse wird generiert...", audited:"✓ Geprüft", close:"Schließen",
+    showLess:"Weniger anzeigen", howToPlayMore:"Spielanleitung & mehr",
+    usefulLinks:"Nützliche Links", amlPolicy:"AML-Richtlinie",
   },
   fr: {
     login:"Connexion", register:"S'inscrire", username:"Nom d'utilisateur", password:"Mot de passe",
@@ -383,6 +501,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Sans Risque", affFeat5:"Mondial & Crypto-Friendly", affFeat6:"Commission Fixe 15%",
     affStep1:"Obtenez votre lien unique", affStep2:"Vos filleuls s'inscrivent", affStep3:"Accumulez des gains",
     affCommissions:"Commissions",
+    welcomeTo:"Bienvenue sur", joinNow:"Rejoindre maintenant", nextPage:"Suivant →", prevPage:"← Précédent",
+    rbInstant:"Rakeback Instantané", rbWeekly:"Bonus Hebdomadaire", rbMonthly:"Bonus Mensuel",
+    rbPools:"Pools de Rakeback", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Gagnez du rakeback à chaque mise · Montez en grade · Débloquez des récompenses",
+    rankUpRewards:"Récompenses de montée de rang",
+    rankUpBonus:"Bonus instantané en atteignant chaque nouveau niveau",
+    withdrawsInReview:"Retraits en cours de vérification",
+    accountBeingVerified:"Votre compte est en cours de vérification",
+    withdrawPausedMsg:"Vos retraits sont actuellement",
+    withdrawPausedStrong:"en pause",
+    withdrawPausedMsg2:"pendant que notre équipe effectue une vérification de routine.",
+    withdrawPausedContact:"Si vous pensez qu'il y a eu une erreur, contactez-nous et nous la réviserons rapidement. Votre solde est sécurisé.",
+    copyWallet:"Copier le portefeuille", copyTxHash:"Copier le TX hash",
+    rbAddedBalance:"ajoutés à votre solde.", keepBettingMore:"Continuez à miser pour augmenter vos récompenses",
+    notifications:"Notifications", noNotifs:"Pas encore de notifications",
+    currentRank:"Votre rang actuel", totalWageredLabel:"Total misé",
+    received:"Reçu", system:"Système",
+    nextRankLabel:"Suiv.", untilNextRank:"Restant",
+    loginForVip:"Connectez-vous pour voir votre rang VIP et réclamer le rakeback.",
+    unlockIn:"Débloqué à", allRanks:"Tous les rangs", yourCategory:"Votre catégorie",
+    wagerMin:"Mise min.", wagerMax:"Mise max.", rakebackLabel2:"Rakeback",
+    notAvailable:"Non disponible", dateLabel:"Date",
+    privacyTitle:"Politique de confidentialité", fairnessTitle:"Jeu équitable et transparent",
+    termsTitle:"Conditions d'utilisation", lastUpdate:"Dernière mise à jour : mars 2025",
+    howWorks:"Comment ça fonctionne", generateAddress:"Générez votre adresse de dépôt pour",
+    walletTitle:"Portefeuille", generatingAddr:"Génération de l'adresse...", audited:"✓ Audité", close:"Fermer",
+    showLess:"Afficher moins", howToPlayMore:"Comment jouer et plus",
+    usefulLinks:"Liens utiles", amlPolicy:"Politique AML",
   },
   id: {
     login:"Masuk", register:"Daftar", username:"Nama Pengguna", password:"Kata Sandi",
@@ -448,6 +595,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Tanpa Risiko", affFeat5:"Global & Ramah Crypto", affFeat6:"Komisi Tetap 15%",
     affStep1:"Dapatkan link unik Anda", affStep2:"Referral Anda bergabung", affStep3:"Kumpulkan penghasilan",
     affCommissions:"Komisi",
+    welcomeTo:"Selamat datang di", joinNow:"Bergabung sekarang", nextPage:"Berikutnya →", prevPage:"← Sebelumnya",
+    rbInstant:"Rakeback Instan", rbWeekly:"Bonus Mingguan", rbMonthly:"Bonus Bulanan",
+    rbPools:"Kumpulan Rakeback", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Dapatkan rakeback di setiap taruhan · Naik peringkat · Buka hadiah",
+    rankUpRewards:"Hadiah Naik Peringkat",
+    rankUpBonus:"Bonus instan saat mencapai setiap tier baru",
+    withdrawsInReview:"Penarikan dalam tinjauan",
+    accountBeingVerified:"Akun Anda sedang diverifikasi",
+    withdrawPausedMsg:"Penarikan Anda saat ini",
+    withdrawPausedStrong:"ditahan",
+    withdrawPausedMsg2:"sementara tim kami melakukan peninjauan rutin.",
+    withdrawPausedContact:"Jika Anda yakin ada kesalahan, hubungi kami dan kami akan meninjau segera. Saldo Anda aman.",
+    copyWallet:"Salin dompet", copyTxHash:"Salin TX hash",
+    rbAddedBalance:"ditambahkan ke saldo Anda.", keepBettingMore:"Terus taruhan untuk meningkatkan hadiah Anda",
+    notifications:"Notifikasi", noNotifs:"Belum ada notifikasi",
+    currentRank:"Peringkat Anda Saat Ini", totalWageredLabel:"Total Taruhan",
+    received:"Diterima", system:"Sistem",
+    nextRankLabel:"Berikut.", untilNextRank:"Tersisa",
+    loginForVip:"Masuk untuk melihat peringkat VIP Anda dan klaim rakeback.",
+    unlockIn:"Buka kunci di", allRanks:"Semua Peringkat", yourCategory:"Kategori Anda",
+    wagerMin:"Taruhan min.", wagerMax:"Taruhan maks.", rakebackLabel2:"Rakeback",
+    notAvailable:"Tidak tersedia", dateLabel:"Tanggal",
+    privacyTitle:"Kebijakan Privasi", fairnessTitle:"Permainan yang Adil dan Transparan",
+    termsTitle:"Ketentuan Layanan", lastUpdate:"Terakhir diperbarui: Maret 2025",
+    howWorks:"Cara kerja", generateAddress:"Buat alamat deposit Anda untuk",
+    walletTitle:"Dompet", generatingAddr:"Membuat alamat...", audited:"✓ Diaudit", close:"Tutup",
+    showLess:"Tampilkan lebih sedikit", howToPlayMore:"Cara bermain & lainnya",
+    usefulLinks:"Tautan berguna", amlPolicy:"Kebijakan AML",
   },
   it: {
     login:"Accedi", register:"Registrati", username:"Nome utente", password:"Password",
@@ -513,6 +689,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Nessun Rischio", affFeat5:"Globale & Crypto-Friendly", affFeat6:"Commissione Fissa 15%",
     affStep1:"Ottieni il tuo link unico", affStep2:"I tuoi referral si uniscono", affStep3:"Accumula guadagni",
     affCommissions:"Commissioni",
+    welcomeTo:"Benvenuto su", joinNow:"Unisciti ora", nextPage:"Avanti →", prevPage:"← Precedente",
+    rbInstant:"Rakeback Istantaneo", rbWeekly:"Bonus Settimanale", rbMonthly:"Bonus Mensile",
+    rbPools:"Pool di Rakeback", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Guadagna rakeback su ogni scommessa · Scala i ranghi · Sblocca premi",
+    rankUpRewards:"Premi per Salire di Grado",
+    rankUpBonus:"Bonus istantaneo al raggiungimento di ogni nuovo livello",
+    withdrawsInReview:"Prelievi in revisione",
+    accountBeingVerified:"Il tuo account è in fase di verifica",
+    withdrawPausedMsg:"I tuoi prelievi sono attualmente",
+    withdrawPausedStrong:"in pausa",
+    withdrawPausedMsg2:"mentre il nostro team esegue una revisione di routine.",
+    withdrawPausedContact:"Se credi che ci sia stato un errore, contattaci e lo esamineremo prontamente. Il tuo saldo è al sicuro.",
+    copyWallet:"Copia portafoglio", copyTxHash:"Copia TX hash",
+    rbAddedBalance:"aggiunti al tuo saldo.", keepBettingMore:"Continua a scommettere per aumentare i tuoi premi",
+    notifications:"Notifiche", noNotifs:"Nessuna notifica ancora",
+    currentRank:"Il Tuo Grado Attuale", totalWageredLabel:"Totale Puntato",
+    received:"Ricevuto", system:"Sistema",
+    nextRankLabel:"Prox.", untilNextRank:"Mancano",
+    loginForVip:"Accedi per vedere il tuo rango VIP e riscuotere il rakeback.",
+    unlockIn:"Sblocca a", allRanks:"Tutti i gradi", yourCategory:"La tua categoria",
+    wagerMin:"Puntata min.", wagerMax:"Puntata max.", rakebackLabel2:"Rakeback",
+    notAvailable:"Non disponibile", dateLabel:"Data",
+    privacyTitle:"Informativa sulla Privacy", fairnessTitle:"Gioco Equo e Trasparente",
+    termsTitle:"Termini di Servizio", lastUpdate:"Ultimo aggiornamento: Marzo 2025",
+    howWorks:"Come funziona", generateAddress:"Genera il tuo indirizzo di deposito per",
+    walletTitle:"Portafoglio", generatingAddr:"Generazione indirizzo...", audited:"✓ Verificato", close:"Chiudi",
+    showLess:"Mostra meno", howToPlayMore:"Come giocare e altro",
+    usefulLinks:"Link utili", amlPolicy:"Politica AML",
   },
   ko: {
     login:"로그인", register:"회원가입", username:"사용자명", password:"비밀번호",
@@ -578,6 +783,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"위험 없음", affFeat5:"글로벌 & 크립토 친화적", affFeat6:"고정 15% 수수료",
     affStep1:"고유 링크 받기", affStep2:"추천인 가입", affStep3:"수익 누적",
     affCommissions:"커미션",
+    welcomeTo:"에 오신 것을 환영합니다", joinNow:"지금 가입", nextPage:"다음 →", prevPage:"← 이전",
+    rbInstant:"즉시 레이크백", rbWeekly:"주간 보너스", rbMonthly:"월간 보너스",
+    rbPools:"레이크백 풀", rakebackLabel:"레이크백",
+    vipRakebackTitle:"VIP & 레이크백",
+    vipSubtitle:"모든 베팅에서 레이크백 획득 · 순위 상승 · 보상 잠금 해제",
+    rankUpRewards:"순위 상승 보상",
+    rankUpBonus:"새 티어 도달 시 즉시 보너스",
+    withdrawsInReview:"출금 검토 중",
+    accountBeingVerified:"계정이 인증 중입니다",
+    withdrawPausedMsg:"현재 귀하의 출금은",
+    withdrawPausedStrong:"일시 중지",
+    withdrawPausedMsg2:"팀이 정기 검토를 수행하는 동안.",
+    withdrawPausedContact:"오류가 있다고 생각하시면 문의해 주세요. 즉시 검토하겠습니다. 잔액은 안전합니다.",
+    copyWallet:"지갑 복사", copyTxHash:"TX 해시 복사",
+    rbAddedBalance:"잔액에 추가되었습니다.", keepBettingMore:"베팅을 계속하여 보상을 늘리세요",
+    notifications:"알림", noNotifs:"아직 알림이 없습니다",
+    currentRank:"현재 등급", totalWageredLabel:"총 베팅액",
+    received:"수신됨", system:"시스템",
+    nextRankLabel:"다음", untilNextRank:"남은 금액",
+    loginForVip:"VIP 등급을 보고 레이크백을 청구하려면 로그인하세요.",
+    unlockIn:"잠금 해제:", allRanks:"모든 등급", yourCategory:"내 등급",
+    wagerMin:"최소 배팅", wagerMax:"최대 배팅", rakebackLabel2:"레이크백",
+    notAvailable:"이용 불가", dateLabel:"날짜",
+    privacyTitle:"개인정보 보호정책", fairnessTitle:"공정하고 투명한 게임",
+    termsTitle:"서비스 약관", lastUpdate:"최종 업데이트: 2025년 3월",
+    howWorks:"작동 방식", generateAddress:"예치 주소 생성",
+    walletTitle:"지갑", generatingAddr:"주소 생성 중...", audited:"✓ 검증됨", close:"닫기",
+    showLess:"접기", howToPlayMore:"게임 방법 및 기타",
+    usefulLinks:"유용한 링크", amlPolicy:"AML 정책",
   },
   nl: {
     login:"Inloggen", register:"Registreren", username:"Gebruikersnaam", password:"Wachtwoord",
@@ -643,6 +877,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Geen Risico", affFeat5:"Globaal & Crypto-Vriendelijk", affFeat6:"Vaste 15% Commissie",
     affStep1:"Haal je unieke link", affStep2:"Je referrals melden zich aan", affStep3:"Verzamel inkomsten",
     affCommissions:"Commissies",
+    welcomeTo:"Welkom bij", joinNow:"Nu meedoen", nextPage:"Volgende →", prevPage:"← Vorige",
+    rbInstant:"Directe Rakeback", rbWeekly:"Wekelijkse Bonus", rbMonthly:"Maandelijkse Bonus",
+    rbPools:"Rakeback-pools", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Verdien rakeback bij elke inzet · Klim in de rangen · Ontgrendel beloningen",
+    rankUpRewards:"Beloningen voor rangverhoging",
+    rankUpBonus:"Directe bonus bij het bereiken van elk nieuw niveau",
+    withdrawsInReview:"Opnames worden beoordeeld",
+    accountBeingVerified:"Uw account wordt geverifieerd",
+    withdrawPausedMsg:"Uw opnames zijn momenteel",
+    withdrawPausedStrong:"gepauzeerd",
+    withdrawPausedMsg2:"terwijl ons team een routinecontrole uitvoert.",
+    withdrawPausedContact:"Als u denkt dat er een fout is, neem dan contact met ons op en we zullen het snel beoordelen. Uw saldo is veilig.",
+    copyWallet:"Portemonnee kopiëren", copyTxHash:"TX hash kopiëren",
+    rbAddedBalance:"toegevoegd aan uw saldo.", keepBettingMore:"Blijf inzetten om uw beloningen te verhogen",
+    notifications:"Meldingen", noNotifs:"Nog geen meldingen",
+    currentRank:"Uw huidige rang", totalWageredLabel:"Totaal ingezet",
+    received:"Ontvangen", system:"Systeem",
+    nextRankLabel:"Volg.", untilNextRank:"Resterend",
+    loginForVip:"Log in om uw VIP-rang te zien en rakeback te claimen.",
+    unlockIn:"Ontgrendelt bij", allRanks:"Alle rangen", yourCategory:"Uw categorie",
+    wagerMin:"Min. inzet", wagerMax:"Max. inzet", rakebackLabel2:"Rakeback",
+    notAvailable:"Niet beschikbaar", dateLabel:"Datum",
+    privacyTitle:"Privacybeleid", fairnessTitle:"Eerlijk en transparant spel",
+    termsTitle:"Servicevoorwaarden", lastUpdate:"Laatste update: maart 2025",
+    howWorks:"Hoe het werkt", generateAddress:"Genereer uw stortingsadres voor",
+    walletTitle:"Portemonnee", generatingAddr:"Adres genereren...", audited:"✓ Geauditeerd", close:"Sluiten",
+    showLess:"Minder tonen", howToPlayMore:"Hoe te spelen en meer",
+    usefulLinks:"Handige links", amlPolicy:"AML-beleid",
   },
   pl: {
     login:"Zaloguj się", register:"Zarejestruj się", username:"Nazwa użytkownika", password:"Hasło",
@@ -708,6 +971,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Bez Ryzyka", affFeat5:"Globalny & Krypto-Przyjazny", affFeat6:"Stała Prowizja 15%",
     affStep1:"Zdobądź swój unikalny link", affStep2:"Twoje polecenia dołączają", affStep3:"Gromadź zarobki",
     affCommissions:"Prowizje",
+    welcomeTo:"Witaj w", joinNow:"Dołącz teraz", nextPage:"Dalej →", prevPage:"← Wstecz",
+    rbInstant:"Natychmiastowy Rakeback", rbWeekly:"Bonus Tygodniowy", rbMonthly:"Bonus Miesięczny",
+    rbPools:"Pule Rakeback", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Zdobywaj rakeback przy każdym zakładzie · Awansuj w rankingu · Odblokuj nagrody",
+    rankUpRewards:"Nagrody za Awans",
+    rankUpBonus:"Natychmiastowy bonus po osiągnięciu każdego nowego poziomu",
+    withdrawsInReview:"Wypłaty w trakcie weryfikacji",
+    accountBeingVerified:"Twoje konto jest weryfikowane",
+    withdrawPausedMsg:"Twoje wypłaty są obecnie",
+    withdrawPausedStrong:"wstrzymane",
+    withdrawPausedMsg2:"podczas gdy nasz zespół przeprowadza rutynową kontrolę.",
+    withdrawPausedContact:"Jeśli uważasz, że wystąpił błąd, skontaktuj się z nami, a my szybko to sprawdzimy. Twoje saldo jest bezpieczne.",
+    copyWallet:"Kopiuj portfel", copyTxHash:"Kopiuj TX hash",
+    rbAddedBalance:"dodanych do salda.", keepBettingMore:"Kontynuuj zakłady, aby zwiększyć swoje nagrody",
+    notifications:"Powiadomienia", noNotifs:"Brak powiadomień",
+    currentRank:"Twój obecny rank", totalWageredLabel:"Łączne zakłady",
+    received:"Otrzymano", system:"System",
+    nextRankLabel:"Nast.", untilNextRank:"Pozostało",
+    loginForVip:"Zaloguj się, aby zobaczyć swój rang VIP i odebrać rakeback.",
+    unlockIn:"Odblokowane przy", allRanks:"Wszystkie rangi", yourCategory:"Twoja kategoria",
+    wagerMin:"Min. zakład", wagerMax:"Maks. zakład", rakebackLabel2:"Rakeback",
+    notAvailable:"Niedostępny", dateLabel:"Data",
+    privacyTitle:"Polityka prywatności", fairnessTitle:"Uczciwa i przejrzysta gra",
+    termsTitle:"Warunki korzystania", lastUpdate:"Ostatnia aktualizacja: marzec 2025",
+    howWorks:"Jak to działa", generateAddress:"Wygeneruj adres depozytu dla",
+    walletTitle:"Portfel", generatingAddr:"Generowanie adresu...", audited:"✓ Zweryfikowany", close:"Zamknij",
+    showLess:"Pokaż mniej", howToPlayMore:"Jak grać i więcej",
+    usefulLinks:"Przydatne linki", amlPolicy:"Polityka AML",
   },
   ru: {
     login:"Войти", register:"Регистрация", username:"Имя пользователя", password:"Пароль",
@@ -773,6 +1065,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Без Риска", affFeat5:"Глобально & Крипто-дружественно", affFeat6:"Фиксированная Комиссия 15%",
     affStep1:"Получите уникальную ссылку", affStep2:"Ваши рефералы присоединяются", affStep3:"Накапливайте доход",
     affCommissions:"Комиссии",
+    welcomeTo:"Добро пожаловать в", joinNow:"Присоединиться", nextPage:"Далее →", prevPage:"← Назад",
+    rbInstant:"Мгновенный рейкбэк", rbWeekly:"Еженедельный бонус", rbMonthly:"Ежемесячный бонус",
+    rbPools:"Пулы рейкбэка", rakebackLabel:"Рейкбэк",
+    vipRakebackTitle:"VIP & Рейкбэк",
+    vipSubtitle:"Получайте рейкбэк на каждую ставку · Повышайте ранг · Открывайте награды",
+    rankUpRewards:"Награды за Повышение Ранга",
+    rankUpBonus:"Мгновенный бонус при достижении каждого нового уровня",
+    withdrawsInReview:"Выводы на проверке",
+    accountBeingVerified:"Ваш аккаунт проходит верификацию",
+    withdrawPausedMsg:"Ваши выводы средств в данный момент",
+    withdrawPausedStrong:"приостановлены",
+    withdrawPausedMsg2:"пока наша команда проводит плановую проверку.",
+    withdrawPausedContact:"Если вы считаете, что произошла ошибка, свяжитесь с нами и мы рассмотрим это в ближайшее время. Ваш баланс в безопасности.",
+    copyWallet:"Копировать кошелёк", copyTxHash:"Копировать TX хэш",
+    rbAddedBalance:"добавлено на баланс.", keepBettingMore:"Продолжайте делать ставки для увеличения наград",
+    notifications:"Уведомления", noNotifs:"Уведомлений пока нет",
+    currentRank:"Ваш текущий ранг", totalWageredLabel:"Всего поставлено",
+    received:"Получено", system:"Система",
+    nextRankLabel:"След.", untilNextRank:"Осталось",
+    loginForVip:"Войдите, чтобы увидеть ваш VIP-ранг и получить рейкбек.",
+    unlockIn:"Разблокируется при", allRanks:"Все ранги", yourCategory:"Ваша категория",
+    wagerMin:"Мин. ставка", wagerMax:"Макс. ставка", rakebackLabel2:"Рейкбек",
+    notAvailable:"Недоступно", dateLabel:"Дата",
+    privacyTitle:"Политика конфиденциальности", fairnessTitle:"Честная и прозрачная игра",
+    termsTitle:"Условия использования", lastUpdate:"Последнее обновление: Март 2025",
+    howWorks:"Как это работает", generateAddress:"Сгенерируйте адрес для пополнения",
+    walletTitle:"Кошелёк", generatingAddr:"Генерация адреса...", audited:"✓ Аудирован", close:"Закрыть",
+    showLess:"Показать меньше", howToPlayMore:"Как играть и подробнее",
+    usefulLinks:"Полезные ссылки", amlPolicy:"Политика AML",
   },
   tr: {
     login:"Giriş Yap", register:"Kayıt Ol", username:"Kullanıcı Adı", password:"Şifre",
@@ -838,6 +1159,35 @@ const LANGS: Record<string, Record<string, string>> = {
     affFeat4:"Sıfır Risk", affFeat5:"Küresel & Kripto Dostu", affFeat6:"Sabit %15 Komisyon",
     affStep1:"Benzersiz linkinizi alın", affStep2:"Referanslarınız katılır", affStep3:"Kazanç biriktirir",
     affCommissions:"Komisyonlar",
+    welcomeTo:"Hoş geldiniz", joinNow:"Şimdi katıl", nextPage:"İleri →", prevPage:"← Geri",
+    rbInstant:"Anında Rakeback", rbWeekly:"Haftalık Bonus", rbMonthly:"Aylık Bonus",
+    rbPools:"Rakeback Havuzları", rakebackLabel:"Rakeback",
+    vipRakebackTitle:"VIP & Rakeback",
+    vipSubtitle:"Her bahiste rakeback kazan · Rütbe yükselt · Ödüllerin kilidini aç",
+    rankUpRewards:"Rütbe Yükseltme Ödülleri",
+    rankUpBonus:"Her yeni kademeye ulaşıldığında anında bonus",
+    withdrawsInReview:"Çekimler incelemede",
+    accountBeingVerified:"Hesabınız doğrulanıyor",
+    withdrawPausedMsg:"Para çekme işlemleriniz şu anda",
+    withdrawPausedStrong:"beklemede",
+    withdrawPausedMsg2:"ekibimiz rutin bir inceleme yaparken.",
+    withdrawPausedContact:"Bir hata olduğunu düşünüyorsanız bizimle iletişime geçin, en kısa sürede inceleriz. Bakiyeniz güvende.",
+    copyWallet:"Cüzdanı kopyala", copyTxHash:"TX hash kopyala",
+    rbAddedBalance:"bakiyenize eklendi.", keepBettingMore:"Ödüllerinizi artırmak için bahis yapmaya devam edin",
+    notifications:"Bildirimler", noNotifs:"Henüz bildirim yok",
+    currentRank:"Mevcut Rütbeniz", totalWageredLabel:"Toplam Bahis",
+    received:"Alındı", system:"Sistem",
+    nextRankLabel:"Sonraki", untilNextRank:"Kalan",
+    loginForVip:"VIP rütbenizi görmek ve rakeback talep etmek için giriş yapın.",
+    unlockIn:"Kilit açma:", allRanks:"Tüm Rütbeler", yourCategory:"Kategoriniz",
+    wagerMin:"Min. bahis", wagerMax:"Maks. bahis", rakebackLabel2:"Rakeback",
+    notAvailable:"Mevcut değil", dateLabel:"Tarih",
+    privacyTitle:"Gizlilik Politikası", fairnessTitle:"Adil ve Şeffaf Oyun",
+    termsTitle:"Hizmet Şartları", lastUpdate:"Son güncelleme: Mart 2025",
+    howWorks:"Nasıl çalışır", generateAddress:"Yatırım adresinizi oluşturun",
+    walletTitle:"Cüzdan", generatingAddr:"Adres oluşturuluyor...", audited:"✓ Denetlendi", close:"Kapat",
+    showLess:"Daha az göster", howToPlayMore:"Nasıl oynanır ve daha fazlası",
+    usefulLinks:"Faydalı bağlantılar", amlPolicy:"AML Politikası",
   },
 };
 
@@ -3963,7 +4313,7 @@ export default function App() {
     setCoinBalanceUsd(nb);
     setRbInstant(0);
     saveRewardClaim(currentUser, val, "Rakeback Claim - Instant");
-    addNotif("bonus", "Rakeback Instantáneo Reclamado", `+${fmtMoney(val)} han sido añadidos a tu saldo.`);
+    addNotif("bonus", t("rbInstant") + " ✓", `+${fmtMoney(val)} ${t("rbAddedBalance")}`);
   }
 
   function doClaimWeekly() {
@@ -3973,7 +4323,7 @@ export default function App() {
     setCoinBalanceUsd(nb);
     setRbWeekly(0);
     saveRewardClaim(currentUser, val, "Rakeback Claim - Weekly");
-    addNotif("bonus", "🎁 Bono Semanal Reclamado", `+${fmtMoney(val)} han sido añadidos a tu saldo.`);
+    addNotif("bonus", "🎁 " + t("rbWeekly") + " ✓", `+${fmtMoney(val)} ${t("rbAddedBalance")}`);
   }
 
   function doClaimMonthly() {
@@ -3983,7 +4333,7 @@ export default function App() {
     setCoinBalanceUsd(nb);
     setRbMonthly(0);
     saveRewardClaim(currentUser, val, "Rakeback Claim - Monthly");
-    addNotif("bonus", "🎁 Bono Mensual Reclamado", `+${fmtMoney(val)} han sido añadidos a tu saldo.`);
+    addNotif("bonus", "🎁 " + t("rbMonthly") + " ✓", `+${fmtMoney(val)} ${t("rbAddedBalance")}`);
   }
 
   function claimRankReward() {
@@ -5505,11 +5855,11 @@ export default function App() {
               const rdMTimer = timeUntilClaim("monthly", currentUser);
               const rdBadge = [rdCanI && rbInstant > 0, rdCanW && rbWeekly > 0, rdCanM && rbMonthly > 0].filter(Boolean).length;
               const rdRows: { key: string; label: string; amount: number; canClaim: boolean; timer: string; onClaim: ()=>void; accent: string; icon: React.ReactNode }[] = [
-                { key:"instant", label:"Rakeback Instantáneo", amount:rbInstant, canClaim:rdCanI, timer:rdITimer, onClaim:doClaimInstant, accent:"#f4a91f",
+                { key:"instant", label:t("rbInstant"), amount:rbInstant, canClaim:rdCanI, timer:rdITimer, onClaim:doClaimInstant, accent:"#f4a91f",
                   icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> },
-                { key:"weekly",  label:"Bono Semanal",         amount:rbWeekly,  canClaim:rdCanW, timer:rdWTimer, onClaim:doClaimWeekly,  accent:"#6c8ae4",
+                { key:"weekly",  label:t("rbWeekly"),          amount:rbWeekly,  canClaim:rdCanW, timer:rdWTimer, onClaim:doClaimWeekly,  accent:"#6c8ae4",
                   icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#6c8ae4" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
-                { key:"monthly", label:"Bono Mensual",         amount:rbMonthly, canClaim:rdCanM, timer:rdMTimer, onClaim:doClaimMonthly, accent:"#9b6cda",
+                { key:"monthly", label:t("rbMonthly"),         amount:rbMonthly, canClaim:rdCanM, timer:rdMTimer, onClaim:doClaimMonthly, accent:"#9b6cda",
                   icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9b6cda" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
               ];
               return (
@@ -5616,7 +5966,7 @@ export default function App() {
                       background:"rgba(255,255,255,0.02)" }}>
                       <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#7a8fb8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        <span style={{ fontWeight:700,fontSize:"13px",letterSpacing:"0.5px",color:"#e8f0ff" }}>Notificaciones</span>
+                        <span style={{ fontWeight:700,fontSize:"13px",letterSpacing:"0.5px",color:"#e8f0ff" }}>{t("notifications")}</span>
                         {notifications.filter(n=>!n.read).length > 0 && (
                           <span style={{ background:"#e63e3e",borderRadius:"999px",padding:"1px 7px",fontSize:"10px",fontWeight:700,color:"#fff" }}>
                             {notifications.filter(n=>!n.read).length}
@@ -5639,7 +5989,7 @@ export default function App() {
                       {notifications.length === 0 ? (
                         <div style={{ padding:"48px 16px",textAlign:"center" }}>
                           <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#2a3a58" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin:"0 auto 12px",display:"block" }}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                          <p style={{ color:"#3a4e68",fontSize:"13px",margin:0 }}>Sin notificaciones aún</p>
+                          <p style={{ color:"#3a4e68",fontSize:"13px",margin:0 }}>{t("noNotifs")}</p>
                         </div>
                       ) : notifications.map((n, idx) => {
                         const nc = NTC[n.type] ?? NTC.info;
@@ -5697,7 +6047,7 @@ export default function App() {
                     [t("profile"),"profile",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>],
                     [t("history"),"bet-history",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>],
                     [t("transactions"),"transactions",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>],
-                    ["Recompensas","rewards-history",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>],
+                    [t("rewards"),"rewards-history",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>],
                     [t("referrals"),"referrals-profile",<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>],
                   ] as [string,string,React.ReactNode][]).map(([l,s,icon])=>(
                     <button key={s} onClick={()=>openSection(s)}
@@ -5848,12 +6198,12 @@ export default function App() {
                           style={{ width:"100%",background:"#3a4256",color:"white",border:"none",borderRadius:"10px",padding:"10px 16px",fontWeight:500,cursor:"pointer",fontSize:"15px",transition:"transform .15s ease, background .15s ease, box-shadow .15s ease",display:"flex",alignItems:"center",justifyContent:"center" }}
                           onMouseEnter={e=>{ e.currentTarget.style.background="#4a5470"; e.currentTarget.style.transform="scale(1.04)"; e.currentTarget.style.boxShadow="0 6px 20px rgba(0,0,0,.4)"; }}
                           onMouseLeave={e=>{ e.currentTarget.style.background="#3a4256"; e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="none"; }}>
-                          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:"6px",flexShrink:0}}><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Recompensas
+                          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:"6px",flexShrink:0}}><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>{t("rewards")}
                         </button>
                       </div>
                     </>) : (
                       <div style={{ display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 20px 26px",textAlign:"center",animation:"nlsfadeIn .35s ease" }}>
-                        <p style={{ margin:"0 0 2px",fontSize:"11px",color:"#5a6a88",fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>¡Bienvenido a</p>
+                        <p style={{ margin:"0 0 2px",fontSize:"11px",color:"#5a6a88",fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>{t("welcomeTo")}</p>
                         <h2 style={{ margin:"0 0 20px",fontSize:"26px",fontWeight:900,letterSpacing:"-0.5px",lineHeight:1 }}>
                           <span style={{ color:"#f6b531" }}>MANDER</span>
                           <span style={{ color:"#e2e8f0" }}>!</span>
@@ -5863,7 +6213,7 @@ export default function App() {
                           onMouseEnter={e=>{ e.currentTarget.style.filter="brightness(1.12)"; e.currentTarget.style.transform="scale(1.03)"; }}
                           onMouseLeave={e=>{ e.currentTarget.style.filter=""; e.currentTarget.style.transform=""; }}
                           style={{ width:"100%",padding:"14px 0",borderRadius:"10px",border:"none",background:"linear-gradient(180deg,#f6b531,#ea9807)",color:"#fff",fontWeight:700,fontSize:"15px",cursor:"pointer",transition:"filter .15s,transform .15s",fontFamily:"inherit" }}>
-                          Únete ahora
+                          {t("joinNow")}
                         </button>
                       </div>
                     )}
@@ -6058,7 +6408,7 @@ export default function App() {
                 lang={lang}
               />
 
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
             </>)}
 
             {/* DICE GAME */}
@@ -6097,10 +6447,10 @@ export default function App() {
               onResetStats={()=>{ const z={ profit:0,wagered:0,wins:0,losses:0,history:[],autoRemaining:0 }; setDiceStats(z); ls.saveDice(currentUser, z); }}
               hideHistory={true}
             /></div>
-            <GameInfoPanel game="dice" onFairness={() => { setSection("fairness"); setFairnessGame("Dice"); }}/>
+            <GameInfoPanel game="dice" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Dice"); }}/>
             <MoreFromLockly currentGame="dice" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={diceBetHistory as ApuestaRecord[]} gameLabel="Dados" gameIcon={<img src="/dice-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="dice"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
             </>}
 
             {/* PLINKO GAME */}
@@ -6133,10 +6483,10 @@ export default function App() {
               showPlinkoVol={showPlinkoVol} setShowPlinkoVol={setShowPlinkoVol}
               currentUser={currentUser||undefined}
             /></div>
-            <GameInfoPanel game="plinko" onFairness={() => { setSection("fairness"); setFairnessGame("Plinko"); }}/>
+            <GameInfoPanel game="plinko" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Plinko"); }}/>
             <MoreFromLockly currentGame="plinko" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={plinkoBetHistory as ApuestaRecord[]} gameLabel="Plinko" gameIcon={<img src="/plinko-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="plinko"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
             </>}
 
             {/* KENO GAME */}
@@ -6218,10 +6568,10 @@ export default function App() {
               hideHistory={true}
               lang={lang}
             /></div>
-            <GameInfoPanel game="keno" onFairness={() => { setSection("fairness"); setFairnessGame("Keno"); }}/>
+            <GameInfoPanel game="keno" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Keno"); }}/>
             <MoreFromLockly currentGame="keno" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
             <ApuestasSection records={kenoBetHistory as ApuestaRecord[]} gameLabel="Keno" gameIcon={<img src="/keno-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="keno"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
             </>}
 
 
@@ -6248,10 +6598,10 @@ export default function App() {
                 onGameActive={setBjGameActive}
               />
               </div>
-              <GameInfoPanel game="blackjack" onFairness={() => { setSection("fairness"); setFairnessGame("Blackjack"); }}/>
+              <GameInfoPanel game="blackjack" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Blackjack"); }}/>
               <MoreFromLockly currentGame="blackjack" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={bjBetHistory as ApuestaRecord[]} gameLabel="Blackjack" gameIcon={<img src="/blackjack-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="blackjack"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
               </>
             )}
 
@@ -6285,10 +6635,10 @@ export default function App() {
                   onGameActive={setMinesGameActive}
                 />
               </div>
-              <GameInfoPanel game="mines" onFairness={() => { setSection("fairness"); setFairnessGame("Mines"); }}/>
+              <GameInfoPanel game="mines" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Mines"); }}/>
               <MoreFromLockly currentGame="mines" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={minesBetHistory as ApuestaRecord[]} gameLabel="Mines" gameIcon={<img src="/mines-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="mines"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
               </>
             )}
 
@@ -6319,10 +6669,10 @@ export default function App() {
                 onRequestLogin={() => setAuthModal("login")}
                 onGameActive={setHiloGameActive}
               />
-              <GameInfoPanel game="hilo" onFairness={() => { setSection("fairness"); setFairnessGame("Hilo"); }}/>
+              <GameInfoPanel game="hilo" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Hilo"); }}/>
               <MoreFromLockly currentGame="hilo" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={hiloBetHistory as ApuestaRecord[]} gameLabel="Hilo" gameIcon={<img src="/hilo-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="hilo"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
               </>
             )}
 
@@ -6364,10 +6714,10 @@ export default function App() {
                 onGameActive={setRouletteGameActive}
               />
               </div>
-              <GameInfoPanel game="roulette" onFairness={() => { setSection("fairness"); setFairnessGame("Roulette"); }}/>
+              <GameInfoPanel game="roulette" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Roulette"); }}/>
               <MoreFromLockly currentGame="roulette" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={rouletteBetHistory as ApuestaRecord[]} gameLabel="Ruleta" gameIcon={<img src="/roulette-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="ruleta"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
               </>
             )}
 
@@ -6406,10 +6756,10 @@ export default function App() {
                   onGameActive={setBaccaratGameActive}
                 />
               </div>
-              <GameInfoPanel game="baccarat" onFairness={() => { setSection("fairness"); setFairnessGame("Baccarat"); }}/>
+              <GameInfoPanel game="baccarat" lang={lang} onFairness={() => { setSection("fairness"); setFairnessGame("Baccarat"); }}/>
               <MoreFromLockly currentGame="baccarat" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
               <ApuestasSection records={baccaratBetHistory as ApuestaRecord[]} gameLabel="Baccarat" gameIcon={<img src="/baccarat-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="baccarat"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
-              <CasinoFooter onHome={showHomeView} />
+              <CasinoFooter onHome={showHomeView} lang={lang} />
               </>
             )}
 
@@ -6449,7 +6799,7 @@ export default function App() {
 
                 </div>
               </div>
-              <CasinoFooter onHome={showHomeView} /></>
+              <CasinoFooter onHome={showHomeView} lang={lang} /></>
             )}
           </section>
         )}
@@ -6460,11 +6810,11 @@ export default function App() {
             <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", overflowX:"auto", scrollbarWidth:"none" }}>
               <div style={{ display:"flex", gap:"6px", minWidth:"max-content" }}>
                 {([
-                  { key:"profile",       label:"Perfil",               icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> },
-                  { key:"bet-history",   label:"Historial de apuestas", icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg> },
-                  { key:"transactions",  label:"Transacciones",         icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> },
-                  { key:"rewards-history", label:"Recompensas",           icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> },
-                  { key:"referrals-profile", label:"Referidos",         icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
+                  { key:"profile",       label:t("profile"),               icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> },
+                  { key:"bet-history",   label:t("betHistory"), icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg> },
+                  { key:"transactions",  label:t("transactions"),         icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> },
+                  { key:"rewards-history", label:t("rewards"),           icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> },
+                  { key:"referrals-profile", label:t("referrals"),         icon:<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
                 ] as { key: string; label: string; icon: React.ReactNode }[]).map(tab => {
                   const active = section === tab.key;
                   return (
@@ -6519,7 +6869,7 @@ export default function App() {
               }}
             />
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
 
@@ -6534,7 +6884,7 @@ export default function App() {
               </div>
               {!currentUser ? (
                 <div style={{ background:"#161d2b", border:"1px solid #20283a", borderRadius:"14px", padding:"16px" }}>
-                  <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} />
+                  <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} lang={lang} />
                 </div>
               ) : (()=>{
                 // ── Normalize all per-game bet histories into one unified format ──
@@ -6628,15 +6978,15 @@ export default function App() {
                     </div>
                     {totalPages>1 && (
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"14px 16px", borderTop:"1px solid #1a2236" }}>
-                        <span style={{ color:"#64748b", fontSize:13 }}>Página {page+1} de {totalPages}</span>
+                        <span style={{ color:"#64748b", fontSize:13 }}>{t("affPage")} {page+1} {t("affOf")} {totalPages}</span>
                         <div style={{ display:"flex", gap:8 }}>
                           <button onClick={()=>setBhPage(p=>Math.max(0,p-1))} disabled={page===0}
                             style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                            ← Anterior
+                            {t("prevPage")}
                           </button>
                           <button onClick={()=>setBhPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
                             style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                            Siguiente →
+                            {t("nextPage")}
                           </button>
                         </div>
                       </div>
@@ -6645,7 +6995,7 @@ export default function App() {
                 );
               })()}
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
 
@@ -6656,7 +7006,7 @@ export default function App() {
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"16px" }}>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
-                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>Transacciones</span>
+                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("transactions")}</span>
               </div>
               {/* Card */}
               <div style={{ background:"#161d2b", border:"1px solid #20283a", borderRadius:"14px", overflow:"hidden" }}>
@@ -6678,7 +7028,7 @@ export default function App() {
                 {/* Table / empty */}
                 {!currentUser ? (
                   <div style={{ padding:"16px" }}>
-                    <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} />
+                    <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} lang={lang} />
                   </div>
                 ) : (
                   (() => {
@@ -6824,16 +7174,16 @@ export default function App() {
                             {totalPages > 1 && (
                               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"14px 16px", borderTop:"1px solid #1a2236" }}>
                                 <span style={{ color:"#64748b", fontSize:13 }}>
-                                  Página {page+1} de {totalPages}
+                                  {t("affPage")} {page+1} {t("affOf")} {totalPages}
                                 </span>
                                 <div style={{ display:"flex", gap:8 }}>
                                   <button onClick={()=>setTxPage(p=>Math.max(0,p-1))} disabled={page===0}
                                     style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                                    ← Anterior
+                                    {t("prevPage")}
                                   </button>
                                   <button onClick={()=>setTxPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
                                     style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                                    Siguiente →
+                                    {t("nextPage")}
                                   </button>
                                 </div>
                               </div>
@@ -6846,7 +7196,7 @@ export default function App() {
                 )}
               </div>
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
 
@@ -6857,11 +7207,11 @@ export default function App() {
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"18px" }}>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>Recompensas</span>
+                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("rewards")}</span>
               </div>
               {/* Table card */}
               {!currentUser ? (
-                <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} />
+                <NotLoggedInState variant="transactions" onLogin={()=>setAuthModal("login")} onRegister={()=>setAuthModal("register")} lang={lang} />
               ) : (
                 (() => {
                   const PAGE_SIZE = 10;
@@ -6897,7 +7247,7 @@ export default function App() {
                                 onMouseLeave={e=>(e.currentTarget.style.background="transparent")}>
                                 <td style={{ padding:"13px 16px", fontSize:"13px", color:"#7a8faa", whiteSpace:"nowrap" as const }}>{fmtDate(rec.date)}</td>
                                 <td style={{ padding:"13px 16px" }}>
-                                  <span style={{ color:"#22c55e", fontWeight:600, fontSize:"13px" }}>Recibido</span>
+                                  <span style={{ color:"#22c55e", fontWeight:600, fontSize:"13px" }}>{t("received")}</span>
                                 </td>
                                 <td style={{ padding:"13px 16px" }}>
                                   <span style={{ color:"#22c55e", fontWeight:700, fontSize:"13px" }}>{fmtMoney(rec.amount)}</span>
@@ -6905,7 +7255,7 @@ export default function App() {
                                 <td style={{ padding:"13px 16px" }}>
                                   <span style={{ fontSize:"13px", color:"#c8d8ec", fontWeight:600 }}>USD</span>
                                 </td>
-                                <td style={{ padding:"13px 16px", fontSize:"13px", color:"#c8d8ec" }}>Sistema</td>
+                                <td style={{ padding:"13px 16px", fontSize:"13px", color:"#c8d8ec" }}>{t("system")}</td>
                                 <td style={{ padding:"13px 16px", fontSize:"13px", color:"#7a8faa" }}>{rec.note}</td>
                               </tr>
                             ))}
@@ -6915,15 +7265,15 @@ export default function App() {
                       {/* Pagination */}
                       {totalPages > 1 && (
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"14px 16px", borderTop:"1px solid #1a2236" }}>
-                          <span style={{ color:"#64748b", fontSize:13 }}>Página {page+1} de {totalPages}</span>
+                          <span style={{ color:"#64748b", fontSize:13 }}>{t("affPage")} {page+1} {t("affOf")} {totalPages}</span>
                           <div style={{ display:"flex", gap:8 }}>
                             <button onClick={()=>setRwPage(p=>Math.max(0,p-1))} disabled={page===0}
                               style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                              ← Anterior
+                              {t("prevPage")}
                             </button>
                             <button onClick={()=>setRwPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
                               style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
-                              Siguiente →
+                              {t("nextPage")}
                             </button>
                           </div>
                         </div>
@@ -6933,7 +7283,7 @@ export default function App() {
                 })()
               )}
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
 
@@ -6962,8 +7312,8 @@ export default function App() {
                       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                     </div>
                     <div>
-                      <div style={{ fontSize:"22px", fontWeight:800, color:"#e2e8f0", letterSpacing:"-0.3px" }}>VIP & Rakeback</div>
-                      <div style={{ fontSize:"12px", color:"#7a8faa", marginTop:"2px" }}>Acumula rakeback en cada apuesta · Sube de rango · Desbloquea recompensas</div>
+                      <div style={{ fontSize:"22px", fontWeight:800, color:"#e2e8f0", letterSpacing:"-0.3px" }}>{t("vipRakebackTitle")}</div>
+                      <div style={{ fontSize:"12px", color:"#7a8faa", marginTop:"2px" }}>{t("vipSubtitle")}</div>
                     </div>
                   </div>
 
@@ -6978,7 +7328,7 @@ export default function App() {
                         {/* Rank name + progress */}
                         <div>
                           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"4px" }}>
-                            <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"1.6px", textTransform:"uppercase" as const, fontWeight:700 }}>Tu Rango Actual</div>
+                            <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"1.6px", textTransform:"uppercase" as const, fontWeight:700 }}>{t("currentRank")}</div>
                           </div>
                           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
                             <div style={{ fontSize:"22px", fontWeight:900, background:vRank.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", lineHeight:1 }}>{vRank.name}</div>
@@ -7004,12 +7354,12 @@ export default function App() {
                         </div>
                         {/* Total apostado */}
                         <div style={{ textAlign:"right" as const, flexShrink:0 }}>
-                          <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"1.2px", textTransform:"uppercase" as const, marginBottom:"4px", fontWeight:700 }}>Total Apostado</div>
+                          <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"1.2px", textTransform:"uppercase" as const, marginBottom:"4px", fontWeight:700 }}>{t("totalWageredLabel")}</div>
                           <div style={{ fontSize:"22px", fontWeight:900, color:"#e2e8f0" }}>{fmtW(vipWagered)}</div>
                           {!vMax && (
                             <div style={{ marginTop:"3px" }}>
-                              <div style={{ fontSize:"11px", color:"#4a5568" }}>Sig: <span style={{ color:VIP_RANKS[vIdx+1]?.color || "#e2e8f0", fontWeight:700 }}>{VIP_RANKS[vIdx+1]?.name}</span></div>
-                              <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"1px" }}>Faltan <span style={{ color:"#94a3b8", fontWeight:700 }}>{fmtW(vRem)}</span></div>
+                              <div style={{ fontSize:"11px", color:"#4a5568" }}>{t("nextRankLabel")}: <span style={{ color:VIP_RANKS[vIdx+1]?.color || "#e2e8f0", fontWeight:700 }}>{VIP_RANKS[vIdx+1]?.name}</span></div>
+                              <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"1px" }}>{t("untilNextRank")} <span style={{ color:"#94a3b8", fontWeight:700 }}>{fmtW(vRem)}</span></div>
                             </div>
                           )}
                         </div>
@@ -7020,7 +7370,7 @@ export default function App() {
                           <img src={vRank.image} alt={vRank.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                         </div>
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span style={{ fontSize:"13px", color:"#7a8faa" }}>Inicia sesión para ver tu rango VIP y reclamar rakeback.</span>
+                        <span style={{ fontSize:"13px", color:"#7a8faa" }}>{t("loginForVip")}</span>
                       </div>
                     )}
                   </div>
@@ -7031,9 +7381,9 @@ export default function App() {
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"10px" }}>
                         <div style={{ display:"flex", alignItems:"center", gap:"7px" }}>
                           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f4a91f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                          <span style={{ fontSize:"11px", color:"#f4a91f", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const }}>Rakeback Pools</span>
+                          <span style={{ fontSize:"11px", color:"#f4a91f", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const }}>{t("rbPools")}</span>
                         </div>
-                        <span style={{ fontSize:"11px", color:"#4a5568", fontStyle:"italic" as const }}>Sigue apostando para aumentar tus recompensas</span>
+                        <span style={{ fontSize:"11px", color:"#4a5568", fontStyle:"italic" as const }}>{t("keepBettingMore")}</span>
                       </div>
                       <div className="rb-pools-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", marginBottom:"14px" }}>
                         {([
@@ -7130,7 +7480,7 @@ export default function App() {
                                   <div style={{ background:"#0a1120", border:"1px solid #1a2538", borderRadius:"10px", padding:"10px 13px", marginBottom:"10px", display:"flex", alignItems:"center", gap:"9px" }}>
                                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke={c.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, opacity:0.7 }}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                     <div>
-                                      <div style={{ fontSize:"9px", color:"#4a5568", letterSpacing:"1px", textTransform:"uppercase" as const, fontWeight:700 }}>Desbloquea en</div>
+                                      <div style={{ fontSize:"9px", color:"#4a5568", letterSpacing:"1px", textTransform:"uppercase" as const, fontWeight:700 }}>{t("unlockIn")}</div>
                                       <div style={{ fontSize:"15px", fontWeight:900, color:"#94a3b8", marginTop:"1px", letterSpacing:"-0.3px" }}>{c.timer || "—"}</div>
                                     </div>
                                   </div>
@@ -7167,8 +7517,8 @@ export default function App() {
                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
                       </div>
                       <div>
-                        <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>Recompensas al Subir de Rango</div>
-                        <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"2px" }}>Bono instantáneo al alcanzar cada nuevo tier</div>
+                        <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>{t("rankUpRewards")}</div>
+                        <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"2px" }}>{t("rankUpBonus")}</div>
                       </div>
                     </div>
                     <div className="rb-rewards-grid" style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:"10px" }}>
@@ -7200,7 +7550,7 @@ export default function App() {
                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l2.4 4.9L20 8l-4 3.9.9 5.5L12 15l-4.9 2.4L8 11.9 4 8l5.6-.1z"/></svg>
                       </div>
                       <div>
-                        <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>Todos los Rangos</div>
+                        <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>{t("allRanks")}</div>
                         <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"2px" }}>15 niveles · Bronze → Emerald · rakeback creciente</div>
                       </div>
                     </div>
@@ -7221,7 +7571,7 @@ export default function App() {
                                 <img src={`/ranks/${tier.toLowerCase()}-iii.png`} alt={tier} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                               </div>
                               <span style={{ fontSize:"12px", fontWeight:900, color:first.color, letterSpacing:"1.5px", textTransform:"uppercase" as const }}>{tier}</span>
-                              {tierActive && <span style={{ fontSize:"10px", fontWeight:700, color:first.color, background:`${first.color}18`, border:`1px solid ${first.color}40`, borderRadius:"20px", padding:"1px 8px" }}>Tu categoría</span>}
+                              {tierActive && <span style={{ fontSize:"10px", fontWeight:700, color:first.color, background:`${first.color}18`, border:`1px solid ${first.color}40`, borderRadius:"20px", padding:"1px 8px" }}>{t("yourCategory")}</span>}
                             </div>
                             <div style={{ flex:1, height:"1px", background:`linear-gradient(90deg,${first.color}30,transparent)` }} />
                           </div>
@@ -7262,16 +7612,16 @@ export default function App() {
                                   {/* Stats */}
                                   <div style={{ display:"flex", flexDirection:"column" as const, gap:"4px" }}>
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>Wager mín.</span>
+                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{t("wagerMin")}</span>
                                       <span style={{ fontSize:"11px", color:"#94a3b8", fontWeight:700 }}>{fmtW(r.minWager)}</span>
                                     </div>
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>Wager máx.</span>
+                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{t("wagerMax")}</span>
                                       <span style={{ fontSize:"11px", color:"#94a3b8", fontWeight:700 }}>{r.i === VIP_RANKS.length-1 ? "∞" : fmtW(r.nextWager)}</span>
                                     </div>
                                     <div style={{ height:"1px", background:"#1a2538", margin:"3px 0" }} />
                                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>Rakeback</span>
+                                      <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{t("rakebackLabel2")}</span>
                                       <span style={{ fontSize:"13px", fontWeight:900, color: r.color }}>{(r.rakebackPct*100).toFixed(1)}%</span>
                                     </div>
                                     {/* Pending rank reward claim — shown on whichever rank card matches the pending reward */}
@@ -7301,7 +7651,7 @@ export default function App() {
               );
             })()}
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
         {section==="referrals" && (
@@ -7309,7 +7659,7 @@ export default function App() {
             <div style={{ flex:1, minHeight:"calc(100vh - 70px)" }}>
               <AffiliateProgram username={currentUser} t={t} onRegister={()=>setAuthModal("register")} />
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
         {section==="referrals-profile" && (
@@ -7318,19 +7668,19 @@ export default function App() {
               <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", boxSizing:"border-box" as const }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"18px" }}>
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                  <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec" }}>Referidos</span>
+                  <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec" }}>{t("referrals")}</span>
                 </div>
               </div>
               <AffiliateProgram username={currentUser} t={t} dashboardOnly onRegister={()=>setAuthModal("register")} />
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
         {section==="privacy" && (
           <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)", display:"flex", flexDirection:"column" }}>
             <div style={{ maxWidth:"860px",margin:"0 auto", minHeight:"calc(100vh - 70px)" }}>
               <div style={{ marginBottom:"32px",paddingBottom:"20px",borderBottom:"1px solid #20283a" }}>
-                <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>Política de Privacidad</h1>
+                <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("privacyTitle")}</h1>
               </div>
 
               {([
@@ -7405,7 +7755,7 @@ export default function App() {
               ))}
 
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
         {section==="fairness" && (()=>{
@@ -7419,88 +7769,7 @@ export default function App() {
             Roulette:(s,c="currentColor")=><svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/></svg>,
             Baccarat:(s,c="currentColor")=><svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="6" width="12" height="16" rx="2"/><rect x="11" y="2" width="12" height="16" rx="2"/></svg>,
           };
-          const fGames = [
-            {
-              key:"Dice", label:"Dice", color:"#4a9eff", soon:false,
-              how:"Mander Dice es un juego de dados donde tú eliges un número objetivo y apuestas a que el resultado cae por encima o por debajo de ese número. El rango va del 0 al 100, y puedes ajustar tu probabilidad de ganar según tu estrategia.",
-              sections:[
-                { title:"Cómo se determina el resultado", body:"Cada tirada genera un número entre 0 y 100 de forma completamente aleatoria en el momento exacto en que confirmas tu apuesta. Ningún sistema interno ni externo puede predecir o influir en el resultado antes de que ocurra." },
-                { title:"Sistema de aleatoriedad", body:"Utilizamos generadores de números aleatorios de alta entropía, independientes del casino. Esto significa que cada resultado es estadísticamente impredecible y no está relacionado con tiradas anteriores o futuras." },
-                { title:"Sin ventaja oculta", body:"El house edge de Mander Dice es fijo, visible y no varía entre rondas. No existe ningún mecanismo que ajuste los resultados según tu historial de apuestas o tu balance actual." },
-              ],
-              tags:["Resultados 100% aleatorios","House edge fijo y visible","Sin memoria entre rondas"],
-            },
-            {
-              key:"Plinko", label:"Plinko", color:"#f97316", soon:false,
-              how:"En Mander Plinko, una pelota cae desde la parte superior de un tablero de clavijas y rebota aleatoriamente hasta aterrizar en una de las ranuras inferiores, cada una con un multiplicador distinto.",
-              sections:[
-                { title:"Cómo se determina la trayectoria", body:"La trayectoria de la pelota se calcula a partir de un proceso de decisión aleatorio en cada clavija. En cada punto de bifurcación, la pelota tiene una probabilidad igual de ir a la izquierda o a la derecha, lo que hace que el destino final sea imposible de predecir." },
-                { title:"Física del juego", body:"El movimiento de la pelota simula física real con aleatoriedad pura en cada rebote. El casino no tiene control sobre en qué ranura aterrizará la pelota una vez que inicia su caída." },
-                { title:"Transparencia de multiplicadores", body:"Los multiplicadores de cada ranura son fijos y visibles antes de realizar tu apuesta. El juego no ajusta los multiplicadores ni el comportamiento de la pelota en función de tu historial." },
-              ],
-              tags:["Trayectoria generada aleatoriamente","Multiplicadores fijos y visibles","Sin interferencia externa"],
-            },
-            {
-              key:"Keno", label:"Keno", color:"#f4a91f", soon:false,
-              how:"Mander Keno es un juego de lotería donde seleccionas entre 1 y 10 números del 1 al 40. Luego el sistema extrae una serie de números ganadores de forma aleatoria y recibes un premio según cuántos de tus números coinciden.",
-              sections:[
-                { title:"Cómo se extraen los números", body:"Los números ganadores se seleccionan mediante un generador de números aleatorios que garantiza que cada número del tablero tiene exactamente la misma probabilidad de ser elegido. El proceso de extracción es completamente independiente de los números que hayas seleccionado." },
-                { title:"Imparcialidad garantizada", body:"El casino no tiene información sobre qué números elegiste en el momento de la extracción. Los resultados no pueden ser ajustados para favorecer o perjudicar a ningún jugador en particular." },
-                { title:"Tabla de premios", body:"Los multiplicadores y premios para cada cantidad de aciertos son fijos y están disponibles antes de realizar tu apuesta. No existen cambios dinámicos en los premios según el balance de la sala." },
-              ],
-              tags:["Extracción completamente aleatoria","Probabilidades iguales para todos","Premios fijos y transparentes"],
-            },
-            {
-              key:"Blackjack", label:"Blackjack", color:"#06b6d4", soon:false,
-              how:"Mander Blackjack es el clásico juego de cartas donde el objetivo es llegar lo más cerca posible a 21 sin pasarse, superando al dealer. Puedes pedir carta, plantarte, doblar o dividir según tu mano.",
-              sections:[
-                { title:"Cómo se reparten las cartas", body:"Antes de cada ronda, la baraja completa se mezcla de forma aleatoria utilizando un algoritmo de barajado estándar. Cada carta repartida se extrae de esta baraja mezclada sin ningún tipo de pre-selección ni manipulación." },
-                { title:"El dealer no tiene ventaja oculta", body:"Las reglas del dealer están fijas y son visibles: el dealer siempre pide carta con 16 o menos y se planta con 17 o más. Esta regla no cambia entre partidas ni se ajusta según el resultado de rondas anteriores." },
-                { title:"Sin cartas marcadas", body:"No existe ningún mecanismo que permita al casino saber de antemano qué cartas tienen los jugadores. El proceso de reparto es ciego para todos los sistemas del casino hasta que las cartas se revelan." },
-              ],
-              tags:["Baraja mezclada aleatoriamente","Reglas del dealer fijas","Sin ventaja oculta"],
-            },
-            {
-              key:"Mines", label:"Mines", color:"#22c55e", soon:false,
-              how:"En Mander Mines, se ocultan un número de minas en una cuadrícula. Debes revelar casillas sin tocar ninguna mina para acumular ganancias. Cuanto más avances, mayor será tu multiplicador.",
-              sections:[
-                { title:"Cómo se colocan las minas", body:"Las posiciones de todas las minas se determinan de forma aleatoria en el instante en que confirmas tu apuesta, antes de que hagas tu primera selección. Una vez colocadas, sus posiciones no cambian durante la ronda." },
-                { title:"El casino no conoce tu estrategia", body:"El sistema que coloca las minas opera de forma independiente a tu comportamiento de juego. Las posiciones de las minas no se ajustan en respuesta a las casillas que hayas elegido o tu historial de partidas." },
-                { title:"Multiplicadores progresivos", body:"Los multiplicadores que obtienes al revelar cada casilla segura son fijos y calculados en base a las probabilidades reales del juego. No existen ajustes dinámicos que alteren tu potencial de ganancia durante una ronda activa." },
-              ],
-              tags:["Posiciones fijadas al inicio","Sin ajustes durante la ronda","Multiplicadores calculados con probabilidades reales"],
-            },
-            {
-              key:"Hilo", label:"Hilo", color:"#a855f7", soon:false,
-              how:"Mander Hilo es un juego de cartas donde se revela una carta y debes predecir si la siguiente será mayor o menor. Cada predicción correcta incrementa tu multiplicador.",
-              sections:[
-                { title:"Cómo se generan las cartas", body:"Cada carta revelada se extrae de forma aleatoria de una baraja estándar mezclada. El sistema no tiene información sobre qué carta saldrá a continuación al momento de mostrarte la carta actual." },
-                { title:"Predicciones sin trampa", body:"Las probabilidades de que la siguiente carta sea mayor o menor son calculadas en base a las cartas que ya salieron. El casino no manipula la siguiente carta para invalidar tu predicción." },
-                { title:"Riesgo ajustable", body:"Puedes elegir entre opciones de mayor o menor riesgo según tu estrategia. Los multiplicadores asociados reflejan con precisión las probabilidades reales de cada opción." },
-              ],
-              tags:["Cartas extraídas aleatoriamente","Probabilidades calculadas en tiempo real","Sin manipulación de resultados"],
-            },
-            {
-              key:"Roulette", label:"Ruleta", color:"#f43f5e", soon:false,
-              how:"Mander Ruleta ofrece la experiencia clásica del casino con una ruleta europea. Apuesta a un número, color, par/impar o grupo de números y observa dónde cae la bola.",
-              sections:[
-                { title:"Cómo se determina el número ganador", body:"Cada giro de la ruleta produce un número completamente aleatorio entre 0 y 36. El proceso es instantáneo y ocurre en el momento exacto del giro, sin pre-determinación ni ciclos predecibles." },
-                { title:"Ruleta europea", body:"Mander Ruleta utiliza el formato europeo con un solo cero, lo que ofrece mejores probabilidades para el jugador en comparación con la versión americana. El house edge es fijo y transparente." },
-                { title:"Cada giro es independiente", body:"El resultado de un giro no tiene ninguna relación estadística con los giros anteriores. No existen patrones, ciclos ni ajustes que hagan que ciertos números salgan con más o menos frecuencia a lo largo del tiempo." },
-              ],
-              tags:["Número aleatorio por giro","Ruleta europea (un solo cero)","Cada giro es independiente"],
-            },
-            {
-              key:"Baccarat", label:"Baccarat", color:"#eab308", soon:false,
-              how:"Mander Baccarat utiliza un mazo de 8 barajas estándar barajado de forma aleatoria antes de cada ronda. Las cartas se reparten siguiendo las reglas clásicas del Punto Banco: el jugador y el banquero reciben dos cartas cada uno, y se puede agregar una tercera carta según reglas fijas. Puedes apostar al Jugador, al Banquero (con 5% de comisión sobre las ganancias) o al Empate.",
-              sections:[
-                { title:"Aleatoriedad del mazo", body:"Cada ronda de Baccarat extrae cartas de un mazo de 8 barajas barajado con el mismo sistema de aleatoriedad auditado que usamos en todos nuestros juegos. Cuando quedan menos de 15 cartas, el mazo se rebaraja automáticamente para garantizar imparcialidad total en cada mano." },
-                { title:"Reglas de la tercera carta", body:"Las reglas de la tercera carta son fijas y públicas: el Jugador pide carta si su total es 0–5; el Banquero pide carta según su total y la tercera carta del Jugador siguiendo el cuadro estándar del Punto Banco. No hay decisiones discrecionales del casino — el resultado sigue siempre las mismas reglas deterministas." },
-                { title:"Comisión del Banquero", body:"La apuesta al Banquero paga con una comisión del 5% sobre las ganancias netas, lo cual refleja la ligera ventaja estadística que tiene el Banquero según las reglas del juego. El Empate paga 8x la apuesta. Todas las comisiones y pagos se calculan automáticamente y son visibles antes de apostar." },
-              ],
-              tags:["Mazo de 8 barajas auditado","Reglas Punto Banco estándar","Comisión 5% en Banquero"],
-            },
-          ] as {key:string;label:string;color:string;soon:boolean;how:string;sections:{title:string;body:string}[];tags:string[]}[];
+          const fGames = getFairnessGames(lang);
           const activeGame = fGames.find(g=>g.key===fairnessGame) || fGames[0];
           return (
           <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)", display:"flex", flexDirection:"column" }}>
@@ -7512,7 +7781,7 @@ export default function App() {
                   <div style={{ width:"38px",height:"38px",borderRadius:"10px",background:"linear-gradient(135deg,#f6b531,#e9970d)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
                   </div>
-                  <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>Juego Justo y Transparente</h1>
+                  <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("fairnessTitle")}</h1>
                 </div>
                 <p style={{ margin:0,color:"#94a3b8",fontSize:"14px",lineHeight:1.8,maxWidth:"700px" }}>
                   En Mander Casino, la confianza de nuestros jugadores es nuestra prioridad. Todos nuestros juegos originales están diseñados con sistemas independientes que garantizan resultados completamente aleatorios, sin interferencia externa ni manipulación de ningún tipo.
@@ -7535,10 +7804,10 @@ export default function App() {
                 <div style={{ padding:"20px 24px",borderBottom:"1px solid #20283a",display:"flex",alignItems:"center",gap:"14px" }}>
                   <div style={{ width:"48px",height:"48px",borderRadius:"12px",background:`${activeGame.color}18`,border:`1px solid ${activeGame.color}40`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>{fIcons[activeGame.key]?.(26, activeGame.color)}</div>
                   <div>
-                    <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"16px",marginBottom:"2px" }}>Cómo funciona {activeGame.label}</div>
+                    <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"16px",marginBottom:"2px" }}>{t("howWorks")} {activeGame.label}</div>
                     <div style={{ color:"#94a3b8",fontSize:"12px" }}>Mander Originals · {activeGame.soon ? t("comingSoon") : t("availableNow")}</div>
                   </div>
-                  {!activeGame.soon && <span style={{ marginLeft:"auto",background:`${activeGame.color}18`,color:activeGame.color,fontSize:"11px",fontWeight:600,padding:"4px 10px",borderRadius:"999px",border:`1px solid ${activeGame.color}30`,whiteSpace:"nowrap" as const }}>✓ Auditado</span>}
+                  {!activeGame.soon && <span style={{ marginLeft:"auto",background:`${activeGame.color}18`,color:activeGame.color,fontSize:"11px",fontWeight:600,padding:"4px 10px",borderRadius:"999px",border:`1px solid ${activeGame.color}30`,whiteSpace:"nowrap" as const }}>{t("audited")}</span>}
                 </div>
 
                 {/* Overview */}
@@ -7578,7 +7847,7 @@ export default function App() {
               </div>
 
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
           );
         })()}
@@ -7586,8 +7855,8 @@ export default function App() {
           <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)", display:"flex", flexDirection:"column" }}>
             <div style={{ maxWidth:"860px",margin:"0 auto", minHeight:"calc(100vh - 70px)" }}>
               <div style={{ marginBottom:"32px",paddingBottom:"20px",borderBottom:"1px solid #20283a" }}>
-                <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>Términos de Servicio</h1>
-                <p style={{ margin:"10px 0 0",color:"#94a3b8",fontSize:"13px" }}>Última actualización: Marzo 2025</p>
+                <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("termsTitle")}</h1>
+                <p style={{ margin:"10px 0 0",color:"#94a3b8",fontSize:"13px" }}>{t("lastUpdate")}</p>
               </div>
 
               <p style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,margin:"0 0 28px" }}>
@@ -7653,7 +7922,7 @@ export default function App() {
                 </div>
               ))}
             </div>
-            <CasinoFooter onHome={showHomeView} />
+            <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
         )}
         {section==="admin" && (
@@ -7797,12 +8066,12 @@ export default function App() {
                 {/* Details */}
                 <div style={{ display:"flex",flexDirection:"column",gap:"14px" }}>
                   <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Fecha</span>
+                    <span style={{ fontSize:"13px",color:"#4a5e7a" }}>{t("date")}</span>
                     <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:500 }}>{fmtDate(tx.createdAt)}</span>
                   </div>
                   {tx.network && (
                     <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>Red</span>
+                      <span style={{ fontSize:"13px",color:"#4a5e7a" }}>{t("network")}</span>
                       <span style={{ fontSize:"13px",color:"#c8d8ec",fontWeight:600 }}>{tx.network}</span>
                     </div>
                   )}
@@ -7812,7 +8081,7 @@ export default function App() {
                       <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1e2e44",borderRadius:"8px",padding:"10px 12px" }}>
                         <span style={{ fontSize:"12px",color:"#8aa0c0",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{tx.address}</span>
                         <button onClick={()=>navigator.clipboard.writeText(tx.address!)}
-                          title="Copiar wallet"
+                          title={t("copyWallet")}
                           style={{ background:"#1a2a40",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#5b8dee",flexShrink:0,display:"flex",alignItems:"center" }}>
                           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                             <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -7829,7 +8098,7 @@ export default function App() {
                           {tx.tx_hash.length > 20 ? `${tx.tx_hash.slice(0,10)}...${tx.tx_hash.slice(-10)}` : tx.tx_hash}
                         </span>
                         <button onClick={()=>navigator.clipboard.writeText(tx.tx_hash!)}
-                          title="Copiar TX hash"
+                          title={t("copyTxHash")}
                           style={{ background:"rgba(34,197,94,.1)",border:"none",borderRadius:"6px",cursor:"pointer",padding:"5px 8px",color:"#22c55e",flexShrink:0,display:"flex",alignItems:"center" }}>
                           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                             <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -7853,7 +8122,7 @@ export default function App() {
                   ) : (tx.status==="completed"||tx.status==="approved") ? (
                     <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
                       <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
-                      <span style={{ fontSize:"13px",color:"#3a4e68",fontStyle:"italic" }}>No disponible</span>
+                      <span style={{ fontSize:"13px",color:"#3a4e68",fontStyle:"italic" }}>{t("notAvailable")}</span>
                     </div>
                   ) : null}
                 </div>
@@ -7862,7 +8131,7 @@ export default function App() {
                   style={{ marginTop:"24px",width:"100%",padding:"12px",background:"#1e2e44",border:"1px solid #2a3a5a",borderRadius:"10px",color:"#9ea8bc",fontSize:"14px",fontWeight:600,cursor:"pointer",transition:"background .15s" }}
                   onMouseEnter={e=>(e.currentTarget.style.background="#253349")}
                   onMouseLeave={e=>(e.currentTarget.style.background="#1e2e44")}>
-                  Cerrar
+                  {t("close")}
                 </button>
               </div>
             </div>
@@ -7875,7 +8144,7 @@ export default function App() {
           style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.75)",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px",zIndex:999 }}>
           <div style={{ width:"100%",maxWidth:"580px",background:"#16202e",border:"1px solid #2a3650",borderRadius:"16px",overflow:"hidden",boxShadow:"0 24px 60px rgba(0,0,0,.6)",fontFamily:"'Inter', sans-serif",minHeight:"600px",display:"flex",flexDirection:"column" }}>
             <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 20px 14px" }}>
-              <h3 style={{ margin:0,color:"#f2f3f7",fontSize:"22px",fontWeight:700 }}>Wallet</h3>
+              <h3 style={{ margin:0,color:"#f2f3f7",fontSize:"22px",fontWeight:700 }}>{t("walletTitle")}</h3>
               <button onClick={()=>setCashierOpen(false)} style={{ width:"32px",height:"32px",borderRadius:"50%",background:"#2a3550",border:"none",color:"#9ea8bc",fontSize:"20px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
             </div>
             {currentUser && (
@@ -7894,6 +8163,7 @@ export default function App() {
                 variant="deposit"
                 onLogin={() => { setCashierOpen(false); setAuthModal("login"); }}
                 onRegister={() => { setCashierOpen(false); setAuthModal("register"); }}
+                lang={lang}
               />
             )}
 
@@ -7902,13 +8172,13 @@ export default function App() {
               <div style={{ padding:"20px",display:"flex",flexDirection:"column",gap:"0px",flex:1 }}>
                 {/* Section heading */}
                 <div style={{ marginBottom:"20px" }}>
-                  <span style={{ fontSize:"22px",fontWeight:700,color:"#fff" }}>Deposit</span>
+                  <span style={{ fontSize:"22px",fontWeight:700,color:"#fff" }}>{t("depositTitle")}</span>
                 </div>
                 {/* Currency + Network — 2-column grid */}
                 <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px" }}>
                   {/* Currency */}
                   <div>
-                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>Currency</label>
+                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>{t("coin")}</label>
                     <div style={{ position:"relative" }}>
                       <div onClick={()=>{ setShowCoinDrop(p=>!p); setShowNetDrop(false); }} className="cashier-drop"
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
@@ -7947,7 +8217,7 @@ export default function App() {
                   </div>
                   {/* Network */}
                   <div>
-                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>Network</label>
+                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>{t("network")}</label>
                     <div style={{ position:"relative" }}>
                       <div onClick={()=>{ setShowNetDrop(p=>!p); setShowCoinDrop(false); }} className="cashier-drop"
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
@@ -7976,7 +8246,7 @@ export default function App() {
 
                 {/* Address section header */}
                 <div style={{ marginBottom:"6px",marginTop:"2px" }}>
-                  <span style={{ color:"#9ea8bc",fontSize:"13px",fontWeight:600,letterSpacing:"0.3px" }}>Deposit address</span>
+                  <span style={{ color:"#9ea8bc",fontSize:"13px",fontWeight:600,letterSpacing:"0.3px" }}>{t("address")}</span>
                 </div>
 
                 {/* Address card — loading / error / loaded */}
@@ -7984,7 +8254,7 @@ export default function App() {
                   <div style={{ background:"#1e2a3a",borderRadius:"14px",padding:"32px 20px",marginBottom:"18px",display:"flex",alignItems:"center",justifyContent:"center",minHeight:"148px" }}>
                     <div style={{ textAlign:"center" as const }}>
                       <div style={{ width:34,height:34,border:"3px solid #2a3a52",borderTop:"3px solid #5a9aff",borderRadius:"50%",animation:"spin 0.8s linear infinite",margin:"0 auto 12px" }}/>
-                      <span style={{ color:"#6a7a96",fontSize:"13px" }}>Generating address...</span>
+                      <span style={{ color:"#6a7a96",fontSize:"13px" }}>{t("generatingAddr")}</span>
                     </div>
                   </div>
                 ) : !pendingDeposit ? (
@@ -8050,7 +8320,7 @@ export default function App() {
                               <circle cx="16" cy="50" r="1" fill="#f6b531" opacity="0.3"/>
                             </svg>
                           </div>
-                          <p style={{ color:"#6a7a96",fontSize:"13px",marginBottom:"12px",lineHeight:1.5 }}>Generá tu dirección para depositar <strong style={{ color:"#94a3b8" }}>{depositCoin}</strong></p>
+                          <p style={{ color:"#6a7a96",fontSize:"13px",marginBottom:"12px",lineHeight:1.5 }}>{t("generateAddress")} <strong style={{ color:"#94a3b8" }}>{depositCoin}</strong></p>
                           {(() => {
                             const realMin = npMinimums[`${depositCoin}:${depositNetwork}`];
                             const casinoMin = getNetLimit(depositCoin, depositNetwork).minDep ?? 5;
@@ -8087,7 +8357,7 @@ export default function App() {
                         </div>
                         <div style={{ display:"flex",alignItems:"center",gap:"6px",fontSize:"12px",color:"#7c8caa",marginBottom:"4px" }}>
                           <>
-                            <span>Depósito mínimo:</span>
+                            <span>{t("minDeposit")}</span>
                             <span style={{ color:"#4ade80",fontWeight:700 }}>
                               {(getNetLimit(pendingDeposit.coin ?? "", pendingDeposit.network ?? "").minDep / getPriceUsd(pendingDeposit.coin ?? "USDT")).toFixed(8)} {pendingDeposit.coin}
                             </span>
@@ -8173,7 +8443,7 @@ export default function App() {
                 <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px" }}>
                   {/* Currency dropdown */}
                   <div>
-                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>Currency</label>
+                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>{t("coin")}</label>
                     <div style={{ position:"relative" }}>
                       <div onClick={()=>{ setShowCoinDrop(p=>!p); setShowWNetDrop(false); }} className="cashier-drop"
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
@@ -8212,7 +8482,7 @@ export default function App() {
                   </div>
                   {/* Network dropdown */}
                   <div>
-                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>Network</label>
+                    <label style={{ display:"block",marginBottom:"6px",color:"#7c8caa",fontSize:"11px",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px" }}>{t("network")}</label>
                     <div style={{ position:"relative" }}>
                       <div onClick={()=>{ setShowWNetDrop(p=>!p); setShowCoinDrop(false); }} className="cashier-drop"
                         style={{ display:"flex",alignItems:"center",gap:"8px",padding:"10px 12px",borderRadius:"8px",border:"1px solid #2a3650",background:"#1a2535",cursor:"pointer",userSelect:"none" as const,transition:"border-color .15s,background .15s" }}>
@@ -9129,15 +9399,15 @@ export default function App() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontWeight:700, fontSize:"14px", color:"#cbd5e1" }}>Retiros en revisión</div>
-                <div style={{ fontSize:"14px", color:"#475569", marginTop:"3px" }}>Tu cuenta está siendo verificada</div>
+                <div style={{ fontWeight:700, fontSize:"14px", color:"#cbd5e1" }}>{t("withdrawsInReview")}</div>
+                <div style={{ fontSize:"14px", color:"#475569", marginTop:"3px" }}>{t("accountBeingVerified")}</div>
               </div>
             </div>
             <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.75, margin:"0 0 10px" }}>
-              Por el momento los retiros de tu cuenta están <strong style={{ color:"#94a3b8" }}>en pausa</strong> mientras nuestro equipo realiza una revisión de rutina.
+              {t("withdrawPausedMsg")} <strong style={{ color:"#94a3b8" }}>{t("withdrawPausedStrong")}</strong> {t("withdrawPausedMsg2")}
             </p>
             <p style={{ fontSize:"14px", color:"#64748b", lineHeight:1.6, margin:"0 0 22px" }}>
-              Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.
+              {t("withdrawPausedContact")}
             </p>
             <div style={{ display:"flex", gap:"10px" }}>
               <button
@@ -9729,119 +9999,13 @@ function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _
 }
 
 // ─── Game info panel shown at the top of every Original ──────────────────────
-const GAME_META: Record<string, { title:string; bg:string; icon:string; img?:string; desc:string; sub?:string }> = {
-  dice:      { title:"Mander Dados",     bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", icon:"🎲", img:"/dice-card.jpg",       desc:"Lanza los dados y apuesta si el resultado cae por encima o por debajo de tu número objetivo. Tú controlas la probabilidad de ganar y el pago — cuanto mayor el riesgo, mayor la recompensa." },
-  plinko:    { title:"Mander Plinko",    bg:"linear-gradient(135deg,#6e0a14,#d6293e)", icon:"🎯", img:"/plinko-thumb.jpg",    desc:"Suelta una bola desde la cima de una pirámide de clavos y observa cómo rebota hasta caer en un slot multiplicador. Elige tu nivel de riesgo y el número de filas para controlar la distribución del pago — desde ganancias pequeñas y frecuentes hasta hits de alto multiplicador." },
-  keno:      { title:"Mander Keno",      bg:"linear-gradient(135deg,#7a4200,#f4a91f)", icon:"🔮", img:"/keno-thumb.jpg",      desc:"Elige hasta 10 números de un tablero de 40 casillas y observa cuántos coinciden con los 10 resultados sorteados. Selecciona tu nivel de riesgo para controlar la tabla de pagos — más riesgo significa multiplicadores más altos al acertar más números." },
-  blackjack: { title:"Mander Blackjack", bg:"linear-gradient(135deg,#5c2800,#d67a10)", icon:"🃏", img:"/blackjack-thumb.jpg", desc:"Juega al Blackjack clásico con un zapato de 6 barajas verificado criptográficamente. Cada mano se reparte con tecnología provably fair, para que puedas verificar de forma independiente que la baraja fue mezclada sin manipulación. Pide, plántate, dobla o divide hasta llegar a 21." },
-  mines:     { title:"Mander Mines",     bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", icon:"💎", img:"/mines-card.jpg",      desc:"Navega por un campo minado descubriendo gemas y multiplicando tu apuesta. Elige el tamaño de la cuadrícula y la cantidad de minas, luego revela casillas una a una. Cobra cuando quieras — pero si golpeas una mina, lo pierdes todo." },
-  slot:      { title:"Candy Burst",      bg:"linear-gradient(135deg,#5a0a7a,#c020d0)", icon:"🍬", sub:"Slots",               desc:"Gira los carretes y combina símbolos de dulces para ganar premios. Bonificaciones especiales, multiplicadores y giros gratis te esperan en cada tirada. ¡La suerte está de tu lado!" },
-  hilo:      { title:"Mander Hilo",      bg:"linear-gradient(135deg,#004a2a,#00a85a)", icon:"🃠", img:"/hilo-card.jpg",       desc:"Predice si la siguiente carta será mayor o menor que la carta actual. Encadena aciertos consecutivos para multiplicar tu apuesta o retira tus ganancias en cualquier momento. Los multiplicadores se calculan dinámicamente según la probabilidad de cada carta." },
-  roulette:  { title:"Mander Ruleta",    bg:"linear-gradient(135deg,#1a0a2e,#4a1a7a)", icon:"🎡", img:"/roulette-card.jpg",   desc:"Ruleta Europea con 37 números (0-36). Coloca fichas en números individuales, columnas, docenas o apuestas de dinero par como rojo/negro, par/impar y bajo/alto. Haz girar la rueda y descubre dónde cae la bola." },
-  baccarat:  { title:"Mander Baccarat",  bg:"linear-gradient(135deg,#001830,#003a7a)", icon:"🃠", img:"/baccarat-card.jpg",   desc:"El clásico juego de cartas donde apostás al Jugador, la Banca o un Empate. Las cartas se reparten con totales módulo 10 y se aplican las reglas de tercera carta reales. Jugador paga 1:1, Banca paga 0.95:1 y Empate paga 8:1." },
-};
+type GameMetaShape = { title:string; bg:string; icon:string; img?:string; desc:string; sub?:string };
 
-type GameInfoSection = { heading: string; body?: string; bullets?: { label: string; text: string }[] };
-const GAME_INFO: Record<string, GameInfoSection[]> = {
-  dice: [
-    { heading:"CÓMO JUGAR", body:"Establece tu monto de apuesta y elige un número objetivo con el slider. Luego selecciona Roll Over o Roll Under. Se genera un número aleatorio provably fair. Si el resultado cae en tu lado elegido del objetivo, ganas." },
-    { heading:"PROBABILIDAD DE GANAR Y PAGOS", body:"Tu probabilidad de ganar está determinada por tu objetivo. Por ejemplo, tirar por encima de 50 te da un ~49.99% de probabilidad de ganar con un pago de aproximadamente 2x. Tirar por encima de 95 te da un ~4.99% de probabilidad con aproximadamente 19.8x. El multiplicador se ajusta automáticamente al mover el slider — siempre ves tus probabilidades exactas antes de apostar." },
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Cada tirada se determina combinando la semilla del servidor, tu semilla de cliente y un nonce. Después de cada apuesta, puedes verificar que el resultado no fue manipulado usando las semillas de tu historial de juego. Puedes rotar tu semilla de cliente en cualquier momento entre tiradas." },
-  ],
-  plinko: [
-    { heading:"CÓMO JUGAR", body:"Establece tu monto de apuesta, elige un nivel de riesgo (Bajo, Medio o Alto) y selecciona el número de filas (8 a 16). Presiona Apostar para soltar una bola desde la cima de la pirámide. La bola rebota en los clavos aleatoriamente y aterriza en uno de los slots multiplicadores del fondo. Tu pago es tu apuesta multiplicada por el valor del slot." },
-    { heading:"NIVELES DE RIESGO", bullets:[
-      { label:"Riesgo Bajo", text:"Los multiplicadores están distribuidos de forma más uniforme. La mayoría de las caídas devuelven cerca de tu apuesta con multiplicadores extremos más pequeños." },
-      { label:"Riesgo Medio", text:"Una distribución equilibrada con multiplicadores altos moderados (hasta 110x en 16 filas) y pérdidas pequeñas más frecuentes." },
-      { label:"Riesgo Alto", text:"Multiplicadores extremos en los bordes (hasta 1,000x en 16 filas) pero la mayoría de las caídas devuelven 0x. Alta varianza, alta recompensa." },
-    ]},
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Cada caída de bola se determina combinando la semilla del servidor, tu semilla de cliente y un nonce. El hash resultante determina la dirección en cada clavija, haciendo que cada rebote sea independientemente verificable. Puedes rotar tu semilla de cliente en cualquier momento entre caídas." },
-  ],
-  keno: [
-    { heading:"CÓMO JUGAR", body:"Establece tu monto de apuesta y selecciona entre 1 y 10 números del tablero. Elige un nivel de riesgo (Clásico, Bajo, Medio o Alto), luego presiona Apostar. El juego sortea 10 números aleatorios. Tu pago depende de cuántos de tus picks coincidan con los números sorteados." },
-    { heading:"NIVELES DE RIESGO Y PAGOS", bullets:[
-      { label:"Clásico", text:"Pagos equilibrados en todos los conteos de aciertos." },
-      { label:"Bajo", text:"Ganancias pequeñas frecuentes, pagos máximos moderados (hasta 1,000x)." },
-      { label:"Medio", text:"Menos ganancias pero multiplicadores más altos en más coincidencias (hasta 1,000x)." },
-      { label:"Alto", text:"La mayoría de las combinaciones pagan 0x, pero acertar todos los números paga hasta 1,000x." },
-    ]},
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Los 10 números sorteados se determinan combinando la semilla del servidor, tu semilla de cliente y un nonce. Cada sorteo es independientemente verificable — puedes comprobar las semillas de tu historial de juego después de cada ronda. Puedes rotar tu semilla de cliente en cualquier momento." },
-  ],
-  blackjack: [
-    { heading:"CÓMO JUGAR", body:"Establece tu monto de apuesta y presiona Repartir para recibir dos cartas boca arriba. El crupier también recibe dos cartas, una boca arriba y una boca abajo. Tu objetivo es acercarte lo más posible a 21 sin pasarte. Las figuras (Rey, Reina, Jack) cuentan como 10, los Ases cuentan como 1 u 11, y todas las demás cartas cuentan a su valor nominal." },
-    { heading:"TUS OPCIONES", bullets:[
-      { label:"Pedir", text:"Saca otra carta del zapato." },
-      { label:"Plantarse", text:"Conserva tu mano actual y deja jugar al crupier." },
-      { label:"Doblar", text:"Dobla tu apuesta, saca exactamente una carta más, luego te plantas." },
-      { label:"Dividir", text:"Si tus primeras dos cartas tienen el mismo valor, divídelas en dos manos separadas, cada una con su propia apuesta." },
-      { label:"Seguro", text:"Cuando el crupier muestra un As, puedes hacer una apuesta lateral (la mitad de tu apuesta original) que paga 2:1 si el crupier tiene Blackjack." },
-    ]},
-    { heading:"PAGOS", body:"Una victoria estándar paga 1:1. Un Blackjack natural (un As más una carta de valor 10 en el reparto inicial) paga 3:2. Si empatas con el crupier, es un empate y se devuelve tu apuesta. El crupier debe pedir con 16 y plantarse con 17." },
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Antes de cada mano, la semilla del servidor, tu semilla de cliente y un nonce se combinan para mezclar de forma determinista un zapato de 312 cartas (6 barajas estándar). Una vez completa la mano, puedes verificar la mezcla usando las semillas de tu historial de juego. También puedes rotar tu semilla de cliente en cualquier momento entre manos." },
-  ],
-  mines: [
-    { heading:"CÓMO JUGAR", body:'Establece tu monto de apuesta y elige un tamaño de cuadrícula (5×5, 6×6, 7×7 u 8×8). Selecciona el número de minas usando un preset o ingresa un conteo personalizado. Presiona "Iniciar Juego" para comenzar, luego haz clic en las casillas para revelarlas. Cada casilla segura muestra una gema y aumenta tu multiplicador. Presiona "Cobrar" en cualquier momento para recoger tus ganancias.' },
-    { heading:"MULTIPLICADOR Y RIESGO", bullets:[
-      { label:"Menos minas", text:"= incrementos de multiplicador más pequeños por revelación, pero menor riesgo." },
-      { label:"Más minas", text:"= saltos de multiplicador más grandes, pero mayor probabilidad de golpear una mina." },
-      { label:"Cuadrículas más grandes", text:"dan más casillas para explorar con mayor profundidad estratégica." },
-    ]},
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Las posiciones de las minas se determinan antes de que comience el juego usando la semilla del servidor, tu semilla de cliente y un nonce. Cada juego es independientemente verificable." },
-  ],
-  slot: [
-    { heading:"CÓMO JUGAR", body:"Establece tu monto de apuesta y presiona Girar. Los carretes se detienen aleatoriamente en una combinación de símbolos. Las combinaciones ganadoras siguen las líneas de pago definidas. Cuanto mayor tu apuesta, mayor el pago potencial." },
-    { heading:"CARACTERÍSTICAS ESPECIALES", bullets:[
-      { label:"Wild", text:"Sustituye cualquier símbolo normal para completar combinaciones ganadoras." },
-      { label:"Scatter", text:"Activa giros gratis sin importar su posición en los carretes." },
-      { label:"Giros Gratis", text:"Rondas adicionales sin costo donde todos los premios se multiplican." },
-    ]},
-    { heading:"PAGOS", body:"Cada símbolo tiene un valor de pago diferente. Consulta la tabla de pagos dentro del juego para ver los multiplicadores exactos. Las combinaciones de mayor valor resultan en los pagos más altos." },
-  ],
-  hilo: [
-    { heading:"CÓMO JUGAR", body:"Establece tu apuesta y pulsa 'Nuevo Juego' para recibir tu primera carta. Luego elige MAYOR si crees que la siguiente carta tendrá un valor más alto (o igual), o MENOR si crees que será más baja (o igual). Encadena aciertos para multiplicar tus ganancias y retira cuando quieras." },
-    { heading:"MULTIPLICADORES DINÁMICOS", body:"Los multiplicadores se calculan en tiempo real según la probabilidad de cada carta. Para una carta baja como el 2, MAYOR tiene un multiplicador bajo (~1.07x) porque es probable ganar, mientras que MENOR tiene un multiplicador alto (~6.44x) porque es difícil. El juego usa un RTP del 99%." },
-    { heading:"RETIRAR O CONTINUAR", body:"Después de cada acierto puedes presionar 'Retirar' para cobrar tus ganancias acumuladas, o seguir apostando para multiplicar aún más. Si fallas en cualquier momento, pierdes tu apuesta inicial. La clave está en saber cuándo retirarse." },
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Cada carta revelada se extrae de una baraja mezclada usando la semilla del servidor, tu semilla de cliente y un nonce. El orden completo de la baraja queda determinado antes de que comience la mano, y puede verificarse de forma independiente una vez finalizado el juego. Puedes rotar tu semilla de cliente en cualquier momento entre juegos." },
-  ],
-  roulette: [
-    { heading:"CÓMO JUGAR", body:"Selecciona el valor de tu ficha y haz clic en los números, columnas, docenas o apuestas externas para colocar tus fichas. Puedes colocar varias fichas en diferentes posiciones antes de girar. Pulsa 'Apostar' para lanzar la rueda. La bola cae aleatoriamente en uno de los 37 números (0-36)." },
-    { heading:"TIPOS DE APUESTA Y PAGOS", bullets:[
-      { label:"Número exacto (Pleno)", text:"Apuesta a un número específico. Paga 35:1 (retorno total 36x tu apuesta)." },
-      { label:"Columna (2:1)", text:"Cada fila del tablero (12 números). Paga 2:1 (retorno total 3x)." },
-      { label:"Docena (2:1)", text:"1-12, 13-24 o 25-36. Paga 2:1 (retorno total 3x)." },
-      { label:"Dinero par (1:1)", text:"Rojo/Negro, Par/Impar, Bajo (1-18)/Alto (19-36). Paga 1:1 (retorno total 2x). El 0 pierde todas las apuestas externas." },
-    ]},
-    { heading:"MODO AUTOMÁTICO", body:"Activa el modo Automático para lanzar la rueda repetidamente usando la misma distribución de fichas. Establece un número fijo de giros o usa ∞ para juego continuo. Pulsa 'Detener Auto' en cualquier momento para parar." },
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"Cada giro de la ruleta genera un número entre 0 y 36 combinando la semilla del servidor, tu semilla de cliente y un nonce de forma criptográficamente segura. El resultado es verificable de forma independiente: ninguna parte puede conocer o manipular el número ganador antes de que se lance la rueda." },
-  ],
-  baccarat: [
-    { heading:"CÓMO JUGAR", body:"Selecciona el valor de tu ficha y haz clic en la zona de apuesta: Jugador, Banca o Empate. Podés apostar en varias zonas simultáneamente. Presioná 'Repartir' para iniciar la ronda. Se reparten dos cartas a cada lado, los totales se calculan módulo 10, y se aplican las reglas de tercera carta de Baccarat estándar para determinar si algún lado recibe carta adicional." },
-    { heading:"TIPOS DE APUESTA Y PAGOS", bullets:[
-      { label:"Jugador (1:1)", text:"Si la mano del Jugador tiene mayor valor que la de la Banca, ganás el doble de tu apuesta." },
-      { label:"Banca (0.95:1)", text:"Si la mano de la Banca tiene mayor valor, ganás con una comisión del 5%. El retorno efectivo es 1.95x tu apuesta." },
-      { label:"Empate (8:1)", text:"Si ambas manos terminan con el mismo valor, ganás 8x tu apuesta. Alta varianza y bajo RTP — se recomienda solo como apuesta secundaria." },
-    ]},
-    { heading:"VALORES DE CARTA", body:"Los Ases valen 1. Las figuras (J, Q, K) y los 10 valen 0. Todas las demás cartas valen su número. El total de cada mano es la suma de sus cartas módulo 10 — por ejemplo, 7+6=13 → 3." },
-    { heading:"REGLAS DE TERCERA CARTA", body:"El Jugador recibe una tercera carta si su total es 0-5. La Banca sigue sus propias reglas de tercera carta que dependen de su total y la tercera carta del Jugador (reglas estándar de Baccarat). Ambos se plantan con 8 o 9 (natural)." },
-    { heading:"MODO AUTOMÁTICO", body:"Activá el modo Auto para jugar rondas consecutivas automáticamente. Podés configurar la cantidad de rondas o usar ∞ para juego continuo. La apuesta se mantiene entre rondas. Presioná 'Detener Auto' en cualquier momento." },
-    { heading:"VERIFICACIÓN PROVABLY FAIR", body:"El mazo de 8 barajas se mezcla usando la semilla del servidor, tu semilla de cliente y un nonce antes de cada zapato. El orden completo del mazo queda determinado criptográficamente antes del primer reparto. Cuando el zapato se agota (menos de 15 cartas), se genera un nuevo mazo verificable con un nuevo nonce." },
-  ],
-};
-
-function gipIcon(heading: string) {
-  if (heading.includes("JUGAR"))       return "📖";
-  if (heading.includes("PROBABILIDAD") || heading.includes("PAGOS")) return "💰";
-  if (heading.includes("NIVELES") || heading.includes("RIESGO") || heading.includes("MULTIPLICADOR")) return "📊";
-  if (heading.includes("OPCIONES"))    return "🎮";
-  if (heading.includes("VERIFICACIÓN") || heading.includes("PROVABLY")) return "🔒";
-  if (heading.includes("ESPECIALES") || heading.includes("CARACTERÍSTICAS")) return "⭐";
-  return "ℹ️";
-}
-
-function GameInfoPanel({ game, onFairness }: { game: keyof typeof GAME_META; onFairness?: () => void }) {
+type GameInfoSection = { heading: string; icon?: string; body?: string; bullets?: { label: string; text: string }[] };
+function GameInfoPanel({ game, lang, onFairness }: { game: string; lang: string; onFairness?: () => void }) {
   const [expanded, setExpanded] = useState(false);
-  const m = GAME_META[game];
-  const sections = GAME_INFO[game] ?? [];
+  const m = getGameMeta(lang)[game] ?? getGameMeta("es")[game];
+  const sections = (getGameInfo(lang)[game] ?? getGameInfo("es")[game]) ?? [];
   return (
     <div className="gip-panel" style={{ maxWidth:"1080px", margin:"28px auto 18px", width:"100%", background:"#090e18", borderRadius:"14px", border:"1px solid #1a3347", overflow:"hidden" }}>
 
@@ -9878,18 +10042,18 @@ function GameInfoPanel({ game, onFairness }: { game: keyof typeof GAME_META; onF
             {sections.map((sec, i) => (
               <div key={i} style={{ borderTop:"1px solid #1a2a3e", marginTop:"20px", paddingTop:"18px" }}>
                 <div className="gip-section-heading">
-                  <span>{gipIcon(sec.heading)}</span>
+                  <span>{sec.icon ?? "ℹ️"}</span>
                   {sec.heading}
                 </div>
                 {sec.body && (
                   <p style={{ margin:0, fontSize:"13px", color:"#7a8fb0", lineHeight:"1.7" }}>
                     {sec.body}
-                    {(sec.heading.includes("VERIFICACIÓN") || sec.heading.includes("PROVABLY")) && (
+                    {sec.icon === "🔒" && (
                       <> <span
                         className="gip-pf-link"
                         style={{ cursor: onFairness ? "pointer" : "default" }}
                         onClick={() => { if (onFairness) { window.scrollTo({ top:0, behavior:"instant" }); onFairness(); } }}
-                      >Aprende más sobre verificación de equidad →</span></>
+                      >{getLearnMoreLabel(lang)}</span></>
                     )}
                   </p>
                 )}
@@ -9909,7 +10073,7 @@ function GameInfoPanel({ game, onFairness }: { game: keyof typeof GAME_META; onF
 
         {/* ── Toggle button ── */}
         <button className="gip-toggle-btn" onClick={() => setExpanded(e => !e)}>
-          {expanded ? "Mostrar menos" : "Cómo jugar y más"}
+          {expanded ? tl(lang, "showLess") : tl(lang, "howToPlayMore")}
           <span className={`gip-arrow${expanded ? " open" : ""}`}><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
         </button>
       </div>
@@ -9918,7 +10082,7 @@ function GameInfoPanel({ game, onFairness }: { game: keyof typeof GAME_META; onF
 }
 
 // ─── Global Footer ────────────────────────────────────────────────────────────
-function CasinoFooter({ onHome }: { onHome?: () => void }) {
+function CasinoFooter({ onHome, lang }: { onHome?: () => void; lang: string }) {
   return (
     <footer style={{ background:"#060c14", margin:"60px -16px -16px", width:"calc(100% + 32px)", padding:"40px 24px 0", fontFamily:"'Inter',sans-serif" }}>
       <div style={{ maxWidth:"1080px", margin:"0 auto" }}>
@@ -9942,18 +10106,18 @@ function CasinoFooter({ onHome }: { onHome?: () => void }) {
             </p>
           </div>
 
-          {/* Enlaces útiles */}
+          {/* Useful links */}
           <div>
             <div style={{ fontSize:"13px", fontWeight:700, color:"#c8d8f0", letterSpacing:"0.4px", marginBottom:"16px" }}>
-              Enlaces útiles
+              {tl(lang, "usefulLinks")}
             </div>
             {[
-              { label:"Referidos",              nav:"referrals" },
-              { label:"Justicia",               nav:"fairness" },
-              { label:"Soporte",                nav:"support" },
-              { label:"Términos de servicio",   nav:"terms" },
-              { label:"Política de privacidad", nav:"privacy" },
-              { label:"Política AML",     nav:"privacy" },
+              { label:tl(lang, "referrals"),   nav:"referrals" },
+              { label:tl(lang, "fairness"),    nav:"fairness" },
+              { label:tl(lang, "support"),     nav:"support" },
+              { label:tl(lang, "termsTitle"),  nav:"terms" },
+              { label:tl(lang, "privacyTitle"), nav:"privacy" },
+              { label:tl(lang, "amlPolicy"),  nav:"privacy" },
             ].map(({ label, nav }) => (
               <div key={label} style={{ marginBottom:"9px" }}>
                 <span style={{ fontSize:"13px", color:"#4a6280", cursor:"pointer", transition:"color .15s" }}
@@ -10050,7 +10214,7 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
             style={{ background:"none", border:"none", cursor:"pointer", color:"#6a8fb0", fontSize:"12px", fontWeight:600, letterSpacing:"0.3px", padding:"4px 0", transition:"color .15s" }}
             onMouseEnter={e=>(e.currentTarget.style.color="#f4a91f")}
             onMouseLeave={e=>(e.currentTarget.style.color="#6a8fb0")}>
-            {t("viewAll")}
+            {tl(lang, "viewAll")}
           </button>
           <div style={{ width:"1px", height:"14px", background:"#1e2e44" }}/>
           {(["left","right"] as const).map(dir=>(

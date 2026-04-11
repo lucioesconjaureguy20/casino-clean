@@ -168,9 +168,9 @@ function Toast({ visible }: { visible: boolean }) {
         </svg>
       </div>
       <div>
-        <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "2px" }}>Correo enviado</div>
+        <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "2px" }}>{T("profEmailSent")}</div>
         <div style={{ fontSize: "11px", color: "#7a9a80", lineHeight: 1.4 }}>
-          Correo para restablecer la contraseña enviado. Por favor, revisa tu bandeja de entrada.
+          {T("profEmailSentDesc")}
         </div>
       </div>
     </div>,
@@ -276,14 +276,14 @@ export default function ProfilePage({
       {/* ── Juegos Favoritos ─────────────────────────────────────── */}
       {(() => {
         const GAME_DEFS = [
-          { name: "Dice",      key: "dice_stats",     image: "/dice-card.jpg",        sub: "Mander Original", bg: "#0d1e3a", accent: "#3a7aff" },
-          { name: "Plinko",    key: "plinko_stats",   image: "/plinko-thumb.jpg",     sub: "Mander Original", bg: "#2a0a0a", accent: "#e03020" },
-          { name: "Keno",      key: "keno_stats",     image: "/keno-thumb.jpg",       sub: "Mander Original", bg: "#18082e", accent: "#9b5cf6" },
-          { name: "Mines",     key: "mines_stats",    image: "/mines-card.jpg",       sub: "Mander Original", bg: "#081e10", accent: "#22c55e" },
-          { name: "Blackjack", key: "bj_stats",       image: "/blackjack-thumb.jpg",  sub: "Mander Original", bg: "#1a1408", accent: "#f4a91f" },
-          { name: "Hilo",      key: "hilo_stats",     image: "/hilo-card.jpg",        sub: "Mander Original", bg: "#081a28", accent: "#06b6d4" },
-          { name: "Roulette",  key: "roulette_stats", image: "/roulette-card.jpg",    sub: "Mander Original", bg: "#2a0810", accent: "#e01a50" },
-          { name: "Baccarat",  key: "baccarat_stats", image: "/baccarat-card.jpg",    sub: "Mander Original", bg: "#081428", accent: "#6366f1" },
+          { name: "Dice",      key: "dice_stats",     image: "/dice-card.jpg",        sub: T("manderOriginals"), bg: "#0d1e3a", accent: "#3a7aff" },
+          { name: "Plinko",    key: "plinko_stats",   image: "/plinko-thumb.jpg",     sub: T("manderOriginals"), bg: "#2a0a0a", accent: "#e03020" },
+          { name: "Keno",      key: "keno_stats",     image: "/keno-thumb.jpg",       sub: T("manderOriginals"), bg: "#18082e", accent: "#9b5cf6" },
+          { name: "Mines",     key: "mines_stats",    image: "/mines-card.jpg",       sub: T("manderOriginals"), bg: "#081e10", accent: "#22c55e" },
+          { name: "Blackjack", key: "bj_stats",       image: "/blackjack-thumb.jpg",  sub: T("manderOriginals"), bg: "#1a1408", accent: "#f4a91f" },
+          { name: "Hilo",      key: "hilo_stats",     image: "/hilo-card.jpg",        sub: T("manderOriginals"), bg: "#081a28", accent: "#06b6d4" },
+          { name: "Roulette",  key: "roulette_stats", image: "/roulette-card.jpg",    sub: T("manderOriginals"), bg: "#2a0810", accent: "#e01a50" },
+          { name: "Baccarat",  key: "baccarat_stats", image: "/baccarat-card.jpg",    sub: T("manderOriginals"), bg: "#081428", accent: "#6366f1" },
         ];
         const allGames = GAME_DEFS.map(g => {
           const raw = localStorage.getItem(`${g.key}_${currentUser}`);
@@ -307,9 +307,9 @@ export default function ProfilePage({
           top[2] ?? null,
         ];
         const lockedMessages = [
-          "Juega para revelar\ntu juego favorito",
-          "Sigue apostando para\ndesbloquear este lugar",
-          "Un juego más para\ncompletar el podio",
+          T("profPlayReveal"),
+          T("profKeepPlaying"),
+          T("profOnePodium"),
         ];
         return (
           <div style={{ background: cardBg, border: `1px solid ${cardBorder}`, borderRadius: "14px", padding: "20px 24px", marginBottom: "16px" }}>
@@ -317,7 +317,7 @@ export default function ProfilePage({
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#f4a91f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
-              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>Juegos Favoritos</span>
+              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", color: "#5a6e8a", textTransform: "uppercase" as const }}>{T("profFavGames")}</span>
             </div>
             <div style={{ display: "flex", flexDirection: "row" as const, gap: "10px" }}>
               {slots.map((g, idx) => g ? (
@@ -350,11 +350,11 @@ export default function ProfilePage({
                   <div style={{ display: "flex", gap: "20px", marginTop: "12px", position: "relative" as const, zIndex: 1 }}>
                     <div>
                       <div style={{ fontSize: "13px", fontWeight: 800, color: "#c8d8ec" }}>{g.bets.toLocaleString()}</div>
-                      <div style={{ fontSize: "8px", color: "#4a6080", letterSpacing: "1px", textTransform: "uppercase" as const, marginTop: "1px" }}>Apuestas</div>
+                      <div style={{ fontSize: "8px", color: "#4a6080", letterSpacing: "1px", textTransform: "uppercase" as const, marginTop: "1px" }}>{T("profBetsLabel")}</div>
                     </div>
                     <div>
                       <div style={{ fontSize: "13px", fontWeight: 800, color: "#f4a91f" }}>${g.wagered.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                      <div style={{ fontSize: "8px", color: "#4a6080", letterSpacing: "1px", textTransform: "uppercase" as const, marginTop: "1px" }}>Apostado</div>
+                      <div style={{ fontSize: "8px", color: "#4a6080", letterSpacing: "1px", textTransform: "uppercase" as const, marginTop: "1px" }}>{T("profWageredLbl")}</div>
                     </div>
                   </div>
                 </div>
