@@ -1,0 +1,81 @@
+You are a senior full-stack developer working on an online casino project.
+
+TASK:
+Convert the entire platform into a fully multilingual system and ensure ALL user-facing content is translated properly.
+
+LANGUAGES TO SUPPORT (MUST ALL BE INCLUDED):
+- English (default)
+- Spanish
+- Portuguese (Brazil)
+- German
+- French
+- Indonesian
+- Italian
+- Korean
+- Dutch
+- Polish
+- Russian
+- Turkish
+
+REQUIREMENTS:
+
+1. FIND ALL TEXT
+Scan the entire codebase and identify ALL user-facing text, including:
+- Frontend UI (buttons, labels, menus, popups)
+- Backend responses (API messages, errors, validation)
+- Emails and notifications
+- Modals, banners, promotions
+- Game-related UI text
+- Deposit/withdrawal flows
+- VIP / bonus / referral system text
+
+2. CREATE CENTRALIZED TRANSLATION SYSTEM
+- Implement a proper i18n system
+- Store all strings in structured JSON files (one per language)
+- Use consistent keys (example: "auth.login_button", "deposit.success", "error.invalid_amount")
+
+3. REPLACE HARD-CODED TEXT
+- Replace ALL hardcoded strings with translation keys
+- Ensure zero hardcoded user-facing text remains anywhere in the project
+
+4. AUTO TRANSLATE CONTENT
+- Fill ALL translation JSON files with accurate translations for each language
+- Do NOT leave placeholders or missing values
+
+5. LANGUAGE SWITCHER
+- Ensure the language selector works globally
+- Changing language must update the entire UI instantly
+- Persist selected language (localStorage or database)
+- Auto-detect browser language if user has not selected one
+
+6. FALLBACK SYSTEM
+- If a translation key is missing, fallback to English
+- Log missing keys for debugging
+
+7. LOCALIZATION (IMPORTANT)
+- Format currencies properly per locale
+- Format numbers, dates, and time correctly
+- Ensure RTL is handled if needed (future-proof)
+
+8. VERIFY COMPLETENESS
+- Ensure NOTHING is left untranslated
+- Check edge cases:
+  - Error messages
+  - Loading states
+  - Empty states
+  - Toast notifications
+  - Backend error responses
+
+9. FINAL AUDIT
+- Scan again and list any remaining hardcoded text
+- Fix all of them automatically
+
+10. OUTPUT
+- Show all translation files
+- Show examples of updated components
+- Confirm 100% translation coverage
+
+IMPORTANT:
+Do NOT skip any file.
+Do NOT partially implement.
+This must be a complete, production-ready multilingual system.

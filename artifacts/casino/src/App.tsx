@@ -67,6 +67,10 @@ const LANGS: Record<string, Record<string, string>> = {
     claimNow:"Reclamar ahora", regSuccess:"¡Cuenta creada! Revisá tu correo para confirmar.",
     backToLogin:"Volver al inicio de sesión", mustLogin:"Debés iniciar sesión para usar el soporte",
     sendRecovery:"Enviar correo de recuperación", sending:"Enviando...",
+    startChat:"Iniciar chat", understood:"Entendido", contactSupport:"Contactar soporte",
+    progress:"Progreso", anonymous:"Anónimo",
+    tabAllBets:"Todas las Apuestas", tabBigWins:"Grandes Ganancias", tabLuckyBets:"Apuestas Afortunadas",
+    waitingBets:"Esperando apuestas…", betHistory:"Historial de apuestas",
   },
   en: {
     login:"Sign In", register:"Register", username:"Username", password:"Password",
@@ -116,6 +120,10 @@ const LANGS: Record<string, Record<string, string>> = {
     claimNow:"Claim now", regSuccess:"Account created! Check your email to confirm.",
     backToLogin:"Back to Sign In", mustLogin:"You must sign in to use support",
     sendRecovery:"Send recovery email", sending:"Sending...",
+    startChat:"Start chat", understood:"Got it", contactSupport:"Contact support",
+    progress:"Progress", anonymous:"Anonymous",
+    tabAllBets:"All Bets", tabBigWins:"Big Wins", tabLuckyBets:"Lucky Bets",
+    waitingBets:"Waiting for bets…", betHistory:"Bet History",
   },
   pt: {
     login:"Entrar", register:"Registrar", username:"Usuário", password:"Senha",
@@ -5631,7 +5639,7 @@ export default function App() {
                           {/* User + amount */}
                           <div style={{ padding:"8px 10px" }}>
                             <div style={{ fontSize:"11px",color:"#c8d8ec",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{w.game}</div>
-                            <div style={{ fontSize:"10px",color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginBottom:"2px" }}>{w.user === currentUser && privateMode ? "Anónimo" : w.user}</div>
+                            <div style={{ fontSize:"10px",color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginBottom:"2px" }}>{w.user === currentUser && privateMode ? t("anonymous") : w.user}</div>
                             <div style={{ fontWeight:700,fontSize:"13px",color:w.win?"#00d95f":"#ff5b5b" }}>
                               {w.win?"+":"-"}{displayInFiat ? (Math.abs(w.profitUsd)*(liveRates[displayCurrency]||1)).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2}) : Math.abs(w.profitUsd).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})} {displayInFiat ? displayCurrency : "USD"}
                             </div>
@@ -5783,6 +5791,7 @@ export default function App() {
                 allGameRecords={allBetRecords}
                 liveBets={mergedLiveBets}
                 rawBets={allUsersBets}
+                lang={lang}
               />
 
               <CasinoFooter onHome={showHomeView} />
@@ -5826,7 +5835,7 @@ export default function App() {
             /></div>
             <GameInfoPanel game="dice" onFairness={() => { setSection("fairness"); setFairnessGame("Dice"); }}/>
             <MoreFromLockly currentGame="dice" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-            <ApuestasSection records={diceBetHistory as ApuestaRecord[]} gameLabel="Dados" gameIcon={<img src="/dice-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="dice"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+            <ApuestasSection records={diceBetHistory as ApuestaRecord[]} gameLabel="Dados" gameIcon={<img src="/dice-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="dice"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
 
@@ -5862,7 +5871,7 @@ export default function App() {
             /></div>
             <GameInfoPanel game="plinko" onFairness={() => { setSection("fairness"); setFairnessGame("Plinko"); }}/>
             <MoreFromLockly currentGame="plinko" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-            <ApuestasSection records={plinkoBetHistory as ApuestaRecord[]} gameLabel="Plinko" gameIcon={<img src="/plinko-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="plinko"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+            <ApuestasSection records={plinkoBetHistory as ApuestaRecord[]} gameLabel="Plinko" gameIcon={<img src="/plinko-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="plinko"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
 
@@ -5947,7 +5956,7 @@ export default function App() {
             /></div>
             <GameInfoPanel game="keno" onFairness={() => { setSection("fairness"); setFairnessGame("Keno"); }}/>
             <MoreFromLockly currentGame="keno" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-            <ApuestasSection records={kenoBetHistory as ApuestaRecord[]} gameLabel="Keno" gameIcon={<img src="/keno-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="keno"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+            <ApuestasSection records={kenoBetHistory as ApuestaRecord[]} gameLabel="Keno" gameIcon={<img src="/keno-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="keno"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
             <CasinoFooter onHome={showHomeView} />
             </>}
 
@@ -5977,7 +5986,7 @@ export default function App() {
               </div>
               <GameInfoPanel game="blackjack" onFairness={() => { setSection("fairness"); setFairnessGame("Blackjack"); }}/>
               <MoreFromLockly currentGame="blackjack" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-              <ApuestasSection records={bjBetHistory as ApuestaRecord[]} gameLabel="Blackjack" gameIcon={<img src="/blackjack-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="blackjack"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+              <ApuestasSection records={bjBetHistory as ApuestaRecord[]} gameLabel="Blackjack" gameIcon={<img src="/blackjack-thumb.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="blackjack"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
               <CasinoFooter onHome={showHomeView} />
               </>
             )}
@@ -6014,7 +6023,7 @@ export default function App() {
               </div>
               <GameInfoPanel game="mines" onFairness={() => { setSection("fairness"); setFairnessGame("Mines"); }}/>
               <MoreFromLockly currentGame="mines" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-              <ApuestasSection records={minesBetHistory as ApuestaRecord[]} gameLabel="Mines" gameIcon={<img src="/mines-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="mines"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+              <ApuestasSection records={minesBetHistory as ApuestaRecord[]} gameLabel="Mines" gameIcon={<img src="/mines-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="mines"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
               <CasinoFooter onHome={showHomeView} />
               </>
             )}
@@ -6048,7 +6057,7 @@ export default function App() {
               />
               <GameInfoPanel game="hilo" onFairness={() => { setSection("fairness"); setFairnessGame("Hilo"); }}/>
               <MoreFromLockly currentGame="hilo" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-              <ApuestasSection records={hiloBetHistory as ApuestaRecord[]} gameLabel="Hilo" gameIcon={<img src="/hilo-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="hilo"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+              <ApuestasSection records={hiloBetHistory as ApuestaRecord[]} gameLabel="Hilo" gameIcon={<img src="/hilo-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="hilo"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
               <CasinoFooter onHome={showHomeView} />
               </>
             )}
@@ -6093,7 +6102,7 @@ export default function App() {
               </div>
               <GameInfoPanel game="roulette" onFairness={() => { setSection("fairness"); setFairnessGame("Roulette"); }}/>
               <MoreFromLockly currentGame="roulette" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-              <ApuestasSection records={rouletteBetHistory as ApuestaRecord[]} gameLabel="Ruleta" gameIcon={<img src="/roulette-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="ruleta"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+              <ApuestasSection records={rouletteBetHistory as ApuestaRecord[]} gameLabel="Ruleta" gameIcon={<img src="/roulette-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="ruleta"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
               <CasinoFooter onHome={showHomeView} />
               </>
             )}
@@ -6135,7 +6144,7 @@ export default function App() {
               </div>
               <GameInfoPanel game="baccarat" onFairness={() => { setSection("fairness"); setFairnessGame("Baccarat"); }}/>
               <MoreFromLockly currentGame="baccarat" lang={lang} onVerTodo={showOriginalsView} onGames={{ dice:showDiceOnly, plinko:showPlinkoOnly, keno:showKenoOnly, blackjack:showBlackjackOnly, mines:showMinesOnly, hilo:showHiloOnly, roulette:showRouletteOnly, baccarat:showBaccaratOnly }}/>
-              <ApuestasSection records={baccaratBetHistory as ApuestaRecord[]} gameLabel="Baccarat" gameIcon={<img src="/baccarat-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="baccarat"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets}/>
+              <ApuestasSection records={baccaratBetHistory as ApuestaRecord[]} gameLabel="Baccarat" gameIcon={<img src="/baccarat-card.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}} alt="baccarat"/>} fmtMoney={fmtMoney} allGameRecords={allBetRecords} liveBets={mergedLiveBets} rawBets={allUsersBets} lang={lang}/>
               <CasinoFooter onHome={showHomeView} />
               </>
             )}
@@ -6257,7 +6266,7 @@ export default function App() {
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"16px" }}>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>Historial de apuestas</span>
+                <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("betHistory")}</span>
               </div>
               {!currentUser ? (
                 <div style={{ background:"#161d2b", border:"1px solid #20283a", borderRadius:"14px", padding:"16px" }}>
@@ -8545,7 +8554,7 @@ export default function App() {
                   <button
                     onClick={verifyChatUser}
                     style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
-                  >Start chat</button>
+                  >{t("startChat")}</button>
                 </>
               )}
             </div>
@@ -8875,7 +8884,7 @@ export default function App() {
                   flex:1, padding:"12px", borderRadius:"10px", border:"1px solid #1e2a3d",
                   background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
                   transition:"background 0.15s, border-color 0.15s, color 0.15s",
-                }}>Entendido</button>
+                }}>{t("understood")}</button>
               <button
                 onClick={()=>{ setWithdrawBlocked(false); setChatOpen(true); if(currentUser) { loadChatSessions(currentUser); checkTicketStatus(currentUser); loadAllTickets(currentUser); } }}
                 onMouseEnter={e=>{ e.currentTarget.style.background="linear-gradient(180deg,#3b82f6,#2563eb)"; e.currentTarget.style.transform="translateY(-1px)"; }}
@@ -8885,7 +8894,7 @@ export default function App() {
                   background:"linear-gradient(180deg,#2563eb,#1d4ed8)", color:"#fff",
                   fontWeight:600, fontSize:"14px", cursor:"pointer",
                   transition:"background 0.15s, transform 0.15s",
-                }}>Contactar soporte</button>
+                }}>{t("contactSupport")}</button>
             </div>
           </div>
         </div>
@@ -8915,7 +8924,7 @@ export default function App() {
             {/* Progress bar */}
             <div style={{ marginBottom:"20px" }}>
               <div style={{ display:"flex", justifyContent:"space-between", fontSize:"12px", color:"#5a7090", marginBottom:"6px" }}>
-                <span>Progreso</span>
+                <span>{t("progress")}</span>
                 <span style={{ color:"#c8d8f0", fontWeight:600 }}>{fmtMoney(wagerAlert.wagered)} / {fmtMoney(wagerAlert.required)}</span>
               </div>
               <div style={{ height:"8px", background:"#1a2438", borderRadius:"999px", overflow:"hidden" }}>
@@ -9360,10 +9369,11 @@ const GAME_SVG_ICON: Record<string, React.ReactNode> = {
 };
 const GAME_LABEL_TO_KEY: Record<string,string> = { Dados:"dice", Plinko:"plinko", Keno:"keno", Blackjack:"blackjack", Mines:"mines", Hilo:"hilo", Ruleta:"roulette", Baccarat:"baccarat", Slots:"slot" };
 
-function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _gameIcon, fmtMoney: fmt, allGameRecords: _allGameRecords, liveBets, rawBets }:
-  { records:ApuestaRecord[]; gameLabel:string; gameIcon:React.ReactNode; fmtMoney:(v:number)=>string; allGameRecords?: TaggedApuestaRecord[]; liveBets?: LiveCasinoBet[]; rawBets?: LiveCasinoBet[] }) {
+function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _gameIcon, fmtMoney: fmt, allGameRecords: _allGameRecords, liveBets, rawBets, lang }:
+  { records:ApuestaRecord[]; gameLabel:string; gameIcon:React.ReactNode; fmtMoney:(v:number)=>string; allGameRecords?: TaggedApuestaRecord[]; liveBets?: LiveCasinoBet[]; rawBets?: LiveCasinoBet[]; lang?: string }) {
+  const lt = (k: string) => tl(lang ?? "es", k);
   const [activeTab, setActiveTab] = useState<0|1|2>(0);
-  const TABS = ["Todas las Apuestas","Grandes Ganancias","Apuestas Afortunadas"] as const;
+  const TABS = [lt("tabAllBets"), lt("tabBigWins"), lt("tabLuckyBets")] as const;
 
   const liveRows = useMemo(() => {
     const base = liveBets ?? [];
@@ -9439,15 +9449,15 @@ function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _
       </div>
       {/* Column headers */}
       <div style={{ display:"grid", gridTemplateColumns:"180px 1fr 1fr 1fr 1fr", padding:"11px 20px", background:"#0c1622", borderBottom:"1px solid #141e2e", color:"#4a6070", fontSize:"12px", fontWeight:600, textTransform:"uppercase" as const, letterSpacing:"0.4px" }}>
-        <span>Juego</span>
-        <span style={{ textAlign:"center" }}>Hora</span>
-        <span style={{ textAlign:"center" }}>Apuesta</span>
-        <span style={{ textAlign:"center" }}>Multiplicador</span>
-        <span style={{ textAlign:"right" }}>Pago</span>
+        <span>{lt("colGame")}</span>
+        <span style={{ textAlign:"center" }}>{lt("time")}</span>
+        <span style={{ textAlign:"center" }}>{lt("colBet")}</span>
+        <span style={{ textAlign:"center" }}>{lt("colMultiplier")}</span>
+        <span style={{ textAlign:"right" }}>{lt("colPayout")}</span>
       </div>
       {/* Rows */}
       {(activeTab === 0 ? tab0Data : liveRows).length === 0
-        ? <div style={{ padding:"32px", textAlign:"center", color:"#4a6a80", fontSize:"14px", background:"#0b1520" }}>Esperando apuestas…</div>
+        ? <div style={{ padding:"32px", textAlign:"center", color:"#4a6a80", fontSize:"14px", background:"#0b1520" }}>{lt("waitingBets")}</div>
         : (activeTab === 0 ? tab0Data : liveRows).map((b,i) => renderLiveRow(b,i))
       }
     </div>
