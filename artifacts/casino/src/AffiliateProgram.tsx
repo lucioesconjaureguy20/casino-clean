@@ -373,7 +373,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   async function saveCode() {
     setCodeError("");
     const clean = codeInput.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
-    if (clean.length < 3) { setCodeError("Mínimo 3 caracteres (letras y números)."); return; }
+    if (clean.length < 3) { setCodeError(t("affMinChars")); return; }
     setCodeSaving(true);
     try {
       const res = await fetch(`/api/affiliate/link/${encodeURIComponent(username)}/set-code`, {
@@ -382,7 +382,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
         body: JSON.stringify({ code: clean }),
       });
       const data = await res.json();
-      if (!res.ok) { setCodeError(data.error || "Error al guardar."); return; }
+      if (!res.ok) { setCodeError(data.error || t("affSaveError")); return; }
       setRefCode(data.ref_code);
       setCodeInput(data.ref_code);
       setRefLink(`${window.location.origin}/?ref=${data.ref_code}`);
@@ -390,7 +390,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
       setShowCodeForm(false);
       setTimeout(() => setCodeSaved(false), 3000);
     } catch {
-      setCodeError("Error de conexión. Intentá de nuevo.");
+      setCodeError(t("affConnError"));
     } finally {
       setCodeSaving(false);
     }
@@ -467,8 +467,8 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   });
 
   const currentPeriodLabel =
-    periodType === "all" ? "All Time"
-    : periodType === "custom" ? "Custom Date"
+    periodType === "all" ? t("affAllTime")
+    : periodType === "custom" ? t("affCustomDate")
     : (monthOptions.find(m => m.value === selectedMonth)?.label ?? selectedMonth);
 
   const cardStyle = {
@@ -542,25 +542,25 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   };
 
   const features = [
-    { Icon: IconTrendUp, title: "Gana mientras ellos juegan", desc: "Cada vez que tus referidos juegan en el casino, generas un 15% de comisión sobre sus pérdidas netas." },
-    { Icon: IconCalendarClock, title: "Pagos Mensuales", desc: "Las ganancias se calculan y acreditan a tu saldo a principio de cada mes." },
-    { Icon: IconBarChart, title: "Detailed Tracking", desc: "Full transparency with detailed reports, and player activity at your fingertips." },
-    { Icon: IconShieldCheck, title: "Sin riesgo", desc: "No necesitas depositar ni apostar. Solo invita y empieza a generar comisiones." },
-    { Icon: IconGlobe, title: "Global & Crypto-Friendly", desc: "Accept players from around the world and get paid fast and reliably." },
-    { Icon: IconZap, title: "Comisión fija del 15%", desc: "Gana siempre el mismo porcentaje, sin niveles ni condiciones ocultas." },
+    { Icon: IconTrendUp, title: t("affFeat1"), desc: "Cada vez que tus referidos juegan en el casino, generas un 15% de comisión sobre sus pérdidas netas." },
+    { Icon: IconCalendarClock, title: t("affFeat2"), desc: "Las ganancias se calculan y acreditan a tu saldo a principio de cada mes." },
+    { Icon: IconBarChart, title: t("affFeat3"), desc: "Full transparency with detailed reports, and player activity at your fingertips." },
+    { Icon: IconShieldCheck, title: t("affFeat4"), desc: "No necesitas depositar ni apostar. Solo invita y empieza a generar comisiones." },
+    { Icon: IconGlobe, title: t("affFeat5"), desc: "Accept players from around the world and get paid fast and reliably." },
+    { Icon: IconZap, title: t("affFeat6"), desc: "Gana siempre el mismo porcentaje, sin niveles ni condiciones ocultas." },
   ];
 
   const steps = [
-    { num: "1", title: "Obtén tu enlace único", desc: "Accedé al panel y copiá tu link de referido. Compartilo en redes, grupos o donde quieras." },
-    { num: "2", title: "Tus referidos se unen", desc: "Cuando alguien se registra y deposita usando tu link, queda vinculado a vos para siempre." },
-    { num: "3", title: "Acumulás ganancias", desc: "Generás el 15% de las pérdidas netas de tus referidos, acreditado a tu saldo cada mes." },
+    { num: "1", title: t("affStep1"), desc: "Accedé al panel y copiá tu link de referido. Compartilo en redes, grupos o donde quieras." },
+    { num: "2", title: t("affStep2"), desc: "Cuando alguien se registra y deposita usando tu link, queda vinculado a vos para siempre." },
+    { num: "3", title: t("affStep3"), desc: "Generás el 15% de las pérdidas netas de tus referidos, acreditado a tu saldo cada mes." },
   ];
 
   const statCards = [
-    { label: "Visits", val: stats.clicks, Icon: IconEye, hint: "Unique number of times your referral link was clicked during the selected period." },
-    { label: "Sign Ups", val: stats.signups, Icon: IconUsers, hint: "Number of players who created an account using your referral link during the selected period." },
-    { label: "FTDs", val: stats.ftds, Icon: IconDeposit, hint: "First Time Deposits — number of referred players who made at least one deposit during the selected period." },
-    { label: "FTD Conversion", val: `${stats.ftd_conversion}%`, Icon: IconPercent, hint: "Percentage of sign-ups who made their first deposit. Calculated as FTDs ÷ Sign Ups × 100." },
+    { label: t("affVisits"), val: stats.clicks, Icon: IconEye, hint: "Unique number of times your referral link was clicked during the selected period." },
+    { label: t("affSignUps"), val: stats.signups, Icon: IconUsers, hint: "Number of players who created an account using your referral link during the selected period." },
+    { label: t("affFTDs"), val: stats.ftds, Icon: IconDeposit, hint: "First Time Deposits — number of referred players who made at least one deposit during the selected period." },
+    { label: t("affFTDConv"), val: `${stats.ftd_conversion}%`, Icon: IconPercent, hint: "Percentage of sign-ups who made their first deposit. Calculated as FTDs ÷ Sign Ups × 100." },
   ];
 
   // NGR real: calculado desde game_bets a través del endpoint de referrals (fuente de verdad)
@@ -568,9 +568,9 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   const totalWager = referrals.reduce((s, r) => s + parseFloat(r.wager_amount || "0"), 0);
   const totalDeposit = referrals.reduce((s, r) => s + parseFloat(r.deposit_amount || "0"), 0);
   const monoCards = [
-    { label: "Deposit Amount", val: fmt(totalDeposit), raw: null, Icon: IconDollarCircle, hint: "Total amount deposited by your referred users during the selected period." },
-    { label: "Bet Amount", val: fmt(totalWager), raw: null, Icon: IconDice, hint: "Total amount wagered by your referred users during the selected period." },
-    { label: "Net Win/Loss", val: (ngrNum >= 0 ? "+" : "-") + "$" + Math.abs(ngrNum).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), raw: ngrNum, Icon: IconTrendUp, hint: "The net result of your referred players' bets during the selected period. Negative value = players lost (platform profit). Positive value = players won." },
+    { label: t("affDepAmt"), val: fmt(totalDeposit), raw: null, Icon: IconDollarCircle, hint: "Total amount deposited by your referred users during the selected period." },
+    { label: t("affBetAmt"), val: fmt(totalWager), raw: null, Icon: IconDice, hint: "Total amount wagered by your referred users during the selected period." },
+    { label: t("affNetWL"), val: (ngrNum >= 0 ? "+" : "-") + "$" + Math.abs(ngrNum).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), raw: ngrNum, Icon: IconTrendUp, hint: "The net result of your referred players' bets during the selected period. Negative value = players lost (platform profit). Positive value = players won." },
   ];
 
   const iconColor = "#8fa3be";
@@ -582,7 +582,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 14, color: "#64748b" }}>⚙</span>
           <span style={{ color: "#94a3b8", fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>
-            TU CÓDIGO DE REFERENCIA
+            {t("affYourCode")}
           </span>
         </div>
         <span style={{ background: "#1a2234", color: "#64748b", fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 6, minWidth: 36, textAlign: "center" as const }}>
@@ -609,8 +609,8 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#f6b531"; (e.currentTarget as HTMLButtonElement).style.background = "#f6b5310a"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#f6b53180"; (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
           >
-            <span style={{ color: "#64748b", fontSize: 12 }}>No tienes ningún código de referencia</span>
-            <span style={{ color: "#f6b531", fontSize: 14, fontWeight: 600, letterSpacing: "0.02em" }}>+ Añadir Código</span>
+            <span style={{ color: "#64748b", fontSize: 12 }}>{t("affNoCode")}</span>
+            <span style={{ color: "#f6b531", fontSize: 14, fontWeight: 600, letterSpacing: "0.02em" }}>{t("affAddCode")}</span>
           </button>
         )}
 
@@ -639,7 +639,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                     boxShadow: "0 2px 8px #0008",
                     zIndex: 99,
                   }}>
-                    {copiedCode ? "¡Copiado!" : "Copiar código"}
+                    {copiedCode ? t("affCopied") : t("affCopyCode")}
                   </div>
                 )}
                 <button
@@ -671,7 +671,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                     boxShadow: "0 2px 8px #0008",
                     zIndex: 99,
                   }}>
-                    {copied ? "¡Copiado!" : "Copiar link"}
+                    {copied ? t("affCopied") : t("affCopyLink")}
                   </div>
                 )}
                 <button
@@ -697,7 +697,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
         {showCodeForm && (
           <div>
             <p style={{ margin: "0 0 10px", color: "#64748b", fontSize: 12 }}>
-              Escribí el nombre de tu código (letras y números, sin espacios):
+              {t("affCodeHint")}
             </p>
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" as const }}>
               <input
@@ -718,7 +718,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                 padding: "9px 14px", borderRadius: 8, background: "none",
                 border: "1px solid #253048", color: "#64748b", fontSize: 13, cursor: "pointer",
               }}>
-                Cancelar
+                {t("affCancel")}
               </button>
               <button onClick={saveCode} disabled={codeSaving || !codeInput} style={{
                 padding: "9px 18px", borderRadius: 8,
@@ -727,7 +727,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                 cursor: codeSaving || !codeInput ? "not-allowed" : "pointer",
                 opacity: !codeInput ? 0.5 : 1,
               }}>
-                {codeSaving ? "Guardando..." : "Guardar"}
+                {codeSaving ? t("affSaving") : t("affSave")}
               </button>
             </div>
             {codeInput && (
@@ -748,8 +748,8 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
 
       {!dashboardOnly && (
         <div style={{ display: "flex", gap: "20px", borderBottom: "1px solid #20283a", marginBottom: "20px" }}>
-          <button className="aff-tab-btn" style={tabStyle(tab === "overview")} onClick={() => setTab("overview")}>Overview</button>
-          {username && <button className="aff-tab-btn" style={tabStyle(tab === "dashboard")} onClick={() => setTab("dashboard")}>Dashboard</button>}
+          <button className="aff-tab-btn" style={tabStyle(tab === "overview")} onClick={() => setTab("overview")}>{t("affOverview")}</button>
+          {username && <button className="aff-tab-btn" style={tabStyle(tab === "dashboard")} onClick={() => setTab("dashboard")}>{t("affDashboard")}</button>}
         </div>
       )}
 
@@ -798,13 +798,13 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                 borderRadius: "14px 14px 0 0",
               }} />
               <p style={{ margin: "0 0 6px", color: "#c4bfb5", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", position: "relative", zIndex: 1 }}>
-                Gana hasta
+                {t("affEarnUpTo")}
               </p>
               <div style={{ fontSize: "52px", fontWeight: 900, color: "#fff", lineHeight: 1, position: "relative", zIndex: 1 }}>
                 15%
               </div>
               <p style={{ margin: "6px 0 0", fontSize: "14px", fontWeight: 600, color: "#f6b531", position: "relative", zIndex: 1 }}>
-                Comisión
+                {t("affCommission")}
               </p>
             </div>
           </div>
@@ -821,7 +821,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
               marginBottom: "20px",
             }}>
               <span style={{ fontSize: "13px", color: "#94a3b8" }}>
-                Para unirte al programa de afiliados, registrate en Mander.
+                {t("affSignUpPrompt")}
               </span>
               <button onClick={onRegister} style={{
                 background: "linear-gradient(135deg,#f6b531,#d4870a)",
@@ -830,30 +830,26 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                 color: "#fff", fontWeight: 700, fontSize: "13px",
                 cursor: "pointer", whiteSpace: "nowrap",
               }}>
-                Registrarse &amp; Ganar ›
+                {t("affRegisterEarn")}
               </button>
             </div>
           )}
 
           {/* Introduction */}
           <div style={{ marginBottom: "40px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "12px" }}>Introduction</p>
+            <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "12px" }}>{t("affIntroTitle")}</p>
             <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: "0 0 8px" }}>
-              Welcome to the Affiliate Program! Your gateway to effortless earnings in the world of crypto gaming.
-              Whether you're a content creator, community builder, or casual promoter, we help you earn real rewards
-              every time your referrals play casino games. You don't need to gamble or take any risk — just share
-              your link and let the gameplay do the rest.
+              {t("affIntroPara1")}
             </p>
             <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: 0 }}>
-              We believe in "Play more, risk less, win big." As an affiliate, you live that promise, earning passively
-              while others play. Whether you choose to play with your earnings or cash them out, you're always in control.
+              {t("affIntroPara2")}
             </p>
           </div>
 
           {/* Features */}
           <div style={{ marginBottom: "40px" }}>
             <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "16px" }}>
-              Why Join Our Affiliate Program?
+              {t("affWhyJoin")}
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "10px" }}>
               {features.map(({ Icon, title, desc }, i) => (
@@ -873,7 +869,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
           {/* How to Enroll */}
           <div>
             <p style={{ color: "#e2e8f0", fontSize: "16px", fontWeight: 800, marginBottom: "32px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              ¿Cómo Funciona?
+              {t("affHowItWorks")}
             </p>
 
             {/* Circles row with connecting line */}
@@ -917,23 +913,23 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
           {(() => {
             const faqs = [
               {
-                q: "¿Cómo empiezo con el programa de afiliados?",
-                a: "Crea una cuenta en Mander, accede a la sección de afiliados y copia tu enlace único. Comparte tu link para invitar jugadores y empezar a generar comisiones.",
+                q: t("affFaq1Q"),
+                a: t("affFaq1A"),
               },
               {
-                q: "¿Cómo se calcula mi comisión?",
-                a: "Recibes un 15% de las pérdidas netas (NGR) de tus referidos. Esto significa que ganas un porcentaje de lo que el casino genera a partir de su actividad.",
+                q: t("affFaq2Q"),
+                a: t("affFaq2A"),
               },
               {
-                q: "¿Cuándo recibo mis pagos?",
-                a: "Las comisiones se calculan automáticamente y se acreditan en tu saldo a principio de mes. Puedes utilizarlas o retirarlas en cualquier momento según el sistema de pagos disponible.",
+                q: t("affFaq3Q"),
+                a: t("affFaq3A"),
               },
               {
-                q: "¿Necesitas ayuda o una oferta personalizada?",
+                q: t("affFaq4Q"),
                 a: (
                   <div>
                     <p style={{ margin: "0 0 12px", color: "#94a3b8", fontSize: "13px", lineHeight: 1.7 }}>
-                      Si tienes dudas o quieres trabajar con nosotros de forma más directa, puedes contactarnos:
+                      {t("affFaq4ContactText")}
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                       <a href="mailto:partners@manderbet.com" className="aff-contact-link" style={{
@@ -953,7 +949,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
             return (
               <div style={{ marginTop: "48px" }}>
                 <p style={{ color: "#e2e8f0", fontSize: "16px", fontWeight: 800, marginBottom: "28px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Preguntas Frecuentes
+                  {t("affFaq")}
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {faqs.map((faq, i) => (
@@ -1020,7 +1016,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
           {/* Filter Bar */}
           <div style={{ ...cardStyle, display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", padding: "12px 16px", flexWrap: "wrap", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-              <span style={{ color: "#94a3b8", fontSize: "13px" }}>Filter By Date:</span>
+              <span style={{ color: "#94a3b8", fontSize: "13px" }}>{t("affFilterDate")}</span>
 
               {/* Custom dropdown */}
               <div style={{ position: "relative" }}>
@@ -1043,14 +1039,14 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                         style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="all" ? "#f6b531" : "#e2e8f0", cursor:"pointer", background: periodType==="all" ? "rgba(246,181,49,0.08)" : "transparent", fontWeight: periodType==="all" ? 600 : 400 }}
                         onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.04)")}
                         onMouseLeave={e=>(e.currentTarget.style.background=periodType==="all"?"rgba(246,181,49,0.08)":"transparent")}
-                      >All Time</div>
+                      >{t("affAllTime")}</div>
                       {/* Custom Date */}
                       <div
                         onClick={() => { setPeriodType("custom"); setPeriodDropOpen(false); }}
                         style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="custom" ? "#f6b531" : "#e2e8f0", cursor:"pointer", background: periodType==="custom" ? "rgba(246,181,49,0.15)" : "transparent", fontWeight: periodType==="custom" ? 600 : 400, borderBottom:"1px solid #1e2a3d" }}
                         onMouseEnter={e=>(e.currentTarget.style.background=periodType==="custom"?"rgba(246,181,49,0.15)":"rgba(255,255,255,0.04)")}
                         onMouseLeave={e=>(e.currentTarget.style.background=periodType==="custom"?"rgba(246,181,49,0.15)":"transparent")}
-                      >Custom Date</div>
+                      >{t("affCustomDate")}</div>
                       {/* Month options */}
                       {monthOptions.map(m => (
                         <div
@@ -1072,7 +1068,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                   {/* Desde — input invisible covers full box; CSS makes calendar indicator fill it */}
                   <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0e1623", border:"1px solid #1e2a3d", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>Desde</span>
+                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affFrom")}</span>
                     <span style={{ color: customFrom ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
                       {customFrom ? customFrom.split("-").reverse().join("/") : "dd/mm/aaaa"}
                     </span>
@@ -1093,7 +1089,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                   {/* Hasta */}
                   <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0e1623", border:"1px solid #1e2a3d", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>Hasta</span>
+                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affTo")}</span>
                     <span style={{ color: customTo ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
                       {customTo ? customTo.split("-").reverse().join("/") : "dd/mm/aaaa"}
                     </span>
@@ -1111,7 +1107,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
               )}
             </div>
             <span style={{ color: "#94a3b8", fontSize: "12px" }}>
-              {loading ? "Loading..." : "Data updates in every 5 minutes."}
+              {loading ? t("affLoading") : t("affDataUpdates")}
             </span>
           </div>
 
@@ -1119,7 +1115,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
 
           {/* Traffic & Conversion */}
           <div style={{ marginBottom: "20px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>Traffic &amp; Conversion</p>
+            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affTraffic")}</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
               {statCards.map(({ label, val, Icon, hint }, i) => {
                 const tKey = `stat-${i}`;
@@ -1163,7 +1159,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
 
           {/* Monetization */}
           <div style={{ marginBottom: "24px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>Monetization</p>
+            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affMonetization")}</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
               {monoCards.map(({ label, val, raw, Icon, hint }, i) => {
                 const tKey = `mono-${i}`;
@@ -1208,7 +1204,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
 
         </div>
       )}
-      {tab === "dashboard" && username && <RegisteredUsers referrer={username} referrals={referrals} />}
+      {tab === "dashboard" && username && <RegisteredUsers referrer={username} referrals={referrals} t={t} />}
 
     </section>
   );

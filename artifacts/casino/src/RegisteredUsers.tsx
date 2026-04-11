@@ -27,7 +27,7 @@ function fmtDate(iso: string | null) {
     d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
 }
 
-export default function RegisteredUsers({ referrer, referrals }: { referrer: string; referrals: Referral[] }) {
+export default function RegisteredUsers({ referrer, referrals, t }: { referrer: string; referrals: Referral[]; t: (key: string) => string }) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("date");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
@@ -80,12 +80,12 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
   const COLS = "1fr 90px 110px 110px 100px 155px";
 
   const HEADERS: [string, SortKey, boolean][] = [
-    ["Usuario",    "username",     false],
-    ["FTD",        "depositTotal", true ],
-    ["Dep. Total", "depositTotal", true ],
-    ["Apostado",   "wagered",      true ],
-    ["NGR",        "ngr",          true ],
-    ["Registro",   "date",         true ],
+    [t("affColUser"),    "username",     false],
+    ["FTD",              "depositTotal", true ],
+    [t("affColDeposit"), "depositTotal", true ],
+    [t("affColWagered"), "wagered",      true ],
+    ["NGR",              "ngr",          true ],
+    [t("affColDate"),    "date",         true ],
   ];
 
   return (
@@ -94,7 +94,7 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
 
       {/* Header */}
       <div style={{ display:"flex",alignItems:"center",gap:"12px",padding:"16px 20px",borderBottom:"1px solid #20283a",flexWrap:"wrap" as const }}>
-        <span style={{ fontWeight:700,fontSize:"16px",color:"#e2e8f0",flexShrink:0 }}>Jugadores Referidos</span>
+        <span style={{ fontWeight:700,fontSize:"16px",color:"#e2e8f0",flexShrink:0 }}>{t("affReferredPlayers")}</span>
         <span style={{ background:"#1a2234",color:"#64748b",fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:6 }}>
           {referrals.length}
         </span>
@@ -103,7 +103,7 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
             viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar usuarios..."
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t("affSearchUsers")}
             style={{ width:"100%",paddingLeft:"32px",paddingRight:"10px",paddingTop:"8px",paddingBottom:"8px",background:"#1a2336",border:"1px solid #2a3650",borderRadius:"8px",color:"#c8d8f0",fontSize:"13px",outline:"none",fontFamily:"inherit",boxSizing:"border-box" as const }}
           />
         </div>
@@ -129,7 +129,7 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
       <div>
         {pageData.length === 0 ? (
           <div style={{ padding:"32px 20px",textAlign:"center" as const,color:"#3a4e68",fontSize:"13px",fontStyle:"italic" }}>
-            {search ? "No se encontraron usuarios con ese nombre." : "Aún no hay jugadores registrados con tu código."}
+            {search ? t("affNoResults") : t("affNoReferrals")}
           </div>
         ) : pageData.map((r, i) => {
           const ngr = parseFloat(r.ngr || "0");
@@ -186,7 +186,7 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
                   color: hasDeposit ? "#29c46d" : "#374151",
                   border: `1px solid ${hasDeposit ? "#29c46d44" : "#1e2a3d"}`,
                 }}>
-                  {hasDeposit ? "SÍ" : "NO"}
+                  {hasDeposit ? t("affYes") : t("affNo")}
                 </span>
               </div>
 
@@ -229,7 +229,7 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
           }}>
             <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
               <span style={{ fontSize:"11px",fontWeight:700,color:"#64748b",letterSpacing:"0.8px",textTransform:"uppercase" as const }}>
-                TOTAL
+                {t("affTotal")}
               </span>
               <span style={{ fontSize:"10px",color:"#3a5070",fontWeight:600 }}>({filtered.length})</span>
             </div>
@@ -268,9 +268,9 @@ export default function RegisteredUsers({ referrer, referrals }: { referrer: str
       {/* Footer: count + pagination */}
       <div style={{ padding:"12px 20px",borderTop:"1px solid #1a2236",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px",flexWrap:"wrap" as const }}>
         <span style={{ fontSize:"12px",color:"#3a5070" }}>
-          {filtered.length} {filtered.length===1?"jugador":"jugadores"}
-          {search ? ` encontrados de ${referrals.length} total` : " registrados"}
-          {totalPages > 1 && ` · Página ${safePage+1} de ${totalPages}`}
+          {filtered.length} {filtered.length===1 ? t("affPlayer") : t("affPlayers")}
+          {search ? ` ${t("affFoundOf")} ${referrals.length}` : ` ${t("affRegistered")}`}
+          {totalPages > 1 && ` · ${t("affPage")} ${safePage+1} ${t("affOf")} ${totalPages}`}
         </span>
 
         {totalPages > 1 && (
