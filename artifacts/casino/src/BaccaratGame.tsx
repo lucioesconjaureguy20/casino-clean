@@ -299,7 +299,6 @@ function CasinoChipSVG({ bg, border, txt, label, size = 52, selected = false }: 
         fill={txt} fontWeight="900" fontSize={fs} fontFamily="Arial,sans-serif" letterSpacing="-0.5">
         {label}
       </text>
-      {selected && <circle cx={cx} cy={cy} r={outerR + 2} fill="none" stroke="#ffffff" strokeWidth="2.5" />}
     </svg>
   );
 }
@@ -790,14 +789,12 @@ export default function BaccaratGame({
                       title={`${meta.label} = $${v.toFixed(v < 1 ? 2 : 0)} USD`}
                       style={{ flexShrink:0, background:"none", border:"none", padding:0,
                         cursor: isDealing ? "not-allowed" : "pointer", outline:"none", fontFamily:"inherit",
-                        filter: sel
-                          ? "drop-shadow(0 0 7px rgba(255,220,100,0.85)) drop-shadow(0 0 3px rgba(255,255,255,0.6))"
-                          : "drop-shadow(0 2px 3px rgba(0,0,0,0.5))",
+                        filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.5))",
                         opacity: isDealing ? 0.5 : 1,
                         transform:"scale(1)",
                         transition:"filter .15s, transform .13s, opacity .15s" }}
-                      onMouseEnter={e => { if (!isDealing) { e.currentTarget.style.transform="scale(1.2)"; if (!sel) e.currentTarget.style.filter="drop-shadow(0 0 9px rgba(255,210,60,0.75)) drop-shadow(0 0 4px rgba(255,255,255,0.5))"; } }}
-                      onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.filter=sel?"drop-shadow(0 0 7px rgba(255,220,100,0.85)) drop-shadow(0 0 3px rgba(255,255,255,0.6))":"drop-shadow(0 2px 3px rgba(0,0,0,0.5))"; }}>
+                      onMouseEnter={e => { if (!isDealing) { e.currentTarget.style.transform="scale(1.2)"; } }}
+                      onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.filter="drop-shadow(0 2px 3px rgba(0,0,0,0.5))"; }}>
                       <CasinoChipSVG {...meta} selected={sel} size={30} />
                     </button>
                   );
