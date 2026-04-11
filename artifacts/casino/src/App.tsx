@@ -8160,21 +8160,33 @@ export default function App() {
               <div style={{ textAlign:"center", marginBottom:"8px" }}>
                 <img src="/mander-logo.png" alt="Mander" style={{ width:"210px", height:"210px", objectFit:"contain", display:"block", margin:"0 auto", marginBottom:"-138px", position:"relative", zIndex:0, top:"-70px", pointerEvents:"none" }} />
                 <div style={{ fontWeight:600, fontSize:"18px", color:"#fff", marginBottom:"6px" }}>Live Support</div>
-                <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Enter your username<br/>to start the chat</p>
+                {!currentUser
+                  ? <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Debes iniciar sesión<br/>para usar el soporte</p>
+                  : <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6 }}>Enter your username<br/>to start the chat</p>
+                }
               </div>
-              <input
-                value={chatAuthInput}
-                onChange={e=>setChatAuthInput(e.target.value)}
-                onKeyDown={e=>e.key==="Enter" && verifyChatUser()}
-                placeholder="Username"
-                style={{ padding:"14px 16px", borderRadius:"14px", border:"1px solid #2a3650", background:"#1c2537", color:"#fff", fontSize:"15px", fontFamily:"inherit", outline:"none" }}
-                autoFocus
-              />
-              {chatAuthError && <div style={{ color:"#ff5a6a", fontSize:"13px", textAlign:"center" }}>{chatAuthError}</div>}
-              <button
-                onClick={verifyChatUser}
-                style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
-              >Start chat</button>
+              {!currentUser ? (
+                <button
+                  onClick={()=>{ setChatOpen(false); setTimeout(()=>setAuthModal("login"),150); }}
+                  style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
+                >Iniciar sesión</button>
+              ) : (
+                <>
+                  <input
+                    value={chatAuthInput}
+                    onChange={e=>setChatAuthInput(e.target.value)}
+                    onKeyDown={e=>e.key==="Enter" && verifyChatUser()}
+                    placeholder="Username"
+                    style={{ padding:"14px 16px", borderRadius:"14px", border:"1px solid #2a3650", background:"#1c2537", color:"#fff", fontSize:"15px", fontFamily:"inherit", outline:"none" }}
+                    autoFocus
+                  />
+                  {chatAuthError && <div style={{ color:"#ff5a6a", fontSize:"13px", textAlign:"center" }}>{chatAuthError}</div>}
+                  <button
+                    onClick={verifyChatUser}
+                    style={{ padding:"14px", borderRadius:"14px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
+                  >Start chat</button>
+                </>
+              )}
             </div>
           )}
 
