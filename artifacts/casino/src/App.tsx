@@ -6430,15 +6430,15 @@ export default function App() {
 
   // ─── Combined bet records from ALL games for the Apuestas table ──────────
   const allBetRecords = useMemo<TaggedApuestaRecord[]>(() => [
-    ...(diceBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Dados",     gameIconUrl:"/dice-card.jpg"      })),
-    ...(plinkoBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Plinko",   gameIconUrl:"/plinko-thumb.jpg"   })),
-    ...(kenoBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Keno",     gameIconUrl:"/keno-thumb.jpg"     })),
-    ...(bjBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Blackjack", gameIconUrl:"/blackjack-thumb.jpg" })),
-    ...(minesBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Mines",    gameIconUrl:"/mines-card.jpg"     })),
-    ...(hiloBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Hilo",     gameIconUrl:"/hilo-card.jpg"      })),
-    ...(rouletteBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Ruleta",   gameIconUrl:"/roulette-card.jpg"  })),
-    ...(baccaratBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:"Baccarat",  gameIconUrl:"/baccarat-card.jpg"  })),
-  ], [diceBetHistory, plinkoBetHistory, kenoBetHistory, bjBetHistory, minesBetHistory, hiloBetHistory, rouletteBetHistory, baccaratBetHistory]);
+    ...(diceBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameDice"),      gameIconUrl:"/dice-card.jpg"      })),
+    ...(plinkoBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gamePlinko"),  gameIconUrl:"/plinko-thumb.jpg"   })),
+    ...(kenoBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameKeno"),      gameIconUrl:"/keno-thumb.jpg"     })),
+    ...(bjBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameBlackjack"),   gameIconUrl:"/blackjack-thumb.jpg" })),
+    ...(minesBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameMines"),    gameIconUrl:"/mines-card.jpg"     })),
+    ...(hiloBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameHilo"),      gameIconUrl:"/hilo-card.jpg"      })),
+    ...(rouletteBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameRoulette"), gameIconUrl:"/roulette-card.jpg"  })),
+    ...(baccaratBetHistory as ApuestaRecord[]).map(b => ({ ...b, gameLabel:tl(lang,"gameBaccarat"),  gameIconUrl:"/baccarat-card.jpg"  })),
+  ], [diceBetHistory, plinkoBetHistory, kenoBetHistory, bjBetHistory, minesBetHistory, hiloBetHistory, rouletteBetHistory, baccaratBetHistory, lang]);
 
   // ─────────────────────────────────────────────────────────────────────
   // ─── APP ────────────────────────────────────────────────────────────
