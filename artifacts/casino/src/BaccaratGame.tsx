@@ -315,7 +315,7 @@ function getBetChipMeta(usd: number) {
 }
 
 // ── Deck pile visual (identical to Blackjack) ─────────────────────────────────
-function DeckPile() {
+function DeckPile({ lang = "es" }: { lang?: string }) {
   const cardW = 72, cardH = 106;
   return (
     <div style={{
@@ -358,7 +358,7 @@ function DeckPile() {
         fontSize:"9px", fontWeight:500, color:"rgba(255,255,255,.3)",
         letterSpacing:"0.5px", whiteSpace:"nowrap",
       }}>
-        MAZO
+        {gt(lang, "deckLabel")}
       </div>
     </div>
   );
@@ -1118,7 +1118,7 @@ export default function BaccaratGame({
       <div style={{ display:"flex", flexDirection:"column", background:"#09141f", position:"relative", overflow:"hidden" }}>
 
         {/* Deck pile — top right, identical to Blackjack */}
-        <DeckPile />
+        <DeckPile lang={lang} />
 
         {/* TIE badge */}
         <div style={{ position:"absolute", top:"16px", left:"50%", transform:"translateX(-50%)",

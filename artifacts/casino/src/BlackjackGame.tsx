@@ -225,7 +225,7 @@ function ScoreBadge({ score, bust, bj, win, lose, push, label, payout, fmtMoney 
 }
 
 // ── Deck pile visual ──────────────────────────────────────────────────────────
-function DeckPile({ deckRef }: { deckRef: React.RefObject<HTMLDivElement | null> }) {
+function DeckPile({ deckRef, lang = "es" }: { deckRef: React.RefObject<HTMLDivElement | null>; lang?: string }) {
   const cardW = 72, cardH = 106;
   return (
     <div ref={deckRef} style={{
@@ -270,7 +270,7 @@ function DeckPile({ deckRef }: { deckRef: React.RefObject<HTMLDivElement | null>
         fontSize:"9px", fontWeight:500, color:"rgba(255,255,255,.3)",
         letterSpacing:"0.5px", whiteSpace:"nowrap",
       }}>
-        MAZO
+        {gt(lang, "deckLabel")}
       </div>
     </div>
   );
@@ -1335,7 +1335,7 @@ export default function BlackjackGame({
           background:"#09141f" }}>
 
           {/* ── Deck pile (top-right corner) ── */}
-          <DeckPile deckRef={deckPileRef} />
+          <DeckPile deckRef={deckPileRef} lang={_lang} />
 
           {/* Center banner — Stake-style ribbon */}
           <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", display:"flex", alignItems:"center", pointerEvents:"none", zIndex:1, userSelect:"none", whiteSpace:"nowrap" }}>
