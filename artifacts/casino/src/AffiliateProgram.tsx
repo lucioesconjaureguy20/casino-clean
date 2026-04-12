@@ -557,10 +557,10 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   ];
 
   const statCards = [
-    { label: t("affVisits"), val: stats.clicks, Icon: IconEye, hint: "Unique number of times your referral link was clicked during the selected period." },
-    { label: t("affSignUps"), val: stats.signups, Icon: IconUsers, hint: "Number of players who created an account using your referral link during the selected period." },
-    { label: t("affFTDs"), val: stats.ftds, Icon: IconDeposit, hint: "First Time Deposits — number of referred players who made at least one deposit during the selected period." },
-    { label: t("affFTDConv"), val: `${stats.ftd_conversion}%`, Icon: IconPercent, hint: "Percentage of sign-ups who made their first deposit. Calculated as FTDs ÷ Sign Ups × 100." },
+    { label: t("affVisits"), val: stats.clicks, Icon: IconEye, hint: t("affHint1") },
+    { label: t("affSignUps"), val: stats.signups, Icon: IconUsers, hint: t("affHint2") },
+    { label: t("affFTDs"), val: stats.ftds, Icon: IconDeposit, hint: t("affHint3") },
+    { label: t("affFTDConv"), val: `${stats.ftd_conversion}%`, Icon: IconPercent, hint: t("affHint4") },
   ];
 
   // NGR real: calculado desde game_bets a través del endpoint de referrals (fuente de verdad)
@@ -568,9 +568,9 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
   const totalWager = referrals.reduce((s, r) => s + parseFloat(r.wager_amount || "0"), 0);
   const totalDeposit = referrals.reduce((s, r) => s + parseFloat(r.deposit_amount || "0"), 0);
   const monoCards = [
-    { label: t("affDepAmt"), val: fmt(totalDeposit), raw: null, Icon: IconDollarCircle, hint: "Total amount deposited by your referred users during the selected period." },
-    { label: t("affBetAmt"), val: fmt(totalWager), raw: null, Icon: IconDice, hint: "Total amount wagered by your referred users during the selected period." },
-    { label: t("affNetWL"), val: (ngrNum >= 0 ? "+" : "-") + "$" + Math.abs(ngrNum).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), raw: ngrNum, Icon: IconTrendUp, hint: "The net result of your referred players' bets during the selected period. Negative value = players lost (platform profit). Positive value = players won." },
+    { label: t("affDepAmt"), val: fmt(totalDeposit), raw: null, Icon: IconDollarCircle, hint: t("affHint5") },
+    { label: t("affBetAmt"), val: fmt(totalWager), raw: null, Icon: IconDice, hint: t("affHint6") },
+    { label: t("affNetWL"), val: (ngrNum >= 0 ? "+" : "-") + "$" + Math.abs(ngrNum).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), raw: ngrNum, Icon: IconTrendUp, hint: t("affHint7") },
   ];
 
   const iconColor = "#8fa3be";
@@ -1070,7 +1070,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affFrom")}</span>
                     <span style={{ color: customFrom ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
-                      {customFrom ? customFrom.split("-").reverse().join("/") : "dd/mm/aaaa"}
+                      {customFrom ? customFrom.split("-").reverse().join("/") : t("affDatePlaceholder")}
                     </span>
                     <input
                       type="date"
@@ -1091,7 +1091,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affTo")}</span>
                     <span style={{ color: customTo ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
-                      {customTo ? customTo.split("-").reverse().join("/") : "dd/mm/aaaa"}
+                      {customTo ? customTo.split("-").reverse().join("/") : t("affDatePlaceholder")}
                     </span>
                     <input
                       type="date"
