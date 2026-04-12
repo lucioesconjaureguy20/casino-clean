@@ -2889,6 +2889,7 @@ export default function App() {
   const [rbInstant, setRbInstant] = useState(() => getRakebackBalances(ls.get("currentUser")||"").instant);
   const [rbWeekly,  setRbWeekly]  = useState(() => getRakebackBalances(ls.get("currentUser")||"").weekly);
   const [rbMonthly, setRbMonthly] = useState(() => getRakebackBalances(ls.get("currentUser")||"").monthly);
+  const [rbTipInfo, setRbTipInfo] = useState<{text:string,x:number,y:number}|null>(null);
   const [userEmail,      setUserEmail]      = useState("");
   const [accountStatus,  setAccountStatus]  = useState("activo");
   const [isAdmin,        setIsAdmin]        = useState(false);
@@ -8371,9 +8372,11 @@ export default function App() {
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", gap:"5px", paddingTop:"2px" }}>
                                   <div style={{ background:`${c.accent}20`, border:`1px solid ${c.accent}40`, borderRadius:"20px", padding:"2px 9px", fontSize:"11px", fontWeight:800, color:c.accent }}>{c.pct}</div>
-                                  <span className="rb-tip" style={{ position:"relative" as const }}>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#3a4a5c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor:"help" }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                                    <span className="rb-tip-box">{c.tip}</span>
+                                  <span
+                                    onMouseEnter={e => { const r = (e.currentTarget as HTMLElement).getBoundingClientRect(); setRbTipInfo({text:c.tip, x: r.left + r.width/2, y: r.top}); }}
+                                    onMouseLeave={() => setRbTipInfo(null)}
+                                    style={{ display:"inline-flex", cursor:"help" }}>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#3a4a5c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                                   </span>
                                 </div>
                               </div>
@@ -13809,6 +13812,14 @@ function KenoGame({
         })
       )}
     </div>}
+
+  {/* ── Rakeback pool tooltip (fixed overlay, never clipped) ── */}
+  {rbTipInfo && (
+    <div style={{ position:"fixed", left:`${rbTipInfo.x}px`, top:`${rbTipInfo.y - 8}px`, transform:"translate(-50%,-100%)", background:"#1a2640", border:"1px solid #2a3a54", borderRadius:"9px", padding:"10px 13px", fontSize:"12px", color:"#c8d8ec", lineHeight:1.55, width:"220px", zIndex:99999, pointerEvents:"none", boxShadow:"0 8px 24px rgba(0,0,0,.5)" }}>
+      {rbTipInfo.text}
+      <div style={{ position:"absolute", bottom:"-5px", left:"50%", transform:"translateX(-50%)", width:"9px", height:"9px", background:"#1a2640", border:"1px solid #2a3a54", borderTop:"none", borderLeft:"none", rotate:"45deg" }} />
+    </div>
+  )}
   </div>
   );
 }
