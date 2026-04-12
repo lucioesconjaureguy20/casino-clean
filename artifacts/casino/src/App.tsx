@@ -8397,8 +8397,13 @@ export default function App() {
 
                               {/* ── Amount ── */}
                               <div style={{ marginBottom:"14px", position:"relative" as const, flex:1 }}>
-                                <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"0.8px", textTransform:"uppercase" as const, fontWeight:700, marginBottom:"6px" }}>
-                                  {c.locked ? `${t("accumulated")} (🔒)` : t("availableNow")}
+                                <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"0.8px", textTransform:"uppercase" as const, fontWeight:700, marginBottom:"6px", display:"flex", alignItems:"center", gap:"5px" }}>
+                                  {c.locked ? (
+                                    <>
+                                      {t("accumulated")}
+                                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#4a5568" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15" r="1" fill="#4a5568" stroke="none"/></svg>
+                                    </>
+                                  ) : t("availableNow")}
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
                                   <div style={{ fontSize:"30px", fontWeight:900, color: isAvail ? "#00d95f" : c.locked ? c.accent+"99" : "#263040", letterSpacing:"-0.5px", transition:"color .3s", userSelect:"none" as const }}>
