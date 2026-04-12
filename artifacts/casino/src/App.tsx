@@ -163,6 +163,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Billetera", generatingAddr:"Generando dirección...", audited:"✓ Auditado", close:"Cerrar",
     showLess:"Mostrar menos", howToPlayMore:"Cómo jugar y más",
     usefulLinks:"Enlaces útiles", amlPolicy:"Política AML",
+    community:"Comunidad", copyright:"Derechos de autor © 2026 Manderbet.com. Todos los derechos reservados.",
+    badge18:"Juego Responsable", badgeFair:"Comprobablemente Justo", badgeLicensed:"Licenciado",
+    footerContact:"Para consultas, contáctenos en:",
+    footerPara1:"Manderbet.com es propiedad de y está operado por Mander Group Ltd., número de registro: 27481, con dirección registrada en Kingstown, San Vicente y las Granadinas.",
+    footerPara2:"Manderbet.com está licenciado y regulado por la Autoridad de Juego de Curaçao y opera bajo la Licencia Nº 365/JAZ. Mander cumple con todos los requisitos regulatorios aplicables y está autorizado para ofrecer servicios de juegos de azar y apuestas en línea.",
     resetAction:"Reiniciar", increaseAction:"Aumentar",
     zeroOff:"0 = desactivado", statsLabel:"Estadísticas", volume:"Volumen", invertDir:"Invertir dirección",
     searchCurrency:"Buscar moneda...", searchCurrencies:"Buscar monedas...", searchGames:"Buscar juegos...",
@@ -323,6 +328,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Wallet", generatingAddr:"Generating address...", audited:"✓ Audited", close:"Close",
     showLess:"Show less", howToPlayMore:"How to play & more",
     usefulLinks:"Useful links", amlPolicy:"AML Policy",
+    community:"Community", copyright:"Copyright © 2026 Manderbet.com. All rights reserved.",
+    badge18:"Responsible Gaming", badgeFair:"Provably Fair", badgeLicensed:"Licensed",
+    footerContact:"For inquiries, contact us at:",
+    footerPara1:"Manderbet.com is owned and operated by Mander Group Ltd., registration number: 27481, with registered address in Kingstown, Saint Vincent and the Grenadines.",
+    footerPara2:"Manderbet.com is licensed and regulated by the Curaçao Gaming Authority and operates under License No. 365/JAZ. Mander complies with all applicable regulatory requirements and is authorized to offer online gaming and betting services.",
     resetAction:"Reset", increaseAction:"Increase",
     zeroOff:"0 = disabled", statsLabel:"Statistics", volume:"Volume", invertDir:"Invert direction",
     searchCurrency:"Search currency...", searchCurrencies:"Search currencies...", searchGames:"Search games...",
@@ -469,6 +479,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Carteira", generatingAddr:"Gerando endereço...", audited:"✓ Auditado", close:"Fechar",
     showLess:"Mostrar menos", howToPlayMore:"Como jogar e mais",
     usefulLinks:"Links úteis", amlPolicy:"Política AML",
+    community:"Comunidade", copyright:"Direitos autorais © 2026 Manderbet.com. Todos os direitos reservados.",
+    badge18:"Jogo Responsável", badgeFair:"Comprovadamente Justo", badgeLicensed:"Licenciado",
+    footerContact:"Para consultas, entre em contato:",
+    footerPara1:"Manderbet.com é de propriedade e operado pela Mander Group Ltd., número de registro: 27481, com endereço registrado em Kingstown, São Vicente e Granadinas.",
+    footerPara2:"Manderbet.com é licenciado e regulado pela Autoridade de Jogos de Curaçao e opera sob a Licença Nº 365/JAZ. Mander cumpre todos os requisitos regulatórios aplicáveis e está autorizado a oferecer serviços de jogos de azar e apostas online.",
     resetAction:"Reiniciar", increaseAction:"Aumentar",
     zeroOff:"0 = desativado", statsLabel:"Estatísticas", volume:"Volume", invertDir:"Inverter direção",
     searchCurrency:"Buscar moeda...", searchCurrencies:"Buscar moedas...", searchGames:"Buscar jogos...",
@@ -615,6 +630,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Wallet", generatingAddr:"Adresse wird generiert...", audited:"✓ Geprüft", close:"Schließen",
     showLess:"Weniger anzeigen", howToPlayMore:"Spielanleitung & mehr",
     usefulLinks:"Nützliche Links", amlPolicy:"AML-Richtlinie",
+    community:"Community", copyright:"Copyright © 2026 Manderbet.com. Alle Rechte vorbehalten.",
+    badge18:"Verantwortungsvolles Spielen", badgeFair:"Nachweislich Fair", badgeLicensed:"Lizenziert",
+    footerContact:"Bei Anfragen kontaktieren Sie uns unter:",
+    footerPara1:"Manderbet.com ist Eigentum von und wird betrieben durch Mander Group Ltd., Registrierungsnummer: 27481, mit eingetragenem Sitz in Kingstown, St. Vincent und die Grenadinen.",
+    footerPara2:"Manderbet.com ist lizenziert und reguliert durch die Curaçao Gaming Authority und betreibt unter Lizenz Nr. 365/JAZ. Mander erfüllt alle geltenden regulatorischen Anforderungen und ist berechtigt, Online-Glücksspiel- und Wettdienstleistungen anzubieten.",
     resetAction:"Zurücksetzen", increaseAction:"Erhöhen",
     zeroOff:"0 = deaktiviert", statsLabel:"Statistiken", volume:"Lautstärke", invertDir:"Richtung umkehren",
     searchCurrency:"Währung suchen...", searchCurrencies:"Währungen suchen...", searchGames:"Spiele suchen...",
@@ -761,6 +781,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portefeuille", generatingAddr:"Génération de l'adresse...", audited:"✓ Audité", close:"Fermer",
     showLess:"Afficher moins", howToPlayMore:"Comment jouer et plus",
     usefulLinks:"Liens utiles", amlPolicy:"Politique AML",
+    community:"Communauté", copyright:"Copyright © 2026 Manderbet.com. Tous droits réservés.",
+    badge18:"Jeu Responsable", badgeFair:"Équitable et Vérifiable", badgeLicensed:"Licencié",
+    footerContact:"Pour toute demande, contactez-nous à :",
+    footerPara1:"Manderbet.com est détenu et exploité par Mander Group Ltd., numéro d'enregistrement : 27481, avec adresse enregistrée à Kingstown, Saint-Vincent-et-les-Grenadines.",
+    footerPara2:"Manderbet.com est licencié et réglementé par l'Autorité de jeux de Curaçao et opère sous la licence Nº 365/JAZ. Mander respecte toutes les exigences réglementaires applicables et est autorisé à offrir des services de jeux en ligne.",
     resetAction:"Réinitialiser", increaseAction:"Augmenter",
     zeroOff:"0 = désactivé", statsLabel:"Statistiques", volume:"Volume", invertDir:"Inverser la direction",
     searchCurrency:"Rechercher devise...", searchCurrencies:"Rechercher devises...", searchGames:"Rechercher jeux...",
@@ -907,6 +932,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Dompet", generatingAddr:"Membuat alamat...", audited:"✓ Diaudit", close:"Tutup",
     showLess:"Tampilkan lebih sedikit", howToPlayMore:"Cara bermain & lainnya",
     usefulLinks:"Tautan berguna", amlPolicy:"Kebijakan AML",
+    community:"Komunitas", copyright:"Hak cipta © 2026 Manderbet.com. Semua hak dilindungi.",
+    badge18:"Bermain Bertanggung Jawab", badgeFair:"Terbukti Adil", badgeLicensed:"Berlisensi",
+    footerContact:"Untuk pertanyaan, hubungi kami di:",
+    footerPara1:"Manderbet.com dimiliki dan dioperasikan oleh Mander Group Ltd., nomor registrasi: 27481, dengan alamat terdaftar di Kingstown, Saint Vincent dan Grenadines.",
+    footerPara2:"Manderbet.com dilisensikan dan diatur oleh Otoritas Permainan Curaçao dan beroperasi di bawah Lisensi No. 365/JAZ. Mander memenuhi semua persyaratan regulasi yang berlaku dan berwenang untuk menawarkan layanan permainan dan taruhan online.",
     resetAction:"Reset", increaseAction:"Naikkan",
     zeroOff:"0 = nonaktif", statsLabel:"Statistik", volume:"Volume", invertDir:"Balikkan arah",
     searchCurrency:"Cari mata uang...", searchCurrencies:"Cari mata uang...", searchGames:"Cari permainan...",
@@ -1053,6 +1083,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portafoglio", generatingAddr:"Generazione indirizzo...", audited:"✓ Verificato", close:"Chiudi",
     showLess:"Mostra meno", howToPlayMore:"Come giocare e altro",
     usefulLinks:"Link utili", amlPolicy:"Politica AML",
+    community:"Comunità", copyright:"Copyright © 2026 Manderbet.com. Tutti i diritti riservati.",
+    badge18:"Gioco Responsabile", badgeFair:"Verificabilmente Equo", badgeLicensed:"Autorizzato",
+    footerContact:"Per informazioni, contattaci a:",
+    footerPara1:"Manderbet.com è di proprietà di ed è gestito da Mander Group Ltd., numero di registrazione: 27481, con sede legale a Kingstown, Saint Vincent e Grenadine.",
+    footerPara2:"Manderbet.com è autorizzato e regolamentato dall'Autorità di Gioco di Curaçao e opera con Licenza N. 365/JAZ. Mander rispetta tutti i requisiti normativi applicabili ed è autorizzato a offrire servizi di gioco d'azzardo e scommesse online.",
     resetAction:"Reimposta", increaseAction:"Aumenta",
     zeroOff:"0 = disabilitato", statsLabel:"Statistiche", volume:"Volume", invertDir:"Inverti direzione",
     searchCurrency:"Cerca valuta...", searchCurrencies:"Cerca valute...", searchGames:"Cerca giochi...",
@@ -1199,6 +1234,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"지갑", generatingAddr:"주소 생성 중...", audited:"✓ 검증됨", close:"닫기",
     showLess:"접기", howToPlayMore:"게임 방법 및 기타",
     usefulLinks:"유용한 링크", amlPolicy:"AML 정책",
+    community:"커뮤니티", copyright:"Copyright © 2026 Manderbet.com. 모든 권리 보유.",
+    badge18:"책임감 있는 게임", badgeFair:"검증 가능한 공정성", badgeLicensed:"라이선스 보유",
+    footerContact:"문의 사항은 다음으로 연락해 주세요:",
+    footerPara1:"Manderbet.com은 Mander Group Ltd.가 소유하고 운영합니다. 등록 번호: 27481, 등록 주소: 세인트빈센트 그레나딘 킹스타운.",
+    footerPara2:"Manderbet.com은 큐라소 게임 당국의 라이선스를 받아 규제받으며, 라이선스 번호 365/JAZ로 운영됩니다. Mander는 모든 적용 가능한 규제 요건을 준수하며 온라인 게임 및 베팅 서비스를 제공할 수 있는 권한을 보유합니다.",
     resetAction:"초기화", increaseAction:"증가",
     zeroOff:"0 = 비활성", statsLabel:"통계", volume:"볼륨", invertDir:"방향 반전",
     searchCurrency:"통화 검색...", searchCurrencies:"통화 검색...", searchGames:"게임 검색...",
@@ -1345,6 +1385,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portemonnee", generatingAddr:"Adres genereren...", audited:"✓ Geauditeerd", close:"Sluiten",
     showLess:"Minder tonen", howToPlayMore:"Hoe te spelen en meer",
     usefulLinks:"Handige links", amlPolicy:"AML-beleid",
+    community:"Gemeenschap", copyright:"Copyright © 2026 Manderbet.com. Alle rechten voorbehouden.",
+    badge18:"Verantwoord Spelen", badgeFair:"Aantoonbaar Eerlijk", badgeLicensed:"Gelicentieerd",
+    footerContact:"Voor vragen, neem contact met ons op:",
+    footerPara1:"Manderbet.com is eigendom van en wordt geëxploiteerd door Mander Group Ltd., registratienummer: 27481, met geregistreerd adres in Kingstown, Saint Vincent en de Grenadines.",
+    footerPara2:"Manderbet.com is gelicentieerd en gereguleerd door de Curaçao Gaming Authority en opereert onder Licentie Nr. 365/JAZ. Mander voldoet aan alle toepasselijke regelgevende vereisten en is gemachtigd om online gok- en weddiensten aan te bieden.",
     resetAction:"Herstellen", increaseAction:"Verhogen",
     zeroOff:"0 = uitgeschakeld", statsLabel:"Statistieken", volume:"Volume", invertDir:"Richting omkeren",
     searchCurrency:"Valuta zoeken...", searchCurrencies:"Valuta's zoeken...", searchGames:"Spellen zoeken...",
@@ -1491,6 +1536,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Portfel", generatingAddr:"Generowanie adresu...", audited:"✓ Zweryfikowany", close:"Zamknij",
     showLess:"Pokaż mniej", howToPlayMore:"Jak grać i więcej",
     usefulLinks:"Przydatne linki", amlPolicy:"Polityka AML",
+    community:"Społeczność", copyright:"Prawa autorskie © 2026 Manderbet.com. Wszelkie prawa zastrzeżone.",
+    badge18:"Odpowiedzialna gra", badgeFair:"Weryfikowalnie Uczciwy", badgeLicensed:"Licencjonowany",
+    footerContact:"W przypadku pytań skontaktuj się z nami:",
+    footerPara1:"Manderbet.com jest własnością i jest prowadzony przez Mander Group Ltd., numer rejestracyjny: 27481, z zarejestrowanym adresem w Kingstown, Saint Vincent i Grenadyny.",
+    footerPara2:"Manderbet.com jest licencjonowany i regulowany przez Curaçao Gaming Authority i działa na podstawie Licencji Nr 365/JAZ. Mander spełnia wszystkie obowiązujące wymogi regulacyjne i jest upoważniony do oferowania usług gier i zakładów online.",
     resetAction:"Resetuj", increaseAction:"Zwiększ",
     zeroOff:"0 = wyłączone", statsLabel:"Statystyki", volume:"Głośność", invertDir:"Odwróć kierunek",
     searchCurrency:"Szukaj waluty...", searchCurrencies:"Szukaj walut...", searchGames:"Szukaj gier...",
@@ -1637,6 +1687,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Кошелёк", generatingAddr:"Генерация адреса...", audited:"✓ Аудирован", close:"Закрыть",
     showLess:"Показать меньше", howToPlayMore:"Как играть и подробнее",
     usefulLinks:"Полезные ссылки", amlPolicy:"Политика AML",
+    community:"Сообщество", copyright:"Авторские права © 2026 Manderbet.com. Все права защищены.",
+    badge18:"Ответственная игра", badgeFair:"Доказуемо честный", badgeLicensed:"Лицензирован",
+    footerContact:"По вопросам свяжитесь с нами:",
+    footerPara1:"Manderbet.com принадлежит и управляется Mander Group Ltd., регистрационный номер: 27481, с зарегистрированным адресом в Кингстауне, Сент-Винсент и Гренадины.",
+    footerPara2:"Manderbet.com лицензирован и регулируется Игровым органом Кюрасао и работает под Лицензией № 365/JAZ. Mander соответствует всем применимым нормативным требованиям и уполномочен предоставлять услуги онлайн-игр и ставок.",
     resetAction:"Сбросить", increaseAction:"Увеличить",
     zeroOff:"0 = откл.", statsLabel:"Статистика", volume:"Громкость", invertDir:"Инвертировать",
     searchCurrency:"Найти валюту...", searchCurrencies:"Найти валюты...", searchGames:"Найти игры...",
@@ -1783,6 +1838,11 @@ const LANGS: Record<string, Record<string, string>> = {
     walletTitle:"Cüzdan", generatingAddr:"Adres oluşturuluyor...", audited:"✓ Denetlendi", close:"Kapat",
     showLess:"Daha az göster", howToPlayMore:"Nasıl oynanır ve daha fazlası",
     usefulLinks:"Faydalı bağlantılar", amlPolicy:"AML Politikası",
+    community:"Topluluk", copyright:"Telif hakkı © 2026 Manderbet.com. Tüm haklar saklıdır.",
+    badge18:"Sorumlu Oyun", badgeFair:"Kanıtlanabilir Adil", badgeLicensed:"Lisanslı",
+    footerContact:"Sorularınız için bize ulaşın:",
+    footerPara1:"Manderbet.com, Mander Group Ltd. tarafından sahiplenilmekte ve işletilmektedir; kayıt numarası: 27481, kayıtlı adres: Kingstown, Saint Vincent ve Grenadinler.",
+    footerPara2:"Manderbet.com, Curaçao Oyun Otoritesi tarafından lisanslanmış ve düzenlenmekte olup 365/JAZ numaralı Lisans kapsamında faaliyet göstermektedir. Mander, tüm geçerli düzenleyici gereksinimlere uymakta ve çevrimiçi oyun ve bahis hizmetleri sunmaya yetkilidir.",
     resetAction:"Sıfırla", increaseAction:"Artır",
     zeroOff:"0 = devre dışı", statsLabel:"İstatistikler", volume:"Ses", invertDir:"Yönü çevir",
     searchCurrency:"Para birimi ara...", searchCurrencies:"Para birimleri ara...", searchGames:"Oyun ara...",
@@ -10709,13 +10769,13 @@ function CasinoFooter({ onHome, lang }: { onHome?: () => void; lang: string }) {
               <img src="/mander-logo.png" alt="Mander" onClick={() => { onHome?.(); window.scrollTo({ top: 0, behavior: "instant" }); }} style={{ height:"140px", position:"absolute", bottom:-36, left:-55, cursor:"pointer" }} />
             </div>
             <p style={{ fontSize:"12px", color:"#3e5270", lineHeight:"1.7", margin:"0 0 10px" }}>
-              Manderbet.com es propiedad de y está operado por Mander Group Ltd., número de registro: 27481, con dirección registrada en Kingstown, San Vicente y las Granadinas.
+              {tl(lang, "footerPara1")}
             </p>
             <p style={{ fontSize:"12px", color:"#3e5270", lineHeight:"1.7", margin:"0 0 10px" }}>
-              Manderbet.com está licenciado y regulado por la Autoridad de Juego de Curaçao y opera bajo la Licencia Nº 365/JAZ. Mander cumple con todos los requisitos regulatorios aplicables y está autorizado para ofrecer servicios de juegos de azar y apuestas en línea.
+              {tl(lang, "footerPara2")}
             </p>
             <p style={{ fontSize:"12px", color:"#3e5270", lineHeight:"1.7", margin:"0" }}>
-              Para consultas, contáctenos en: <span style={{ color:"#5a85a8" }}>support@manderbet.com</span>
+              {tl(lang, "footerContact")} <span style={{ color:"#5a85a8" }}>support@manderbet.com</span>
             </p>
           </div>
 
@@ -10746,7 +10806,7 @@ function CasinoFooter({ onHome, lang }: { onHome?: () => void; lang: string }) {
           {/* Comunidad + selectors */}
           <div>
             <div style={{ fontSize:"13px", fontWeight:700, color:"#c8d8f0", letterSpacing:"0.4px", marginBottom:"16px" }}>
-              Comunidad
+              {tl(lang, "community")}
             </div>
             <div style={{ display:"flex", gap:"10px", marginBottom:"20px" }}>
               {/* Telegram */}
@@ -10764,15 +10824,15 @@ function CasinoFooter({ onHome, lang }: { onHome?: () => void; lang: string }) {
 
         {/* Copyright */}
         <div style={{ fontSize:"12px", color:"#253345", paddingBottom:"20px", borderTop:"1px solid #0d1624", paddingTop:"18px" }}>
-          Derechos de autor © 2026 Manderbet.com. Todos los derechos reservados.
+          {tl(lang, "copyright")}
         </div>
 
         {/* Badges */}
         <div style={{ paddingBottom:"28px", display:"flex", gap:"10px", flexWrap:"wrap" }}>
           {[
-            { icon:"18+",  color:"#e53e3e", label:"Juego Responsable" },
-            { icon:"✔",   color:"#2f9f5a", label:"Comprobablemente Justo" },
-            { icon:"🛡",   color:"#e07b20", label:"Licenciado" },
+            { icon:"18+",  color:"#e53e3e", label:tl(lang, "badge18") },
+            { icon:"✔",   color:"#2f9f5a", label:tl(lang, "badgeFair") },
+            { icon:"🛡",   color:"#e07b20", label:tl(lang, "badgeLicensed") },
           ].map(b=>(
             <div key={b.label} style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"999px", padding:"7px 16px" }}>
               <span style={{ fontSize:"13px", fontWeight:800, color:b.color }}>{b.icon}</span>
