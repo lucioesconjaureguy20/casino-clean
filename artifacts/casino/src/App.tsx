@@ -10981,14 +10981,14 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
   const t = (key: string) => tl(lang, key);
   const scrollRef = useRef<HTMLDivElement>(null);
   const ALL = [
-    { key:"dice"      as const, label:t("gameDice"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:"/dice-card.jpg",       accentBg:"#1a5cd6" },
-    { key:"plinko"    as const, label:t("gamePlinko"),    sub:"Mander Originals", bg:"linear-gradient(135deg,#6e0a14,#d6293e)", img:"/plinko-thumb.jpg",    accentBg:"#d6293e" },
-    { key:"keno"      as const, label:t("gameKeno"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#7a4200,#f4a91f)", img:"/keno-thumb.jpg",      accentBg:"#f4a91f" },
-    { key:"blackjack" as const, label:t("gameBlackjack"), sub:"Mander Originals", bg:"linear-gradient(135deg,#5c2800,#d67a10)", img:"/blackjack-thumb.jpg", accentBg:"#d67a10" },
-    { key:"mines"     as const, label:t("gameMines"),     sub:"Mander Originals", bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:"/mines-card.jpg",      accentBg:"#1a4d8a" },
-    { key:"hilo"      as const, label:t("gameHilo"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:"/hilo-card.jpg",       accentBg:"#00d47a" },
-    { key:"roulette"  as const, label:t("gameRoulette"),  sub:"Mander Originals", bg:"linear-gradient(135deg,#1a0a2e,#4a1a7a)", img:"/roulette-card.jpg",   accentBg:"#9b59b6" },
-    { key:"baccarat"  as const, label:t("gameBaccarat"),  sub:"Mander Originals", bg:"linear-gradient(135deg,#001830,#003a7a)", img:"/baccarat-card.jpg",   accentBg:"#1a64e0" },
+    { key:"dice"      as const, label:t("gameDice"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:"/dice-card.jpg",       accentBg:"#1a5cd6" },
+    { key:"plinko"    as const, label:t("gamePlinko"),    sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#6e0a14,#d6293e)", img:"/plinko-thumb.jpg",    accentBg:"#d6293e" },
+    { key:"keno"      as const, label:t("gameKeno"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#7a4200,#f4a91f)", img:"/keno-thumb.jpg",      accentBg:"#f4a91f" },
+    { key:"blackjack" as const, label:t("gameBlackjack"), sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#5c2800,#d67a10)", img:"/blackjack-thumb.jpg", accentBg:"#d67a10" },
+    { key:"mines"     as const, label:t("gameMines"),     sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:"/mines-card.jpg",      accentBg:"#1a4d8a" },
+    { key:"hilo"      as const, label:t("gameHilo"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:"/hilo-card.jpg",       accentBg:"#00d47a" },
+    { key:"roulette"  as const, label:t("gameRoulette"),  sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#1a0a2e,#4a1a7a)", img:"/roulette-card.jpg",   accentBg:"#9b59b6" },
+    { key:"baccarat"  as const, label:t("gameBaccarat"),  sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#001830,#003a7a)", img:"/baccarat-card.jpg",   accentBg:"#1a64e0" },
   ];
 
   const scroll = (dir: "left"|"right") => {
