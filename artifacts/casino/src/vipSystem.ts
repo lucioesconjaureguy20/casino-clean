@@ -188,15 +188,26 @@ export function claimPeriodicRakeback(type: "weekly" | "monthly", user: string):
 
 // ── Format countdown ──────────────────────────────────────────────────────────
 function fmtCountdown(rem: number): string {
+  return fmtCountdownLang(rem, "d", "h", "m", "s");
+}
+
+export function fmtCountdownLang(rem: number, ld: string, lh: string, lm: string, ls: string): string {
   if (rem <= 0) return "";
   const totalSec = Math.ceil(rem / 1000);
   const d = Math.floor(totalSec / 86400);
   const h = Math.floor((totalSec % 86400) / 3600);
   const m = Math.floor((totalSec % 3600) / 60);
   const s = totalSec % 60;
-  if (d > 0) return `${d}d ${h}h ${m}m`;
-  if (h > 0) return `${h}h ${m}m`;
-  return `${m}m ${s}s`;
+  if (d > 0) return `${d}${ld} ${h}${lh} ${m}${lm}`;
+  if (h > 0) return `${h}${lh} ${m}${lm}`;
+  return `${m}${lm} ${s}${ls}`;
+}
+
+export function msUntilInstant(): number { return msUntilNextHour(); }
+export function msUntilClaim(type: "weekly" | "monthly", user: string): number {
+  if (!user) return 0;
+  const unlock = type === "weekly" ? getWeeklyUnlock(user) : getMonthlyUnlock(user);
+  return Math.max(0, unlock - Date.now());
 }
 
 // ── Reward Claim History ───────────────────────────────────────────────────────

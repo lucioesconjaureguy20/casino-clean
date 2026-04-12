@@ -11,7 +11,7 @@ import AffiliateProgram from "./AffiliateProgram";
 import AdminPanel from "./AdminPanel";
 import ProfilePage from "./ProfilePage";
 import NotLoggedInState from "./NotLoggedInState";
-import { VIP_RANKS, getRankIndex, getVipInfo, getRakebackBalances, distributeRakeback, claimInstantRakeback, claimPeriodicRakeback, canClaimInstant, canClaimPeriodic, timeUntilInstant, timeUntilClaim, saveRewardClaim, getRewardHistory } from "./vipSystem";
+import { VIP_RANKS, getRankIndex, getVipInfo, getRakebackBalances, distributeRakeback, claimInstantRakeback, claimPeriodicRakeback, canClaimInstant, canClaimPeriodic, timeUntilInstant, timeUntilClaim, fmtCountdownLang, msUntilInstant, msUntilClaim, saveRewardClaim, getRewardHistory } from "./vipSystem";
 import type { RewardRecord } from "./vipSystem";
 import { getHouseEdge } from "./houseEdge";
 import Matter from "matter-js";
@@ -153,6 +153,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Si creés que hubo un error, podés contactarnos y lo revisamos a la brevedad. Tu saldo está seguro.",
     copyWallet:"Copiar wallet", copyTxHash:"Copiar TX hash",
     rbAddedBalance:"añadidos a tu saldo.", keepBettingMore:"Sigue apostando para aumentar tus recompensas",
+    unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notificaciones", noNotifs:"Sin notificaciones aún",
     currentRank:"Tu Rango Actual", totalWageredLabel:"Total Apostado",
     received:"Recibido", system:"Sistema",
@@ -330,6 +331,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"If you believe there was an error, you can contact us and we will review it promptly. Your balance is safe.",
     copyWallet:"Copy wallet", copyTxHash:"Copy TX hash",
     rbAddedBalance:"added to your balance.", keepBettingMore:"Keep betting to increase your rewards",
+    unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notifications", noNotifs:"No notifications yet",
     currentRank:"Your Current Rank", totalWageredLabel:"Total Wagered",
     received:"Received", system:"System",
@@ -504,6 +506,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Se acredita que houve um erro, entre em contato e revisaremos em breve. Seu saldo está seguro.",
     copyWallet:"Copiar carteira", copyTxHash:"Copiar TX hash",
     rbAddedBalance:"adicionados ao seu saldo.", keepBettingMore:"Continue apostando para aumentar suas recompensas",
+    unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notificações", noNotifs:"Sem notificações ainda",
     currentRank:"Seu Rank Atual", totalWageredLabel:"Total Apostado",
     received:"Recebido", system:"Sistema",
@@ -678,6 +681,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Wenn Sie glauben, dass ein Fehler vorliegt, kontaktieren Sie uns und wir prüfen es umgehend. Ihr Guthaben ist sicher.",
     copyWallet:"Wallet kopieren", copyTxHash:"TX-Hash kopieren",
     rbAddedBalance:"zu deinem Guthaben hinzugefügt.", keepBettingMore:"Weiter setzen, um deine Belohnungen zu erhöhen",
+    unitDay:"T", unitHr:"Std", unitMin:"Min", unitSec:"Sek",
     notifications:"Benachrichtigungen", noNotifs:"Noch keine Benachrichtigungen",
     currentRank:"Dein aktueller Rang", totalWageredLabel:"Gesamteinsatz",
     received:"Empfangen", system:"System",
@@ -852,6 +856,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Si vous pensez qu'il y a eu une erreur, contactez-nous et nous la réviserons rapidement. Votre solde est sécurisé.",
     copyWallet:"Copier le portefeuille", copyTxHash:"Copier le TX hash",
     rbAddedBalance:"ajoutés à votre solde.", keepBettingMore:"Continuez à miser pour augmenter vos récompenses",
+    unitDay:"j", unitHr:"h", unitMin:"min", unitSec:"s",
     notifications:"Notifications", noNotifs:"Pas encore de notifications",
     currentRank:"Votre rang actuel", totalWageredLabel:"Total misé",
     received:"Reçu", system:"Système",
@@ -1026,6 +1031,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Jika Anda yakin ada kesalahan, hubungi kami dan kami akan meninjau segera. Saldo Anda aman.",
     copyWallet:"Salin dompet", copyTxHash:"Salin TX hash",
     rbAddedBalance:"ditambahkan ke saldo Anda.", keepBettingMore:"Terus taruhan untuk meningkatkan hadiah Anda",
+    unitDay:"hr", unitHr:"jam", unitMin:"mnt", unitSec:"dtk",
     notifications:"Notifikasi", noNotifs:"Belum ada notifikasi",
     currentRank:"Peringkat Anda Saat Ini", totalWageredLabel:"Total Taruhan",
     received:"Diterima", system:"Sistem",
@@ -1200,6 +1206,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Se credi che ci sia stato un errore, contattaci e lo esamineremo prontamente. Il tuo saldo è al sicuro.",
     copyWallet:"Copia portafoglio", copyTxHash:"Copia TX hash",
     rbAddedBalance:"aggiunti al tuo saldo.", keepBettingMore:"Continua a scommettere per aumentare i tuoi premi",
+    unitDay:"g", unitHr:"h", unitMin:"min", unitSec:"s",
     notifications:"Notifiche", noNotifs:"Nessuna notifica ancora",
     currentRank:"Il Tuo Grado Attuale", totalWageredLabel:"Totale Puntato",
     received:"Ricevuto", system:"Sistema",
@@ -1374,6 +1381,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"오류가 있다고 생각하시면 문의해 주세요. 즉시 검토하겠습니다. 잔액은 안전합니다.",
     copyWallet:"지갑 복사", copyTxHash:"TX 해시 복사",
     rbAddedBalance:"잔액에 추가되었습니다.", keepBettingMore:"베팅을 계속하여 보상을 늘리세요",
+    unitDay:"일", unitHr:"시", unitMin:"분", unitSec:"초",
     notifications:"알림", noNotifs:"아직 알림이 없습니다",
     currentRank:"현재 등급", totalWageredLabel:"총 베팅액",
     received:"수신됨", system:"시스템",
@@ -1548,6 +1556,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Als u denkt dat er een fout is, neem dan contact met ons op en we zullen het snel beoordelen. Uw saldo is veilig.",
     copyWallet:"Portemonnee kopiëren", copyTxHash:"TX hash kopiëren",
     rbAddedBalance:"toegevoegd aan uw saldo.", keepBettingMore:"Blijf inzetten om uw beloningen te verhogen",
+    unitDay:"d", unitHr:"u", unitMin:"m", unitSec:"s",
     notifications:"Meldingen", noNotifs:"Nog geen meldingen",
     currentRank:"Uw huidige rang", totalWageredLabel:"Totaal ingezet",
     received:"Ontvangen", system:"Systeem",
@@ -1722,6 +1731,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Jeśli uważasz, że wystąpił błąd, skontaktuj się z nami, a my szybko to sprawdzimy. Twoje saldo jest bezpieczne.",
     copyWallet:"Kopiuj portfel", copyTxHash:"Kopiuj TX hash",
     rbAddedBalance:"dodanych do salda.", keepBettingMore:"Kontynuuj zakłady, aby zwiększyć swoje nagrody",
+    unitDay:"d", unitHr:"g", unitMin:"m", unitSec:"s",
     notifications:"Powiadomienia", noNotifs:"Brak powiadomień",
     currentRank:"Twój obecny rank", totalWageredLabel:"Łączne zakłady",
     received:"Otrzymano", system:"System",
@@ -1896,6 +1906,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Если вы считаете, что произошла ошибка, свяжитесь с нами и мы рассмотрим это в ближайшее время. Ваш баланс в безопасности.",
     copyWallet:"Копировать кошелёк", copyTxHash:"Копировать TX хэш",
     rbAddedBalance:"добавлено на баланс.", keepBettingMore:"Продолжайте делать ставки для увеличения наград",
+    unitDay:"д", unitHr:"ч", unitMin:"м", unitSec:"с",
     notifications:"Уведомления", noNotifs:"Уведомлений пока нет",
     currentRank:"Ваш текущий ранг", totalWageredLabel:"Всего поставлено",
     received:"Получено", system:"Система",
@@ -2070,6 +2081,7 @@ const LANGS: Record<string, Record<string, string>> = {
     withdrawPausedContact:"Bir hata olduğunu düşünüyorsanız bizimle iletişime geçin, en kısa sürede inceleriz. Bakiyeniz güvende.",
     copyWallet:"Cüzdanı kopyala", copyTxHash:"TX hash kopyala",
     rbAddedBalance:"bakiyenize eklendi.", keepBettingMore:"Ödüllerinizi artırmak için bahis yapmaya devam edin",
+    unitDay:"g", unitHr:"sa", unitMin:"dk", unitSec:"sn",
     notifications:"Bildirimler", noNotifs:"Henüz bildirim yok",
     currentRank:"Mevcut Rütbeniz", totalWageredLabel:"Toplam Bahis",
     received:"Alındı", system:"Sistem",
@@ -6778,9 +6790,10 @@ export default function App() {
               const rdCanI = canClaimInstant(currentUser);
               const rdCanW = canClaimPeriodic("weekly", currentUser);
               const rdCanM = canClaimPeriodic("monthly", currentUser);
-              const rdITimer = timeUntilInstant(currentUser);
-              const rdWTimer = timeUntilClaim("weekly", currentUser);
-              const rdMTimer = timeUntilClaim("monthly", currentUser);
+              const _uD=t("unitDay"),_uH=t("unitHr"),_uM=t("unitMin"),_uS=t("unitSec");
+              const rdITimer = fmtCountdownLang(msUntilInstant(), _uD, _uH, _uM, _uS);
+              const rdWTimer = fmtCountdownLang(msUntilClaim("weekly", currentUser), _uD, _uH, _uM, _uS);
+              const rdMTimer = fmtCountdownLang(msUntilClaim("monthly", currentUser), _uD, _uH, _uM, _uS);
               const rdBadge = [rdCanI && rbInstant > 0, rdCanW && rbWeekly > 0, rdCanM && rbMonthly > 0].filter(Boolean).length;
               const rdRows: { key: string; label: string; amount: number; canClaim: boolean; timer: string; onClaim: ()=>void; accent: string; icon: React.ReactNode }[] = [
                 { key:"instant", label:t("rbInstant"), amount:rbInstant, canClaim:rdCanI, timer:rdITimer, onClaim:doClaimInstant, accent:"#f4a91f",
@@ -8225,9 +8238,10 @@ export default function App() {
               const canI = canClaimInstant(currentUser);
               const canW = canClaimPeriodic("weekly", currentUser);
               const canM = canClaimPeriodic("monthly", currentUser);
-              const iTimer = timeUntilInstant(currentUser);
-              const wTimer = timeUntilClaim("weekly", currentUser);
-              const mTimer = timeUntilClaim("monthly", currentUser);
+              const _ud=t("unitDay"),_uh=t("unitHr"),_um=t("unitMin"),_us=t("unitSec");
+              const iTimer = fmtCountdownLang(msUntilInstant(), _ud, _uh, _um, _us);
+              const wTimer = fmtCountdownLang(msUntilClaim("weekly", currentUser), _ud, _uh, _um, _us);
+              const mTimer = fmtCountdownLang(msUntilClaim("monthly", currentUser), _ud, _uh, _um, _us);
               const bg = "#161d2b";
               const border = "#20283a";
               const tierEmoji = (tier: string) =>
