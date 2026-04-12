@@ -162,6 +162,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"al subir", youBadge:"Tú", rewardBadge:"Recompensa",
     notAvailable:"No disponible", dateLabel:"Fecha",
     privacyTitle:"Política de Privacidad", fairnessTitle:"Juego Justo y Transparente",
+    fairIntro:"En Mander Casino, la confianza de nuestros jugadores es nuestra prioridad. Todos nuestros juegos originales están diseñados con sistemas independientes que garantizan resultados completamente aleatorios, sin interferencia externa ni manipulación de ningún tipo.",
+    fairWhatTitle:"¿Qué significa Juego Justo?",
+    fairWhatDesc:"Un juego justo garantiza que los resultados son completamente imparciales: ni el casino, ni ningún sistema interno, puede influir en el desenlace de una ronda. En Mander Casino, todos nuestros juegos originales se rigen por este principio. No importa quién esté jugando ni cuánto haya apostado — cada resultado es único, aleatorio e inalterable.",
     termsTitle:"Términos de Servicio", lastUpdate:"Última actualización: Marzo 2025",
     howWorks:"Cómo funciona", generateAddress:"Generá tu dirección para depositar",
     walletTitle:"Billetera", generatingAddr:"Generando dirección...", audited:"✓ Auditado", close:"Cerrar",
@@ -333,6 +336,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"on rank up", youBadge:"You", rewardBadge:"Reward",
     notAvailable:"Not available", dateLabel:"Date",
     privacyTitle:"Privacy Policy", fairnessTitle:"Provably Fair",
+    fairIntro:"At Mander Casino, the trust of our players is our top priority. All our original games are designed with independent systems that guarantee completely random results, with no external interference or manipulation of any kind.",
+    fairWhatTitle:"What does Provably Fair mean?",
+    fairWhatDesc:"Provably fair guarantees that results are completely unbiased: neither the casino nor any internal system can influence the outcome of a round. At Mander Casino, all our original games follow this principle. It doesn't matter who is playing or how much they bet — every result is unique, random, and immutable.",
     termsTitle:"Terms of Service", lastUpdate:"Last updated: March 2025",
     howWorks:"How it works", generateAddress:"Generate your deposit address for",
     walletTitle:"Wallet", generatingAddr:"Generating address...", audited:"✓ Audited", close:"Close",
@@ -495,6 +501,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"ao subir", youBadge:"Você", rewardBadge:"Recompensa",
     notAvailable:"Não disponível", dateLabel:"Data",
     privacyTitle:"Política de Privacidade", fairnessTitle:"Jogo Justo e Transparente",
+    fairIntro:"No Mander Casino, a confiança dos nossos jogadores é nossa prioridade. Todos os nossos jogos originais são projetados com sistemas independentes que garantem resultados completamente aleatórios, sem interferência externa ou manipulação de qualquer tipo.",
+    fairWhatTitle:"O que significa Jogo Justo?",
+    fairWhatDesc:"O jogo justo garante que os resultados são completamente imparciais: nem o cassino, nem qualquer sistema interno, pode influenciar o resultado de uma rodada. No Mander Casino, todos os nossos jogos originais seguem este princípio. Não importa quem esteja jogando ou quanto apostou — cada resultado é único, aleatório e imutável.",
     termsTitle:"Termos de Serviço", lastUpdate:"Última atualização: Março 2025",
     howWorks:"Como funciona", generateAddress:"Gere seu endereço para depositar",
     walletTitle:"Carteira", generatingAddr:"Gerando endereço...", audited:"✓ Auditado", close:"Fechar",
@@ -657,6 +666,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"beim Aufstieg", youBadge:"Du", rewardBadge:"Belohnung",
     notAvailable:"Nicht verfügbar", dateLabel:"Datum",
     privacyTitle:"Datenschutzrichtlinie", fairnessTitle:"Nachweislich fair",
+    fairIntro:"Im Mander Casino hat das Vertrauen unserer Spieler höchste Priorität. Alle unsere Originalspiele sind mit unabhängigen Systemen konzipiert, die vollständig zufällige Ergebnisse ohne externe Einflüsse oder Manipulationen garantieren.",
+    fairWhatTitle:"Was bedeutet nachweislich fair?",
+    fairWhatDesc:"Nachweislich fair bedeutet, dass die Ergebnisse vollständig unvoreingenommen sind: weder das Casino noch irgendein internes System kann das Ergebnis einer Runde beeinflussen. Im Mander Casino folgen alle unsere Originalspiele diesem Prinzip. Unabhängig davon, wer spielt oder wie viel gesetzt wurde — jedes Ergebnis ist einmalig, zufällig und unveränderlich.",
     termsTitle:"Nutzungsbedingungen", lastUpdate:"Zuletzt aktualisiert: März 2025",
     howWorks:"So funktioniert es", generateAddress:"Generiere deine Einzahlungsadresse für",
     walletTitle:"Wallet", generatingAddr:"Adresse wird generiert...", audited:"✓ Geprüft", close:"Schließen",
@@ -819,6 +831,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"à la montée", youBadge:"Vous", rewardBadge:"Récompense",
     notAvailable:"Non disponible", dateLabel:"Date",
     privacyTitle:"Politique de confidentialité", fairnessTitle:"Jeu équitable et transparent",
+    fairIntro:"Au Mander Casino, la confiance de nos joueurs est notre priorité absolue. Tous nos jeux originaux sont conçus avec des systèmes indépendants qui garantissent des résultats entièrement aléatoires, sans aucune interférence externe ni manipulation.",
+    fairWhatTitle:"Qu'est-ce que le jeu équitable ?",
+    fairWhatDesc:"Le jeu équitable garantit que les résultats sont totalement impartiaux : ni le casino, ni aucun système interne, ne peut influencer le résultat d'une partie. Au Mander Casino, tous nos jeux originaux respectent ce principe. Peu importe qui joue ou combien il mise — chaque résultat est unique, aléatoire et immuable.",
     termsTitle:"Conditions d'utilisation", lastUpdate:"Dernière mise à jour : mars 2025",
     howWorks:"Comment ça fonctionne", generateAddress:"Générez votre adresse de dépôt pour",
     walletTitle:"Portefeuille", generatingAddr:"Génération de l'adresse...", audited:"✓ Audité", close:"Fermer",
@@ -981,6 +996,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"saat naik", youBadge:"Anda", rewardBadge:"Hadiah",
     notAvailable:"Tidak tersedia", dateLabel:"Tanggal",
     privacyTitle:"Kebijakan Privasi", fairnessTitle:"Permainan yang Adil dan Transparan",
+    fairIntro:"Di Mander Casino, kepercayaan pemain kami adalah prioritas utama kami. Semua game original kami dirancang dengan sistem independen yang menjamin hasil yang sepenuhnya acak, tanpa campur tangan eksternal atau manipulasi jenis apa pun.",
+    fairWhatTitle:"Apa artinya Permainan yang Adil?",
+    fairWhatDesc:"Permainan yang adil memastikan hasil sepenuhnya tidak memihak: baik kasino maupun sistem internal apa pun tidak dapat memengaruhi hasil ronde. Di Mander Casino, semua game original kami mengikuti prinsip ini. Tidak peduli siapa yang bermain atau berapa banyak yang dipertaruhkan — setiap hasil adalah unik, acak, dan tidak dapat diubah.",
     termsTitle:"Ketentuan Layanan", lastUpdate:"Terakhir diperbarui: Maret 2025",
     howWorks:"Cara kerja", generateAddress:"Buat alamat deposit Anda untuk",
     walletTitle:"Dompet", generatingAddr:"Membuat alamat...", audited:"✓ Diaudit", close:"Tutup",
@@ -1143,6 +1161,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"alla promozione", youBadge:"Tu", rewardBadge:"Ricompensa",
     notAvailable:"Non disponibile", dateLabel:"Data",
     privacyTitle:"Informativa sulla Privacy", fairnessTitle:"Gioco Equo e Trasparente",
+    fairIntro:"Al Mander Casino, la fiducia dei nostri giocatori è la nostra priorità assoluta. Tutti i nostri giochi originali sono progettati con sistemi indipendenti che garantiscono risultati completamente casuali, senza interferenze esterne o manipolazioni di alcun tipo.",
+    fairWhatTitle:"Cosa significa Gioco Equo?",
+    fairWhatDesc:"Il gioco equo garantisce che i risultati siano completamente imparziali: né il casino né alcun sistema interno può influenzare l'esito di un round. In Mander Casino, tutti i nostri giochi originali seguono questo principio. Non importa chi stia giocando o quanto abbia scommesso — ogni risultato è unico, casuale e immutabile.",
     termsTitle:"Termini di Servizio", lastUpdate:"Ultimo aggiornamento: Marzo 2025",
     howWorks:"Come funziona", generateAddress:"Genera il tuo indirizzo di deposito per",
     walletTitle:"Portafoglio", generatingAddr:"Generazione indirizzo...", audited:"✓ Verificato", close:"Chiudi",
@@ -1305,6 +1326,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"랭크 업 시", youBadge:"나", rewardBadge:"보상",
     notAvailable:"이용 불가", dateLabel:"날짜",
     privacyTitle:"개인정보 보호정책", fairnessTitle:"공정하고 투명한 게임",
+    fairIntro:"Mander Casino에서 플레이어의 신뢰는 최우선 사항입니다. 모든 오리지널 게임은 독립적인 시스템으로 설계되어 어떠한 외부 간섭이나 조작 없이 완전히 무작위한 결과를 보장합니다.",
+    fairWhatTitle:"공정한 게임이란 무엇인가요?",
+    fairWhatDesc:"공정한 게임은 결과가 완전히 공평하다는 것을 보장합니다: 카지노도, 어떠한 내부 시스템도 라운드 결과에 영향을 줄 수 없습니다. Mander Casino의 모든 오리지널 게임은 이 원칙을 따릅니다. 누가 플레이하든, 얼마를 베팅하든 상관없이 — 모든 결과는 고유하고, 무작위적이며, 변경 불가능합니다.",
     termsTitle:"서비스 약관", lastUpdate:"최종 업데이트: 2025년 3월",
     howWorks:"작동 방식", generateAddress:"예치 주소 생성",
     walletTitle:"지갑", generatingAddr:"주소 생성 중...", audited:"✓ 검증됨", close:"닫기",
@@ -1467,6 +1491,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"bij promotie", youBadge:"Jij", rewardBadge:"Beloning",
     notAvailable:"Niet beschikbaar", dateLabel:"Datum",
     privacyTitle:"Privacybeleid", fairnessTitle:"Eerlijk en transparant spel",
+    fairIntro:"In Mander Casino is het vertrouwen van onze spelers onze topprioriteit. Al onze originele spellen zijn ontworpen met onafhankelijke systemen die volledig willekeurige resultaten garanderen, zonder externe inmenging of manipulatie.",
+    fairWhatTitle:"Wat betekent eerlijk spel?",
+    fairWhatDesc:"Eerlijk spel garandeert dat de resultaten volledig onbevooroordeeld zijn: noch het casino, noch enig intern systeem kan de uitkomst van een ronde beïnvloeden. In Mander Casino volgen al onze originele spellen dit principe. Het maakt niet uit wie er speelt of hoeveel er ingezet is — elk resultaat is uniek, willekeurig en onveranderlijk.",
     termsTitle:"Servicevoorwaarden", lastUpdate:"Laatste update: maart 2025",
     howWorks:"Hoe het werkt", generateAddress:"Genereer uw stortingsadres voor",
     walletTitle:"Portemonnee", generatingAddr:"Adres genereren...", audited:"✓ Geauditeerd", close:"Sluiten",
@@ -1629,6 +1656,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"przy awansie", youBadge:"Ty", rewardBadge:"Nagroda",
     notAvailable:"Niedostępny", dateLabel:"Data",
     privacyTitle:"Polityka prywatności", fairnessTitle:"Uczciwa i przejrzysta gra",
+    fairIntro:"W Mander Casino zaufanie naszych graczy jest naszym najwyższym priorytetem. Wszystkie nasze oryginalne gry są zaprojektowane z niezależnymi systemami gwarantującymi całkowicie losowe wyniki, bez zewnętrznych ingerencji ani manipulacji.",
+    fairWhatTitle:"Co oznacza Uczciwa Gra?",
+    fairWhatDesc:"Uczciwa gra gwarantuje, że wyniki są całkowicie bezstronne: ani kasyno, ani żaden wewnętrzny system nie może wpłynąć na wynik rundy. W Mander Casino wszystkie nasze oryginalne gry przestrzegają tej zasady. Nie ma znaczenia, kto gra ani ile postawił — każdy wynik jest unikalny, losowy i niezmienny.",
     termsTitle:"Warunki korzystania", lastUpdate:"Ostatnia aktualizacja: marzec 2025",
     howWorks:"Jak to działa", generateAddress:"Wygeneruj adres depozytu dla",
     walletTitle:"Portfel", generatingAddr:"Generowanie adresu...", audited:"✓ Zweryfikowany", close:"Zamknij",
@@ -1791,6 +1821,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"при повышении", youBadge:"Ты", rewardBadge:"Награда",
     notAvailable:"Недоступно", dateLabel:"Дата",
     privacyTitle:"Политика конфиденциальности", fairnessTitle:"Честная и прозрачная игра",
+    fairIntro:"В Mander Casino доверие наших игроков — наш главный приоритет. Все наши оригинальные игры разработаны с использованием независимых систем, гарантирующих полностью случайные результаты без какого-либо внешнего вмешательства или манипуляций.",
+    fairWhatTitle:"Что означает честная игра?",
+    fairWhatDesc:"Честная игра гарантирует, что результаты полностью беспристрастны: ни казино, ни какая-либо внутренняя система не может повлиять на исход раунда. В Mander Casino все наши оригинальные игры придерживаются этого принципа. Не важно, кто играет и сколько поставлено — каждый результат уникален, случаен и неизменен.",
     termsTitle:"Условия использования", lastUpdate:"Последнее обновление: Март 2025",
     howWorks:"Как это работает", generateAddress:"Сгенерируйте адрес для пополнения",
     walletTitle:"Кошелёк", generatingAddr:"Генерация адреса...", audited:"✓ Аудирован", close:"Закрыть",
@@ -1953,6 +1986,9 @@ const LANGS: Record<string, Record<string, string>> = {
     onRankUp:"rankta yükselirken", youBadge:"Sen", rewardBadge:"Ödül",
     notAvailable:"Mevcut değil", dateLabel:"Tarih",
     privacyTitle:"Gizlilik Politikası", fairnessTitle:"Adil ve Şeffaf Oyun",
+    fairIntro:"Mander Casino'da oyuncularımızın güveni en büyük önceliğimizdir. Tüm orijinal oyunlarımız, herhangi bir dış müdahale veya manipülasyon olmaksızın tamamen rastgele sonuçları garanti eden bağımsız sistemlerle tasarlanmıştır.",
+    fairWhatTitle:"Adil Oyun ne anlama gelir?",
+    fairWhatDesc:"Adil oyun, sonuçların tamamen tarafsız olduğunu garanti eder: ne casino ne de herhangi bir dahili sistem bir turun sonucunu etkileyemez. Mander Casino'da tüm orijinal oyunlarımız bu ilkeye uygundur. Kim oynadığı veya ne kadar bahis yaptığı önemli değil — her sonuç benzersiz, rastgele ve değiştirilemezdir.",
     termsTitle:"Hizmet Şartları", lastUpdate:"Son güncelleme: Mart 2025",
     howWorks:"Nasıl çalışır", generateAddress:"Yatırım adresinizi oluşturun",
     walletTitle:"Cüzdan", generatingAddr:"Adres oluşturuluyor...", audited:"✓ Denetlendi", close:"Kapat",
@@ -8532,7 +8568,7 @@ export default function App() {
                   <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("fairnessTitle")}</h1>
                 </div>
                 <p style={{ margin:0,color:"#94a3b8",fontSize:"14px",lineHeight:1.8,maxWidth:"700px" }}>
-                  En Mander Casino, la confianza de nuestros jugadores es nuestra prioridad. Todos nuestros juegos originales están diseñados con sistemas independientes que garantizan resultados completamente aleatorios, sin interferencia externa ni manipulación de ningún tipo.
+                  {t("fairIntro")}
                 </p>
               </div>
 
@@ -8587,9 +8623,9 @@ export default function App() {
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f6b531" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
                 <div>
-                  <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"13px",marginBottom:"6px" }}>¿Qué significa Juego Justo?</div>
+                  <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"13px",marginBottom:"6px" }}>{t("fairWhatTitle")}</div>
                   <p style={{ color:"#94a3b8",fontSize:"13px",lineHeight:1.8,margin:0 }}>
-                    Un juego justo garantiza que los resultados son completamente imparciales: ni el casino, ni ningún sistema interno, puede influir en el desenlace de una ronda. En Mander Casino, todos nuestros juegos originales se rigen por este principio. No importa quién esté jugando ni cuánto haya apostado — cada resultado es único, aleatorio e inalterable.
+                    {t("fairWhatDesc")}
                   </p>
                 </div>
               </div>
