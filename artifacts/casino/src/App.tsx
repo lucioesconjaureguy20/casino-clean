@@ -6860,7 +6860,7 @@ export default function App() {
                       <div style={{ display:"flex",alignItems:"center",gap:"6px" }}>
                         <button onClick={()=>{ const upd=notifications.map(n=>({...n,read:true})); ls.saveNotifs(currentUser,upd); setNotifications(upd); }}
                           style={{ background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"8px",color:"#7a8fb8",padding:"5px 10px",fontSize:"11px",fontWeight:600,cursor:"pointer",whiteSpace:"nowrap" }}>
-                          Leer todo
+                          {t("markAllRead")}
                         </button>
                         <button onClick={()=>setNotifPanelOpen(false)}
                           style={{ background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"8px",color:"#7a8fb8",width:"28px",height:"28px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"14px",cursor:"pointer" }}>
