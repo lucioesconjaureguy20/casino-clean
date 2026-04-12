@@ -7619,15 +7619,15 @@ export default function App() {
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))", gap:"18px" }}>
                   {/* ── Active games ── */}
                   {([
-                    { key:"dice",      label:"Dados",     img:"/dice-card.jpg",       accentBg:"#1a5cd6", action:showDiceOnly },
-                    { key:"plinko",    label:"Plinko",    img:"/plinko-thumb.jpg",    accentBg:"#e6293e", action:showPlinkoOnly },
-                    { key:"keno",      label:"Keno",      img:"/keno-thumb.jpg",      accentBg:"#f4a91f", action:showKenoOnly },
-                    { key:"blackjack", label:"Blackjack", img:"/blackjack-thumb.jpg", accentBg:"#d67a10", action:showBlackjackOnly },
-                    { key:"mines",     label:"Mines",     img:"/mines-card.jpg",      accentBg:"#1a4d8a", action:showMinesOnly },
-                    { key:"hilo",      label:"Hilo",      img:"/hilo-card.jpg",       accentBg:"#00d47a", action:showHiloOnly },
-                    { key:"roulette",  label:"Ruleta",    img:"/roulette-card.jpg",   accentBg:"#9b59b6", action:showRouletteOnly },
-                    { key:"baccarat",  label:"Baccarat",  img:"/baccarat-card.jpg",   accentBg:"#1a64e0", action:showBaccaratOnly },
-                  ] as const).map(g => (
+                    { key:"dice",      label:t("gameDice"),      img:"/dice-card.jpg",       accentBg:"#1a5cd6", action:showDiceOnly },
+                    { key:"plinko",    label:t("gamePlinko"),    img:"/plinko-thumb.jpg",    accentBg:"#e6293e", action:showPlinkoOnly },
+                    { key:"keno",      label:t("gameKeno"),      img:"/keno-thumb.jpg",      accentBg:"#f4a91f", action:showKenoOnly },
+                    { key:"blackjack", label:t("gameBlackjack"), img:"/blackjack-thumb.jpg", accentBg:"#d67a10", action:showBlackjackOnly },
+                    { key:"mines",     label:t("gameMines"),     img:"/mines-card.jpg",      accentBg:"#1a4d8a", action:showMinesOnly },
+                    { key:"hilo",      label:t("gameHilo"),      img:"/hilo-card.jpg",       accentBg:"#00d47a", action:showHiloOnly },
+                    { key:"roulette",  label:t("gameRoulette"),  img:"/roulette-card.jpg",   accentBg:"#9b59b6", action:showRouletteOnly },
+                    { key:"baccarat",  label:t("gameBaccarat"),  img:"/baccarat-card.jpg",   accentBg:"#1a64e0", action:showBaccaratOnly },
+                  ] as { key:string; label:string; img:string; accentBg:string; action:()=>void }[]).map(g => (
                     <div key={g.key} onClick={g.action} style={{ cursor:"pointer" }}
                       onMouseEnter={e=>{ const card = e.currentTarget.querySelector(".orig-card") as HTMLElement; if(card){ card.style.transform="translateY(-4px) scale(1.03)"; card.style.boxShadow="0 12px 32px rgba(0,0,0,.65)"; } }}
                       onMouseLeave={e=>{ const card = e.currentTarget.querySelector(".orig-card") as HTMLElement; if(card){ card.style.transform=""; card.style.boxShadow="0 4px 20px rgba(0,0,0,.5)"; } }}>
@@ -7734,26 +7734,26 @@ export default function App() {
                 // ── Normalize all per-game bet histories into one unified format ──
                 type UBet = { game:string; label:string; color:string; amount:number; multiplier:number; payout:number; win:boolean; createdAt:string };
                 const all: UBet[] = [
-                  ...diceBetHistory.map(b=>({ game:"dice",      label:"Dados",      color:"#f97316", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...plinkoBetHistory.map(b=>({ game:"plinko",   label:"Plinko",     color:"#a855f7", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...kenoBetHistory.map(b=>({ game:"keno",       label:"Keno",       color:"#3b82f6", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...bjBetHistory.map(b=>({ game:"blackjack",    label:"Blackjack",  color:"#d67a10", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...minesBetHistory.map(b=>({ game:"mines",     label:"Mines",      color:"#ef4444", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...hiloBetHistory.map(b=>({ game:"hilo",       label:"Hilo",       color:"#00d47a", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...rouletteBetHistory.map(b=>({ game:"roulette", label:"Ruleta",   color:"#f4a91f", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
-                  ...baccaratBetHistory.map(b=>({ game:"baccarat", label:"Baccarat", color:"#1a64e0", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...diceBetHistory.map(b=>({ game:"dice",      label:t("gameDice"),      color:"#f97316", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...plinkoBetHistory.map(b=>({ game:"plinko",   label:t("gamePlinko"),   color:"#a855f7", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...kenoBetHistory.map(b=>({ game:"keno",       label:t("gameKeno"),       color:"#3b82f6", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...bjBetHistory.map(b=>({ game:"blackjack",    label:t("gameBlackjack"),  color:"#d67a10", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...minesBetHistory.map(b=>({ game:"mines",     label:t("gameMines"),     color:"#ef4444", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...hiloBetHistory.map(b=>({ game:"hilo",       label:t("gameHilo"),       color:"#00d47a", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...rouletteBetHistory.map(b=>({ game:"roulette", label:t("gameRoulette"), color:"#f4a91f", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
+                  ...baccaratBetHistory.map(b=>({ game:"baccarat", label:t("gameBaccarat"), color:"#1a64e0", amount:b.amount, multiplier:b.multiplier, payout:b.payout, win:b.win, createdAt:b.createdAt })),
                 ].sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime());
 
                 const GAMES = [
-                  { key:"all",        label:"Todos" },
-                  { key:"dice",       label:"Dados" },
-                  { key:"plinko",     label:"Plinko" },
-                  { key:"keno",       label:"Keno" },
-                  { key:"blackjack",  label:"Blackjack" },
-                  { key:"mines",      label:"Mines" },
-                  { key:"hilo",       label:"Hilo" },
-                  { key:"roulette",   label:"Ruleta" },
-                  { key:"baccarat",   label:"Baccarat" },
+                  { key:"all",        label:t("allGames") },
+                  { key:"dice",       label:t("gameDice") },
+                  { key:"plinko",     label:t("gamePlinko") },
+                  { key:"keno",       label:t("gameKeno") },
+                  { key:"blackjack",  label:t("gameBlackjack") },
+                  { key:"mines",      label:t("gameMines") },
+                  { key:"hilo",       label:t("gameHilo") },
+                  { key:"roulette",   label:t("gameRoulette") },
+                  { key:"baccarat",   label:t("gameBaccarat") },
                 ];
 
                 const PAGE_SIZE = 30;
@@ -8565,7 +8565,7 @@ export default function App() {
             Roulette:(s,c="currentColor")=><svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/></svg>,
             Baccarat:(s,c="currentColor")=><svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="6" width="12" height="16" rx="2"/><rect x="11" y="2" width="12" height="16" rx="2"/></svg>,
           };
-          const fGames = getFairnessGames(lang);
+          const fGames = getFairnessGames(lang).map(g=>({...g, label:t("game"+g.key)}));
           const activeGame = fGames.find(g=>g.key===fairnessGame) || fGames[0];
           return (
           <section style={{ animation:"nlsfadeIn 0.25s ease", minHeight:"calc(100vh - 70px)", display:"flex", flexDirection:"column" }}>
@@ -10941,14 +10941,14 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
   const t = (key: string) => tl(lang, key);
   const scrollRef = useRef<HTMLDivElement>(null);
   const ALL = [
-    { key:"dice"      as const, label:"Dados",     sub:"Mander Originals", bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:"/dice-card.jpg",       accentBg:"#1a5cd6" },
-    { key:"plinko"    as const, label:"Plinko",    sub:"Mander Originals", bg:"linear-gradient(135deg,#6e0a14,#d6293e)", img:"/plinko-thumb.jpg",    accentBg:"#d6293e" },
-    { key:"keno"      as const, label:"Keno",      sub:"Mander Originals", bg:"linear-gradient(135deg,#7a4200,#f4a91f)", img:"/keno-thumb.jpg",      accentBg:"#f4a91f" },
-    { key:"blackjack" as const, label:"Blackjack", sub:"Mander Originals", bg:"linear-gradient(135deg,#5c2800,#d67a10)", img:"/blackjack-thumb.jpg", accentBg:"#d67a10" },
-    { key:"mines"     as const, label:"Mines",     sub:"Mander Originals", bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:"/mines-card.jpg",      accentBg:"#1a4d8a" },
-    { key:"hilo"      as const, label:"Hilo",      sub:"Mander Originals", bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:"/hilo-card.jpg",       accentBg:"#00d47a" },
-    { key:"roulette"  as const, label:"Ruleta",    sub:"Mander Originals", bg:"linear-gradient(135deg,#1a0a2e,#4a1a7a)", img:"/roulette-card.jpg",   accentBg:"#9b59b6" },
-    { key:"baccarat"  as const, label:"Baccarat",  sub:"Mander Originals", bg:"linear-gradient(135deg,#001830,#003a7a)", img:"/baccarat-card.jpg",   accentBg:"#1a64e0" },
+    { key:"dice"      as const, label:t("gameDice"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:"/dice-card.jpg",       accentBg:"#1a5cd6" },
+    { key:"plinko"    as const, label:t("gamePlinko"),    sub:"Mander Originals", bg:"linear-gradient(135deg,#6e0a14,#d6293e)", img:"/plinko-thumb.jpg",    accentBg:"#d6293e" },
+    { key:"keno"      as const, label:t("gameKeno"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#7a4200,#f4a91f)", img:"/keno-thumb.jpg",      accentBg:"#f4a91f" },
+    { key:"blackjack" as const, label:t("gameBlackjack"), sub:"Mander Originals", bg:"linear-gradient(135deg,#5c2800,#d67a10)", img:"/blackjack-thumb.jpg", accentBg:"#d67a10" },
+    { key:"mines"     as const, label:t("gameMines"),     sub:"Mander Originals", bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:"/mines-card.jpg",      accentBg:"#1a4d8a" },
+    { key:"hilo"      as const, label:t("gameHilo"),      sub:"Mander Originals", bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:"/hilo-card.jpg",       accentBg:"#00d47a" },
+    { key:"roulette"  as const, label:t("gameRoulette"),  sub:"Mander Originals", bg:"linear-gradient(135deg,#1a0a2e,#4a1a7a)", img:"/roulette-card.jpg",   accentBg:"#9b59b6" },
+    { key:"baccarat"  as const, label:t("gameBaccarat"),  sub:"Mander Originals", bg:"linear-gradient(135deg,#001830,#003a7a)", img:"/baccarat-card.jpg",   accentBg:"#1a64e0" },
   ];
 
   const scroll = (dir: "left"|"right") => {
