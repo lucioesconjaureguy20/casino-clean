@@ -156,7 +156,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notificaciones", noNotifs:"Sin notificaciones aún",
     currentRank:"Tu Rango Actual", totalWageredLabel:"Total Apostado",
-    received:"Recibido", system:"Sistema",
+    received:"Recibido", system:"Sistema", chatMessages:"Mensajes", chatLiveSupport:"Soporte en vivo", chatTeamHelp:"El equipo está aquí para ayudarte", chatNoMessages:"Aún no hay mensajes", chatNoMessagesHint:"Los mensajes del equipo aparecerán aquí", chatNewConv:"Nueva conversación", chatSendUsMsg:"Envíanos un mensaje",
     nextRankLabel:"Sig.", untilNextRank:"Faltan",
     loginForVip:"Inicia sesión para ver tu rango VIP y reclamar rakeback.",
     unlockIn:"Desbloquea en", allRanks:"Todos los Rangos", yourCategory:"Tu categoría",
@@ -334,7 +334,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notifications", noNotifs:"No notifications yet",
     currentRank:"Your Current Rank", totalWageredLabel:"Total Wagered",
-    received:"Received", system:"System",
+    received:"Received", system:"System", chatMessages:"Messages", chatLiveSupport:"Live Support", chatTeamHelp:"The team is here to help", chatNoMessages:"No messages yet", chatNoMessagesHint:"Team messages will appear here", chatNewConv:"New conversation", chatSendUsMsg:"Send us a message",
     nextRankLabel:"Next", untilNextRank:"Remaining",
     loginForVip:"Log in to view your VIP rank and claim rakeback.",
     unlockIn:"Unlocks at", allRanks:"All Ranks", yourCategory:"Your tier",
@@ -509,7 +509,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"d", unitHr:"h", unitMin:"m", unitSec:"s",
     notifications:"Notificações", noNotifs:"Sem notificações ainda",
     currentRank:"Seu Rank Atual", totalWageredLabel:"Total Apostado",
-    received:"Recebido", system:"Sistema",
+    received:"Recebido", system:"Sistema", chatMessages:"Mensagens", chatLiveSupport:"Suporte ao Vivo", chatTeamHelp:"A equipe está aqui para ajudar", chatNoMessages:"Nenhuma mensagem ainda", chatNoMessagesHint:"As mensagens da equipe aparecerão aqui", chatNewConv:"Nova conversa", chatSendUsMsg:"Envie-nos uma mensagem",
     nextRankLabel:"Prox.", untilNextRank:"Faltam",
     loginForVip:"Faça login para ver seu rank VIP e reivindicar rakeback.",
     unlockIn:"Desbloqueia em", allRanks:"Todos os Ranks", yourCategory:"Sua categoria",
@@ -684,7 +684,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"T", unitHr:"Std", unitMin:"Min", unitSec:"Sek",
     notifications:"Benachrichtigungen", noNotifs:"Noch keine Benachrichtigungen",
     currentRank:"Dein aktueller Rang", totalWageredLabel:"Gesamteinsatz",
-    received:"Empfangen", system:"System",
+    received:"Empfangen", system:"System", chatMessages:"Nachrichten", chatLiveSupport:"Live-Support", chatTeamHelp:"Das Team ist hier, um zu helfen", chatNoMessages:"Noch keine Nachrichten", chatNoMessagesHint:"Team-Nachrichten erscheinen hier", chatNewConv:"Neue Unterhaltung", chatSendUsMsg:"Schick uns eine Nachricht",
     nextRankLabel:"Nächste", untilNextRank:"Verbleibend",
     loginForVip:"Melde dich an, um deinen VIP-Rang zu sehen und Rakeback zu beanspruchen.",
     unlockIn:"Freischaltung bei", allRanks:"Alle Ränge", yourCategory:"Deine Stufe",
@@ -859,7 +859,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"j", unitHr:"h", unitMin:"min", unitSec:"s",
     notifications:"Notifications", noNotifs:"Pas encore de notifications",
     currentRank:"Votre rang actuel", totalWageredLabel:"Total misé",
-    received:"Reçu", system:"Système",
+    received:"Reçu", system:"Système", chatMessages:"Messages", chatLiveSupport:"Support en direct", chatTeamHelp:"L'équipe est là pour vous aider", chatNoMessages:"Aucun message pour l'instant", chatNoMessagesHint:"Les messages de l'équipe apparaîtront ici", chatNewConv:"Nouvelle conversation", chatSendUsMsg:"Envoyez-nous un message",
     nextRankLabel:"Suiv.", untilNextRank:"Restant",
     loginForVip:"Connectez-vous pour voir votre rang VIP et réclamer le rakeback.",
     unlockIn:"Débloqué à", allRanks:"Tous les rangs", yourCategory:"Votre catégorie",
@@ -1034,7 +1034,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"hr", unitHr:"jam", unitMin:"mnt", unitSec:"dtk",
     notifications:"Notifikasi", noNotifs:"Belum ada notifikasi",
     currentRank:"Peringkat Anda Saat Ini", totalWageredLabel:"Total Taruhan",
-    received:"Diterima", system:"Sistem",
+    received:"Diterima", system:"Sistem", chatMessages:"Pesan", chatLiveSupport:"Dukungan Langsung", chatTeamHelp:"Tim siap membantu Anda", chatNoMessages:"Belum ada pesan", chatNoMessagesHint:"Pesan tim akan muncul di sini", chatNewConv:"Percakapan baru", chatSendUsMsg:"Kirim pesan kepada kami",
     nextRankLabel:"Berikut.", untilNextRank:"Tersisa",
     loginForVip:"Masuk untuk melihat peringkat VIP Anda dan klaim rakeback.",
     unlockIn:"Buka kunci di", allRanks:"Semua Peringkat", yourCategory:"Kategori Anda",
@@ -1209,7 +1209,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"g", unitHr:"h", unitMin:"min", unitSec:"s",
     notifications:"Notifiche", noNotifs:"Nessuna notifica ancora",
     currentRank:"Il Tuo Grado Attuale", totalWageredLabel:"Totale Puntato",
-    received:"Ricevuto", system:"Sistema",
+    received:"Ricevuto", system:"Sistema", chatMessages:"Messaggi", chatLiveSupport:"Supporto dal vivo", chatTeamHelp:"Il team è qui per aiutarti", chatNoMessages:"Nessun messaggio ancora", chatNoMessagesHint:"I messaggi del team appariranno qui", chatNewConv:"Nuova conversazione", chatSendUsMsg:"Inviaci un messaggio",
     nextRankLabel:"Prox.", untilNextRank:"Mancano",
     loginForVip:"Accedi per vedere il tuo rango VIP e riscuotere il rakeback.",
     unlockIn:"Sblocca a", allRanks:"Tutti i gradi", yourCategory:"La tua categoria",
@@ -1384,7 +1384,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"일", unitHr:"시", unitMin:"분", unitSec:"초",
     notifications:"알림", noNotifs:"아직 알림이 없습니다",
     currentRank:"현재 등급", totalWageredLabel:"총 베팅액",
-    received:"수신됨", system:"시스템",
+    received:"수신됨", system:"시스템", chatMessages:"메시지", chatLiveSupport:"실시간 지원", chatTeamHelp:"팀이 여기서 도와드립니다", chatNoMessages:"아직 메시지가 없습니다", chatNoMessagesHint:"팀 메시지가 여기에 표시됩니다", chatNewConv:"새 대화", chatSendUsMsg:"메시지 보내기",
     nextRankLabel:"다음", untilNextRank:"남은 금액",
     loginForVip:"VIP 등급을 보고 레이크백을 청구하려면 로그인하세요.",
     unlockIn:"잠금 해제:", allRanks:"모든 등급", yourCategory:"내 등급",
@@ -1559,7 +1559,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"d", unitHr:"u", unitMin:"m", unitSec:"s",
     notifications:"Meldingen", noNotifs:"Nog geen meldingen",
     currentRank:"Uw huidige rang", totalWageredLabel:"Totaal ingezet",
-    received:"Ontvangen", system:"Systeem",
+    received:"Ontvangen", system:"Systeem", chatMessages:"Berichten", chatLiveSupport:"Live ondersteuning", chatTeamHelp:"Het team staat klaar om u te helpen", chatNoMessages:"Nog geen berichten", chatNoMessagesHint:"Teamberichten verschijnen hier", chatNewConv:"Nieuw gesprek", chatSendUsMsg:"Stuur ons een bericht",
     nextRankLabel:"Volg.", untilNextRank:"Resterend",
     loginForVip:"Log in om uw VIP-rang te zien en rakeback te claimen.",
     unlockIn:"Ontgrendelt bij", allRanks:"Alle rangen", yourCategory:"Uw categorie",
@@ -1734,7 +1734,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"d", unitHr:"g", unitMin:"m", unitSec:"s",
     notifications:"Powiadomienia", noNotifs:"Brak powiadomień",
     currentRank:"Twój obecny rank", totalWageredLabel:"Łączne zakłady",
-    received:"Otrzymano", system:"System",
+    received:"Otrzymano", system:"System", chatMessages:"Wiadomości", chatLiveSupport:"Wsparcie na żywo", chatTeamHelp:"Zespół jest tutaj, aby pomóc", chatNoMessages:"Brak wiadomości", chatNoMessagesHint:"Wiadomości zespołu pojawią się tutaj", chatNewConv:"Nowa rozmowa", chatSendUsMsg:"Wyślij nam wiadomość",
     nextRankLabel:"Nast.", untilNextRank:"Pozostało",
     loginForVip:"Zaloguj się, aby zobaczyć swój rang VIP i odebrać rakeback.",
     unlockIn:"Odblokowane przy", allRanks:"Wszystkie rangi", yourCategory:"Twoja kategoria",
@@ -1909,7 +1909,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"д", unitHr:"ч", unitMin:"м", unitSec:"с",
     notifications:"Уведомления", noNotifs:"Уведомлений пока нет",
     currentRank:"Ваш текущий ранг", totalWageredLabel:"Всего поставлено",
-    received:"Получено", system:"Система",
+    received:"Получено", system:"Система", chatMessages:"Сообщения", chatLiveSupport:"Живая поддержка", chatTeamHelp:"Команда здесь, чтобы помочь", chatNoMessages:"Сообщений пока нет", chatNoMessagesHint:"Сообщения команды появятся здесь", chatNewConv:"Новый разговор", chatSendUsMsg:"Напишите нам",
     nextRankLabel:"След.", untilNextRank:"Осталось",
     loginForVip:"Войдите, чтобы увидеть ваш VIP-ранг и получить рейкбек.",
     unlockIn:"Разблокируется при", allRanks:"Все ранги", yourCategory:"Ваша категория",
@@ -2084,7 +2084,7 @@ const LANGS: Record<string, Record<string, string>> = {
     unitDay:"g", unitHr:"sa", unitMin:"dk", unitSec:"sn",
     notifications:"Bildirimler", noNotifs:"Henüz bildirim yok",
     currentRank:"Mevcut Rütbeniz", totalWageredLabel:"Toplam Bahis",
-    received:"Alındı", system:"Sistem",
+    received:"Alındı", system:"Sistem", chatMessages:"Mesajlar", chatLiveSupport:"Canlı Destek", chatTeamHelp:"Ekip yardım etmek için burada", chatNoMessages:"Henüz mesaj yok", chatNoMessagesHint:"Ekip mesajları burada görünecek", chatNewConv:"Yeni konuşma", chatSendUsMsg:"Bize mesaj gönderin",
     nextRankLabel:"Sonraki", untilNextRank:"Kalan",
     loginForVip:"VIP rütbenizi görmek ve rakeback talep etmek için giriş yapın.",
     unlockIn:"Kilit açma:", allRanks:"Tüm Rütbeler", yourCategory:"Kategoriniz",
@@ -9710,10 +9710,10 @@ export default function App() {
               return (
                 <div style={{ flex:1, minWidth:0 }}>
                   <div style={{ fontWeight:600, fontSize:"16px", color:"#fff", letterSpacing:".2px", textAlign: chatScreen==="lobby" ? "center" : "left" }}>
-                    {chatScreen==="lobby" ? "Messages" : "Live Support"}
+                    {chatScreen==="lobby" ? t("chatMessages") : t("chatLiveSupport")}
                   </div>
                   {chatScreen==="chat" && (
-                    <div style={{ fontSize:"11.5px", color:"#8a9bb4", marginTop:"1px" }}>The team is here to help</div>
+                    <div style={{ fontSize:"11.5px", color:"#8a9bb4", marginTop:"1px" }}>{t("chatTeamHelp")}</div>
                   )}
                 </div>
               );
@@ -9735,8 +9735,8 @@ export default function App() {
                     <line x1="9" y1="10" x2="15" y2="10" stroke="#5a6e88" strokeWidth="1.5" strokeLinecap="round"/>
                     <line x1="9" y1="13" x2="13" y2="13" stroke="#5a6e88" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
-                  <div style={{ fontWeight:500, fontSize:"17px", color:"#d9e5f5" }}>No messages yet</div>
-                  <div style={{ fontSize:"13.5px", color:"#5a6e88", textAlign:"center", lineHeight:1.5 }}>Team messages will appear here</div>
+                  <div style={{ fontWeight:500, fontSize:"17px", color:"#d9e5f5" }}>{t("chatNoMessages")}</div>
+                  <div style={{ fontSize:"13.5px", color:"#5a6e88", textAlign:"center", lineHeight:1.5 }}>{t("chatNoMessagesHint")}</div>
                 </div>
               ) : (
                 /* Sessions list — include open & closed DB tickets */
@@ -9912,7 +9912,7 @@ export default function App() {
                   onMouseEnter={e=>(e.currentTarget.style.background="#233050")}
                   onMouseLeave={e=>(e.currentTarget.style.background="#1a2640")}
                 >
-                  {chatSessions.length > 0 ? "New conversation" : "Send us a message"}
+                  {chatSessions.length > 0 ? t("chatNewConv") : t("chatSendUsMsg")}
                   <span style={{ width:"28px", height:"28px", borderRadius:"50%", background:"#2a3a54", display:"flex", alignItems:"center", justifyContent:"center" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#d9e5f5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
                   </span>
