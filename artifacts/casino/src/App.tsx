@@ -19,6 +19,7 @@ import "flag-icons/css/flag-icons.min.css";
 import { getGameMeta, getGameInfo, getLearnMoreLabel } from "./lib/gameContent";
 import { getFairnessGames } from "./lib/fairnessContent";
 import { gt } from "./lib/gameLabels";
+import { getTermsIntro, getTermsSections, getPrivacySections } from "./lib/legalContent";
 
 // ─── TRANSLATIONS ────────────────────────────────────────────────────────────
 const LANGS: Record<string, Record<string, string>> = {
@@ -80,6 +81,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"No puedes cambiar moneda durante una apuesta activa",
     betLockedMsg:"No puedes cambiar esto durante una apuesta activa",
+    claim:"Reclamar", rankUpPre:"¡Subiste a", rankRewardPendingPre:"Tenés", rankRewardPendingPost:"de recompensa pendiente", rankRewardCredited:"¡Recompensa acreditada!", rankCreditedPre:"Se acreditaron", rankCreditedMid:"por subir a",
     enterValidAmount:"Ingresá un monto válido", maxDeposit:"Máximo:",
     enterWalletAddress:"Ingresá una wallet address", minWithdraw:"Mínimo retiro:", maxWithdraw:"Máximo retiro:",
     wageringRequired:"Para retirar, necesitás haber jugado al menos 2x el monto depositado. Seguí apostando para desbloquear tu retiro.",
@@ -248,6 +250,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Can't change currency during an active bet",
     betLockedMsg:"Can't change this during an active bet",
+    claim:"Claim", rankUpPre:"You ranked up to", rankRewardPendingPre:"You have", rankRewardPendingPost:"pending reward", rankRewardCredited:"Reward credited!", rankCreditedPre:"Credited", rankCreditedMid:"for ranking up to",
     enterValidAmount:"Enter a valid amount", maxDeposit:"Maximum:",
     enterWalletAddress:"Enter a wallet address", minWithdraw:"Minimum withdrawal:", maxWithdraw:"Maximum withdrawal:",
     wageringRequired:"To withdraw, you must have wagered at least 2x your deposited amount. Keep betting to unlock your withdrawal.",
@@ -408,6 +411,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Não é possível mudar a moeda durante uma aposta ativa",
     betLockedMsg:"Não é possível alterar isso durante uma aposta ativa",
+    claim:"Resgatar", rankUpPre:"Você subiu para", rankRewardPendingPre:"Você tem", rankRewardPendingPost:"de recompensa pendente", rankRewardCredited:"Recompensa creditada!", rankCreditedPre:"Foram creditados", rankCreditedMid:"por subir para",
     enterValidAmount:"Digite um valor válido", maxDeposit:"Máximo:",
     enterWalletAddress:"Digite um endereço de carteira", minWithdraw:"Saque mínimo:", maxWithdraw:"Saque máximo:",
     wageringRequired:"Para sacar, você precisa ter apostado pelo menos 2x o valor depositado. Continue apostando para desbloquear seu saque.",
@@ -562,6 +566,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: AN", turboOff:"Turbo: AUS",
     coinLockedMsg:"Währung während einer aktiven Wette nicht änderbar",
     betLockedMsg:"Kann während einer aktiven Wette nicht geändert werden",
+    claim:"Einlösen", rankUpPre:"Du bist aufgestiegen zu", rankRewardPendingPre:"Du hast", rankRewardPendingPost:"ausstehende Belohnung", rankRewardCredited:"Belohnung gutgeschrieben!", rankCreditedPre:"Es wurden", rankCreditedMid:"gutgeschrieben für den Aufstieg zu",
     enterValidAmount:"Gib einen gültigen Betrag ein", maxDeposit:"Maximum:",
     enterWalletAddress:"Wallet-Adresse eingeben", minWithdraw:"Mindestabhebung:", maxWithdraw:"Höchstabhebung:",
     wageringRequired:"Um auszuzahlen, musst du mindestens 2x deinen eingezahlten Betrag gewettet haben. Setze weiter, um deine Auszahlung freizuschalten.",
@@ -716,6 +721,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Impossible de changer la devise pendant un pari actif",
     betLockedMsg:"Impossible de changer cela pendant un pari actif",
+    claim:"Réclamer", rankUpPre:"Vous avez atteint le rang", rankRewardPendingPre:"Vous avez", rankRewardPendingPost:"de récompense en attente", rankRewardCredited:"Récompense créditée !", rankCreditedPre:"Crédité de", rankCreditedMid:"pour avoir atteint le rang",
     enterValidAmount:"Entrez un montant valide", maxDeposit:"Maximum:",
     enterWalletAddress:"Entrez une adresse de portefeuille", minWithdraw:"Retrait minimum:", maxWithdraw:"Retrait maximum:",
     wageringRequired:"Pour retirer, vous devez avoir misé au moins 2x le montant déposé. Continuez à miser pour débloquer votre retrait.",
@@ -870,6 +876,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Tidak dapat mengubah mata uang selama taruhan aktif",
     betLockedMsg:"Tidak dapat mengubah ini selama taruhan aktif",
+    claim:"Klaim", rankUpPre:"Anda naik ke peringkat", rankRewardPendingPre:"Anda memiliki", rankRewardPendingPost:"hadiah tertunda", rankRewardCredited:"Hadiah dikreditkan!", rankCreditedPre:"Dikreditkan", rankCreditedMid:"karena naik ke",
     enterValidAmount:"Masukkan jumlah yang valid", maxDeposit:"Maksimum:",
     enterWalletAddress:"Masukkan alamat wallet", minWithdraw:"Penarikan minimum:", maxWithdraw:"Penarikan maksimum:",
     wageringRequired:"Untuk menarik, Anda harus telah bertaruh setidaknya 2x jumlah yang disetor. Terus bertaruh untuk membuka penarikan Anda.",
@@ -1024,6 +1031,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Non puoi cambiare valuta durante una puntata attiva",
     betLockedMsg:"Non puoi cambiare questo durante una puntata attiva",
+    claim:"Riscatta", rankUpPre:"Sei salito a", rankRewardPendingPre:"Hai", rankRewardPendingPost:"di ricompensa in sospeso", rankRewardCredited:"Ricompensa accreditata!", rankCreditedPre:"Accreditati", rankCreditedMid:"per essere salito a",
     enterValidAmount:"Inserisci un importo valido", maxDeposit:"Massimo:",
     enterWalletAddress:"Inserisci un indirizzo wallet", minWithdraw:"Prelievo minimo:", maxWithdraw:"Prelievo massimo:",
     wageringRequired:"Per prelevare, devi aver scommesso almeno 2x l'importo depositato. Continua a scommettere per sbloccare il prelievo.",
@@ -1178,6 +1186,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"터보: ON", turboOff:"터보: OFF",
     coinLockedMsg:"활성 베팅 중에는 통화를 변경할 수 없습니다",
     betLockedMsg:"활성 베팅 중에는 이것을 변경할 수 없습니다",
+    claim:"청구", rankUpPre:"랭크 상승:", rankRewardPendingPre:"보류 중인 보상이", rankRewardPendingPost:"있습니다", rankRewardCredited:"보상이 지급되었습니다!", rankCreditedPre:"지급됨", rankCreditedMid:"랭크 상승:",
     enterValidAmount:"유효한 금액을 입력하세요", maxDeposit:"최대:",
     enterWalletAddress:"지갑 주소를 입력하세요", minWithdraw:"최소 출금:", maxWithdraw:"최대 출금:",
     wageringRequired:"출금하려면 입금액의 최소 2배를 베팅해야 합니다. 계속 베팅하여 출금을 잠금 해제하세요.",
@@ -1332,6 +1341,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: AAN", turboOff:"Turbo: UIT",
     coinLockedMsg:"Valuta kan niet worden gewijzigd tijdens een actieve inzet",
     betLockedMsg:"Dit kan niet worden gewijzigd tijdens een actieve inzet",
+    claim:"Claimen", rankUpPre:"Je bent gestegen naar", rankRewardPendingPre:"Je hebt", rankRewardPendingPost:"openstaande beloning", rankRewardCredited:"Beloning gecrediteerd!", rankCreditedPre:"Gecrediteerd", rankCreditedMid:"voor stijging naar",
     enterValidAmount:"Voer een geldig bedrag in", maxDeposit:"Maximum:",
     enterWalletAddress:"Voer een wallet-adres in", minWithdraw:"Minimale opname:", maxWithdraw:"Maximale opname:",
     wageringRequired:"Om op te nemen moet u minimaal 2x het gestorte bedrag hebben ingezet. Blijf inzetten om uw opname te ontgrendelen.",
@@ -1486,6 +1496,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
     coinLockedMsg:"Nie można zmienić waluty podczas aktywnego zakładu",
     betLockedMsg:"Nie można tego zmienić podczas aktywnego zakładu",
+    claim:"Odbierz", rankUpPre:"Awansowałeś na", rankRewardPendingPre:"Masz", rankRewardPendingPost:"oczekującą nagrodę", rankRewardCredited:"Nagroda przyznana!", rankCreditedPre:"Przyznano", rankCreditedMid:"za awans na",
     enterValidAmount:"Wprowadź prawidłową kwotę", maxDeposit:"Maksimum:",
     enterWalletAddress:"Wprowadź adres portfela", minWithdraw:"Minimalna wypłata:", maxWithdraw:"Maksymalna wypłata:",
     wageringRequired:"Aby wypłacić, musisz postawić co najmniej 2x kwotę depozytu. Kontynuuj obstawianie, aby odblokować wypłatę.",
@@ -1640,6 +1651,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Турбо: ВКЛ", turboOff:"Турбо: ВЫКЛ",
     coinLockedMsg:"Нельзя сменить валюту во время активной ставки",
     betLockedMsg:"Нельзя изменить это во время активной ставки",
+    claim:"Получить", rankUpPre:"Вы повысились до", rankRewardPendingPre:"У вас есть", rankRewardPendingPost:"ожидающая награда", rankRewardCredited:"Награда начислена!", rankCreditedPre:"Начислено", rankCreditedMid:"за повышение до",
     enterValidAmount:"Введите корректную сумму", maxDeposit:"Максимум:",
     enterWalletAddress:"Введите адрес кошелька", minWithdraw:"Минимальный вывод:", maxWithdraw:"Максимальный вывод:",
     wageringRequired:"Для вывода средств необходимо сделать ставки на сумму не менее 2x от суммы депозита. Продолжайте ставить для разблокировки.",
@@ -1794,6 +1806,7 @@ const LANGS: Record<string, Record<string, string>> = {
     turboOn:"Turbo: AÇIK", turboOff:"Turbo: KAPALI",
     coinLockedMsg:"Aktif bahis sırasında para birimi değiştirilemez",
     betLockedMsg:"Aktif bahis sırasında bu değiştirilemez",
+    claim:"Talep et", rankUpPre:"Rütbe atladınız:", rankRewardPendingPre:"Bekleyen", rankRewardPendingPost:"ödülünüz var", rankRewardCredited:"Ödül alındı!", rankCreditedPre:"Alındı", rankCreditedMid:"rütbesine yükselme bonusu:",
     enterValidAmount:"Geçerli bir tutar girin", maxDeposit:"Maksimum:",
     enterWalletAddress:"Cüzdan adresi girin", minWithdraw:"Minimum çekim:", maxWithdraw:"Maksimum çekim:",
     wageringRequired:"Çekim yapmak için yatırılan miktarın en az 2 katını bahse oynamış olmanız gerekir. Çekiminizi açmak için bahis yapmaya devam edin.",
@@ -6605,7 +6618,7 @@ export default function App() {
                                 {avail ? (
                                   <button onClick={()=>{ row.onClaim(); setRewardsDropOpen(false); }}
                                     style={{ flexShrink:0,padding:"6px 12px",borderRadius:"8px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#111",fontSize:"12px",fontWeight:800,cursor:"pointer",whiteSpace:"nowrap" }}>
-                                    Reclamar
+                                    {t("claim")}
                                   </button>
                                 ) : (
                                   <div style={{ flexShrink:0,padding:"5px 10px",borderRadius:"8px",background:"#0e1826",border:"1px solid #252f45",color:"#4a5a70",fontSize:"12px",fontWeight:700,whiteSpace:"nowrap" }}>
@@ -8392,55 +8405,7 @@ export default function App() {
                 <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("privacyTitle")}</h1>
               </div>
 
-              {([
-                { num:"1.0", title:"Introducción", body:[
-                  "Tu privacidad es fundamental para nosotros. En Mander Casino nos comprometemos a salvaguardar tus datos personales y a actuar con total transparencia sobre la información que gestionamos. Te informaremos de manera clara sobre tus opciones y los derechos que tienes respecto a tus datos.",
-                  "Esta Política de Privacidad explica de qué forma Mander Casino recopila, emplea y protege tu información cuando accedes a nuestra plataforma.",
-                  "Si no estás de acuerdo con cualquier punto de esta política, te pedimos que te abstengas de utilizar nuestra plataforma. Al registrar una cuenta, confirmas que has leído y aceptas en su totalidad nuestros Términos y Condiciones y esta Política de Privacidad. Puedes dejar de usar la plataforma cuando quieras; no obstante, podríamos conservar ciertos datos si así lo requiere la normativa vigente.",
-                  "Esta política puede ser actualizada periódicamente. Te recomendamos consultarla de forma regular."
-                ]},
-                { num:"2.0", title:"¿Quién gestiona tu información?", body:[
-                  "En este documento, «Mander», «nosotros», «nuestra» y «nos» hacen referencia a Mander Casino. Gestionamos y procesamos tus datos en servidores situados en las jurisdicciones correspondientes. Si tienes dudas sobre nuestras prácticas de datos, puedes contactarnos a través de nuestros canales de soporte."
-                ]},
-                { num:"3.0", title:"Información que recopilamos sobre ti", subSections:[
-                  { title:"Datos de identificación personal", body:[
-                    "Recabamos determinada información que nos proporcionas durante el registro, el uso de la plataforma y la interacción con nuestros servicios. Esta información es necesaria para acceder a ciertas funciones. La recogemos cuando:",
-                    ["Creas una cuenta en Mander Casino.", "Facilitas tus datos voluntariamente al utilizar la plataforma.", "Compartes información de forma pública dentro de nuestra comunidad.", "Te pones en contacto con nuestro equipo de soporte."],
-                    "La información que podemos recopilar incluye:",
-                    ["Nombre de usuario o alias.", "Dirección de correo electrónico.", "Historial de actividad y apuestas.", "Preferencias de configuración en la plataforma.", "Cualquier dato adicional que decidas compartir con nosotros.", "Información de métodos de pago, incluyendo tarjetas de crédito o débito."],
-                    "Estos datos se usan de forma interna y no se ceden a terceros, salvo en los supuestos recogidos en esta política."
-                  ]},
-                  { title:"Datos no identificables y análisis de uso", body:[
-                    "Con el fin de mejorar nuestra plataforma, recopilamos información sobre cómo interactúan los usuarios con Mander Casino sin identificarlos de manera personal. Esto puede incluir la dirección IP, horarios de conexión, secciones visitadas, idioma seleccionado, tipo de dispositivo o navegador, y registros de errores."
-                  ]}
-                ]},
-                { num:"4.0", title:"Cómo y por qué usamos tu información personal", body:[
-                  "Procesamos tus datos personales con los siguientes objetivos:",
-                  ["Brindarte los servicios o funciones que hayas solicitado.", "Cumplir con las normativas legales y reglamentarias aplicables.", "Analizar y optimizar el rendimiento de nuestra plataforma.", "Enviarte comunicaciones promocionales, únicamente si has dado tu consentimiento."],
-                  "Para cada uno de estos fines, puedes tener derechos específicos sobre tus datos, que describimos con más detalle a continuación."
-                ]},
-                { num:"5.0", title:"Tus derechos", subSections:[
-                  { title:"Derecho de rectificación", body:["Si consideras que algún dato personal que conservamos sobre ti es erróneo o está desactualizado, puedes solicitarnos su corrección. Contacta con nuestro soporte para gestionar la actualización de tu información."] },
-                  { title:"Derecho de acceso", body:["Para obtener una copia de los datos que tenemos registrados sobre ti, ponte en contacto con nuestro equipo de soporte. Es posible que te solicitemos verificación de identidad antes de procesar tu solicitud."] }
-                ]},
-                { num:"6.0", title:"Compartir tu información", body:[
-                  "Podemos compartir tus datos con terceros en los siguientes casos:",
-                  ["Para cumplir con obligaciones legales o regulatorias.", "Para hacer cumplir nuestras políticas y condiciones de uso.", "Para colaborar con proveedores externos de confianza que nos ayudan a ofrecer nuestros servicios.", "Si se detectan conductas fraudulentas o perjudiciales.", "Cuando hayas prestado tu consentimiento explícito."],
-                  "Los datos podrían almacenarse o procesarse fuera de tu país de residencia, incluso en territorios con marcos normativos de protección de datos distintos. Adoptamos todas las medidas necesarias para garantizar que tu información sea tratada con seguridad, independientemente del lugar donde se procese."
-                ]},
-                { num:"7.0", title:"Seguridad", body:[
-                  "La protección de tu información es una prioridad para nosotros. Tus datos se almacenan en entornos cifrados y protegidos con contraseña, resguardados detrás de sistemas de seguridad avanzados."
-                ]},
-                { num:"8.0", title:"Conservación de datos", body:[
-                  "Mantenemos tus datos personales únicamente durante el tiempo imprescindible para satisfacer nuestras obligaciones legales o comerciales. Una vez que los datos dejan de ser necesarios, los eliminamos de manera segura o los anonimizamos."
-                ]},
-                { num:"9.0", title:"Sitios y servicios externos", body:[
-                  "Nuestra plataforma puede incluir enlaces a sitios web de terceros. Estos sitios funcionan de manera autónoma respecto a Mander Casino, por lo que no somos responsables de su contenido ni de sus políticas de privacidad. La información que esos sitios recopilen se rige exclusivamente por sus propias normativas."
-                ]},
-                { num:"10.0", title:"Limitación de responsabilidad", body:[
-                  "Mander Casino presta sus servicios «tal como están» y «según disponibilidad». Aunque hacemos todo lo posible por proteger tu información, no podemos garantizar un funcionamiento libre de errores en todo momento, ni asumimos responsabilidad por eventos que estén fuera de nuestro control."
-                ]},
-              ] as { num:string; title:string; body?:(string|string[])[]; subSections?:{title:string;body:(string|string[])[]}[] }[]).map(sec => (
+              {getPrivacySections(lang).map(sec => (
                 <div key={sec.num} style={{ marginBottom:"28px" }}>
                   <h2 style={{ color:"#e2e8f0",fontSize:"14px",fontWeight:700,letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"12px",marginTop:0 }}>
                     {sec.num} {sec.title}
@@ -8569,49 +8534,10 @@ export default function App() {
               </div>
 
               <p style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,margin:"0 0 28px" }}>
-                Estos Términos de Servicio («Términos») definen las reglas y condiciones para el uso del sitio web de Mander Casino y sus servicios relacionados. Al acceder o usar la plataforma, aceptas cumplir con estos Términos.
+                {getTermsIntro(lang)}
               </p>
 
-              {([
-                { num:"1", title:"Elegibilidad", items:[
-                  "Tienes al menos 18 años o cumples con la edad legal para jugar en tu jurisdicción.",
-                  "No accedes a la plataforma desde un país restringido.",
-                  "Eres responsable de asegurarte de que el uso de la plataforma sea legal en tu ubicación.",
-                ] },
-                { num:"2", title:"Datos de la empresa", body:"Manderbet.com es operado por Mander Group Ltd., número de registro 27481, con domicilio social en Kingstown, San Vicente y las Granadinas. Mander opera bajo la Licencia de Juegos de Curaçao N.º 365/JAZ. Para consultas, contáctanos en: support@manderbet.com" },
-                { num:"3", title:"Cuentas de usuario", items:[
-                  "Cada usuario solo puede crear una cuenta.",
-                  "Toda la información proporcionada durante el registro debe ser precisa y mantenerse actualizada.",
-                  "Está estrictamente prohibido el uso de herramientas automatizadas, bots o scripts.",
-                  "Las cuentas no pueden compartirse, transferirse ni venderse.",
-                ], extra:"Eres el único responsable de mantener la confidencialidad de tu cuenta y de cualquier actividad que ocurra en ella." },
-                { num:"4", title:"Pagos", items:[
-                  "Mander admite depósitos y retiros mediante criptomonedas seleccionadas.",
-                  "Se debe cumplir un requisito de apuesta mínima de 1× el importe del depósito antes de procesar los retiros.",
-                  "La plataforma se reserva el derecho de revisar, retrasar o rechazar transacciones si se detecta actividad irregular.",
-                ], extra:"Los jugadores son responsables de los impuestos u obligaciones financieras en su jurisdicción." },
-                { num:"5", title:"Programa de referidos", items:[
-                  "Las comisiones se calculan como un porcentaje fijo de los Ingresos Netos de Juego (NGR) generados por los jugadores referidos.",
-                  "Cualquier uso indebido del sistema de referidos, incluidas las auto-referencias o cuentas coordinadas, está prohibido.",
-                  "Mander se reserva el derecho de modificar o cancelar las recompensas de afiliados en casos de abuso.",
-                ] },
-                { num:"6", title:"Conductas prohibidas", items:[
-                  "Crear u operar múltiples cuentas.",
-                  "Explotar bonos, promociones o mecánicas del sistema.",
-                  "Usar automatización o herramientas de terceros para obtener ventaja.",
-                  "Participar en actividades fraudulentas, colusorias o ilegales.",
-                ], extra:"Las infracciones pueden resultar en el cierre de la cuenta y la pérdida de fondos." },
-                { num:"7", title:"Acciones sobre la cuenta", body:"Mander se reserva el derecho de suspender o cerrar permanentemente cualquier cuenta a su discreción si se incumplen estos Términos o si se identifica un comportamiento sospechoso." },
-                { num:"8", title:"Juego responsable", body:"Mander fomenta el juego responsable. Los usuarios deben tratar el juego como entretenimiento y evitar arriesgar más de lo que pueden permitirse perder." },
-                { num:"9", title:"Descargo de responsabilidad", items:[
-                  "Pérdidas financieras derivadas del juego.",
-                  "Interrupciones o problemas técnicos fuera de nuestro control.",
-                  "Servicios externos o contenido de terceros.",
-                ], intro:"Mander Casino no se hace responsable de:", extra:"Todos los servicios se proporcionan «tal como están»." },
-                { num:"10", title:"Modificaciones", body:"Mander puede actualizar estos Términos en cualquier momento. El uso continuado de la plataforma tras la publicación de cambios implica la aceptación de los Términos revisados." },
-                { num:"11", title:"Marco legal", body:"Estos Términos se rigen por las regulaciones aplicables bajo la Licencia de Juegos de Curaçao." },
-                { num:"12", title:"Soporte", body:"Si tienes preguntas sobre estos Términos, contáctanos en: support@manderbet.com" },
-              ] as {num:string;title:string;body?:string;items?:string[];intro?:string;extra?:string}[]).map(sec => (
+              {getTermsSections(lang).map(sec => (
                 <div key={sec.num} style={{ marginBottom:"28px" }}>
                   <h2 style={{ color:"#e2e8f0",fontSize:"14px",fontWeight:700,letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"12px",marginTop:0 }}>
                     {sec.num}. {sec.title}
@@ -8651,15 +8577,15 @@ export default function App() {
             </div>
             {/* Text */}
             <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>¡Subiste a {rankPendingReward.rankName}!</div>
+              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>{t("rankUpPre")} {rankPendingReward.rankName}!</div>
               <div style={{ fontSize:"11px", color:"#4a5a6a", lineHeight:1.4 }}>
-                Tenés <span style={{ color:rankPendingReward.color, fontWeight:700 }}>{fmtMoney(rankPendingReward.amount)}</span> de recompensa pendiente
+                {t("rankRewardPendingPre")} <span style={{ color:rankPendingReward.color, fontWeight:700 }}>{fmtMoney(rankPendingReward.amount)}</span> {t("rankRewardPendingPost")}
               </div>
             </div>
-            {/* Reclamar */}
+            {/* Claim */}
             <button onClick={()=>{ hideBanner(); openSection("tips-bonuses"); }}
               style={{ background:"transparent", border:`1px solid ${rankPendingReward.color}66`, borderRadius:"8px", padding:"5px 10px", fontSize:"11px", fontWeight:700, color:rankPendingReward.color, cursor:"pointer", flexShrink:0, whiteSpace:"nowrap" as const }}>
-              Reclamar
+              {t("claim")}
             </button>
           </div>
         </div>,
@@ -8675,9 +8601,9 @@ export default function App() {
             </div>
             {/* Text */}
             <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>¡Recompensa acreditada!</div>
+              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>{t("rankRewardCredited")}</div>
               <div style={{ fontSize:"11px", color:"#4a6a4a", lineHeight:1.4 }}>
-                Se acreditaron <span style={{ color:"#22c55e", fontWeight:700 }}>{fmtMoney(rankCreditToast.amount)}</span> por subir a <span style={{ background:rankCreditToast.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontWeight:700 }}>{rankCreditToast.rankName}</span>
+                {t("rankCreditedPre")} <span style={{ color:"#22c55e", fontWeight:700 }}>{fmtMoney(rankCreditToast.amount)}</span> {t("rankCreditedMid")} <span style={{ background:rankCreditToast.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontWeight:700 }}>{rankCreditToast.rankName}</span>
               </div>
             </div>
             {/* Dismiss */}
