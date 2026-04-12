@@ -8245,6 +8245,7 @@ export default function App() {
               const mTimer = fmtCountdownLang(msUntilClaim("monthly", currentUser), _ud, _uh, _um, _us);
               const bg = "#161d2b";
               const border = "#20283a";
+              const tRank = (n: string) => { const [tier, ...rest] = n.split(" "); return `${t(("tier"+tier) as any)}${rest.length ? " "+rest.join(" ") : ""}`; };
               const tierEmoji = (tier: string) =>
                 tier === "Bronze" ? "🥉" : tier === "Silver" ? "🥈" : tier === "Gold" ? "🥇" : tier === "Platinum" ? "💎" : "💚";
               return (
@@ -8274,7 +8275,7 @@ export default function App() {
                             <div style={{ fontSize:"10px", color:"#4a5568", letterSpacing:"1.6px", textTransform:"uppercase" as const, fontWeight:700 }}>{t("currentRank")}</div>
                           </div>
                           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
-                            <div style={{ fontSize:"22px", fontWeight:900, background:vRank.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", lineHeight:1 }}>{vRank.name}</div>
+                            <div style={{ fontSize:"22px", fontWeight:900, background:vRank.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", lineHeight:1 }}>{tRank(vRank.name)}</div>
                             <div style={{ background:`${vRank.color}20`, border:`1px solid ${vRank.color}50`, borderRadius:"20px", padding:"2px 10px", fontSize:"11px", fontWeight:800, color:vRank.color, flexShrink:0 }}>
                               {(vRank.rakebackPct * 100).toFixed(1)}% {t("rakebackLabel")}
                             </div>
@@ -8283,9 +8284,9 @@ export default function App() {
                           {!vMax ? (
                             <div>
                               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"5px" }}>
-                                <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{vRank.name}</span>
+                                <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{tRank(vRank.name)}</span>
                                 <span style={{ fontSize:"10px", fontWeight:800, color:"#94a3b8" }}>{Math.round(vPct)}%</span>
-                                <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{VIP_RANKS[vIdx+1]?.name}</span>
+                                <span style={{ fontSize:"10px", color:"#4a5568", fontWeight:600 }}>{VIP_RANKS[vIdx+1] ? tRank(VIP_RANKS[vIdx+1].name) : ""}</span>
                               </div>
                               <div style={{ height:"7px", borderRadius:"999px", background:"#0e1826", overflow:"hidden" }}>
                                 <div style={{ height:"100%", width:`${vPct}%`, background:vRank.gradient, borderRadius:"999px", transition:"width .5s ease", boxShadow: vPct > 0 ? `0 0 10px ${vRank.color}55` : "none" }} />
@@ -8301,7 +8302,7 @@ export default function App() {
                           <div style={{ fontSize:"22px", fontWeight:900, color:"#e2e8f0" }}>{fmtW(vipWagered)}</div>
                           {!vMax && (
                             <div style={{ marginTop:"3px" }}>
-                              <div style={{ fontSize:"11px", color:"#4a5568" }}>{t("nextRankLabel")}: <span style={{ color:VIP_RANKS[vIdx+1]?.color || "#e2e8f0", fontWeight:700 }}>{VIP_RANKS[vIdx+1]?.name}</span></div>
+                              <div style={{ fontSize:"11px", color:"#4a5568" }}>{t("nextRankLabel")}: <span style={{ color:VIP_RANKS[vIdx+1]?.color || "#e2e8f0", fontWeight:700 }}>{VIP_RANKS[vIdx+1] ? tRank(VIP_RANKS[vIdx+1].name) : ""}</span></div>
                               <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"1px" }}>{t("untilNextRank")} <span style={{ color:"#94a3b8", fontWeight:700 }}>{fmtW(vRem)}</span></div>
                             </div>
                           )}
@@ -8557,7 +8558,7 @@ export default function App() {
                                   </div>
 
                                   {/* Rank name */}
-                                  <div style={{ fontSize:"13px", fontWeight:900, color: isCurrent ? r.color : "#c8d8ec", marginBottom:"8px", letterSpacing:"0.2px" }}>{r.name.replace(/^(Bronze|Silver|Gold|Platinum|Emerald)/, m => t("tier" + m))}</div>
+                                  <div style={{ fontSize:"13px", fontWeight:900, color: isCurrent ? r.color : "#c8d8ec", marginBottom:"8px", letterSpacing:"0.2px" }}>{r.name.replace(/^(Bronze|Silver|Gold|Platinum|Emerald)/, m => t(("tier"+m) as any))}</div>
 
                                   {/* Stats */}
                                   <div style={{ display:"flex", flexDirection:"column" as const, gap:"4px" }}>
@@ -8805,7 +8806,7 @@ export default function App() {
             </div>
             {/* Text */}
             <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>{t("rankUpPre")} {rankPendingReward.rankName}!</div>
+              <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>{t("rankUpPre")} {rankPendingReward.rankName.replace(/^(Bronze|Silver|Gold|Platinum|Emerald)/, m => t(("tier"+m) as any))}!</div>
               <div style={{ fontSize:"11px", color:"#4a5a6a", lineHeight:1.4 }}>
                 {t("rankRewardPendingPre")} <span style={{ color:rankPendingReward.color, fontWeight:700 }}>{fmtMoney(rankPendingReward.amount)}</span> {t("rankRewardPendingPost")}
               </div>
@@ -8831,7 +8832,7 @@ export default function App() {
             <div style={{ flex:1, minWidth:0 }}>
               <div style={{ fontSize:"12px", fontWeight:800, color:"#e2e8f0", marginBottom:"2px" }}>{t("rankRewardCredited")}</div>
               <div style={{ fontSize:"11px", color:"#4a6a4a", lineHeight:1.4 }}>
-                {t("rankCreditedPre")} <span style={{ color:"#22c55e", fontWeight:700 }}>{fmtMoney(rankCreditToast.amount)}</span> {t("rankCreditedMid")} <span style={{ background:rankCreditToast.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontWeight:700 }}>{rankCreditToast.rankName}</span>
+                {t("rankCreditedPre")} <span style={{ color:"#22c55e", fontWeight:700 }}>{fmtMoney(rankCreditToast.amount)}</span> {t("rankCreditedMid")} <span style={{ background:rankCreditToast.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontWeight:700 }}>{rankCreditToast.rankName.replace(/^(Bronze|Silver|Gold|Platinum|Emerald)/, m => t(("tier"+m) as any))}</span>
               </div>
             </div>
             {/* Dismiss */}
