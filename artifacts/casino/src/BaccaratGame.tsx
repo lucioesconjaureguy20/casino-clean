@@ -1075,7 +1075,7 @@ export default function BaccaratGame({
             <div style={{ position:"relative" }}>
               {showVol && <div onClick={()=>setShowVol(false)} style={{ position:"fixed", inset:0, zIndex:9998 }}/>}
               <button onClick={()=>{setShowVol(v=>!v);setStatsOpen(false);}}
-                title="Volumen"
+                title={gt(lang ?? "es", "volume")}
                 style={{ position:"relative", zIndex:10000, width:"38px", height:"38px", borderRadius:"8px", fontFamily:"inherit",
                   background:showVol?"#1f6fd0":"#0e1826",
                   border:showVol?"1px solid #3a8aff":"1px solid #203a50",

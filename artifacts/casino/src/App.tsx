@@ -75,6 +75,15 @@ const LANGS: Record<string, Record<string, string>> = {
     waitingBets:"Esperando apuestas…", betHistory:"Historial de apuestas",
     keepPlaying:"Entendido, seguir jugando",
     chips:"Fichas", totalBet:"APUESTA TOTAL", numRounds:"Número de rondas", noHistoryShort:"Sin historial", lastResult:"Último",
+    resetStats:"Reiniciar estadísticas", noRewardsClaimed:"No hay recompensas reclamadas todavía.", loading:"cargando...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"No puedes cambiar moneda durante una apuesta activa",
+    betLockedMsg:"No puedes cambiar esto durante una apuesta activa",
+    enterValidAmount:"Ingresá un monto válido", maxDeposit:"Máximo:",
+    enterWalletAddress:"Ingresá una wallet address", minWithdraw:"Mínimo retiro:", maxWithdraw:"Máximo retiro:",
+    wageringRequired:"Para retirar, necesitás haber jugado al menos 2x el monto depositado. Seguí apostando para desbloquear tu retiro.",
+    timeoutError:"Tiempo de espera agotado. Intentá de nuevo.", sessionExpired:"Tu sesión expiró. Cerrá sesión e iniciá sesión nuevamente.",
+    paymentAddrError:"Error al generar dirección de pago. Intentá de nuevo.", connError:"Error de conexión. Intentá de nuevo.",
     affOverview:"Resumen", affDashboard:"Panel", affEarnUpTo:"Gana hasta", affCommission:"Comisión",
     affHowItWorks:"¿Cómo Funciona?", affFaq:"Preguntas Frecuentes",
     affFilterDate:"Filtrar por fecha:", affAllTime:"Todo el tiempo", affCustomDate:"Fecha personalizada", affFrom:"Desde", affTo:"Hasta",
@@ -216,6 +225,15 @@ const LANGS: Record<string, Record<string, string>> = {
     waitingBets:"Waiting for bets…", betHistory:"Bet History",
     keepPlaying:"Got it, keep playing",
     chips:"Chips", totalBet:"TOTAL BET", numRounds:"Number of rounds", noHistoryShort:"No history", lastResult:"Last",
+    resetStats:"Reset Statistics", noRewardsClaimed:"No rewards claimed yet.", loading:"loading...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Can't change currency during an active bet",
+    betLockedMsg:"Can't change this during an active bet",
+    enterValidAmount:"Enter a valid amount", maxDeposit:"Maximum:",
+    enterWalletAddress:"Enter a wallet address", minWithdraw:"Minimum withdrawal:", maxWithdraw:"Maximum withdrawal:",
+    wageringRequired:"To withdraw, you must have wagered at least 2x your deposited amount. Keep betting to unlock your withdrawal.",
+    timeoutError:"Request timed out. Please try again.", sessionExpired:"Your session has expired. Please sign out and sign in again.",
+    paymentAddrError:"Error generating payment address. Please try again.", connError:"Connection error. Please try again.",
     affOverview:"Overview", affDashboard:"Dashboard", affEarnUpTo:"Earn up to", affCommission:"Commission",
     affHowItWorks:"How It Works", affFaq:"FAQ",
     affFilterDate:"Filter By Date:", affAllTime:"All Time", affCustomDate:"Custom Date", affFrom:"From", affTo:"To",
@@ -349,6 +367,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATA", colGame:"JOGO", colBet:"APOSTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGAMENTO", accumulated:"Acumulado",
     keepPlaying:"Entendido, continuar jogando",
     chips:"Fichas", totalBet:"APOSTA TOTAL", numRounds:"Número de rodadas", noHistoryShort:"Sem histórico", lastResult:"Último",
+    resetStats:"Reiniciar estatísticas", noRewardsClaimed:"Nenhuma recompensa reivindicada ainda.", loading:"carregando...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Não é possível mudar a moeda durante uma aposta ativa",
+    betLockedMsg:"Não é possível alterar isso durante uma aposta ativa",
+    enterValidAmount:"Digite um valor válido", maxDeposit:"Máximo:",
+    enterWalletAddress:"Digite um endereço de carteira", minWithdraw:"Saque mínimo:", maxWithdraw:"Saque máximo:",
+    wageringRequired:"Para sacar, você precisa ter apostado pelo menos 2x o valor depositado. Continue apostando para desbloquear seu saque.",
+    timeoutError:"Tempo esgotado. Tente novamente.", sessionExpired:"Sua sessão expirou. Saia e entre novamente.",
+    paymentAddrError:"Erro ao gerar endereço de pagamento. Tente novamente.", connError:"Erro de conexão. Tente novamente.",
     affOverview:"Visão Geral", affDashboard:"Painel", affEarnUpTo:"Ganhe até", affCommission:"Comissão",
     affHowItWorks:"Como Funciona?", affFaq:"Perguntas Frequentes",
     affFilterDate:"Filtrar por data:", affAllTime:"Todo o período", affCustomDate:"Data personalizada", affFrom:"De", affTo:"Até",
@@ -470,6 +497,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATUM", colGame:"SPIEL", colBet:"EINSATZ", colMultiplier:"MULTIPLIKATOR", colPayout:"AUSZAHLUNG", accumulated:"Akkumuliert",
     keepPlaying:"Verstanden, weiter spielen",
     chips:"Chips", totalBet:"GESAMTEINSATZ", numRounds:"Anzahl der Runden", noHistoryShort:"Kein Verlauf", lastResult:"Letztes",
+    resetStats:"Statistiken zurücksetzen", noRewardsClaimed:"Noch keine Belohnungen beansprucht.", loading:"laden...",
+    turboOn:"Turbo: AN", turboOff:"Turbo: AUS",
+    coinLockedMsg:"Währung während einer aktiven Wette nicht änderbar",
+    betLockedMsg:"Kann während einer aktiven Wette nicht geändert werden",
+    enterValidAmount:"Gib einen gültigen Betrag ein", maxDeposit:"Maximum:",
+    enterWalletAddress:"Wallet-Adresse eingeben", minWithdraw:"Mindestabhebung:", maxWithdraw:"Höchstabhebung:",
+    wageringRequired:"Um auszuzahlen, musst du mindestens 2x deinen eingezahlten Betrag gewettet haben. Setze weiter, um deine Auszahlung freizuschalten.",
+    timeoutError:"Zeitüberschreitung. Bitte erneut versuchen.", sessionExpired:"Deine Sitzung ist abgelaufen. Bitte ab- und neu anmelden.",
+    paymentAddrError:"Fehler beim Generieren der Zahlungsadresse. Bitte erneut versuchen.", connError:"Verbindungsfehler. Bitte erneut versuchen.",
     affOverview:"Übersicht", affDashboard:"Dashboard", affEarnUpTo:"Verdiene bis zu", affCommission:"Provision",
     affHowItWorks:"Wie es funktioniert", affFaq:"Häufige Fragen",
     affFilterDate:"Nach Datum filtern:", affAllTime:"Gesamte Zeit", affCustomDate:"Benutzerdefiniertes Datum", affFrom:"Von", affTo:"Bis",
@@ -591,6 +627,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATE", colGame:"JEU", colBet:"MISE", colMultiplier:"MULTIPLICATEUR", colPayout:"PAIEMENT", accumulated:"Accumulé",
     keepPlaying:"Compris, continuer à jouer",
     chips:"Jetons", totalBet:"MISE TOTALE", numRounds:"Nombre de tours", noHistoryShort:"Aucun historique", lastResult:"Dernier",
+    resetStats:"Réinitialiser les statistiques", noRewardsClaimed:"Aucune récompense réclamée pour l'instant.", loading:"chargement...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Impossible de changer la devise pendant un pari actif",
+    betLockedMsg:"Impossible de changer cela pendant un pari actif",
+    enterValidAmount:"Entrez un montant valide", maxDeposit:"Maximum:",
+    enterWalletAddress:"Entrez une adresse de portefeuille", minWithdraw:"Retrait minimum:", maxWithdraw:"Retrait maximum:",
+    wageringRequired:"Pour retirer, vous devez avoir misé au moins 2x le montant déposé. Continuez à miser pour débloquer votre retrait.",
+    timeoutError:"Délai expiré. Veuillez réessayer.", sessionExpired:"Votre session a expiré. Déconnectez-vous et reconnectez-vous.",
+    paymentAddrError:"Erreur lors de la génération de l'adresse de paiement. Veuillez réessayer.", connError:"Erreur de connexion. Veuillez réessayer.",
     affOverview:"Aperçu", affDashboard:"Tableau de bord", affEarnUpTo:"Gagnez jusqu'à", affCommission:"Commission",
     affHowItWorks:"Comment ça marche?", affFaq:"Questions fréquentes",
     affFilterDate:"Filtrer par date:", affAllTime:"Toujours", affCustomDate:"Date personnalisée", affFrom:"Du", affTo:"Au",
@@ -712,6 +757,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"TANGGAL", colGame:"GAME", colBet:"TARUHAN", colMultiplier:"PENGGANDA", colPayout:"PEMBAYARAN", accumulated:"Akumulasi",
     keepPlaying:"Mengerti, lanjut bermain",
     chips:"Chip", totalBet:"TOTAL TARUHAN", numRounds:"Jumlah putaran", noHistoryShort:"Tidak ada riwayat", lastResult:"Terakhir",
+    resetStats:"Reset Statistik", noRewardsClaimed:"Belum ada hadiah yang diklaim.", loading:"memuat...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Tidak dapat mengubah mata uang selama taruhan aktif",
+    betLockedMsg:"Tidak dapat mengubah ini selama taruhan aktif",
+    enterValidAmount:"Masukkan jumlah yang valid", maxDeposit:"Maksimum:",
+    enterWalletAddress:"Masukkan alamat wallet", minWithdraw:"Penarikan minimum:", maxWithdraw:"Penarikan maksimum:",
+    wageringRequired:"Untuk menarik, Anda harus telah bertaruh setidaknya 2x jumlah yang disetor. Terus bertaruh untuk membuka penarikan Anda.",
+    timeoutError:"Waktu habis. Silakan coba lagi.", sessionExpired:"Sesi Anda telah berakhir. Silakan keluar dan masuk lagi.",
+    paymentAddrError:"Gagal membuat alamat pembayaran. Silakan coba lagi.", connError:"Kesalahan koneksi. Silakan coba lagi.",
     affOverview:"Ikhtisar", affDashboard:"Dasbor", affEarnUpTo:"Dapatkan hingga", affCommission:"Komisi",
     affHowItWorks:"Cara Kerjanya", affFaq:"Pertanyaan Umum",
     affFilterDate:"Filter Berdasarkan Tanggal:", affAllTime:"Sepanjang Waktu", affCustomDate:"Tanggal Khusus", affFrom:"Dari", affTo:"Sampai",
@@ -833,6 +887,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATA", colGame:"GIOCO", colBet:"SCOMMESSA", colMultiplier:"MOLTIPLICATORE", colPayout:"VINCITA", accumulated:"Accumulato",
     keepPlaying:"Capito, continua a giocare",
     chips:"Fiches", totalBet:"PUNTATA TOTALE", numRounds:"Numero di giri", noHistoryShort:"Nessuno storico", lastResult:"Ultimo",
+    resetStats:"Reimposta statistiche", noRewardsClaimed:"Nessuna ricompensa riscattata finora.", loading:"caricamento...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Non puoi cambiare valuta durante una puntata attiva",
+    betLockedMsg:"Non puoi cambiare questo durante una puntata attiva",
+    enterValidAmount:"Inserisci un importo valido", maxDeposit:"Massimo:",
+    enterWalletAddress:"Inserisci un indirizzo wallet", minWithdraw:"Prelievo minimo:", maxWithdraw:"Prelievo massimo:",
+    wageringRequired:"Per prelevare, devi aver scommesso almeno 2x l'importo depositato. Continua a scommettere per sbloccare il prelievo.",
+    timeoutError:"Timeout. Riprova.", sessionExpired:"La sessione è scaduta. Disconnettiti e accedi di nuovo.",
+    paymentAddrError:"Errore nella generazione dell'indirizzo di pagamento. Riprova.", connError:"Errore di connessione. Riprova.",
     affOverview:"Panoramica", affDashboard:"Dashboard", affEarnUpTo:"Guadagna fino a", affCommission:"Commissione",
     affHowItWorks:"Come Funziona?", affFaq:"Domande Frequenti",
     affFilterDate:"Filtra per data:", affAllTime:"Sempre", affCustomDate:"Data personalizzata", affFrom:"Da", affTo:"A",
@@ -954,6 +1017,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"날짜", colGame:"게임", colBet:"베팅", colMultiplier:"배수", colPayout:"지급금", accumulated:"누적",
     keepPlaying:"알겠습니다, 계속 플레이",
     chips:"칩", totalBet:"총 베팅", numRounds:"라운드 수", noHistoryShort:"기록 없음", lastResult:"마지막",
+    resetStats:"통계 초기화", noRewardsClaimed:"아직 청구된 보상이 없습니다.", loading:"로딩 중...",
+    turboOn:"터보: ON", turboOff:"터보: OFF",
+    coinLockedMsg:"활성 베팅 중에는 통화를 변경할 수 없습니다",
+    betLockedMsg:"활성 베팅 중에는 이것을 변경할 수 없습니다",
+    enterValidAmount:"유효한 금액을 입력하세요", maxDeposit:"최대:",
+    enterWalletAddress:"지갑 주소를 입력하세요", minWithdraw:"최소 출금:", maxWithdraw:"최대 출금:",
+    wageringRequired:"출금하려면 입금액의 최소 2배를 베팅해야 합니다. 계속 베팅하여 출금을 잠금 해제하세요.",
+    timeoutError:"요청 시간이 초과되었습니다. 다시 시도하세요.", sessionExpired:"세션이 만료되었습니다. 로그아웃 후 다시 로그인하세요.",
+    paymentAddrError:"결제 주소 생성 오류. 다시 시도하세요.", connError:"연결 오류. 다시 시도하세요.",
     affOverview:"개요", affDashboard:"대시보드", affEarnUpTo:"최대 수익", affCommission:"수수료",
     affHowItWorks:"어떻게 작동하나요?", affFaq:"자주 묻는 질문",
     affFilterDate:"날짜별 필터:", affAllTime:"전체 기간", affCustomDate:"사용자 지정 날짜", affFrom:"시작", affTo:"종료",
@@ -1075,6 +1147,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATUM", colGame:"SPEL", colBet:"INZET", colMultiplier:"VERMENIGVULDIGER", colPayout:"UITBETALING", accumulated:"Geaccumuleerd",
     keepPlaying:"Begrepen, doorgaan met spelen",
     chips:"Chips", totalBet:"TOTALE INZET", numRounds:"Aantal rondes", noHistoryShort:"Geen geschiedenis", lastResult:"Laatste",
+    resetStats:"Statistieken resetten", noRewardsClaimed:"Nog geen beloningen geclaimd.", loading:"laden...",
+    turboOn:"Turbo: AAN", turboOff:"Turbo: UIT",
+    coinLockedMsg:"Valuta kan niet worden gewijzigd tijdens een actieve inzet",
+    betLockedMsg:"Dit kan niet worden gewijzigd tijdens een actieve inzet",
+    enterValidAmount:"Voer een geldig bedrag in", maxDeposit:"Maximum:",
+    enterWalletAddress:"Voer een wallet-adres in", minWithdraw:"Minimale opname:", maxWithdraw:"Maximale opname:",
+    wageringRequired:"Om op te nemen moet u minimaal 2x het gestorte bedrag hebben ingezet. Blijf inzetten om uw opname te ontgrendelen.",
+    timeoutError:"Verzoek verlopen. Probeer het opnieuw.", sessionExpired:"Uw sessie is verlopen. Meld u af en opnieuw aan.",
+    paymentAddrError:"Fout bij genereren betalingsadres. Probeer het opnieuw.", connError:"Verbindingsfout. Probeer het opnieuw.",
     affOverview:"Overzicht", affDashboard:"Dashboard", affEarnUpTo:"Verdien tot", affCommission:"Commissie",
     affHowItWorks:"Hoe het werkt", affFaq:"Veelgestelde vragen",
     affFilterDate:"Filteren op datum:", affAllTime:"Altijd", affCustomDate:"Aangepaste datum", affFrom:"Van", affTo:"Tot",
@@ -1196,6 +1277,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"DATA", colGame:"GRA", colBet:"ZAKŁAD", colMultiplier:"MNOŻNIK", colPayout:"WYPŁATA", accumulated:"Zgromadzono",
     keepPlaying:"Rozumiem, kontynuuj grę",
     chips:"Żetony", totalBet:"ŁĄCZNY ZAKŁAD", numRounds:"Liczba rund", noHistoryShort:"Brak historii", lastResult:"Ostatni",
+    resetStats:"Resetuj statystyki", noRewardsClaimed:"Nie odebrano jeszcze żadnych nagród.", loading:"ładowanie...",
+    turboOn:"Turbo: ON", turboOff:"Turbo: OFF",
+    coinLockedMsg:"Nie można zmienić waluty podczas aktywnego zakładu",
+    betLockedMsg:"Nie można tego zmienić podczas aktywnego zakładu",
+    enterValidAmount:"Wprowadź prawidłową kwotę", maxDeposit:"Maksimum:",
+    enterWalletAddress:"Wprowadź adres portfela", minWithdraw:"Minimalna wypłata:", maxWithdraw:"Maksymalna wypłata:",
+    wageringRequired:"Aby wypłacić, musisz postawić co najmniej 2x kwotę depozytu. Kontynuuj obstawianie, aby odblokować wypłatę.",
+    timeoutError:"Przekroczono limit czasu. Spróbuj ponownie.", sessionExpired:"Sesja wygasła. Wyloguj się i zaloguj ponownie.",
+    paymentAddrError:"Błąd generowania adresu płatności. Spróbuj ponownie.", connError:"Błąd połączenia. Spróbuj ponownie.",
     affOverview:"Przegląd", affDashboard:"Panel", affEarnUpTo:"Zarabiaj do", affCommission:"Prowizja",
     affHowItWorks:"Jak to działa?", affFaq:"Często zadawane pytania",
     affFilterDate:"Filtruj według daty:", affAllTime:"Cały czas", affCustomDate:"Niestandardowa data", affFrom:"Od", affTo:"Do",
@@ -1317,6 +1407,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"ДАТА", colGame:"ИГРА", colBet:"СТАВКА", colMultiplier:"МНОЖИТЕЛЬ", colPayout:"ВЫПЛАТА", accumulated:"Накоплено",
     keepPlaying:"Понятно, продолжить игру",
     chips:"Фишки", totalBet:"ИТОГО СТАВКА", numRounds:"Количество раундов", noHistoryShort:"Нет истории", lastResult:"Последний",
+    resetStats:"Сбросить статистику", noRewardsClaimed:"Наград ещё не получено.", loading:"загрузка...",
+    turboOn:"Турбо: ВКЛ", turboOff:"Турбо: ВЫКЛ",
+    coinLockedMsg:"Нельзя сменить валюту во время активной ставки",
+    betLockedMsg:"Нельзя изменить это во время активной ставки",
+    enterValidAmount:"Введите корректную сумму", maxDeposit:"Максимум:",
+    enterWalletAddress:"Введите адрес кошелька", minWithdraw:"Минимальный вывод:", maxWithdraw:"Максимальный вывод:",
+    wageringRequired:"Для вывода средств необходимо сделать ставки на сумму не менее 2x от суммы депозита. Продолжайте ставить для разблокировки.",
+    timeoutError:"Время ожидания истекло. Попробуйте снова.", sessionExpired:"Сессия истекла. Выйдите и войдите снова.",
+    paymentAddrError:"Ошибка создания адреса оплаты. Попробуйте снова.", connError:"Ошибка соединения. Попробуйте снова.",
     affOverview:"Обзор", affDashboard:"Панель", affEarnUpTo:"Зарабатывай до", affCommission:"Комиссия",
     affHowItWorks:"Как это работает?", affFaq:"Частые вопросы",
     affFilterDate:"Фильтр по дате:", affAllTime:"Всё время", affCustomDate:"Произвольная дата", affFrom:"С", affTo:"По",
@@ -1438,6 +1537,15 @@ const LANGS: Record<string, Record<string, string>> = {
     colDate:"TARİH", colGame:"OYUN", colBet:"BAHİS", colMultiplier:"ÇARPAN", colPayout:"ÖDEME", accumulated:"Birikmiş",
     keepPlaying:"Anladım, oynamaya devam",
     chips:"Jetonlar", totalBet:"TOPLAM BAHİS", numRounds:"Tur sayısı", noHistoryShort:"Geçmiş yok", lastResult:"Son",
+    resetStats:"İstatistikleri sıfırla", noRewardsClaimed:"Henüz talep edilen ödül yok.", loading:"yükleniyor...",
+    turboOn:"Turbo: AÇIK", turboOff:"Turbo: KAPALI",
+    coinLockedMsg:"Aktif bahis sırasında para birimi değiştirilemez",
+    betLockedMsg:"Aktif bahis sırasında bu değiştirilemez",
+    enterValidAmount:"Geçerli bir tutar girin", maxDeposit:"Maksimum:",
+    enterWalletAddress:"Cüzdan adresi girin", minWithdraw:"Minimum çekim:", maxWithdraw:"Maksimum çekim:",
+    wageringRequired:"Çekim yapmak için yatırılan miktarın en az 2 katını bahse oynamış olmanız gerekir. Çekiminizi açmak için bahis yapmaya devam edin.",
+    timeoutError:"İstek zaman aşımına uğradı. Lütfen tekrar deneyin.", sessionExpired:"Oturumunuzun süresi doldu. Lütfen çıkış yapıp tekrar giriş yapın.",
+    paymentAddrError:"Ödeme adresi oluşturma hatası. Lütfen tekrar deneyin.", connError:"Bağlantı hatası. Lütfen tekrar deneyin.",
     affOverview:"Genel Bakış", affDashboard:"Kontrol Paneli", affEarnUpTo:"Kazanın", affCommission:"Komisyon",
     affHowItWorks:"Nasıl Çalışır?", affFaq:"Sık Sorulan Sorular",
     affFilterDate:"Tarihe Göre Filtrele:", affAllTime:"Tüm Zamanlar", affCustomDate:"Özel Tarih", affFrom:"Başlangıç", affTo:"Bitiş",
@@ -4243,11 +4351,11 @@ export default function App() {
   // ── Safety timeout: if spinner hangs more than 20s, kill it ──────────────
   useEffect(() => {
     if (!depositGenerating) return;
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       setDepositGenerating(false);
-      setDepositError("Tiempo de espera agotado. Intentá de nuevo.");
+      setDepositError(t("timeoutError"));
     }, 20_000);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timer);
   }, [depositGenerating]);
 
   // ── Fake wins simulation ─────────────────────────────────────────────────
@@ -5428,16 +5536,16 @@ export default function App() {
       coinAmt = +(usdAmt / livePrice).toPrecision(6);
     } else {
       coinAmt = parseFloat(depositAmount);
-      if (!coinAmt||coinAmt<=0) return setDepositError("Ingresá un monto válido");
-      if (coinAmt < minNative) return setDepositError(`Mínimo: ${minNative} ${coin}`);
-      if (coinAmt > maxNative) return setDepositError(`Máximo: ${maxNative} ${coin}`);
+      if (!coinAmt||coinAmt<=0) return setDepositError(t("enterValidAmount"));
+      if (coinAmt < minNative) return setDepositError(`${t("minDeposit")} ${minNative} ${coin}`);
+      if (coinAmt > maxNative) return setDepositError(`${t("maxDeposit")} ${maxNative} ${coin}`);
       usdAmt = +(coinAmt * livePrice).toFixed(2);
     }
     // ── NOWPayments: obtener dirección real ───────────────────────────────
     // Refrescar sesión activamente antes de llamar al API
     let freshSess = await getOrRefreshSession();
     if (!freshSess?.access_token) {
-      setDepositError("Tu sesión expiró. Cerrá sesión e iniciá sesión nuevamente.");
+      setDepositError(t("sessionExpired"));
       return;
     }
     // Sincronizar ref y estado con el token fresco
@@ -5496,7 +5604,7 @@ export default function App() {
         }
         setDepositGenerating(false);
         if (npData?.min_usd) setDepositAmount(String(npData.min_usd));
-        setDepositError(npData?.error ?? "Error al generar dirección de pago. Intentá de nuevo.");
+        setDepositError(npData?.error ?? t("paymentAddrError"));
         return;
       }
 
@@ -5537,7 +5645,7 @@ export default function App() {
       autoGenKeySet.current.delete(dbKey);
       setDepositGenerating(false);
       if (genId !== depositGenCounter.current) return;
-      setDepositError("Error de conexión. Intentá de nuevo.");
+      setDepositError(t("connError"));
     } finally {
       if (genId === depositGenCounter.current) setDepositGenerating(false);
     }
@@ -5672,14 +5780,14 @@ export default function App() {
     const coinPrice = getPriceUsd(withdrawCoin);
     const amtUsd = amt * coinPrice;
     const cryptoBal = (coinBalances as Record<string,number>)[withdrawCoin] ?? 0;
-    if (!withdrawAddress.trim()) return setWithdrawError("Ingresá una wallet address");
-    if (!amt||amt<=0) return setWithdrawError("Ingresá un monto válido");
-    if (amtUsd < wLim.minWith) return setWithdrawError(`Mínimo retiro: ${(wLim.minWith/coinPrice).toFixed(8)} ${withdrawCoin}`);
-    if (amtUsd > wLim.maxWith) return setWithdrawError(`Máximo retiro: ${(wLim.maxWith/coinPrice).toFixed(8)} ${withdrawCoin}`);
-    if (amt > cryptoBal + 0.000001) return setWithdrawError("Saldo insuficiente");
+    if (!withdrawAddress.trim()) return setWithdrawError(t("enterWalletAddress"));
+    if (!amt||amt<=0) return setWithdrawError(t("enterValidAmount"));
+    if (amtUsd < wLim.minWith) return setWithdrawError(`${t("minWithdraw")} ${(wLim.minWith/coinPrice).toFixed(8)} ${withdrawCoin}`);
+    if (amtUsd > wLim.maxWith) return setWithdrawError(`${t("maxWithdraw")} ${(wLim.maxWith/coinPrice).toFixed(8)} ${withdrawCoin}`);
+    if (amt > cryptoBal + 0.000001) return setWithdrawError(t("insufficientBalance"));
     const wagerReq = ls.getWagerReq(currentUser);
     if (wagerReq > 0.001) {
-      return setWithdrawError("Para retirar, necesitás haber jugado al menos 2x el monto depositado. Seguí apostando para desbloquear tu retiro.");
+      return setWithdrawError(t("wageringRequired"));
     }
 
     const sessW = supaSessionRef.current;
@@ -6085,7 +6193,7 @@ export default function App() {
                         const coinLocked = gameInProgress;
                         return (
                           <div key={coin} onClick={()=>{ if(coinLocked) return; setDepositCoin(coin); }}
-                            title={coinLocked?"No puedes cambiar moneda durante una apuesta activa":undefined}
+                            title={coinLocked?t("coinLockedMsg"):undefined}
                             style={{ display:"flex",alignItems:"center",gap:"12px",padding:"10px 16px",cursor:coinLocked?"not-allowed":"pointer",background:isSelected?"rgba(255,255,255,0.06)":"transparent",transition:"background .15s",opacity:coinLocked&&!isSelected?0.4:1 }}
                             onMouseEnter={e=>{ if(!isSelected&&!coinLocked)(e.currentTarget as HTMLDivElement).style.background="rgba(255,255,255,0.04)"; }}
                             onMouseLeave={e=>{ (e.currentTarget as HTMLDivElement).style.background=isSelected?"rgba(255,255,255,0.06)":"transparent"; }}>
@@ -6148,7 +6256,7 @@ export default function App() {
                           )}
                         </div>
                       )}
-                      <div onClick={()=>{ if(gameInProgress) return; setDisplayInFiat(v=>!v); setFiatCurrPickerOpen(false); }} title={gameInProgress?"No puedes cambiar esto durante una apuesta activa":undefined} style={{ width:"38px",height:"22px",borderRadius:"11px",background:gameInProgress?"#2a3550":displayInFiat?"#4ade80":"#2a3550",cursor:gameInProgress?"not-allowed":"pointer",position:"relative",transition:"background .2s",flexShrink:0,opacity:gameInProgress?0.45:1 }}>
+                      <div onClick={()=>{ if(gameInProgress) return; setDisplayInFiat(v=>!v); setFiatCurrPickerOpen(false); }} title={gameInProgress?t("betLockedMsg"):undefined} style={{ width:"38px",height:"22px",borderRadius:"11px",background:gameInProgress?"#2a3550":displayInFiat?"#4ade80":"#2a3550",cursor:gameInProgress?"not-allowed":"pointer",position:"relative",transition:"background .2s",flexShrink:0,opacity:gameInProgress?0.45:1 }}>
                         <div style={{ position:"absolute",top:"3px",left:displayInFiat?"19px":"3px",width:"16px",height:"16px",borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,.3)" }} />
                       </div>
                     </div>
@@ -7562,7 +7670,7 @@ export default function App() {
                             {history.length === 0 ? (
                               <tr>
                                 <td colSpan={6} style={{ padding:"40px 16px", textAlign:"center" as const, color:"#4a5e7a", fontSize:"13px" }}>
-                                  No hay recompensas reclamadas todavía.
+                                  {t("noRewardsClaimed")}
                                 </td>
                               </tr>
                             ) : pageData.map((rec: RewardRecord) => (
@@ -8653,9 +8761,9 @@ export default function App() {
                             return (
                               <div style={{ marginBottom:"16px", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px" }}>
                                 <span style={{ fontSize:"12px", color: isHighMin ? "#f59e0b" : "#4ade80", background: isHighMin ? "#1a120510" : "#05200510", border:`1px solid ${isHighMin ? "#f59e0b44" : "#4ade8044"}`, borderRadius:"6px", padding:"4px 10px", fontWeight:600 }}>
-                                  Mínimo: {(displayMin / getPriceUsd(depositCoin)).toFixed(8)} {depositCoin}
+                                  {t("minDeposit")} {(displayMin / getPriceUsd(depositCoin)).toFixed(8)} {depositCoin}
                                 </span>
-                                {realMin == null && <span style={{ fontSize:"11px", color:"#475569" }}>cargando...</span>}
+                                {realMin == null && <span style={{ fontSize:"11px", color:"#475569" }}>{t("loading")}</span>}
                               </div>
                             );
                           })()}
@@ -11237,7 +11345,7 @@ function DiceGame({ balance, currentUser, diceBet, setDiceBet, diceMultiplier, s
               style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
               onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#3a8aff";b.style.background="#0d1f30";}}
               onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#7a9db8";b.style.borderColor="#1e3a52";b.style.background="transparent";}}
-            ><span style={{ fontSize:"14px" }}>↺</span> Reiniciar estadísticas</button>
+            ><span style={{ fontSize:"14px" }}>↺</span> {t("resetStats")}</button>
 
             {/* Mini chart — cumulative profit */}
             {(()=>{
@@ -12011,7 +12119,7 @@ function PlinkoGame({
               style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
               onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#3a8aff";b.style.background="#0d1f30";}}
               onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#7a9db8";b.style.borderColor="#1e3a52";b.style.background="transparent";}}
-            ><span style={{ fontSize:"14px" }}>↺</span> Reiniciar estadísticas</button>
+            ><span style={{ fontSize:"14px" }}>↺</span> {t("resetStats")}</button>
 
             {/* Mini chart — cumulative profit */}
             {(()=>{
@@ -12942,7 +13050,7 @@ function KenoGame({
             {/* Turbo mode button */}
             <button
               onClick={toggleKenoTurbo}
-              title={kenoTurbo ? "Modo Turbo: ON" : "Modo Turbo: OFF"}
+              title={kenoTurbo ? t("turboOn") : t("turboOff")}
               style={{
                 width:"38px", height:"38px", borderRadius:"8px",
                 background: kenoTurbo ? "linear-gradient(135deg,#f4a91f,#c4780a)" : "#0e1826",
@@ -13114,7 +13222,7 @@ function KenoGame({
               style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
               onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#3a8aff";b.style.background="#0d1f30";}}
               onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#7a9db8";b.style.borderColor="#1e3a52";b.style.background="transparent";}}>
-              <span style={{ fontSize:"14px" }}>↺</span> Reiniciar estadísticas
+              <span style={{ fontSize:"14px" }}>↺</span> {t("resetStats")}
             </button>
             {/* Mini chart — cumulative profit */}
             {(()=>{
