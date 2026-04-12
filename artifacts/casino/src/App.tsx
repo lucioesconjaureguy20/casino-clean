@@ -67,6 +67,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Ver todo", comingSoon:"Próximamente", availableNow:"Disponible ahora",
     completed:"Completado", pending:"Pendiente", expired:"Expirado", rejected:"Rechazado",
     colDate:"FECHA", colGame:"JUEGO", colBet:"APUESTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGO", accumulated:"Acumulado", noBalance:"Sin saldo",
+    txColType:"TIPO", txColCur:"MONEDA", txColNet:"RED", txColStatus:"ESTADO", rwColDir:"DIRECCIÓN", rwColAmt:"CANTIDAD", rwColBal:"SALDO", rwColFor:"PARA/DE", rwColNote:"NOTA",
+    rwLockedAccum:"BLOQUEADO · ACUMULANDO", rwNoBalance:"SIN SALDO AÚN", rwGrowing:"Creciendo con cada apuesta", rwLockedBtn:"Bloqueado",
     email:"Correo electrónico", displayName:"Nombre para mostrar", forgotPass:"¿Olvidaste tu contraseña?",
     claimNow:"Reclamar ahora", regSuccess:"¡Cuenta creada! Revisá tu correo para confirmar.",
     backToLogin:"Volver al inicio de sesión", mustLogin:"Debés iniciar sesión para usar el soporte",
@@ -236,6 +238,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"View All", comingSoon:"Coming Soon", availableNow:"Available Now",
     completed:"Completed", pending:"Pending", expired:"Expired", rejected:"Rejected",
     colDate:"DATE", colGame:"GAME", colBet:"BET", colMultiplier:"MULTIPLIER", colPayout:"PAYOUT", accumulated:"Accumulated", noBalance:"No Balance",
+    txColType:"TYPE", txColCur:"CURRENCY", txColNet:"NETWORK", txColStatus:"STATUS", rwColDir:"DIRECTION", rwColAmt:"AMOUNT", rwColBal:"BALANCE", rwColFor:"FOR/FROM", rwColNote:"NOTE",
+    rwLockedAccum:"LOCKED · ACCUMULATING", rwNoBalance:"NO BALANCE YET", rwGrowing:"Growing with each bet", rwLockedBtn:"Locked",
     email:"Email", displayName:"Display Name", forgotPass:"Forgot your password?",
     claimNow:"Claim now", regSuccess:"Account created! Check your email to confirm.",
     backToLogin:"Back to Sign In", mustLogin:"You must sign in to use support",
@@ -405,6 +409,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Ver todos", comingSoon:"Em Breve", availableNow:"Disponível agora",
     completed:"Concluído", pending:"Pendente", expired:"Expirado", rejected:"Rejeitado",
     colDate:"DATA", colGame:"JOGO", colBet:"APOSTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGAMENTO", accumulated:"Acumulado",
+    txColType:"TIPO", txColCur:"MOEDA", txColNet:"REDE", txColStatus:"ESTADO", rwColDir:"DIREÇÃO", rwColAmt:"QUANTIDADE", rwColBal:"SALDO", rwColFor:"PARA/DE", rwColNote:"NOTA",
+    rwLockedAccum:"BLOQUEADO · ACUMULANDO", rwNoBalance:"SEM SALDO AINDA", rwGrowing:"Crescendo com cada aposta", rwLockedBtn:"Bloqueado",
     keepPlaying:"Entendido, continuar jogando",
     chips:"Fichas", totalBet:"APOSTA TOTAL", numRounds:"Número de rodadas", noHistoryShort:"Sem histórico", lastResult:"Último",
     resetStats:"Reiniciar estatísticas", noRewardsClaimed:"Nenhuma recompensa reivindicada ainda.", loading:"carregando...",
@@ -565,6 +571,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Alle anzeigen", comingSoon:"Demnächst", availableNow:"Jetzt verfügbar",
     completed:"Abgeschlossen", pending:"Ausstehend", expired:"Abgelaufen", rejected:"Abgelehnt",
     colDate:"DATUM", colGame:"SPIEL", colBet:"EINSATZ", colMultiplier:"MULTIPLIKATOR", colPayout:"AUSZAHLUNG", accumulated:"Akkumuliert",
+    txColType:"TYP", txColCur:"WÄHRUNG", txColNet:"NETZWERK", txColStatus:"STATUS", rwColDir:"RICHTUNG", rwColAmt:"BETRAG", rwColBal:"SALDO", rwColFor:"FÜR/VON", rwColNote:"NOTIZ",
+    rwLockedAccum:"GESPERRT · AKKUMULIERT", rwNoBalance:"NOCH KEIN GUTHABEN", rwGrowing:"Wächst mit jeder Wette", rwLockedBtn:"Gesperrt",
     keepPlaying:"Verstanden, weiter spielen",
     chips:"Chips", totalBet:"GESAMTEINSATZ", numRounds:"Anzahl der Runden", noHistoryShort:"Kein Verlauf", lastResult:"Letztes",
     resetStats:"Statistiken zurücksetzen", noRewardsClaimed:"Noch keine Belohnungen beansprucht.", loading:"laden...",
@@ -725,6 +733,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Voir tout", comingSoon:"Bientôt", availableNow:"Disponible maintenant",
     completed:"Terminé", pending:"En attente", expired:"Expiré", rejected:"Rejeté",
     colDate:"DATE", colGame:"JEU", colBet:"MISE", colMultiplier:"MULTIPLICATEUR", colPayout:"PAIEMENT", accumulated:"Accumulé",
+    txColType:"TYPE", txColCur:"DEVISE", txColNet:"RÉSEAU", txColStatus:"STATUT", rwColDir:"DIRECTION", rwColAmt:"MONTANT", rwColBal:"SOLDE", rwColFor:"POUR/DE", rwColNote:"NOTE",
+    rwLockedAccum:"VERROUILLÉ · ACCUMULATION", rwNoBalance:"PAS ENCORE DE SOLDE", rwGrowing:"Croît à chaque mise", rwLockedBtn:"Verrouillé",
     keepPlaying:"Compris, continuer à jouer",
     chips:"Jetons", totalBet:"MISE TOTALE", numRounds:"Nombre de tours", noHistoryShort:"Aucun historique", lastResult:"Dernier",
     resetStats:"Réinitialiser les statistiques", noRewardsClaimed:"Aucune récompense réclamée pour l'instant.", loading:"chargement...",
@@ -885,6 +895,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Lihat Semua", comingSoon:"Segera Hadir", availableNow:"Tersedia Sekarang",
     completed:"Selesai", pending:"Tertunda", expired:"Kedaluwarsa", rejected:"Ditolak",
     colDate:"TANGGAL", colGame:"GAME", colBet:"TARUHAN", colMultiplier:"PENGGANDA", colPayout:"PEMBAYARAN", accumulated:"Akumulasi",
+    txColType:"TIPE", txColCur:"MATA UANG", txColNet:"JARINGAN", txColStatus:"STATUS", rwColDir:"ARAH", rwColAmt:"JUMLAH", rwColBal:"SALDO", rwColFor:"UNTUK/DARI", rwColNote:"CATATAN",
+    rwLockedAccum:"TERKUNCI · MENGUMPULKAN", rwNoBalance:"BELUM ADA SALDO", rwGrowing:"Bertumbuh dengan setiap taruhan", rwLockedBtn:"Terkunci",
     keepPlaying:"Mengerti, lanjut bermain",
     chips:"Chip", totalBet:"TOTAL TARUHAN", numRounds:"Jumlah putaran", noHistoryShort:"Tidak ada riwayat", lastResult:"Terakhir",
     resetStats:"Reset Statistik", noRewardsClaimed:"Belum ada hadiah yang diklaim.", loading:"memuat...",
@@ -1045,6 +1057,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Vedi tutto", comingSoon:"Prossimamente", availableNow:"Disponibile ora",
     completed:"Completato", pending:"In attesa", expired:"Scaduto", rejected:"Rifiutato",
     colDate:"DATA", colGame:"GIOCO", colBet:"SCOMMESSA", colMultiplier:"MOLTIPLICATORE", colPayout:"VINCITA", accumulated:"Accumulato",
+    txColType:"TIPO", txColCur:"VALUTA", txColNet:"RETE", txColStatus:"STATO", rwColDir:"DIREZIONE", rwColAmt:"IMPORTO", rwColBal:"SALDO", rwColFor:"PER/DA", rwColNote:"NOTA",
+    rwLockedAccum:"BLOCCATO · IN ACCUMULO", rwNoBalance:"NESSUN SALDO ANCORA", rwGrowing:"Cresce con ogni scommessa", rwLockedBtn:"Bloccato",
     keepPlaying:"Capito, continua a giocare",
     chips:"Fiches", totalBet:"PUNTATA TOTALE", numRounds:"Numero di giri", noHistoryShort:"Nessuno storico", lastResult:"Ultimo",
     resetStats:"Reimposta statistiche", noRewardsClaimed:"Nessuna ricompensa riscattata finora.", loading:"caricamento...",
@@ -1205,6 +1219,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"전체 보기", comingSoon:"출시 예정", availableNow:"지금 이용 가능",
     completed:"완료됨", pending:"대기 중", expired:"만료됨", rejected:"거부됨",
     colDate:"날짜", colGame:"게임", colBet:"베팅", colMultiplier:"배수", colPayout:"지급금", accumulated:"누적",
+    txColType:"유형", txColCur:"화폐", txColNet:"네트워크", txColStatus:"상태", rwColDir:"방향", rwColAmt:"금액", rwColBal:"잔액", rwColFor:"대상/출처", rwColNote:"메모",
+    rwLockedAccum:"잠김 · 누적 중", rwNoBalance:"아직 잔액 없음", rwGrowing:"베팅할 때마다 증가", rwLockedBtn:"잠김",
     keepPlaying:"알겠습니다, 계속 플레이",
     chips:"칩", totalBet:"총 베팅", numRounds:"라운드 수", noHistoryShort:"기록 없음", lastResult:"마지막",
     resetStats:"통계 초기화", noRewardsClaimed:"아직 청구된 보상이 없습니다.", loading:"로딩 중...",
@@ -1365,6 +1381,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Alles zien", comingSoon:"Binnenkort", availableNow:"Nu beschikbaar",
     completed:"Voltooid", pending:"In afwachting", expired:"Verlopen", rejected:"Afgewezen",
     colDate:"DATUM", colGame:"SPEL", colBet:"INZET", colMultiplier:"VERMENIGVULDIGER", colPayout:"UITBETALING", accumulated:"Geaccumuleerd",
+    txColType:"TYPE", txColCur:"VALUTA", txColNet:"NETWERK", txColStatus:"STATUS", rwColDir:"RICHTING", rwColAmt:"BEDRAG", rwColBal:"SALDO", rwColFor:"VOOR/VAN", rwColNote:"OPMERKING",
+    rwLockedAccum:"VERGRENDELD · OPHOPEND", rwNoBalance:"NOG GEEN SALDO", rwGrowing:"Groeit met elke inzet", rwLockedBtn:"Vergrendeld",
     keepPlaying:"Begrepen, doorgaan met spelen",
     chips:"Chips", totalBet:"TOTALE INZET", numRounds:"Aantal rondes", noHistoryShort:"Geen geschiedenis", lastResult:"Laatste",
     resetStats:"Statistieken resetten", noRewardsClaimed:"Nog geen beloningen geclaimd.", loading:"laden...",
@@ -1525,6 +1543,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Zobacz wszystko", comingSoon:"Wkrótce", availableNow:"Dostępne teraz",
     completed:"Zakończono", pending:"Oczekujące", expired:"Wygasło", rejected:"Odrzucono",
     colDate:"DATA", colGame:"GRA", colBet:"ZAKŁAD", colMultiplier:"MNOŻNIK", colPayout:"WYPŁATA", accumulated:"Zgromadzono",
+    txColType:"TYP", txColCur:"WALUTA", txColNet:"SIEĆ", txColStatus:"STATUS", rwColDir:"KIERUNEK", rwColAmt:"KWOTA", rwColBal:"SALDO", rwColFor:"DLA/OD", rwColNote:"UWAGA",
+    rwLockedAccum:"ZABLOKOWANE · GROMADZENIE", rwNoBalance:"JESZCZE BRAK SALDA", rwGrowing:"Rośnie z każdym zakładem", rwLockedBtn:"Zablokowane",
     keepPlaying:"Rozumiem, kontynuuj grę",
     chips:"Żetony", totalBet:"ŁĄCZNY ZAKŁAD", numRounds:"Liczba rund", noHistoryShort:"Brak historii", lastResult:"Ostatni",
     resetStats:"Resetuj statystyki", noRewardsClaimed:"Nie odebrano jeszcze żadnych nagród.", loading:"ładowanie...",
@@ -1685,6 +1705,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Смотреть все", comingSoon:"Скоро", availableNow:"Доступно сейчас",
     completed:"Завершено", pending:"В ожидании", expired:"Истёк", rejected:"Отклонено",
     colDate:"ДАТА", colGame:"ИГРА", colBet:"СТАВКА", colMultiplier:"МНОЖИТЕЛЬ", colPayout:"ВЫПЛАТА", accumulated:"Накоплено",
+    txColType:"ТИП", txColCur:"ВАЛЮТА", txColNet:"СЕТЬ", txColStatus:"СТАТУС", rwColDir:"НАПРАВЛЕНИЕ", rwColAmt:"СУММА", rwColBal:"БАЛАНС", rwColFor:"ДЛЯ/ОТ", rwColNote:"ЗАМЕТКА",
+    rwLockedAccum:"ЗАБЛОКИРОВАНО · НАКАПЛИВАЕТСЯ", rwNoBalance:"БАЛАНСА НЕТ", rwGrowing:"Растёт с каждой ставкой", rwLockedBtn:"Заблокировано",
     keepPlaying:"Понятно, продолжить игру",
     chips:"Фишки", totalBet:"ИТОГО СТАВКА", numRounds:"Количество раундов", noHistoryShort:"Нет истории", lastResult:"Последний",
     resetStats:"Сбросить статистику", noRewardsClaimed:"Наград ещё не получено.", loading:"загрузка...",
@@ -1845,6 +1867,8 @@ const LANGS: Record<string, Record<string, string>> = {
     viewAll:"Tümünü Gör", comingSoon:"Yakında", availableNow:"Şu An Mevcut",
     completed:"Tamamlandı", pending:"Bekliyor", expired:"Süresi Doldu", rejected:"Reddedildi",
     colDate:"TARİH", colGame:"OYUN", colBet:"BAHİS", colMultiplier:"ÇARPAN", colPayout:"ÖDEME", accumulated:"Birikmiş",
+    txColType:"TÜR", txColCur:"PARA BİRİMİ", txColNet:"AĞ", txColStatus:"DURUM", rwColDir:"YÖN", rwColAmt:"MİKTAR", rwColBal:"BAKİYE", rwColFor:"İÇİN/KİMDEN", rwColNote:"NOT",
+    rwLockedAccum:"KİLİTLİ · BİRİKİYOR", rwNoBalance:"HENÜZ BAKİYE YOK", rwGrowing:"Her bahisle büyüyor", rwLockedBtn:"Kilitli",
     keepPlaying:"Anladım, oynamaya devam",
     chips:"Jetonlar", totalBet:"TOPLAM BAHİS", numRounds:"Tur sayısı", noHistoryShort:"Geçmiş yok", lastResult:"Son",
     resetStats:"İstatistikleri sıfırla", noRewardsClaimed:"Henüz talep edilen ödül yok.", loading:"yükleniyor...",
@@ -7831,7 +7855,7 @@ export default function App() {
                               <table style={{ width:"100%", borderCollapse:"collapse" as const, minWidth:"580px" }}>
                                 <thead>
                                   <tr style={{ borderBottom:"1px solid #20283a" }}>
-                                    {["#ID","FECHA","TIPO","CANTIDAD","MONEDA","RED","ESTADO"].map(h=>(
+                                    {["#ID",t("colDate"),t("txColType"),t("rwColAmt"),t("txColCur"),t("txColNet"),t("txColStatus")].map(h=>(
                                       <th key={h} style={{ padding:"12px 16px", textAlign:"left" as const, fontSize:"11px", fontWeight:700, color:"#4a5e7a", letterSpacing:"0.8px", whiteSpace:"nowrap" as const }}>{h}</th>
                                     ))}
                                   </tr>
@@ -8001,7 +8025,7 @@ export default function App() {
                         <table style={{ width:"100%", borderCollapse:"collapse" as const, minWidth:"620px" }}>
                           <thead>
                             <tr style={{ borderBottom:"1px solid #20283a" }}>
-                              {["FECHA","DIRECCIÓN","CANTIDAD","SALDO","PARA/DE","NOTA"].map(h=>(
+                              {[t("colDate"),t("rwColDir"),t("rwColAmt"),t("rwColBal"),t("rwColFor"),t("rwColNote")].map(h=>(
                                 <th key={h} style={{ padding:"14px 16px", textAlign:"left" as const, fontSize:"11px", fontWeight:700, color:"#4a5e7a", letterSpacing:"0.8px", whiteSpace:"nowrap" as const }}>{h}</th>
                               ))}
                             </tr>
@@ -8212,16 +8236,16 @@ export default function App() {
                               {isAvail ? (
                                 <div style={{ display:"inline-flex", alignItems:"center", gap:"5px", background:"#00d95f18", border:"1px solid #00d95f40", borderRadius:"20px", padding:"3px 10px", marginBottom:"12px" }}>
                                   <div className="rb-dot-pulse" style={{ width:"6px", height:"6px", borderRadius:"50%", background:"#00d95f", flexShrink:0 }} />
-                                  <span style={{ fontSize:"10px", fontWeight:800, color:"#00d95f", letterSpacing:"0.5px" }}>DISPONIBLE AHORA</span>
+                                  <span style={{ fontSize:"10px", fontWeight:800, color:"#00d95f", letterSpacing:"0.5px" }}>{t("availableNow").toUpperCase()}</span>
                                 </div>
                               ) : c.locked ? (
                                 <div style={{ display:"inline-flex", alignItems:"center", gap:"5px", background:"#1a2035", border:"1px solid #2a3448", borderRadius:"20px", padding:"3px 10px", marginBottom:"12px" }}>
                                   <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#4a5a70" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                  <span style={{ fontSize:"10px", fontWeight:700, color:"#4a5a70", letterSpacing:"0.5px" }}>BLOQUEADO · ACUMULANDO</span>
+                                  <span style={{ fontSize:"10px", fontWeight:700, color:"#4a5a70", letterSpacing:"0.5px" }}>{t("rwLockedAccum")}</span>
                                 </div>
                               ) : (
                                 <div style={{ display:"inline-flex", alignItems:"center", gap:"5px", background:"#0e1826", border:"1px solid #20283a", borderRadius:"20px", padding:"3px 10px", marginBottom:"12px" }}>
-                                  <span style={{ fontSize:"10px", fontWeight:700, color:"#4a5568" }}>SIN SALDO AÚN</span>
+                                  <span style={{ fontSize:"10px", fontWeight:700, color:"#4a5568" }}>{t("rwNoBalance")}</span>
                                 </div>
                               )}
 
@@ -8238,7 +8262,7 @@ export default function App() {
                                 {c.locked && c.amount > 0 && (
                                   <div className="rb-grow-pulse" style={{ fontSize:"10px", color:c.accent, fontWeight:600, marginTop:"4px", display:"flex", alignItems:"center", gap:"4px" }}>
                                     <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-                                    Creciendo con cada apuesta
+                                    {t("rwGrowing")}
                                   </div>
                                 )}
                               </div>
@@ -8258,7 +8282,7 @@ export default function App() {
                                   </div>
                                   <button disabled style={{ width:"100%", height:"40px", background:"#0e1826", border:`1px solid ${border}`, borderRadius:"10px", fontSize:"12px", fontWeight:700, color:"#2a3a4c", cursor:"not-allowed", display:"flex", alignItems:"center", justifyContent:"center", gap:"7px" }}>
                                     <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    Bloqueado
+                                    {t("rwLockedBtn")}
                                   </button>
                                 </div>
                               ) : isAvail ? (
