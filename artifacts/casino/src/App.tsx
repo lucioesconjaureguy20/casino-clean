@@ -10707,7 +10707,7 @@ const LIVE_COIN_BADGE: Record<string,{text:string;bg:string}> = {
   SOL:  { text:"SOL", bg:"#6b28b8" },
 };
 
-const GAME_LABEL_MAP: Record<string,string> = { dice:"Dados", plinko:"Plinko", keno:"Keno", blackjack:"Blackjack", mines:"Mines", hilo:"Hilo", roulette:"Ruleta", baccarat:"Baccarat", slot:"Slots" };
+const GAME_TRANS_KEY: Record<string,string> = { dice:"gameDice", plinko:"gamePlinko", keno:"gameKeno", blackjack:"gameBlackjack", mines:"gameMines", hilo:"gameHilo", roulette:"gameRoulette", baccarat:"gameBaccarat" };
 const GAME_SVG_ICON: Record<string, React.ReactNode> = {
   dice:      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><circle cx="8" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.3" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg>,
   plinko:    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="4.5" r="2.5"/><line x1="12" y1="7" x2="12" y2="10"/><line x1="7" y1="10" x2="17" y2="10"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="3" y1="20" x2="21" y2="20"/><line x1="9" y1="10" x2="7" y2="15"/><line x1="15" y1="10" x2="17" y2="15"/></svg>,
@@ -10745,7 +10745,7 @@ function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _
   const renderLiveRow = (b: LiveCasinoBet, i: number) => {
     const hora = new Date(b.created_at).toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"});
     const gameKey = b.game.toLowerCase();
-    const label   = GAME_LABEL_MAP[gameKey] ?? b.game;
+    const label   = GAME_TRANS_KEY[gameKey] ? lt(GAME_TRANS_KEY[gameKey]) : b.game;
     const svgIcon = GAME_SVG_ICON[gameKey];
     const isWin   = b.payout_usd >= b.bet_usd;
     const netAmt  = isWin ? b.payout_usd - b.bet_usd : b.bet_usd - b.payout_usd;
