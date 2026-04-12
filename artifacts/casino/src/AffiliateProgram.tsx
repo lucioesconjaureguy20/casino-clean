@@ -318,11 +318,17 @@ function IconMail({ size = 18, color = "currentColor" }) {
 interface Props {
   username: string;
   t: (key: string) => string;
+  lang?: string;
   dashboardOnly?: boolean;
   onRegister?: () => void;
 }
 
-export default function AffiliateProgram({ username, t, dashboardOnly, onRegister }: Props) {
+const LANG_LOCALE: Record<string, string> = {
+  es:"es-ES", en:"en-US", pt:"pt-BR", de:"de-DE", fr:"fr-FR",
+  id:"id-ID", it:"it-IT", ko:"ko-KR", nl:"nl-NL", pl:"pl-PL", ru:"ru-RU", tr:"tr-TR",
+};
+
+export default function AffiliateProgram({ username, t, lang = "es", dashboardOnly, onRegister }: Props) {
   const [tab, setTab] = useState<"overview" | "dashboard">(dashboardOnly ? "dashboard" : "overview");
   const [refCode, setRefCode] = useState("");
   const [refLink, setRefLink] = useState("");
@@ -463,7 +469,7 @@ export default function AffiliateProgram({ username, t, dashboardOnly, onRegiste
     d.setMonth(d.getMonth() - i);
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, "0");
-    return { value: `${y}-${m}`, label: d.toLocaleString("es-ES", { month: "long", year: "numeric" }) };
+    return { value: `${y}-${m}`, label: d.toLocaleString(LANG_LOCALE[lang] ?? "es-ES", { month: "long", year: "numeric" }) };
   });
 
   const currentPeriodLabel =

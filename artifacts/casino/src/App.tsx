@@ -119,7 +119,7 @@ const LANGS: Record<string, Record<string, string>> = {
     affFaq3Q:"¿Cuándo recibo mis pagos?", affFaq3A:"Las comisiones se calculan automáticamente y se acreditan en tu saldo a principio de mes. Puedes utilizarlas o retirarlas en cualquier momento.",
     affFaq4Q:"¿Necesitas ayuda o una oferta personalizada?", affFaq4ContactText:"Si tienes dudas o quieres trabajar con nosotros de forma más directa, puedes contactarnos:",
     affFeat1:"Gana mientras ellos juegan", affFeat2:"Pagos Mensuales", affFeat3:"Seguimiento Detallado",
-    affFeat4:"Sin Riesgo", affFeat5:"Global & Crypto-Friendly", affFeat6:"Comisión Fija del 15%",
+    affFeat4:"Sin Riesgo", affFeat5:"Global y Compatible con Cripto", affFeat6:"Comisión Fija del 15%",
     affStep1:"Obtén tu enlace único", affStep2:"Tus referidos se unen", affStep3:"Acumulás ganancias",
     affFeat1Desc:"Cada vez que tus referidos juegan en el casino, generas un 15% de comisión sobre sus pérdidas netas.",
     affFeat2Desc:"Las ganancias se calculan y acreditan a tu saldo a principio de cada mes.",
@@ -8185,7 +8185,7 @@ export default function App() {
         {section==="referrals" && (
           <section style={{ minHeight:"calc(100vh - 70px)", display:"flex", flexDirection:"column" }}>
             <div style={{ flex:1, minHeight:"calc(100vh - 70px)" }}>
-              <AffiliateProgram username={currentUser} t={t} onRegister={()=>setAuthModal("register")} />
+              <AffiliateProgram username={currentUser} t={t} lang={lang ?? "es"} onRegister={()=>setAuthModal("register")} />
             </div>
             <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
@@ -8199,7 +8199,7 @@ export default function App() {
                   <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec" }}>{t("referrals")}</span>
                 </div>
               </div>
-              <AffiliateProgram username={currentUser} t={t} dashboardOnly onRegister={()=>setAuthModal("register")} />
+              <AffiliateProgram username={currentUser} t={t} lang={lang ?? "es"} dashboardOnly onRegister={()=>setAuthModal("register")} />
             </div>
             <CasinoFooter onHome={showHomeView} lang={lang} />
           </section>
