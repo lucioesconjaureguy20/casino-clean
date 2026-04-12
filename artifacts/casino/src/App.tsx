@@ -160,7 +160,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Sig.", untilNextRank:"Faltan",
     loginForVip:"Inicia sesión para ver tu rango VIP y reclamar rakeback.",
     unlockIn:"Desbloquea en", allRanks:"Todos los Rangos", yourCategory:"Tu categoría",
-    wagerMin:"Wager mín.", wagerMax:"Wager máx.", rakebackLabel2:"Rakeback",
+    wagerMin:"Wager mín.", wagerMax:"Wager máx.", rakebackLabel2:"Rakeback", maxRank:"Rango Máximo",
     tierBronze:"Bronce", tierSilver:"Plata", tierGold:"Oro", tierPlatinum:"Platino", tierEmerald:"Esmeralda",
     onRankUp:"al subir", youBadge:"Tú", rewardBadge:"Recompensa",
     notAvailable:"No disponible", dateLabel:"Fecha",
@@ -338,7 +338,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Next", untilNextRank:"Remaining",
     loginForVip:"Log in to view your VIP rank and claim rakeback.",
     unlockIn:"Unlocks at", allRanks:"All Ranks", yourCategory:"Your tier",
-    wagerMin:"Min wager", wagerMax:"Max wager", rakebackLabel2:"Rakeback",
+    wagerMin:"Min wager", wagerMax:"Max wager", rakebackLabel2:"Rakeback", maxRank:"Max Rank",
     tierBronze:"Bronze", tierSilver:"Silver", tierGold:"Gold", tierPlatinum:"Platinum", tierEmerald:"Emerald",
     onRankUp:"on rank up", youBadge:"You", rewardBadge:"Reward",
     notAvailable:"Not available", dateLabel:"Date",
@@ -513,7 +513,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Prox.", untilNextRank:"Faltam",
     loginForVip:"Faça login para ver seu rank VIP e reivindicar rakeback.",
     unlockIn:"Desbloqueia em", allRanks:"Todos os Ranks", yourCategory:"Sua categoria",
-    wagerMin:"Aposta mín.", wagerMax:"Aposta máx.", rakebackLabel2:"Rakeback",
+    wagerMin:"Aposta mín.", wagerMax:"Aposta máx.", rakebackLabel2:"Rakeback", maxRank:"Rank Máximo",
     tierBronze:"Bronze", tierSilver:"Prata", tierGold:"Ouro", tierPlatinum:"Platina", tierEmerald:"Esmeralda",
     onRankUp:"ao subir", youBadge:"Você", rewardBadge:"Recompensa",
     notAvailable:"Não disponível", dateLabel:"Data",
@@ -688,7 +688,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Nächste", untilNextRank:"Verbleibend",
     loginForVip:"Melde dich an, um deinen VIP-Rang zu sehen und Rakeback zu beanspruchen.",
     unlockIn:"Freischaltung bei", allRanks:"Alle Ränge", yourCategory:"Deine Stufe",
-    wagerMin:"Min. Einsatz", wagerMax:"Max. Einsatz", rakebackLabel2:"Rakeback",
+    wagerMin:"Min. Einsatz", wagerMax:"Max. Einsatz", rakebackLabel2:"Rakeback", maxRank:"Max. Rang",
     tierBronze:"Bronze", tierSilver:"Silber", tierGold:"Gold", tierPlatinum:"Platin", tierEmerald:"Smaragd",
     onRankUp:"beim Aufstieg", youBadge:"Du", rewardBadge:"Belohnung",
     notAvailable:"Nicht verfügbar", dateLabel:"Datum",
@@ -863,7 +863,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Suiv.", untilNextRank:"Restant",
     loginForVip:"Connectez-vous pour voir votre rang VIP et réclamer le rakeback.",
     unlockIn:"Débloqué à", allRanks:"Tous les rangs", yourCategory:"Votre catégorie",
-    wagerMin:"Mise min.", wagerMax:"Mise max.", rakebackLabel2:"Rakeback",
+    wagerMin:"Mise min.", wagerMax:"Mise max.", rakebackLabel2:"Rakeback", maxRank:"Rang Maximum",
     tierBronze:"Bronze", tierSilver:"Argent", tierGold:"Or", tierPlatinum:"Platine", tierEmerald:"Émeraude",
     onRankUp:"à la montée", youBadge:"Vous", rewardBadge:"Récompense",
     notAvailable:"Non disponible", dateLabel:"Date",
@@ -1038,7 +1038,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Berikut.", untilNextRank:"Tersisa",
     loginForVip:"Masuk untuk melihat peringkat VIP Anda dan klaim rakeback.",
     unlockIn:"Buka kunci di", allRanks:"Semua Peringkat", yourCategory:"Kategori Anda",
-    wagerMin:"Taruhan min.", wagerMax:"Taruhan maks.", rakebackLabel2:"Rakeback",
+    wagerMin:"Taruhan min.", wagerMax:"Taruhan maks.", rakebackLabel2:"Rakeback", maxRank:"Peringkat Maks",
     tierBronze:"Perunggu", tierSilver:"Perak", tierGold:"Emas", tierPlatinum:"Platina", tierEmerald:"Zamrud",
     onRankUp:"saat naik", youBadge:"Anda", rewardBadge:"Hadiah",
     notAvailable:"Tidak tersedia", dateLabel:"Tanggal",
@@ -1213,7 +1213,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Prox.", untilNextRank:"Mancano",
     loginForVip:"Accedi per vedere il tuo rango VIP e riscuotere il rakeback.",
     unlockIn:"Sblocca a", allRanks:"Tutti i gradi", yourCategory:"La tua categoria",
-    wagerMin:"Puntata min.", wagerMax:"Puntata max.", rakebackLabel2:"Rakeback",
+    wagerMin:"Puntata min.", wagerMax:"Puntata max.", rakebackLabel2:"Rakeback", maxRank:"Rango Massimo",
     tierBronze:"Bronzo", tierSilver:"Argento", tierGold:"Oro", tierPlatinum:"Platino", tierEmerald:"Smeraldo",
     onRankUp:"alla promozione", youBadge:"Tu", rewardBadge:"Ricompensa",
     notAvailable:"Non disponibile", dateLabel:"Data",
@@ -1388,7 +1388,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"다음", untilNextRank:"남은 금액",
     loginForVip:"VIP 등급을 보고 레이크백을 청구하려면 로그인하세요.",
     unlockIn:"잠금 해제:", allRanks:"모든 등급", yourCategory:"내 등급",
-    wagerMin:"최소 배팅", wagerMax:"최대 배팅", rakebackLabel2:"레이크백",
+    wagerMin:"최소 배팅", wagerMax:"최대 배팅", rakebackLabel2:"레이크백", maxRank:"최고 등급",
     tierBronze:"브론즈", tierSilver:"실버", tierGold:"골드", tierPlatinum:"플래티넘", tierEmerald:"에메랄드",
     onRankUp:"랭크 업 시", youBadge:"나", rewardBadge:"보상",
     notAvailable:"이용 불가", dateLabel:"날짜",
@@ -1563,7 +1563,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Volg.", untilNextRank:"Resterend",
     loginForVip:"Log in om uw VIP-rang te zien en rakeback te claimen.",
     unlockIn:"Ontgrendelt bij", allRanks:"Alle rangen", yourCategory:"Uw categorie",
-    wagerMin:"Min. inzet", wagerMax:"Max. inzet", rakebackLabel2:"Rakeback",
+    wagerMin:"Min. inzet", wagerMax:"Max. inzet", rakebackLabel2:"Rakeback", maxRank:"Max. Rang",
     tierBronze:"Brons", tierSilver:"Zilver", tierGold:"Goud", tierPlatinum:"Platina", tierEmerald:"Smaragd",
     onRankUp:"bij promotie", youBadge:"Jij", rewardBadge:"Beloning",
     notAvailable:"Niet beschikbaar", dateLabel:"Datum",
@@ -1738,7 +1738,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Nast.", untilNextRank:"Pozostało",
     loginForVip:"Zaloguj się, aby zobaczyć swój rang VIP i odebrać rakeback.",
     unlockIn:"Odblokowane przy", allRanks:"Wszystkie rangi", yourCategory:"Twoja kategoria",
-    wagerMin:"Min. zakład", wagerMax:"Maks. zakład", rakebackLabel2:"Rakeback",
+    wagerMin:"Min. zakład", wagerMax:"Maks. zakład", rakebackLabel2:"Rakeback", maxRank:"Maks. Ranga",
     tierBronze:"Brąz", tierSilver:"Srebro", tierGold:"Złoto", tierPlatinum:"Platyna", tierEmerald:"Szmaragd",
     onRankUp:"przy awansie", youBadge:"Ty", rewardBadge:"Nagroda",
     notAvailable:"Niedostępny", dateLabel:"Data",
@@ -1913,7 +1913,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"След.", untilNextRank:"Осталось",
     loginForVip:"Войдите, чтобы увидеть ваш VIP-ранг и получить рейкбек.",
     unlockIn:"Разблокируется при", allRanks:"Все ранги", yourCategory:"Ваша категория",
-    wagerMin:"Мин. ставка", wagerMax:"Макс. ставка", rakebackLabel2:"Рейкбек",
+    wagerMin:"Мин. ставка", wagerMax:"Макс. ставка", rakebackLabel2:"Рейкбек", maxRank:"Макс. Ранг",
     tierBronze:"Бронза", tierSilver:"Серебро", tierGold:"Золото", tierPlatinum:"Платина", tierEmerald:"Изумруд",
     onRankUp:"при повышении", youBadge:"Ты", rewardBadge:"Награда",
     notAvailable:"Недоступно", dateLabel:"Дата",
@@ -2088,7 +2088,7 @@ const LANGS: Record<string, Record<string, string>> = {
     nextRankLabel:"Sonraki", untilNextRank:"Kalan",
     loginForVip:"VIP rütbenizi görmek ve rakeback talep etmek için giriş yapın.",
     unlockIn:"Kilit açma:", allRanks:"Tüm Rütbeler", yourCategory:"Kategoriniz",
-    wagerMin:"Min. bahis", wagerMax:"Maks. bahis", rakebackLabel2:"Rakeback",
+    wagerMin:"Min. bahis", wagerMax:"Maks. bahis", rakebackLabel2:"Rakeback", maxRank:"Maks. Rütbe",
     tierBronze:"Bronz", tierSilver:"Gümüş", tierGold:"Altın", tierPlatinum:"Platin", tierEmerald:"Zümrüt",
     onRankUp:"rankta yükselirken", youBadge:"Sen", rewardBadge:"Ödül",
     notAvailable:"Mevcut değil", dateLabel:"Tarih",
@@ -8275,7 +8275,7 @@ export default function App() {
                           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
                             <div style={{ fontSize:"22px", fontWeight:900, background:vRank.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", lineHeight:1 }}>{vRank.name}</div>
                             <div style={{ background:`${vRank.color}20`, border:`1px solid ${vRank.color}50`, borderRadius:"20px", padding:"2px 10px", fontSize:"11px", fontWeight:800, color:vRank.color, flexShrink:0 }}>
-                              {(vRank.rakebackPct * 100).toFixed(1)}% Rakeback
+                              {(vRank.rakebackPct * 100).toFixed(1)}% {t("rakebackLabel")}
                             </div>
                           </div>
                           {/* Progress bar inline */}
@@ -8291,7 +8291,7 @@ export default function App() {
                               </div>
                             </div>
                           ) : (
-                            <div style={{ fontSize:"12px", color:"#4dd890", fontWeight:700 }}>✦ Rango Máximo</div>
+                            <div style={{ fontSize:"12px", color:"#4dd890", fontWeight:700 }}>✦ {t("maxRank")}</div>
                           )}
                         </div>
                         {/* Total apostado */}
