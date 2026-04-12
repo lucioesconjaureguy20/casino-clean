@@ -8311,7 +8311,7 @@ export default function App() {
                         <div style={{ width:"44px", height:"44px", borderRadius:"12px", background:`${vRank.color}18`, border:`1px solid ${vRank.color}30`, overflow:"hidden", flexShrink:0 }}>
                           <img src={vRank.image} alt={vRank.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                         </div>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f4a91f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><line x1="12" y1="15" x2="12" y2="17"/><circle cx="12" cy="15" r="1" fill="#f4a91f" stroke="none"/></svg>
                         <span style={{ fontSize:"13px", color:"#7a8faa" }}>{t("loginForVip")}</span>
                       </div>
                     )}
@@ -8386,7 +8386,7 @@ export default function App() {
                                 </div>
                               ) : c.locked ? (
                                 <div style={{ display:"inline-flex", alignItems:"center", gap:"5px", background:"#1a2035", border:"1px solid #2a3448", borderRadius:"20px", padding:"3px 10px", marginBottom:"12px" }}>
-                                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#4a5a70" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#4a5a70" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15" r="1" fill="#4a5a70" stroke="none"/></svg>
                                   <span style={{ fontSize:"10px", fontWeight:700, color:"#4a5a70", letterSpacing:"0.5px" }}>{t("rwLockedAccum")}</span>
                                 </div>
                               ) : (
@@ -8427,7 +8427,7 @@ export default function App() {
                                     </div>
                                   </div>
                                   <button disabled style={{ width:"100%", height:"40px", background:"#0e1826", border:`1px solid ${border}`, borderRadius:"10px", fontSize:"12px", fontWeight:700, color:"#2a3a4c", cursor:"not-allowed", display:"flex", alignItems:"center", justifyContent:"center", gap:"7px" }}>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/></svg>
                                     {t("rwLockedBtn")}
                                   </button>
                                 </div>
@@ -10001,7 +10001,7 @@ export default function App() {
                       return (
                         <div key={i} style={{ display:"flex", justifyContent:"center", padding:"4px 0" }}>
                           <div style={{ background:"rgba(239,68,68,.12)", border:"1px solid rgba(239,68,68,.35)", borderRadius:"20px", padding:"6px 14px", fontSize:"12px", color:"#fca5a5", display:"flex", alignItems:"center", gap:"6px", fontStyle:"italic" }}>
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/></svg>
                             {m.content?.replace(/^🔒\s*/,"").trim()}
                           </div>
                         </div>
