@@ -18,6 +18,7 @@ import Matter from "matter-js";
 import "flag-icons/css/flag-icons.min.css";
 import { getGameMeta, getGameInfo, getLearnMoreLabel } from "./lib/gameContent";
 import { getFairnessGames } from "./lib/fairnessContent";
+import { gt } from "./lib/gameLabels";
 
 // ─── TRANSLATIONS ────────────────────────────────────────────────────────────
 const LANGS: Record<string, Record<string, string>> = {
@@ -153,6 +154,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Inicia sesión para ver tu rango VIP y reclamar rakeback.",
     unlockIn:"Desbloquea en", allRanks:"Todos los Rangos", yourCategory:"Tu categoría",
     wagerMin:"Wager mín.", wagerMax:"Wager máx.", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronce", tierSilver:"Plata", tierGold:"Oro", tierPlatinum:"Platino", tierEmerald:"Esmeralda",
+    onRankUp:"al subir", youBadge:"Tú", rewardBadge:"Recompensa",
     notAvailable:"No disponible", dateLabel:"Fecha",
     privacyTitle:"Política de Privacidad", fairnessTitle:"Juego Justo y Transparente",
     termsTitle:"Términos de Servicio", lastUpdate:"Última actualización: Marzo 2025",
@@ -311,6 +314,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Log in to view your VIP rank and claim rakeback.",
     unlockIn:"Unlocks at", allRanks:"All Ranks", yourCategory:"Your tier",
     wagerMin:"Min wager", wagerMax:"Max wager", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronze", tierSilver:"Silver", tierGold:"Gold", tierPlatinum:"Platinum", tierEmerald:"Emerald",
+    onRankUp:"on rank up", youBadge:"You", rewardBadge:"Reward",
     notAvailable:"Not available", dateLabel:"Date",
     privacyTitle:"Privacy Policy", fairnessTitle:"Provably Fair",
     termsTitle:"Terms of Service", lastUpdate:"Last updated: March 2025",
@@ -455,6 +460,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Faça login para ver seu rank VIP e reivindicar rakeback.",
     unlockIn:"Desbloqueia em", allRanks:"Todos os Ranks", yourCategory:"Sua categoria",
     wagerMin:"Aposta mín.", wagerMax:"Aposta máx.", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronze", tierSilver:"Prata", tierGold:"Ouro", tierPlatinum:"Platina", tierEmerald:"Esmeralda",
+    onRankUp:"ao subir", youBadge:"Você", rewardBadge:"Recompensa",
     notAvailable:"Não disponível", dateLabel:"Data",
     privacyTitle:"Política de Privacidade", fairnessTitle:"Jogo Justo e Transparente",
     termsTitle:"Termos de Serviço", lastUpdate:"Última atualização: Março 2025",
@@ -599,6 +606,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Melde dich an, um deinen VIP-Rang zu sehen und Rakeback zu beanspruchen.",
     unlockIn:"Freischaltung bei", allRanks:"Alle Ränge", yourCategory:"Deine Stufe",
     wagerMin:"Min. Einsatz", wagerMax:"Max. Einsatz", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronze", tierSilver:"Silber", tierGold:"Gold", tierPlatinum:"Platin", tierEmerald:"Smaragd",
+    onRankUp:"beim Aufstieg", youBadge:"Du", rewardBadge:"Belohnung",
     notAvailable:"Nicht verfügbar", dateLabel:"Datum",
     privacyTitle:"Datenschutzrichtlinie", fairnessTitle:"Nachweislich fair",
     termsTitle:"Nutzungsbedingungen", lastUpdate:"Zuletzt aktualisiert: März 2025",
@@ -743,6 +752,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Connectez-vous pour voir votre rang VIP et réclamer le rakeback.",
     unlockIn:"Débloqué à", allRanks:"Tous les rangs", yourCategory:"Votre catégorie",
     wagerMin:"Mise min.", wagerMax:"Mise max.", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronze", tierSilver:"Argent", tierGold:"Or", tierPlatinum:"Platine", tierEmerald:"Émeraude",
+    onRankUp:"à la montée", youBadge:"Vous", rewardBadge:"Récompense",
     notAvailable:"Non disponible", dateLabel:"Date",
     privacyTitle:"Politique de confidentialité", fairnessTitle:"Jeu équitable et transparent",
     termsTitle:"Conditions d'utilisation", lastUpdate:"Dernière mise à jour : mars 2025",
@@ -887,6 +898,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Masuk untuk melihat peringkat VIP Anda dan klaim rakeback.",
     unlockIn:"Buka kunci di", allRanks:"Semua Peringkat", yourCategory:"Kategori Anda",
     wagerMin:"Taruhan min.", wagerMax:"Taruhan maks.", rakebackLabel2:"Rakeback",
+    tierBronze:"Perunggu", tierSilver:"Perak", tierGold:"Emas", tierPlatinum:"Platina", tierEmerald:"Zamrud",
+    onRankUp:"saat naik", youBadge:"Anda", rewardBadge:"Hadiah",
     notAvailable:"Tidak tersedia", dateLabel:"Tanggal",
     privacyTitle:"Kebijakan Privasi", fairnessTitle:"Permainan yang Adil dan Transparan",
     termsTitle:"Ketentuan Layanan", lastUpdate:"Terakhir diperbarui: Maret 2025",
@@ -1031,6 +1044,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Accedi per vedere il tuo rango VIP e riscuotere il rakeback.",
     unlockIn:"Sblocca a", allRanks:"Tutti i gradi", yourCategory:"La tua categoria",
     wagerMin:"Puntata min.", wagerMax:"Puntata max.", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronzo", tierSilver:"Argento", tierGold:"Oro", tierPlatinum:"Platino", tierEmerald:"Smeraldo",
+    onRankUp:"alla promozione", youBadge:"Tu", rewardBadge:"Ricompensa",
     notAvailable:"Non disponibile", dateLabel:"Data",
     privacyTitle:"Informativa sulla Privacy", fairnessTitle:"Gioco Equo e Trasparente",
     termsTitle:"Termini di Servizio", lastUpdate:"Ultimo aggiornamento: Marzo 2025",
@@ -1175,6 +1190,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"VIP 등급을 보고 레이크백을 청구하려면 로그인하세요.",
     unlockIn:"잠금 해제:", allRanks:"모든 등급", yourCategory:"내 등급",
     wagerMin:"최소 배팅", wagerMax:"최대 배팅", rakebackLabel2:"레이크백",
+    tierBronze:"브론즈", tierSilver:"실버", tierGold:"골드", tierPlatinum:"플래티넘", tierEmerald:"에메랄드",
+    onRankUp:"랭크 업 시", youBadge:"나", rewardBadge:"보상",
     notAvailable:"이용 불가", dateLabel:"날짜",
     privacyTitle:"개인정보 보호정책", fairnessTitle:"공정하고 투명한 게임",
     termsTitle:"서비스 약관", lastUpdate:"최종 업데이트: 2025년 3월",
@@ -1319,6 +1336,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Log in om uw VIP-rang te zien en rakeback te claimen.",
     unlockIn:"Ontgrendelt bij", allRanks:"Alle rangen", yourCategory:"Uw categorie",
     wagerMin:"Min. inzet", wagerMax:"Max. inzet", rakebackLabel2:"Rakeback",
+    tierBronze:"Brons", tierSilver:"Zilver", tierGold:"Goud", tierPlatinum:"Platina", tierEmerald:"Smaragd",
+    onRankUp:"bij promotie", youBadge:"Jij", rewardBadge:"Beloning",
     notAvailable:"Niet beschikbaar", dateLabel:"Datum",
     privacyTitle:"Privacybeleid", fairnessTitle:"Eerlijk en transparant spel",
     termsTitle:"Servicevoorwaarden", lastUpdate:"Laatste update: maart 2025",
@@ -1463,6 +1482,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Zaloguj się, aby zobaczyć swój rang VIP i odebrać rakeback.",
     unlockIn:"Odblokowane przy", allRanks:"Wszystkie rangi", yourCategory:"Twoja kategoria",
     wagerMin:"Min. zakład", wagerMax:"Maks. zakład", rakebackLabel2:"Rakeback",
+    tierBronze:"Brąz", tierSilver:"Srebro", tierGold:"Złoto", tierPlatinum:"Platyna", tierEmerald:"Szmaragd",
+    onRankUp:"przy awansie", youBadge:"Ty", rewardBadge:"Nagroda",
     notAvailable:"Niedostępny", dateLabel:"Data",
     privacyTitle:"Polityka prywatności", fairnessTitle:"Uczciwa i przejrzysta gra",
     termsTitle:"Warunki korzystania", lastUpdate:"Ostatnia aktualizacja: marzec 2025",
@@ -1607,6 +1628,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"Войдите, чтобы увидеть ваш VIP-ранг и получить рейкбек.",
     unlockIn:"Разблокируется при", allRanks:"Все ранги", yourCategory:"Ваша категория",
     wagerMin:"Мин. ставка", wagerMax:"Макс. ставка", rakebackLabel2:"Рейкбек",
+    tierBronze:"Бронза", tierSilver:"Серебро", tierGold:"Золото", tierPlatinum:"Платина", tierEmerald:"Изумруд",
+    onRankUp:"при повышении", youBadge:"Ты", rewardBadge:"Награда",
     notAvailable:"Недоступно", dateLabel:"Дата",
     privacyTitle:"Политика конфиденциальности", fairnessTitle:"Честная и прозрачная игра",
     termsTitle:"Условия использования", lastUpdate:"Последнее обновление: Март 2025",
@@ -1751,6 +1774,8 @@ const LANGS: Record<string, Record<string, string>> = {
     loginForVip:"VIP rütbenizi görmek ve rakeback talep etmek için giriş yapın.",
     unlockIn:"Kilit açma:", allRanks:"Tüm Rütbeler", yourCategory:"Kategoriniz",
     wagerMin:"Min. bahis", wagerMax:"Maks. bahis", rakebackLabel2:"Rakeback",
+    tierBronze:"Bronz", tierSilver:"Gümüş", tierGold:"Altın", tierPlatinum:"Platin", tierEmerald:"Zümrüt",
+    onRankUp:"rankta yükselirken", youBadge:"Sen", rewardBadge:"Ödül",
     notAvailable:"Mevcut değil", dateLabel:"Tarih",
     privacyTitle:"Gizlilik Politikası", fairnessTitle:"Adil ve Şeffaf Oyun",
     termsTitle:"Hizmet Şartları", lastUpdate:"Son güncelleme: Mart 2025",
@@ -8116,15 +8141,15 @@ export default function App() {
                         { tier:"Gold",     gradient:"linear-gradient(135deg,#f4a91f,#c07800)", image:"/ranks/gold-iii.png",     range:"$40 – $200", color:"#f4a91f" },
                         { tier:"Platinum", gradient:"linear-gradient(135deg,#b8c8e8,#7080a0)", image:"/ranks/platinum-iii.png", range:"$200 – $1K", color:"#b8c8e8" },
                         { tier:"Emerald",  gradient:"linear-gradient(135deg,#4dd890,#1a8850)", image:"/ranks/emerald-iii.png",  range:"$1K – $7K",  color:"#4dd890" },
-                      ].map(t => (
-                        <div key={t.tier} style={{ background:"#0e1826", border:`1px solid ${border}`, borderRadius:"14px", padding:"16px 10px", textAlign:"center" as const, position:"relative", overflow:"hidden" }}>
-                          <div style={{ position:"absolute", inset:0, background:t.gradient, opacity:0.04, pointerEvents:"none" }} />
-                          <div style={{ width:"52px", height:"52px", borderRadius:"14px", overflow:"hidden", margin:"0 auto 8px", border:`1px solid ${t.color}40` }}>
-                            <img src={t.image} alt={t.tier} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
+                      ].map(card => (
+                        <div key={card.tier} style={{ background:"#0e1826", border:`1px solid ${border}`, borderRadius:"14px", padding:"16px 10px", textAlign:"center" as const, position:"relative", overflow:"hidden" }}>
+                          <div style={{ position:"absolute", inset:0, background:card.gradient, opacity:0.04, pointerEvents:"none" }} />
+                          <div style={{ width:"52px", height:"52px", borderRadius:"14px", overflow:"hidden", margin:"0 auto 8px", border:`1px solid ${card.color}40` }}>
+                            <img src={card.image} alt={card.tier} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                           </div>
-                          <div style={{ fontSize:"11px", fontWeight:800, background:t.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", marginBottom:"7px", letterSpacing:"0.4px" }}>{t.tier}</div>
-                          <div style={{ fontSize:"15px", fontWeight:900, color:"#00d95f" }}>{t.range}</div>
-                          <div style={{ fontSize:"9px", color:"#4a5568", marginTop:"5px", letterSpacing:"0.6px", textTransform:"uppercase" as const }}>al subir</div>
+                          <div style={{ fontSize:"11px", fontWeight:800, background:card.gradient, WebkitBackgroundClip:"text" as const, WebkitTextFillColor:"transparent", marginBottom:"7px", letterSpacing:"0.4px" }}>{t("tier" + card.tier)}</div>
+                          <div style={{ fontSize:"15px", fontWeight:900, color:"#00d95f" }}>{card.range}</div>
+                          <div style={{ fontSize:"9px", color:"#4a5568", marginTop:"5px", letterSpacing:"0.6px", textTransform:"uppercase" as const }}>{t("onRankUp")}</div>
                         </div>
                       ))}
                     </div>
@@ -8139,7 +8164,7 @@ export default function App() {
                       </div>
                       <div>
                         <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>{t("allRanks")}</div>
-                        <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"2px" }}>15 niveles · Bronze → Emerald · rakeback creciente</div>
+                        <div style={{ fontSize:"11px", color:"#4a5568", marginTop:"2px" }}>{gt(lang ?? "es", "allRanksDesc")}</div>
                       </div>
                     </div>
 
@@ -8158,7 +8183,7 @@ export default function App() {
                               <div style={{ width:"22px", height:"22px", borderRadius:"6px", overflow:"hidden", border:`1px solid ${first.color}50` }}>
                                 <img src={`/ranks/${tier.toLowerCase()}-iii.png`} alt={tier} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                               </div>
-                              <span style={{ fontSize:"12px", fontWeight:900, color:first.color, letterSpacing:"1.5px", textTransform:"uppercase" as const }}>{tier}</span>
+                              <span style={{ fontSize:"12px", fontWeight:900, color:first.color, letterSpacing:"1.5px", textTransform:"uppercase" as const }}>{t("tier" + tier)}</span>
                               {tierActive && <span style={{ fontSize:"10px", fontWeight:700, color:first.color, background:`${first.color}18`, border:`1px solid ${first.color}40`, borderRadius:"20px", padding:"1px 8px" }}>{t("yourCategory")}</span>}
                             </div>
                             <div style={{ flex:1, height:"1px", background:`linear-gradient(90deg,${first.color}30,transparent)` }} />
@@ -8185,7 +8210,7 @@ export default function App() {
                                   {/* Current badge */}
                                   {isCurrent && (
                                     <div style={{ position:"absolute", top:"9px", right:"9px", background:r.color, borderRadius:"6px", padding:"2px 7px", fontSize:"9px", fontWeight:900, color:"#0a0a0a", letterSpacing:"0.5px", textTransform:"uppercase" as const }}>
-                                      Tú
+                                      {t("youBadge")}
                                     </div>
                                   )}
 
@@ -8195,7 +8220,7 @@ export default function App() {
                                   </div>
 
                                   {/* Rank name */}
-                                  <div style={{ fontSize:"13px", fontWeight:900, color: isCurrent ? r.color : "#c8d8ec", marginBottom:"8px", letterSpacing:"0.2px" }}>{r.name}</div>
+                                  <div style={{ fontSize:"13px", fontWeight:900, color: isCurrent ? r.color : "#c8d8ec", marginBottom:"8px", letterSpacing:"0.2px" }}>{r.name.replace(/^(Bronze|Silver|Gold|Platinum|Emerald)/, m => t("tier" + m))}</div>
 
                                   {/* Stats */}
                                   <div style={{ display:"flex", flexDirection:"column" as const, gap:"4px" }}>
@@ -8217,11 +8242,11 @@ export default function App() {
                                       <>
                                         <div style={{ height:"1px", background:"#1a2538", margin:"6px 0 8px" }} />
                                         <div style={{ background:`${r.color}12`, border:`1px solid ${r.color}35`, borderRadius:"9px", padding:"8px 10px", marginBottom:"2px" }}>
-                                          <div style={{ fontSize:"9px", fontWeight:800, color:r.color, letterSpacing:"1px", textTransform:"uppercase" as const, marginBottom:"4px" }}>🎁 Recompensa</div>
+                                          <div style={{ fontSize:"9px", fontWeight:800, color:r.color, letterSpacing:"1px", textTransform:"uppercase" as const, marginBottom:"4px" }}>{"🎁 " + t("rewardBadge")}</div>
                                           <div style={{ fontSize:"16px", fontWeight:900, color:"#22c55e", marginBottom:"6px" }}>+{fmtMoney(rankPendingReward.amount)}</div>
                                           <button onClick={claimRankReward}
                                             style={{ width:"100%", background:r.gradient, border:"none", borderRadius:"7px", padding:"7px 0", fontSize:"12px", fontWeight:800, color:"#fff", cursor:"pointer", boxShadow:`0 3px 12px ${r.color}44`, fontFamily:"'Inter',sans-serif" }}>
-                                            Reclamar
+                                            {t("claimNow")}
                                           </button>
                                         </div>
                                       </>
