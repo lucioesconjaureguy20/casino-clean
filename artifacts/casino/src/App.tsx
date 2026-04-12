@@ -64,7 +64,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Mínimo de apuesta:", minBetsCount:"Ingresá un número de apuestas válido (mínimo 1)",
     noBetsYet:"Sin apuestas todavía",
     recentWins:"Ganancias Recientes", noRecentWins:"Sin apuestas todavía — ¡jugá una partida para verlas aquí!",
-    viewAll:"Ver todo", comingSoon:"Próximamente", availableNow:"Disponible ahora",
+    viewAll:"Ver todo", comingSoon:"Próximamente", availableNow:"Disponible ahora", moreFromMander:"Más de Mander Originals",
     completed:"Completado", pending:"Pendiente", expired:"Expirado", rejected:"Rechazado",
     colDate:"FECHA", colGame:"JUEGO", colBet:"APUESTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGO", accumulated:"Acumulado", noBalance:"Sin saldo",
     txColType:"TIPO", txColCur:"MONEDA", txColNet:"RED", txColStatus:"ESTADO", rwColDir:"DIRECCIÓN", rwColAmt:"CANTIDAD", rwColBal:"SALDO", rwColFor:"PARA/DE", rwColNote:"NOTA",
@@ -239,7 +239,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Minimum bet:", minBetsCount:"Enter a valid number of bets (min 1)",
     noBetsYet:"No bets yet",
     recentWins:"Recent Wins", noRecentWins:"No bets yet — play a game to see them here!",
-    viewAll:"View All", comingSoon:"Coming Soon", availableNow:"Available Now",
+    viewAll:"View All", comingSoon:"Coming Soon", availableNow:"Available Now", moreFromMander:"More from Mander Originals",
     completed:"Completed", pending:"Pending", expired:"Expired", rejected:"Rejected",
     colDate:"DATE", colGame:"GAME", colBet:"BET", colMultiplier:"MULTIPLIER", colPayout:"PAYOUT", accumulated:"Accumulated", noBalance:"No Balance",
     txColType:"TYPE", txColCur:"CURRENCY", txColNet:"NETWORK", txColStatus:"STATUS", rwColDir:"DIRECTION", rwColAmt:"AMOUNT", rwColBal:"BALANCE", rwColFor:"FOR/FROM", rwColNote:"NOTE",
@@ -414,7 +414,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Aposta mínima:", minBetsCount:"Insira um número válido de apostas (mínimo 1)",
     noBetsYet:"Sem apostas ainda",
     recentWins:"Vitórias Recentes", noRecentWins:"Sem apostas ainda — jogue um jogo para vê-las aqui!",
-    viewAll:"Ver todos", comingSoon:"Em Breve", availableNow:"Disponível agora",
+    viewAll:"Ver todos", comingSoon:"Em Breve", availableNow:"Disponível agora", moreFromMander:"Mais de Mander Originals",
     completed:"Concluído", pending:"Pendente", expired:"Expirado", rejected:"Rejeitado",
     colDate:"DATA", colGame:"JOGO", colBet:"APOSTA", colMultiplier:"MULTIPLICADOR", colPayout:"PAGAMENTO", accumulated:"Acumulado",
     txColType:"TIPO", txColCur:"MOEDA", txColNet:"REDE", txColStatus:"ESTADO", rwColDir:"DIREÇÃO", rwColAmt:"QUANTIDADE", rwColBal:"SALDO", rwColFor:"PARA/DE", rwColNote:"NOTA",
@@ -584,7 +584,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Mindesteinsatz:", minBetsCount:"Gib eine gültige Anzahl von Wetten ein (min. 1)",
     noBetsYet:"Noch keine Wetten",
     recentWins:"Aktuelle Gewinne", noRecentWins:"Noch keine Wetten — spiel ein Spiel, um sie hier zu sehen!",
-    viewAll:"Alle anzeigen", comingSoon:"Demnächst", availableNow:"Jetzt verfügbar",
+    viewAll:"Alle anzeigen", comingSoon:"Demnächst", availableNow:"Jetzt verfügbar", moreFromMander:"Mehr von Mander Originals",
     completed:"Abgeschlossen", pending:"Ausstehend", expired:"Abgelaufen", rejected:"Abgelehnt",
     colDate:"DATUM", colGame:"SPIEL", colBet:"EINSATZ", colMultiplier:"MULTIPLIKATOR", colPayout:"AUSZAHLUNG", accumulated:"Akkumuliert",
     txColType:"TYP", txColCur:"WÄHRUNG", txColNet:"NETZWERK", txColStatus:"STATUS", rwColDir:"RICHTUNG", rwColAmt:"BETRAG", rwColBal:"SALDO", rwColFor:"FÜR/VON", rwColNote:"NOTIZ",
@@ -754,7 +754,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Mise minimale:", minBetsCount:"Entrez un nombre de mises valide (min 1)",
     noBetsYet:"Aucune mise pour l'instant",
     recentWins:"Gains Récents", noRecentWins:"Aucune mise pour l'instant — jouez pour les voir ici!",
-    viewAll:"Voir tout", comingSoon:"Bientôt", availableNow:"Disponible maintenant",
+    viewAll:"Voir tout", comingSoon:"Bientôt", availableNow:"Disponible maintenant", moreFromMander:"Plus de Mander Originals",
     completed:"Terminé", pending:"En attente", expired:"Expiré", rejected:"Rejeté",
     colDate:"DATE", colGame:"JEU", colBet:"MISE", colMultiplier:"MULTIPLICATEUR", colPayout:"PAIEMENT", accumulated:"Accumulé",
     txColType:"TYPE", txColCur:"DEVISE", txColNet:"RÉSEAU", txColStatus:"STATUT", rwColDir:"DIRECTION", rwColAmt:"MONTANT", rwColBal:"SOLDE", rwColFor:"POUR/DE", rwColNote:"NOTE",
@@ -924,7 +924,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Taruhan minimum:", minBetsCount:"Masukkan jumlah taruhan yang valid (min 1)",
     noBetsYet:"Belum ada taruhan",
     recentWins:"Kemenangan Terkini", noRecentWins:"Belum ada taruhan — mainkan permainan untuk melihatnya di sini!",
-    viewAll:"Lihat Semua", comingSoon:"Segera Hadir", availableNow:"Tersedia Sekarang",
+    viewAll:"Lihat Semua", comingSoon:"Segera Hadir", availableNow:"Tersedia Sekarang", moreFromMander:"Lebih dari Mander Originals",
     completed:"Selesai", pending:"Tertunda", expired:"Kedaluwarsa", rejected:"Ditolak",
     colDate:"TANGGAL", colGame:"GAME", colBet:"TARUHAN", colMultiplier:"PENGGANDA", colPayout:"PEMBAYARAN", accumulated:"Akumulasi",
     txColType:"TIPE", txColCur:"MATA UANG", txColNet:"JARINGAN", txColStatus:"STATUS", rwColDir:"ARAH", rwColAmt:"JUMLAH", rwColBal:"SALDO", rwColFor:"UNTUK/DARI", rwColNote:"CATATAN",
@@ -1094,7 +1094,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Scommessa minima:", minBetsCount:"Inserisci un numero valido di scommesse (min 1)",
     noBetsYet:"Nessuna scommessa",
     recentWins:"Vincite Recenti", noRecentWins:"Nessuna scommessa ancora — gioca per vederle qui!",
-    viewAll:"Vedi tutto", comingSoon:"Prossimamente", availableNow:"Disponibile ora",
+    viewAll:"Vedi tutto", comingSoon:"Prossimamente", availableNow:"Disponibile ora", moreFromMander:"Altro da Mander Originals",
     completed:"Completato", pending:"In attesa", expired:"Scaduto", rejected:"Rifiutato",
     colDate:"DATA", colGame:"GIOCO", colBet:"SCOMMESSA", colMultiplier:"MOLTIPLICATORE", colPayout:"VINCITA", accumulated:"Accumulato",
     txColType:"TIPO", txColCur:"VALUTA", txColNet:"RETE", txColStatus:"STATO", rwColDir:"DIREZIONE", rwColAmt:"IMPORTO", rwColBal:"SALDO", rwColFor:"PER/DA", rwColNote:"NOTA",
@@ -1264,7 +1264,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"최소 베팅:", minBetsCount:"유효한 베팅 횟수를 입력하세요 (최소 1)",
     noBetsYet:"베팅 내역 없음",
     recentWins:"최근 승리", noRecentWins:"아직 베팅 없음 — 게임을 시작하여 여기서 확인하세요!",
-    viewAll:"전체 보기", comingSoon:"출시 예정", availableNow:"지금 이용 가능",
+    viewAll:"전체 보기", comingSoon:"출시 예정", availableNow:"지금 이용 가능", moreFromMander:"맨더 오리지널 더보기",
     completed:"완료됨", pending:"대기 중", expired:"만료됨", rejected:"거부됨",
     colDate:"날짜", colGame:"게임", colBet:"베팅", colMultiplier:"배수", colPayout:"지급금", accumulated:"누적",
     txColType:"유형", txColCur:"화폐", txColNet:"네트워크", txColStatus:"상태", rwColDir:"방향", rwColAmt:"금액", rwColBal:"잔액", rwColFor:"대상/출처", rwColNote:"메모",
@@ -1434,7 +1434,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Minimale inzet:", minBetsCount:"Voer een geldig aantal inzetten in (min 1)",
     noBetsYet:"Nog geen inzetten",
     recentWins:"Recente Winsten", noRecentWins:"Nog geen inzetten — speel een spel om ze hier te zien!",
-    viewAll:"Alles zien", comingSoon:"Binnenkort", availableNow:"Nu beschikbaar",
+    viewAll:"Alles zien", comingSoon:"Binnenkort", availableNow:"Nu beschikbaar", moreFromMander:"Meer van Mander Originals",
     completed:"Voltooid", pending:"In afwachting", expired:"Verlopen", rejected:"Afgewezen",
     colDate:"DATUM", colGame:"SPEL", colBet:"INZET", colMultiplier:"VERMENIGVULDIGER", colPayout:"UITBETALING", accumulated:"Geaccumuleerd",
     txColType:"TYPE", txColCur:"VALUTA", txColNet:"NETWERK", txColStatus:"STATUS", rwColDir:"RICHTING", rwColAmt:"BEDRAG", rwColBal:"SALDO", rwColFor:"VOOR/VAN", rwColNote:"OPMERKING",
@@ -1604,7 +1604,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Minimalny zakład:", minBetsCount:"Wprowadź prawidłową liczbę zakładów (min 1)",
     noBetsYet:"Brak zakładów",
     recentWins:"Ostatnie Wygrane", noRecentWins:"Brak zakładów — zagraj, żeby je tu zobaczyć!",
-    viewAll:"Zobacz wszystko", comingSoon:"Wkrótce", availableNow:"Dostępne teraz",
+    viewAll:"Zobacz wszystko", comingSoon:"Wkrótce", availableNow:"Dostępne teraz", moreFromMander:"Więcej z Mander Originals",
     completed:"Zakończono", pending:"Oczekujące", expired:"Wygasło", rejected:"Odrzucono",
     colDate:"DATA", colGame:"GRA", colBet:"ZAKŁAD", colMultiplier:"MNOŻNIK", colPayout:"WYPŁATA", accumulated:"Zgromadzono",
     txColType:"TYP", txColCur:"WALUTA", txColNet:"SIEĆ", txColStatus:"STATUS", rwColDir:"KIERUNEK", rwColAmt:"KWOTA", rwColBal:"SALDO", rwColFor:"DLA/OD", rwColNote:"UWAGA",
@@ -1774,7 +1774,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Минимальная ставка:", minBetsCount:"Введите допустимое количество ставок (мин 1)",
     noBetsYet:"Ставок ещё нет",
     recentWins:"Недавние Выигрыши", noRecentWins:"Ставок пока нет — сыграйте, чтобы увидеть их здесь!",
-    viewAll:"Смотреть все", comingSoon:"Скоро", availableNow:"Доступно сейчас",
+    viewAll:"Смотреть все", comingSoon:"Скоро", availableNow:"Доступно сейчас", moreFromMander:"Ещё от Mander Originals",
     completed:"Завершено", pending:"В ожидании", expired:"Истёк", rejected:"Отклонено",
     colDate:"ДАТА", colGame:"ИГРА", colBet:"СТАВКА", colMultiplier:"МНОЖИТЕЛЬ", colPayout:"ВЫПЛАТА", accumulated:"Накоплено",
     txColType:"ТИП", txColCur:"ВАЛЮТА", txColNet:"СЕТЬ", txColStatus:"СТАТУС", rwColDir:"НАПРАВЛЕНИЕ", rwColAmt:"СУММА", rwColBal:"БАЛАНС", rwColFor:"ДЛЯ/ОТ", rwColNote:"ЗАМЕТКА",
@@ -1944,7 +1944,7 @@ const LANGS: Record<string, Record<string, string>> = {
     minBet:"Minimum bahis:", minBetsCount:"Geçerli bir bahis sayısı girin (min 1)",
     noBetsYet:"Henüz bahis yok",
     recentWins:"Son Kazanımlar", noRecentWins:"Henüz bahis yok — burada görmek için oyun oynayın!",
-    viewAll:"Tümünü Gör", comingSoon:"Yakında", availableNow:"Şu An Mevcut",
+    viewAll:"Tümünü Gör", comingSoon:"Yakında", availableNow:"Şu An Mevcut", moreFromMander:"Mander Originals'dan Daha Fazla",
     completed:"Tamamlandı", pending:"Bekliyor", expired:"Süresi Doldu", rejected:"Reddedildi",
     colDate:"TARİH", colGame:"OYUN", colBet:"BAHİS", colMultiplier:"ÇARPAN", colPayout:"ÖDEME", accumulated:"Birikmiş",
     txColType:"TÜR", txColCur:"PARA BİRİMİ", txColNet:"AĞ", txColStatus:"DURUM", rwColDir:"YÖN", rwColAmt:"MİKTAR", rwColBal:"BAKİYE", rwColFor:"İÇİN/KİMDEN", rwColNote:"NOT",
@@ -7653,7 +7653,7 @@ export default function App() {
                 {/* Header */}
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"28px" }}>
                   <div style={{ width:"3px", height:"22px", background:"linear-gradient(180deg,#f4a91f,#e08000)", borderRadius:"2px", flexShrink:0 }} />
-                  <span style={{ fontWeight:800, fontSize:"17px", letterSpacing:"0.03em", color:"#fff", textTransform:"uppercase" }}>MÁS DE MANDER ORIGINALS</span>
+                  <span style={{ fontWeight:800, fontSize:"17px", letterSpacing:"0.03em", color:"#fff", textTransform:"uppercase" }}>{t("moreFromMander")}</span>
                 </div>
                 {/* Grid */}
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))", gap:"18px" }}>
@@ -11003,7 +11003,7 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
       <div style={{ display:"flex", alignItems:"center", gap:"14px", marginBottom:"16px" }}>
         <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
           <div style={{ width:"3px", height:"20px", borderRadius:"2px", background:"linear-gradient(180deg,#f4a91f,#e08000)", flexShrink:0 }}/>
-          <span style={{ fontWeight:800, fontSize:"15px", color:"#fff", letterSpacing:"0.03em", textTransform:"uppercase" }}>MÁS DE MANDER ORIGINALS</span>
+          <span style={{ fontWeight:800, fontSize:"15px", color:"#fff", letterSpacing:"0.03em", textTransform:"uppercase" }}>{t("moreFromMander")}</span>
         </div>
         <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:"8px" }}>
           <button
