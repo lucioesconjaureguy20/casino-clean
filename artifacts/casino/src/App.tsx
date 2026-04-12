@@ -138,6 +138,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Comisiones",
     welcomeTo:"¡Bienvenido a", joinNow:"Únete ahora", nextPage:"Siguiente →", prevPage:"← Anterior",
     rbInstant:"Rakeback Instantáneo", rbWeekly:"Bono Semanal", rbMonthly:"Bono Mensual",
+    rbFreqInstant:"Cada 1 hora", rbFreqWeekly:"Lunes 17:00 UTC", rbFreqMonthly:"Día 1 de cada mes",
+    rbTipInstant:"El 40% de tu rakeback se genera con cada apuesta. El contador se reinicia cada hora.", rbTipWeekly:"El 35% se acumula durante la semana. Se habilita cada lunes a las 05:00 PM UTC.", rbTipMonthly:"El 25% conforma tu fondo mensual. Se libera el día 1 de cada mes a las 12:00 AM UTC.",
     rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Acumula rakeback en cada apuesta · Sube de rango · Desbloquea recompensas",
@@ -313,6 +315,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Commissions",
     welcomeTo:"Welcome to", joinNow:"Join Now", nextPage:"Next →", prevPage:"← Previous",
     rbInstant:"Instant Rakeback", rbWeekly:"Weekly Bonus", rbMonthly:"Monthly Bonus",
+    rbFreqInstant:"Every 1 hour", rbFreqWeekly:"Monday 17:00 UTC", rbFreqMonthly:"1st of each month",
+    rbTipInstant:"40% of your rakeback is generated with each bet. The counter resets every hour.", rbTipWeekly:"35% accumulates during the week. Unlocks every Monday at 05:00 PM UTC.", rbTipMonthly:"25% forms your monthly fund. Released on the 1st of each month at 12:00 AM UTC.",
     rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Earn rakeback on every bet · Climb the ranks · Unlock rewards",
@@ -485,6 +489,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Comissões",
     welcomeTo:"Bem-vindo ao", joinNow:"Entrar agora", nextPage:"Próximo →", prevPage:"← Anterior",
     rbInstant:"Rakeback Instantâneo", rbWeekly:"Bônus Semanal", rbMonthly:"Bônus Mensal",
+    rbFreqInstant:"A cada 1 hora", rbFreqWeekly:"Segunda 17:00 UTC", rbFreqMonthly:"Dia 1 de cada mês",
+    rbTipInstant:"40% do seu rakeback é gerado a cada aposta. O contador reinicia a cada hora.", rbTipWeekly:"35% acumula durante a semana. Liberado toda segunda às 17:00 UTC.", rbTipMonthly:"25% forma seu fundo mensal. Liberado no dia 1 de cada mês às 00:00 UTC.",
     rbPools:"Rakeback Pools", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Ganhe rakeback em cada aposta · Suba de rank · Desbloqueie recompensas",
@@ -657,6 +663,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Provisionen",
     welcomeTo:"Willkommen bei", joinNow:"Jetzt beitreten", nextPage:"Weiter →", prevPage:"← Zurück",
     rbInstant:"Sofortiger Rakeback", rbWeekly:"Wöchentlicher Bonus", rbMonthly:"Monatlicher Bonus",
+    rbFreqInstant:"Jede Stunde", rbFreqWeekly:"Montag 17:00 UTC", rbFreqMonthly:"1. des Monats",
+    rbTipInstant:"40% deines Rakebacks wird mit jeder Wette generiert. Der Zähler setzt sich stündlich zurück.", rbTipWeekly:"35% akkumuliert sich wöchentlich. Wird jeden Montag um 17:00 UTC freigeschaltet.", rbTipMonthly:"25% bildet deinen monatlichen Fonds. Wird am 1. jedes Monats um 00:00 UTC freigegeben.",
     rbPools:"Rakeback-Pools", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Sammle Rakeback bei jedem Einsatz · Steige im Rang auf · Schalte Belohnungen frei",
@@ -829,6 +837,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Commissions",
     welcomeTo:"Bienvenue sur", joinNow:"Rejoindre maintenant", nextPage:"Suivant →", prevPage:"← Précédent",
     rbInstant:"Rakeback Instantané", rbWeekly:"Bonus Hebdomadaire", rbMonthly:"Bonus Mensuel",
+    rbFreqInstant:"Toutes les heures", rbFreqWeekly:"Lundi 17:00 UTC", rbFreqMonthly:"1er de chaque mois",
+    rbTipInstant:"40% de votre rakeback est généré à chaque mise. Le compteur se réinitialise chaque heure.", rbTipWeekly:"35% s'accumule durant la semaine. Débloqué chaque lundi à 17:00 UTC.", rbTipMonthly:"25% constitue votre fonds mensuel. Libéré le 1er de chaque mois à 00:00 UTC.",
     rbPools:"Pools de Rakeback", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Gagnez du rakeback à chaque mise · Montez en grade · Débloquez des récompenses",
@@ -1001,6 +1011,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Komisi",
     welcomeTo:"Selamat datang di", joinNow:"Bergabung sekarang", nextPage:"Berikutnya →", prevPage:"← Sebelumnya",
     rbInstant:"Rakeback Instan", rbWeekly:"Bonus Mingguan", rbMonthly:"Bonus Bulanan",
+    rbFreqInstant:"Setiap 1 jam", rbFreqWeekly:"Senin 17:00 UTC", rbFreqMonthly:"Tgl 1 tiap bulan",
+    rbTipInstant:"40% rakeback Anda dihasilkan setiap taruhan. Penghitung direset setiap jam.", rbTipWeekly:"35% terkumpul selama seminggu. Dibuka setiap Senin pukul 17:00 UTC.", rbTipMonthly:"25% membentuk dana bulanan Anda. Dirilis tanggal 1 setiap bulan pukul 00:00 UTC.",
     rbPools:"Kumpulan Rakeback", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Dapatkan rakeback di setiap taruhan · Naik peringkat · Buka hadiah",
@@ -1173,6 +1185,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Commissioni",
     welcomeTo:"Benvenuto su", joinNow:"Unisciti ora", nextPage:"Avanti →", prevPage:"← Precedente",
     rbInstant:"Rakeback Istantaneo", rbWeekly:"Bonus Settimanale", rbMonthly:"Bonus Mensile",
+    rbFreqInstant:"Ogni ora", rbFreqWeekly:"Lunedì 17:00 UTC", rbFreqMonthly:"1° di ogni mese",
+    rbTipInstant:"Il 40% del tuo rakeback viene generato ad ogni scommessa. Il contatore si azzera ogni ora.", rbTipWeekly:"Il 35% si accumula durante la settimana. Si sblocca ogni lunedì alle 17:00 UTC.", rbTipMonthly:"Il 25% forma il tuo fondo mensile. Rilasciato il 1° di ogni mese alle 00:00 UTC.",
     rbPools:"Pool di Rakeback", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Guadagna rakeback su ogni scommessa · Scala i ranghi · Sblocca premi",
@@ -1345,6 +1359,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"커미션",
     welcomeTo:"에 오신 것을 환영합니다", joinNow:"지금 가입", nextPage:"다음 →", prevPage:"← 이전",
     rbInstant:"즉시 레이크백", rbWeekly:"주간 보너스", rbMonthly:"월간 보너스",
+    rbFreqInstant:"매 1시간", rbFreqWeekly:"월요일 17:00 UTC", rbFreqMonthly:"매월 1일",
+    rbTipInstant:"레이크백의 40%는 각 베팅마다 생성됩니다. 카운터는 매 시간 초기화됩니다.", rbTipWeekly:"35%는 주 동안 누적됩니다. 매주 월요일 17:00 UTC에 잠금 해제됩니다.", rbTipMonthly:"25%는 월별 펀드를 구성합니다. 매월 1일 00:00 UTC에 지급됩니다.",
     rbPools:"레이크백 풀", rakebackLabel:"레이크백",
     vipRakebackTitle:"VIP & 레이크백",
     vipSubtitle:"모든 베팅에서 레이크백 획득 · 순위 상승 · 보상 잠금 해제",
@@ -1517,6 +1533,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Commissies",
     welcomeTo:"Welkom bij", joinNow:"Nu meedoen", nextPage:"Volgende →", prevPage:"← Vorige",
     rbInstant:"Directe Rakeback", rbWeekly:"Wekelijkse Bonus", rbMonthly:"Maandelijkse Bonus",
+    rbFreqInstant:"Elk uur", rbFreqWeekly:"Maandag 17:00 UTC", rbFreqMonthly:"1e van elke maand",
+    rbTipInstant:"40% van je rakeback wordt gegenereerd bij elke inzet. De teller wordt elk uur gereset.", rbTipWeekly:"35% accumuleert gedurende de week. Ontgrendeld elke maandag om 17:00 UTC.", rbTipMonthly:"25% vormt je maandelijks fonds. Vrijgegeven op de 1e van elke maand om 00:00 UTC.",
     rbPools:"Rakeback-pools", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Verdien rakeback bij elke inzet · Klim in de rangen · Ontgrendel beloningen",
@@ -1689,6 +1707,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Prowizje",
     welcomeTo:"Witaj w", joinNow:"Dołącz teraz", nextPage:"Dalej →", prevPage:"← Wstecz",
     rbInstant:"Natychmiastowy Rakeback", rbWeekly:"Bonus Tygodniowy", rbMonthly:"Bonus Miesięczny",
+    rbFreqInstant:"Co godzinę", rbFreqWeekly:"Poniedziałek 17:00 UTC", rbFreqMonthly:"1. każdego miesiąca",
+    rbTipInstant:"40% twojego rakebacku jest generowane przy każdym zakładzie. Licznik resetuje się co godzinę.", rbTipWeekly:"35% gromadzi się w ciągu tygodnia. Odblokowuje się w każdy poniedziałek o 17:00 UTC.", rbTipMonthly:"25% stanowi twój fundusz miesięczny. Wypłacany 1. każdego miesiąca o 00:00 UTC.",
     rbPools:"Pule Rakeback", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Zdobywaj rakeback przy każdym zakładzie · Awansuj w rankingu · Odblokuj nagrody",
@@ -1861,6 +1881,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Комиссии",
     welcomeTo:"Добро пожаловать в", joinNow:"Присоединиться", nextPage:"Далее →", prevPage:"← Назад",
     rbInstant:"Мгновенный рейкбэк", rbWeekly:"Еженедельный бонус", rbMonthly:"Ежемесячный бонус",
+    rbFreqInstant:"Каждый час", rbFreqWeekly:"Понедельник 17:00 UTC", rbFreqMonthly:"1-е каждого месяца",
+    rbTipInstant:"40% вашего рейкбэка генерируется с каждой ставкой. Счётчик сбрасывается каждый час.", rbTipWeekly:"35% накапливается в течение недели. Разблокируется каждый понедельник в 17:00 UTC.", rbTipMonthly:"25% формирует ваш ежемесячный фонд. Выплачивается 1-го каждого месяца в 00:00 UTC.",
     rbPools:"Пулы рейкбэка", rakebackLabel:"Рейкбэк",
     vipRakebackTitle:"VIP & Рейкбэк",
     vipSubtitle:"Получайте рейкбэк на каждую ставку · Повышайте ранг · Открывайте награды",
@@ -2033,6 +2055,8 @@ const LANGS: Record<string, Record<string, string>> = {
     affCommissions:"Komisyonlar",
     welcomeTo:"Hoş geldiniz", joinNow:"Şimdi katıl", nextPage:"İleri →", prevPage:"← Geri",
     rbInstant:"Anında Rakeback", rbWeekly:"Haftalık Bonus", rbMonthly:"Aylık Bonus",
+    rbFreqInstant:"Her saat", rbFreqWeekly:"Pazartesi 17:00 UTC", rbFreqMonthly:"Her ayın 1'i",
+    rbTipInstant:"Rake'inizin %40'ı her bahisle oluşturulur. Sayaç her saat sıfırlanır.", rbTipWeekly:"%35 hafta boyunca birikir. Her Pazartesi 17:00 UTC'de açılır.", rbTipMonthly:"%25 aylık fonunuzu oluşturur. Her ayın 1'inde 00:00 UTC'de serbest bırakılır.",
     rbPools:"Rakeback Havuzları", rakebackLabel:"Rakeback",
     vipRakebackTitle:"VIP & Rakeback",
     vipSubtitle:"Her bahiste rakeback kazan · Rütbe yükselt · Ödüllerin kilidini aç",
@@ -8292,27 +8316,27 @@ export default function App() {
                       <div className="rb-pools-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", marginBottom:"14px" }}>
                         {([
                           {
-                            label:"Instantáneo", pct:"40%", freq:"Cada 1 hora",
+                            label:t("rbInstant"), pct:"40%", freq:t("rbFreqInstant"), isInstant:true,
                             amount:rbInstant, canClaim:canI, timer:iTimer, onClaim:doClaimInstant,
                             accent:"#f4a91f", accentDim:"#f4a91f18", locked:!canI,
-                            tip:"El 40% de tu rakeback se genera con cada apuesta. El contador se reinicia cada hora.",
+                            tip:t("rbTipInstant"),
                             icon:(<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>),
                           },
                           {
-                            label:"Semanal", pct:"35%", freq:"Lunes 17:00 UTC",
+                            label:t("rbWeekly"), pct:"35%", freq:t("rbFreqWeekly"), isInstant:false,
                             amount:rbWeekly, canClaim:canW, timer:wTimer, onClaim:doClaimWeekly,
                             accent:"#6c8ae4", accentDim:"#6c8ae418", locked:!canW,
-                            tip:"El 35% se acumula durante la semana. Se habilita cada lunes a las 05:00 PM UTC.",
+                            tip:t("rbTipWeekly"),
                             icon:(<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>),
                           },
                           {
-                            label:"Mensual", pct:"25%", freq:"Día 1 de cada mes",
+                            label:t("rbMonthly"), pct:"25%", freq:t("rbFreqMonthly"), isInstant:false,
                             amount:rbMonthly, canClaim:canM, timer:mTimer, onClaim:doClaimMonthly,
                             accent:"#9b6cda", accentDim:"#9b6cda18", locked:!canM,
-                            tip:"El 25% conforma tu fondo mensual. Se libera el día 1 de cada mes a las 12:00 AM UTC.",
+                            tip:t("rbTipMonthly"),
                             icon:(<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>),
                           },
-                        ] as { label:string; pct:string; freq:string; amount:number; canClaim:boolean; timer:string; onClaim:()=>void; accent:string; accentDim:string; locked:boolean; tip:string; icon:React.ReactNode }[]).map(c => {
+                        ] as { label:string; pct:string; freq:string; isInstant:boolean; amount:number; canClaim:boolean; timer:string; onClaim:()=>void; accent:string; accentDim:string; locked:boolean; tip:string; icon:React.ReactNode }[]).map(c => {
                           const isAvail = c.canClaim && c.amount > 0;
                           return (
                           <div key={c.label} className="rb-card" style={{ background:bg, border:`1px solid ${isAvail ? c.accent+"70" : border}`, borderRadius:"16px", overflow:"visible", display:"flex", flexDirection:"column" as const, transition:"border-color .3s, box-shadow .3s", boxShadow: isAvail ? `0 0 22px ${c.accent}28` : "none", position:"relative" as const }}>
@@ -8364,7 +8388,7 @@ export default function App() {
                                 </div>
                                 <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
                                   <div style={{ fontSize:"30px", fontWeight:900, color: isAvail ? "#00d95f" : c.locked ? c.accent+"99" : "#263040", letterSpacing:"-0.5px", transition:"color .3s", userSelect:"none" as const }}>
-                                    {(c.locked && c.label !== "Instantáneo") ? "$\u2022\u2022\u2022\u2022\u2022\u2022" : `$${c.amount.toFixed(4)}`}
+                                    {(c.locked && !c.isInstant) ? "$\u2022\u2022\u2022\u2022\u2022\u2022" : `$${c.amount.toFixed(4)}`}
                                   </div>
                                 </div>
                                 {c.locked && c.amount > 0 && (
