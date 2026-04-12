@@ -1343,8 +1343,8 @@ export default function BlackjackGame({
             <div style={{ width:"56px", height:"54px", background:"rgba(12,22,38,.82)", clipPath:"polygon(22px 0%, 100% 0%, 100% 100%, 22px 100%, 0% 50%)", flexShrink:0 }} />
             {/* Center text box */}
             <div style={{ background:"rgba(12,22,38,.82)", padding:"10px 20px", textAlign:"center" }}>
-              <div style={{ fontSize:"11px", fontWeight:500, letterSpacing:"3.5px", color:"rgba(255,255,255,.72)", textTransform:"uppercase" }}>Blackjack Pays 3 to 2</div>
-              <div style={{ fontSize:"10px", fontWeight:600, letterSpacing:"2.5px", color:"rgba(255,255,255,.45)", marginTop:"5px", textTransform:"uppercase" }}>Insurance Pays 2 to 1</div>
+              <div style={{ fontSize:"11px", fontWeight:500, letterSpacing:"3.5px", color:"rgba(255,255,255,.72)", textTransform:"uppercase" }}>{T("bjBlackjackPays")}</div>
+              <div style={{ fontSize:"10px", fontWeight:600, letterSpacing:"2.5px", color:"rgba(255,255,255,.45)", marginTop:"5px", textTransform:"uppercase" }}>{T("bjInsurancePays")}</div>
             </div>
             {/* Right ribbon tail */}
             <div style={{ width:"56px", height:"54px", background:"rgba(12,22,38,.82)", clipPath:"polygon(0% 0%, calc(100% - 22px) 0%, 100% 50%, calc(100% - 22px) 100%, 0% 100%)", flexShrink:0 }} />

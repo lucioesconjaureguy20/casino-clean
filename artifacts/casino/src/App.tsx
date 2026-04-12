@@ -169,6 +169,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com es propiedad de y está operado por Mander Group Ltd., número de registro: 27481, con dirección registrada en Kingstown, San Vicente y las Granadinas.",
     footerPara2:"Manderbet.com está licenciado y regulado por la Autoridad de Juego de Curaçao y opera bajo la Licencia Nº 365/JAZ. Mander cumple con todos los requisitos regulatorios aplicables y está autorizado para ofrecer servicios de juegos de azar y apuestas en línea.",
     gameDice:"Dados", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Minas", gameHilo:"Hilo", gameRoulette:"Ruleta", gameBaccarat:"Baccarat",
+    termsAndCond:"Términos y Condiciones", termsAcceptPre:"Acepto los", termsAcceptAnd:"y la",
+    ageDisclaimPre:"Al acceder al sitio, certifico que tengo al menos 18 años y he leído los",
     resetAction:"Reiniciar", increaseAction:"Aumentar",
     zeroOff:"0 = desactivado", statsLabel:"Estadísticas", volume:"Volumen", invertDir:"Invertir dirección",
     searchCurrency:"Buscar moneda...", searchCurrencies:"Buscar monedas...", searchGames:"Buscar juegos...",
@@ -335,6 +337,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com is owned and operated by Mander Group Ltd., registration number: 27481, with registered address in Kingstown, Saint Vincent and the Grenadines.",
     footerPara2:"Manderbet.com is licensed and regulated by the Curaçao Gaming Authority and operates under License No. 365/JAZ. Mander complies with all applicable regulatory requirements and is authorized to offer online gaming and betting services.",
     gameDice:"Dice", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Mines", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Terms and Conditions", termsAcceptPre:"I accept the", termsAcceptAnd:"and the",
+    ageDisclaimPre:"By accessing this site, I confirm I am at least 18 years old and have read the",
     resetAction:"Reset", increaseAction:"Increase",
     zeroOff:"0 = disabled", statsLabel:"Statistics", volume:"Volume", invertDir:"Invert direction",
     searchCurrency:"Search currency...", searchCurrencies:"Search currencies...", searchGames:"Search games...",
@@ -487,6 +491,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com é de propriedade e operado pela Mander Group Ltd., número de registro: 27481, com endereço registrado em Kingstown, São Vicente e Granadinas.",
     footerPara2:"Manderbet.com é licenciado e regulado pela Autoridade de Jogos de Curaçao e opera sob a Licença Nº 365/JAZ. Mander cumpre todos os requisitos regulatórios aplicáveis e está autorizado a oferecer serviços de jogos de azar e apostas online.",
     gameDice:"Dados", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Minas", gameHilo:"Hilo", gameRoulette:"Roleta", gameBaccarat:"Baccarat",
+    termsAndCond:"Termos e Condições", termsAcceptPre:"Aceito os", termsAcceptAnd:"e a",
+    ageDisclaimPre:"Ao acessar o site, certifico que tenho pelo menos 18 anos e li os",
     resetAction:"Reiniciar", increaseAction:"Aumentar",
     zeroOff:"0 = desativado", statsLabel:"Estatísticas", volume:"Volume", invertDir:"Inverter direção",
     searchCurrency:"Buscar moeda...", searchCurrencies:"Buscar moedas...", searchGames:"Buscar jogos...",
@@ -639,6 +645,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com ist Eigentum von und wird betrieben durch Mander Group Ltd., Registrierungsnummer: 27481, mit eingetragenem Sitz in Kingstown, St. Vincent und die Grenadinen.",
     footerPara2:"Manderbet.com ist lizenziert und reguliert durch die Curaçao Gaming Authority und betreibt unter Lizenz Nr. 365/JAZ. Mander erfüllt alle geltenden regulatorischen Anforderungen und ist berechtigt, Online-Glücksspiel- und Wettdienstleistungen anzubieten.",
     gameDice:"Würfel", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Minen", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Nutzungsbedingungen", termsAcceptPre:"Ich akzeptiere die", termsAcceptAnd:"und die",
+    ageDisclaimPre:"Durch den Zugriff bestätige ich, mindestens 18 Jahre alt zu sein und die",
     resetAction:"Zurücksetzen", increaseAction:"Erhöhen",
     zeroOff:"0 = deaktiviert", statsLabel:"Statistiken", volume:"Lautstärke", invertDir:"Richtung umkehren",
     searchCurrency:"Währung suchen...", searchCurrencies:"Währungen suchen...", searchGames:"Spiele suchen...",
@@ -791,6 +799,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com est détenu et exploité par Mander Group Ltd., numéro d'enregistrement : 27481, avec adresse enregistrée à Kingstown, Saint-Vincent-et-les-Grenadines.",
     footerPara2:"Manderbet.com est licencié et réglementé par l'Autorité de jeux de Curaçao et opère sous la licence Nº 365/JAZ. Mander respecte toutes les exigences réglementaires applicables et est autorisé à offrir des services de jeux en ligne.",
     gameDice:"Dés", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Mines", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Conditions Générales", termsAcceptPre:"J'accepte les", termsAcceptAnd:"et la",
+    ageDisclaimPre:"En accédant au site, je certifie avoir au moins 18 ans et avoir lu les",
     resetAction:"Réinitialiser", increaseAction:"Augmenter",
     zeroOff:"0 = désactivé", statsLabel:"Statistiques", volume:"Volume", invertDir:"Inverser la direction",
     searchCurrency:"Rechercher devise...", searchCurrencies:"Rechercher devises...", searchGames:"Rechercher jeux...",
@@ -943,6 +953,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com dimiliki dan dioperasikan oleh Mander Group Ltd., nomor registrasi: 27481, dengan alamat terdaftar di Kingstown, Saint Vincent dan Grenadines.",
     footerPara2:"Manderbet.com dilisensikan dan diatur oleh Otoritas Permainan Curaçao dan beroperasi di bawah Lisensi No. 365/JAZ. Mander memenuhi semua persyaratan regulasi yang berlaku dan berwenang untuk menawarkan layanan permainan dan taruhan online.",
     gameDice:"Dadu", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Ranjau", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Syarat dan Ketentuan", termsAcceptPre:"Saya menerima", termsAcceptAnd:"dan",
+    ageDisclaimPre:"Dengan mengakses situs, saya menyatakan berusia minimal 18 tahun dan telah membaca",
     resetAction:"Reset", increaseAction:"Naikkan",
     zeroOff:"0 = nonaktif", statsLabel:"Statistik", volume:"Volume", invertDir:"Balikkan arah",
     searchCurrency:"Cari mata uang...", searchCurrencies:"Cari mata uang...", searchGames:"Cari permainan...",
@@ -1095,6 +1107,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com è di proprietà di ed è gestito da Mander Group Ltd., numero di registrazione: 27481, con sede legale a Kingstown, Saint Vincent e Grenadine.",
     footerPara2:"Manderbet.com è autorizzato e regolamentato dall'Autorità di Gioco di Curaçao e opera con Licenza N. 365/JAZ. Mander rispetta tutti i requisiti normativi applicabili ed è autorizzato a offrire servizi di gioco d'azzardo e scommesse online.",
     gameDice:"Dadi", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Mine", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Termini e Condizioni", termsAcceptPre:"Accetto i", termsAcceptAnd:"e la",
+    ageDisclaimPre:"Accedendo al sito, certifico di avere almeno 18 anni e di aver letto i",
     resetAction:"Reimposta", increaseAction:"Aumenta",
     zeroOff:"0 = disabilitato", statsLabel:"Statistiche", volume:"Volume", invertDir:"Inverti direzione",
     searchCurrency:"Cerca valuta...", searchCurrencies:"Cerca valute...", searchGames:"Cerca giochi...",
@@ -1247,6 +1261,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com은 Mander Group Ltd.가 소유하고 운영합니다. 등록 번호: 27481, 등록 주소: 세인트빈센트 그레나딘 킹스타운.",
     footerPara2:"Manderbet.com은 큐라소 게임 당국의 라이선스를 받아 규제받으며, 라이선스 번호 365/JAZ로 운영됩니다. Mander는 모든 적용 가능한 규제 요건을 준수하며 온라인 게임 및 베팅 서비스를 제공할 수 있는 권한을 보유합니다.",
     gameDice:"주사위", gamePlinko:"플린코", gameKeno:"키노", gameBlackjack:"블랙잭", gameMines:"지뢰", gameHilo:"하이로", gameRoulette:"룰렛", gameBaccarat:"바카라",
+    termsAndCond:"이용약관", termsAcceptPre:"다음에 동의합니다:", termsAcceptAnd:"및",
+    ageDisclaimPre:"사이트에 접속함으로써 만 18세 이상이며 다음을 읽었음을 확인합니다:",
     resetAction:"초기화", increaseAction:"증가",
     zeroOff:"0 = 비활성", statsLabel:"통계", volume:"볼륨", invertDir:"방향 반전",
     searchCurrency:"통화 검색...", searchCurrencies:"통화 검색...", searchGames:"게임 검색...",
@@ -1399,6 +1415,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com is eigendom van en wordt geëxploiteerd door Mander Group Ltd., registratienummer: 27481, met geregistreerd adres in Kingstown, Saint Vincent en de Grenadines.",
     footerPara2:"Manderbet.com is gelicentieerd en gereguleerd door de Curaçao Gaming Authority en opereert onder Licentie Nr. 365/JAZ. Mander voldoet aan alle toepasselijke regelgevende vereisten en is gemachtigd om online gok- en weddiensten aan te bieden.",
     gameDice:"Dobbelstenen", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Mijnen", gameHilo:"Hilo", gameRoulette:"Roulette", gameBaccarat:"Baccarat",
+    termsAndCond:"Algemene voorwaarden", termsAcceptPre:"Ik accepteer de", termsAcceptAnd:"en het",
+    ageDisclaimPre:"Door de site te bezoeken bevestig ik dat ik minstens 18 jaar oud ben en de",
     resetAction:"Herstellen", increaseAction:"Verhogen",
     zeroOff:"0 = uitgeschakeld", statsLabel:"Statistieken", volume:"Volume", invertDir:"Richting omkeren",
     searchCurrency:"Valuta zoeken...", searchCurrencies:"Valuta's zoeken...", searchGames:"Spellen zoeken...",
@@ -1551,6 +1569,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com jest własnością i jest prowadzony przez Mander Group Ltd., numer rejestracyjny: 27481, z zarejestrowanym adresem w Kingstown, Saint Vincent i Grenadyny.",
     footerPara2:"Manderbet.com jest licencjonowany i regulowany przez Curaçao Gaming Authority i działa na podstawie Licencji Nr 365/JAZ. Mander spełnia wszystkie obowiązujące wymogi regulacyjne i jest upoważniony do oferowania usług gier i zakładów online.",
     gameDice:"Kości", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Miny", gameHilo:"Hilo", gameRoulette:"Ruletka", gameBaccarat:"Baccarat",
+    termsAndCond:"Regulamin", termsAcceptPre:"Akceptuję", termsAcceptAnd:"i",
+    ageDisclaimPre:"Wchodząc na stronę potwierdzam, że mam co najmniej 18 lat i przeczytałem",
     resetAction:"Resetuj", increaseAction:"Zwiększ",
     zeroOff:"0 = wyłączone", statsLabel:"Statystyki", volume:"Głośność", invertDir:"Odwróć kierunek",
     searchCurrency:"Szukaj waluty...", searchCurrencies:"Szukaj walut...", searchGames:"Szukaj gier...",
@@ -1703,6 +1723,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com принадлежит и управляется Mander Group Ltd., регистрационный номер: 27481, с зарегистрированным адресом в Кингстауне, Сент-Винсент и Гренадины.",
     footerPara2:"Manderbet.com лицензирован и регулируется Игровым органом Кюрасао и работает под Лицензией № 365/JAZ. Mander соответствует всем применимым нормативным требованиям и уполномочен предоставлять услуги онлайн-игр и ставок.",
     gameDice:"Кости", gamePlinko:"Плинко", gameKeno:"Кено", gameBlackjack:"Блэкджек", gameMines:"Мины", gameHilo:"Хайло", gameRoulette:"Рулетка", gameBaccarat:"Баккара",
+    termsAndCond:"Правила и условия", termsAcceptPre:"Принимаю", termsAcceptAnd:"и",
+    ageDisclaimPre:"Входя на сайт, подтверждаю, что мне не менее 18 лет и я прочитал",
     resetAction:"Сбросить", increaseAction:"Увеличить",
     zeroOff:"0 = откл.", statsLabel:"Статистика", volume:"Громкость", invertDir:"Инвертировать",
     searchCurrency:"Найти валюту...", searchCurrencies:"Найти валюты...", searchGames:"Найти игры...",
@@ -1855,6 +1877,8 @@ const LANGS: Record<string, Record<string, string>> = {
     footerPara1:"Manderbet.com, Mander Group Ltd. tarafından sahiplenilmekte ve işletilmektedir; kayıt numarası: 27481, kayıtlı adres: Kingstown, Saint Vincent ve Grenadinler.",
     footerPara2:"Manderbet.com, Curaçao Oyun Otoritesi tarafından lisanslanmış ve düzenlenmekte olup 365/JAZ numaralı Lisans kapsamında faaliyet göstermektedir. Mander, tüm geçerli düzenleyici gereksinimlere uymakta ve çevrimiçi oyun ve bahis hizmetleri sunmaya yetkilidir.",
     gameDice:"Zar", gamePlinko:"Plinko", gameKeno:"Keno", gameBlackjack:"Blackjack", gameMines:"Mayınlar", gameHilo:"Hilo", gameRoulette:"Rulet", gameBaccarat:"Bakara",
+    termsAndCond:"Kullanım Koşulları", termsAcceptPre:"Kabul ediyorum:", termsAcceptAnd:"ve",
+    ageDisclaimPre:"Siteye erişerek en az 18 yaşında olduğumu ve şunları okuduğumu onaylıyorum:",
     resetAction:"Sıfırla", increaseAction:"Artır",
     zeroOff:"0 = devre dışı", statsLabel:"İstatistikler", volume:"Ses", invertDir:"Yönü çevir",
     searchCurrency:"Para birimi ara...", searchCurrencies:"Para birimleri ara...", searchGames:"Oyun ara...",
@@ -10270,8 +10294,8 @@ export default function App() {
             {/* LEFT PANEL */}
             <div style={{ flex:"0 0 460px",backgroundImage:"url('/auth-left-bg.jpg')",backgroundSize:"cover",backgroundPosition:"center",position:"relative",overflow:"hidden" }}>
               <p style={{ position:"absolute",bottom:"18px",left:"20px",right:"20px",textAlign:"center",fontSize:"11px",color:"rgba(255,255,255,0.55)",lineHeight:1.6,margin:0 }}>
-                Al acceder al sitio, certifico que tengo al menos 18 años y he leído los{" "}
-                <span onClick={()=>{setAuthModal("");setSection("terms");window.scrollTo({top:0,behavior:"instant"});}} style={{ color:"rgba(255,255,255,0.85)",textDecoration:"underline",cursor:"pointer" }}>Términos y Condiciones</span>.
+                {t("ageDisclaimPre")}{" "}
+                <span onClick={()=>{setAuthModal("");setSection("terms");window.scrollTo({top:0,behavior:"instant"});}} style={{ color:"rgba(255,255,255,0.85)",textDecoration:"underline",cursor:"pointer" }}>{t("termsAndCond")}</span>.
               </p>
             </div>
 
@@ -10485,10 +10509,10 @@ export default function App() {
                     <input type="checkbox" checked={regTerms} onChange={e=>setRegTerms(e.target.checked)}
                       style={{ marginTop:"2px",accentColor:"#f6b531",width:"16px",height:"16px",flexShrink:0,cursor:"pointer" }}/>
                     <span style={{ fontSize:"13px",color:"#8a9ab8",lineHeight:1.55 }}>
-                      Acepto los{" "}
-                      <span style={{ color:"#8a9ab8",cursor:"pointer" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("terms");window.scrollTo({top:0,behavior:"instant"});}}>Términos y Condiciones</span>
-                      {" "}y la{" "}
-                      <span style={{ color:"#f4a91f",cursor:"pointer" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("privacy");window.scrollTo({top:0,behavior:"instant"});}}>Política de Privacidad</span>
+                      {t("termsAcceptPre")}{" "}
+                      <span style={{ color:"#8a9ab8",cursor:"pointer" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("terms");window.scrollTo({top:0,behavior:"instant"});}}>{t("termsAndCond")}</span>
+                      {" "}{t("termsAcceptAnd")}{" "}
+                      <span style={{ color:"#f4a91f",cursor:"pointer" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("privacy");window.scrollTo({top:0,behavior:"instant"});}}>{t("privacyTitle")}</span>
                     </span>
                   </label>
                   {regError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{regError}</p>}
