@@ -112,23 +112,54 @@ export async function authSignUp(email: string, password: string, username: stri
 }
 
 export async function authLogin(email: string, password: string): Promise<{ session?: AuthSession; error?: string }> {
+  // ── Primary: Supabase SDK directly from browser (fastest, no server hop) ──
+  try {
+    const { data: sdkData, error: sdkError } = await supabase.auth.signInWithPassword({ email, password });
+    if (sdkError) {
+      const rawMsg = (sdkError.message || "").toLowerCase();
+      let msg = "Credenciales incorrectas. Verificá tu usuario y contraseña.";
+      if (rawMsg.includes("email not confirmed") || rawMsg.includes("not confirmed")) {
+        msg = "EMAIL_NOT_CONFIRMED";
+      } else if (rawMsg.includes("too many requests") || rawMsg.includes("rate limit")) {
+        msg = "Demasiados intentos. Por favor esperá unos minutos e intentá nuevamente.";
+      } else if (rawMsg.includes("invalid") || rawMsg.includes("credentials")) {
+        msg = "Credenciales incorrectas. Verificá tu usuario y contraseña.";
+      }
+      return { error: msg };
+    }
+    if (sdkData.session) {
+      const session = mapSupabaseSession(sdkData.session);
+      saveSession(session);
+      // Try to create a server-side session token (non-blocking)
+      fetch("/api/auth/create-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+      })
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d?.session_token) saveSessionToken(d.session_token); })
+        .catch(() => {});
+      return { session };
+    }
+  } catch {
+    // SDK failed — fall through to backend
+  }
+
+  // ── Fallback: backend /api/auth/login ─────────────────────────────────────
   const { ok, data } = await post("/api/auth/login", { email, password });
-  if (!ok) return { error: data.error || "Credenciales incorrectas." };
+  if (!ok) return { error: (data as any).error || "Credenciales incorrectas." };
 
   const session: AuthSession = {
-    access_token: data.access_token,
-    refresh_token: data.refresh_token,
-    expires_at: Date.now() + data.expires_in * 1000,
-    user: data.user,
+    access_token: (data as any).access_token,
+    refresh_token: (data as any).refresh_token,
+    expires_at: Date.now() + (data as any).expires_in * 1000,
+    user: (data as any).user,
   };
   saveSession(session);
-  // Inform the Supabase SDK so autoRefreshToken can silently renew
-  // the access_token before it expires (fires TOKEN_REFRESHED events).
   supabase.auth.setSession({
     access_token: session.access_token,
     refresh_token: session.refresh_token,
   }).catch(() => {});
-  if (data.session_token) saveSessionToken(data.session_token);
+  if ((data as any).session_token) saveSessionToken((data as any).session_token);
   return { session };
 }
 

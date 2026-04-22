@@ -30,3 +30,9 @@ externalPort = 80
 [[ports]]
 localPort = 22412
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+ADMIN_USERNAMES = "ADMIN"
+APP_URL = "https://manderbet.com"
