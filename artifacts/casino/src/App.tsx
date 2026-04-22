@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback, Fragment, startTrans
 import { useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import { createPortal } from "react-dom";
-import { supabase, authSignUp, authLogin, authLogout, authForgotPassword, getOrRefreshSession, clearSession, loadSession, saveSession, saveSessionToken, getSessionToken, clearSessionToken, type AuthSession } from "./auth";
+import { supabase, authSignUp, authLogin, authLogout, authForgotPassword, getOrRefreshSession, clearSession, loadSession, saveSession, saveSessionToken, getSessionToken, clearSessionToken, lookupEmailByUsername, type AuthSession } from "./auth";
 import BlackjackGame, { BJStats, bjStatsDefault } from "./BlackjackGame";
 import MinesGame, { MinesStats, minesStatsDefault } from "./MinesGame";
 import HiloGame, { HiloStats, hiloStatsDefault } from "./HiloGame";
@@ -7351,29 +7351,16 @@ export default function App() {
         emailToUse = storedEmail;
       } else if (!isPureLocalUser) {
         // No email in localStorage (e.g. logging in from a different device).
-        // Try to look up email via API using username, then proceed with Supabase auth.
+        // Look up email via browser SDK (primary) or server API (fallback).
         try {
           setAuthLoading(true);
-          const _lookupCtrl = new AbortController();
-          const _lookupTimer = setTimeout(() => _lookupCtrl.abort(), 9_000);
-          let lookupRes: Response;
-          try {
-            lookupRes = await fetch("/api/auth/lookup-email", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username: loginUser.trim() }),
-              signal: _lookupCtrl.signal,
-            });
-          } finally {
-            clearTimeout(_lookupTimer);
-          }
-          const lookupData = await lookupRes.json();
+          const foundEmail = await lookupEmailByUsername(loginUser.trim());
           setAuthLoading(false);
-          if (lookupRes.ok && lookupData.email) {
-            emailToUse = lookupData.email;
-            ls.set("email_" + loginUser.trim(), lookupData.email);
-          } else if (lookupRes.status === 404) {
-            // Usuario realmente no existe en Supabase — intentar auth local
+          if (foundEmail) {
+            emailToUse = foundEmail;
+            ls.set("email_" + loginUser.trim(), foundEmail);
+          } else {
+            // Not found in Supabase — try local auth
             const saved = ls.get("user_" + loginUser.trim());
             if (!saved) {
               const _reserved = new Set([...FAKE_USERS, ..._INIT_USERS_POOL].map(u => u.toLowerCase()));
@@ -7400,14 +7387,13 @@ export default function App() {
               setSessionTokenReady(true);
             }).catch(() => {});
             return;
-          } else {
-            // Error del servidor (500, timeout, etc.) — no mostrar "usuario no encontrado"
-            return setLoginError(t("connError"));
           }
         } catch (_e: any) {
           setAuthLoading(false);
-          const isAbort = _e?.name === "AbortError" || _e?.message?.includes("abort");
-          return setLoginError(isAbort ? "El servidor tardó demasiado. Intentá de nuevo." : t("connError"));
+          if (_e?.message === "CONNECTION_TIMEOUT") {
+            return setLoginError("El servidor tardó demasiado. Intentá de nuevo.");
+          }
+          return setLoginError(t("connError"));
         }
       } else {
         // isPureLocalUser — local auth only

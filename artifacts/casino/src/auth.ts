@@ -105,6 +105,71 @@ async function post(path: string, body: object, token?: string) {
 
 // ─── Auth functions ───────────────────────────────────────────────────────────
 
+/**
+ * Return values:
+ *   string         — email found
+ *   null           — user definitively not found in Supabase
+ *   throws Error("CONNECTION_TIMEOUT") — could not reach the DB (show "connection error")
+ */
+export async function lookupEmailByUsername(username: string): Promise<string | null> {
+  let sdkTimedOut = false;
+  let serverTimedOut = false;
+
+  // Primary: browser SDK with timeout (avoids server-side timeout issues)
+  try {
+    const sdkResult = await Promise.race([
+      supabase
+        .from("profiles")
+        .select("email")
+        .ilike("username", username)
+        .limit(1)
+        .maybeSingle(),
+      new Promise<null>((resolve) =>
+        setTimeout(() => { sdkTimedOut = true; resolve(null); }, 6_000)
+      ),
+    ]);
+    if (sdkResult === null) {
+      // Timed out — fall through to server
+    } else if (!sdkResult.error && sdkResult.data?.email) {
+      return sdkResult.data.email as string;
+    } else if (!sdkResult.error && sdkResult.data === null) {
+      return null; // Definitively not found
+    }
+    // If sdkResult.error (RLS, etc.) — fall through to server
+  } catch {
+    // SDK threw — fall through to server
+  }
+
+  // Fallback: server API (with short timeout)
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => { serverTimedOut = true; ctrl.abort(); }, 5_000);
+    try {
+      const res = await fetch("/api/auth/lookup-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+        signal: ctrl.signal,
+      });
+      if (res.status === 404) return null; // Definitively not found
+      if (res.ok) {
+        const d = await res.json();
+        return d.email ? (d.email as string) : null;
+      }
+    } finally {
+      clearTimeout(timer);
+    }
+  } catch {
+    // Server also failed
+  }
+
+  // Both paths failed — signal a connection problem
+  if (sdkTimedOut || serverTimedOut) {
+    throw new Error("CONNECTION_TIMEOUT");
+  }
+  return null;
+}
+
 export async function authSignUp(email: string, password: string, username: string) {
   const { ok, data } = await post("/api/auth/signup", { email, password, username });
   if (!ok) return { error: data.error || "Error al registrar." };
