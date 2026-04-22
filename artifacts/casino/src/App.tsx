@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback, Fragment, startTransition } from "react";
+import { BookOpen, CircleDollarSign, BarChart2, ShieldCheck, SlidersHorizontal, Sparkles, Info } from "lucide-react";
 import { useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import { createPortal } from "react-dom";
@@ -15689,13 +15690,21 @@ function GameInfoPanel({ game, lang, onFairness }: { game: string; lang: string;
             {sections.map((sec, i) => (
               <div key={i} style={{ borderTop:"1px solid #1a2a3e", marginTop:"20px", paddingTop:"18px" }}>
                 <div className="gip-section-heading">
-                  <span>{sec.icon ?? "ℹ️"}</span>
+                  <span style={{ display:"inline-flex", alignItems:"center", opacity:0.85 }}>
+                    {sec.icon === "book"    && <BookOpen size={13} strokeWidth={2.2}/>}
+                    {sec.icon === "coins"   && <CircleDollarSign size={13} strokeWidth={2.2}/>}
+                    {sec.icon === "chart"   && <BarChart2 size={13} strokeWidth={2.2}/>}
+                    {sec.icon === "shield"  && <ShieldCheck size={13} strokeWidth={2.2}/>}
+                    {sec.icon === "gamepad" && <SlidersHorizontal size={13} strokeWidth={2.2}/>}
+                    {sec.icon === "star"    && <Sparkles size={13} strokeWidth={2.2}/>}
+                    {(!sec.icon || sec.icon === "info") && <Info size={13} strokeWidth={2.2}/>}
+                  </span>
                   {sec.heading}
                 </div>
                 {sec.body && (
                   <p style={{ margin:0, fontSize:"13px", color:"#7a8fb0", lineHeight:"1.7" }}>
                     {sec.body}
-                    {sec.icon === "🔒" && (
+                    {sec.icon === "shield" && (
                       <> <span
                         className="gip-pf-link"
                         style={{ cursor: onFairness ? "pointer" : "default" }}

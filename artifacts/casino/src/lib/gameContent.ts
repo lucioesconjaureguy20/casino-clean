@@ -817,87 +817,87 @@ export function getGameMeta(lang: Lang): Record<string, GameMeta> {
 export function getGameInfo(lang: Lang): Record<string, GameInfoSection[]> {
   return {
     dice: [
-      { heading: S(lang,"howToPlay"),   icon:"📖", body: B(lang,"diceHowToPlay") },
-      { heading: S(lang,"winProb"),     icon:"💰", body: B(lang,"diceWinProb") },
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"dicePF") },
+      { heading: S(lang,"howToPlay"),   icon:"book", body: B(lang,"diceHowToPlay") },
+      { heading: S(lang,"winProb"),     icon:"coins", body: B(lang,"diceWinProb") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"dicePF") },
     ],
     plinko: [
-      { heading: S(lang,"howToPlay"),   icon:"📖", body: B(lang,"plinkoHowToPlay") },
-      { heading: S(lang,"riskLevels"),  icon:"📊", bullets:[
+      { heading: S(lang,"howToPlay"),   icon:"book", body: B(lang,"plinkoHowToPlay") },
+      { heading: S(lang,"riskLevels"),  icon:"chart", bullets:[
         { label: BL(lang,"lowRiskLabel"),  text: BL(lang,"lowRiskText") },
         { label: BL(lang,"medRiskLabel"),  text: BL(lang,"medRiskText") },
         { label: BL(lang,"highRiskLabel"), text: BL(lang,"highRiskText") },
       ]},
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"plinkoPF") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"plinkoPF") },
     ],
     keno: [
-      { heading: S(lang,"howToPlay"),   icon:"📖", body: B(lang,"kenoHowToPlay") },
-      { heading: S(lang,"riskPayouts"), icon:"📊", bullets:[
+      { heading: S(lang,"howToPlay"),   icon:"book", body: B(lang,"kenoHowToPlay") },
+      { heading: S(lang,"riskPayouts"), icon:"chart", bullets:[
         { label: BL(lang,"classicLabel"), text: BL(lang,"classicText") },
         { label: BL(lang,"lowLabel"),     text: BL(lang,"lowText") },
         { label: BL(lang,"medLabel"),     text: BL(lang,"medText") },
         { label: BL(lang,"highLabel"),    text: BL(lang,"highText") },
       ]},
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"kenoPF") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"kenoPF") },
     ],
     blackjack: [
-      { heading: S(lang,"howToPlay"),   icon:"📖", body: B(lang,"bjHowToPlay") },
-      { heading: S(lang,"yourOptions"), icon:"🎮", bullets:[
+      { heading: S(lang,"howToPlay"),   icon:"book", body: B(lang,"bjHowToPlay") },
+      { heading: S(lang,"yourOptions"), icon:"gamepad", bullets:[
         { label: BL(lang,"hitLabel"),      text: BL(lang,"hitText") },
         { label: BL(lang,"standLabel"),    text: BL(lang,"standText") },
         { label: BL(lang,"doubleLabel"),   text: BL(lang,"doubleText") },
         { label: BL(lang,"splitLabel"),    text: BL(lang,"splitText") },
         { label: BL(lang,"insuranceLabel"),text: BL(lang,"insuranceText") },
       ]},
-      { heading: S(lang,"payouts"),     icon:"💰", body: B(lang,"bjPayouts") },
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"bjPF") },
+      { heading: S(lang,"payouts"),     icon:"coins", body: B(lang,"bjPayouts") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"bjPF") },
     ],
     mines: [
-      { heading: S(lang,"howToPlay"),   icon:"📖", body: B(lang,"minesHowToPlay") },
-      { heading: S(lang,"multRisk"),    icon:"📊", bullets:[
+      { heading: S(lang,"howToPlay"),   icon:"book", body: B(lang,"minesHowToPlay") },
+      { heading: S(lang,"multRisk"),    icon:"chart", bullets:[
         { label: BL(lang,"fewerMinesLabel"), text: BL(lang,"fewerMinesText") },
         { label: BL(lang,"moreMinesLabel"),  text: BL(lang,"moreMinesText") },
         { label: BL(lang,"biggerGridLabel"), text: BL(lang,"biggerGridText") },
       ]},
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"minesPF") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"minesPF") },
     ],
     slot: [
-      { heading: S(lang,"howToPlay"),      icon:"📖", body: B(lang,"slotHowToPlay") },
-      { heading: S(lang,"specialFeatures"),icon:"⭐", bullets:[
+      { heading: S(lang,"howToPlay"),      icon:"book", body: B(lang,"slotHowToPlay") },
+      { heading: S(lang,"specialFeatures"),icon:"star", bullets:[
         { label: BL(lang,"wildLabel"),      text: BL(lang,"wildText") },
         { label: BL(lang,"scatterLabel"),   text: BL(lang,"scatterText") },
         { label: BL(lang,"freeSpinsLabel"), text: BL(lang,"freeSpinsText") },
       ]},
-      { heading: S(lang,"payouts"),        icon:"💰", body: B(lang,"slotPayouts") },
+      { heading: S(lang,"payouts"),        icon:"coins", body: B(lang,"slotPayouts") },
     ],
     hilo: [
-      { heading: S(lang,"howToPlay"),     icon:"📖", body: B(lang,"hiloHowToPlay") },
-      { heading: S(lang,"dynamicMult"),   icon:"📊", body: B(lang,"hiloDynMult") },
-      { heading: S(lang,"cashOrContinue"),icon:"💰", body: B(lang,"hiloCashOut") },
-      { heading: S(lang,"provablyFair"),  icon:"🔒", body: B(lang,"hiloPF") },
+      { heading: S(lang,"howToPlay"),     icon:"book", body: B(lang,"hiloHowToPlay") },
+      { heading: S(lang,"dynamicMult"),   icon:"chart", body: B(lang,"hiloDynMult") },
+      { heading: S(lang,"cashOrContinue"),icon:"coins", body: B(lang,"hiloCashOut") },
+      { heading: S(lang,"provablyFair"),  icon:"shield", body: B(lang,"hiloPF") },
     ],
     roulette: [
-      { heading: S(lang,"howToPlay"), icon:"📖", body: B(lang,"rouletteHowToPlay") },
-      { heading: S(lang,"betTypes"),  icon:"💰", bullets:[
+      { heading: S(lang,"howToPlay"), icon:"book", body: B(lang,"rouletteHowToPlay") },
+      { heading: S(lang,"betTypes"),  icon:"coins", bullets:[
         { label: BL(lang,"straightLabel"),   text: BL(lang,"straightText") },
         { label: BL(lang,"columnLabel"),     text: BL(lang,"columnText") },
         { label: BL(lang,"dozenLabel"),      text: BL(lang,"dozenText") },
         { label: BL(lang,"evenMoneyLabel"),  text: BL(lang,"evenMoneyText") },
       ]},
-      { heading: S(lang,"autoMode"),      icon:"🎮", body: B(lang,"rouletteAutoMode") },
-      { heading: S(lang,"provablyFair"),  icon:"🔒", body: B(lang,"roulettePF") },
+      { heading: S(lang,"autoMode"),      icon:"gamepad", body: B(lang,"rouletteAutoMode") },
+      { heading: S(lang,"provablyFair"),  icon:"shield", body: B(lang,"roulettePF") },
     ],
     baccarat: [
-      { heading: S(lang,"howToPlay"),  icon:"📖", body: B(lang,"baccaratHowToPlay") },
-      { heading: S(lang,"betTypes"),   icon:"💰", bullets:[
+      { heading: S(lang,"howToPlay"),  icon:"book", body: B(lang,"baccaratHowToPlay") },
+      { heading: S(lang,"betTypes"),   icon:"coins", bullets:[
         { label: BL(lang,"playerLabel"), text: BL(lang,"playerText") },
         { label: BL(lang,"bankerLabel"), text: BL(lang,"bankerText") },
         { label: BL(lang,"tieLabel"),    text: BL(lang,"tieText") },
       ]},
-      { heading: S(lang,"cardValues"), icon:"ℹ️", body: B(lang,"baccaratCardVals") },
-      { heading: S(lang,"thirdCard"),  icon:"ℹ️", body: B(lang,"baccaratThirdCard") },
-      { heading: S(lang,"autoMode"),   icon:"🎮", body: B(lang,"baccaratAutoMode") },
-      { heading: S(lang,"provablyFair"),icon:"🔒", body: B(lang,"baccaratPF") },
+      { heading: S(lang,"cardValues"), icon:"info", body: B(lang,"baccaratCardVals") },
+      { heading: S(lang,"thirdCard"),  icon:"info", body: B(lang,"baccaratThirdCard") },
+      { heading: S(lang,"autoMode"),   icon:"gamepad", body: B(lang,"baccaratAutoMode") },
+      { heading: S(lang,"provablyFair"),icon:"shield", body: B(lang,"baccaratPF") },
     ],
   };
 }
