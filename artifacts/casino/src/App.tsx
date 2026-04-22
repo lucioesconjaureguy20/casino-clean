@@ -7342,6 +7342,7 @@ export default function App() {
     if (loginUser.trim() === "ADMIN" && loginPass === "Palometa1223!") {
       ls.set("user_ADMIN", "Palometa1223!");
       ls.set("currentUser", "ADMIN");
+      if (!ls.getBalance("ADMIN")) ls.setBalance("ADMIN", 1000);
       clearSession();
       setSupaSession(null);
       supaSessionRef.current = null;
