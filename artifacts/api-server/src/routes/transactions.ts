@@ -1094,7 +1094,7 @@ scheduleSimBet();
 // ── Cache para top-bets (todos los clientes ven los mismos datos) ─────────────
 let topBetsCache: { bigWins: unknown[]; luckyBets: unknown[] } | null = null;
 let topBetsCacheAt = 0;
-const TOP_BETS_CACHE_TTL = 15_000; // 15 segundos — apuestas reales aparecen rápido
+const TOP_BETS_CACHE_TTL = 300_000; // 5 minutos — reduce carga en DB
 
 // GET /api/top-bets — top Big Wins and Lucky Bets from DB + buffer (public)
 router.get("/top-bets", async (_req: Request, res: Response) => {
@@ -1206,6 +1206,11 @@ router.get("/top-bets", async (_req: Request, res: Response) => {
     }
   } catch (e: any) {
     console.warn("[top-bets] DB query failed:", e.message);
+    // Si hay caché viejo, servir eso en vez de regenerar con datos falsos
+    if (topBetsCache) {
+      topBetsCacheAt = Date.now(); // extender TTL para no volver a intentar enseguida
+      return res.json(topBetsCache);
+    }
   }
 
   // ── 2. Pad con apuestas determinísticas (semilla diaria) si faltan entradas ──

@@ -1,0 +1,50 @@
+I’ll re-run the documentation search with a simpler query shape (to avoid the GraphQL depth limit) for “connection timeout” / “terminatd due to connection timeout” causes and fixes.
+
+
+Ran search_docs
+Most likely causes of CONNECTION TERMINATED DUE TO CONNECTION TIMEOUT
+1) Database is overloaded / unresponsive
+If Postgres/Supabase can’t respond quickly (high CPU/RAM pressure, heavy query load, slow/blocked queries), connections can be terminated due to timeouts.
+
+Symptoms often include Studio/dashboard pages not loading, queries timing out, and API responses failing.
+Supabase docs specifically note this error “typically happens when the database is overloaded and causing an outage.”
+2) Your app is using too much concurrency (too many simultaneous queries/connections)
+Even if the DB isn’t constantly overloaded, bursts from your app (many parallel requests, unbounded retries, or large batch operations) can push the project past its capacity, causing timeouts.
+
+3) Slow / non-optimized queries (missing indexes, large scans, big result sets)
+A single “bad” query can tie up DB resources long enough that new connections time out. This is especially common with:
+
+missing indexes on common filters/joins
+queries that return huge row counts
+“N+1” query patterns from the app layer
+4) Supavisor / pooler connection issues
+When using Supabase’s pooler (Supavisor), timeouts can occur if the pool can’t allocate connections fast enough or upstream routing is delayed. (This can also show up when the instance is unhealthy.)
+
+5) Preview branches auto-pause (if you’re using branching)
+If this is happening against a preview branch, first connection after inactivity can timeout; Supabase branching notes preview branches may auto-pause and the first request can time out.
+
+How to resolve it
+A) Check database health and resource strain
+In the Supabase Dashboard, open Observability → Database reports (CPU/RAM/IO, slow queries, etc.).
+If you see sustained strain, reduce workload first (see section B), then scale/optimize (section C).
+B) Reduce load from your side
+Lower concurrency: cap simultaneous requests in your app / background jobs.
+Batch and paginate: avoid “fetch everything” queries.
+Stop runaway processes: temporarily disable background jobs or retry loops that hammer the DB.
+C) Fix the underlying performance problems
+Review query performance / slow queries in the Dashboard.
+Add indexes for the columns used in WHERE, JOIN, and ORDER BY.
+Avoid returning huge result sets; limit rows and payload size.
+D) Restart/upgrade the instance if it’s unhealthy
+Supabase guidance for this error recommends:
+
+Restart the instance from Dashboard Project Settings → General (as a temporary fix).
+If it crashes again or strain is ongoing, increase compute/resources.
+E) If it’s a preview branch
+Retry after some time / after the branch “wakes up”.
+Consider switching frequently-used branches to persistent branches.
+Quick diagnostic questions (so I can narrow it)
+Does it happen in Studio, your app, or both?
+Are you using a preview branch (branching)?
+Any recent deploy / migration / bulk import?
+Roughly how many concurrent requests or background jobs are running when it fai
