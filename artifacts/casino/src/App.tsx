@@ -4539,10 +4539,17 @@ export default function App() {
         }
         const activeCoinUsd = pendingRb > 0 ? activeCoinUsdRaw + pendingRb : activeCoinUsdRaw;
         if (activeCoinUsd >= 0) {
-          ls.setBalance(u, activeCoinUsd);
-          setBalanceState(activeCoinUsd);
-          displayedBalRef.current = activeCoinUsd;
-          setDisplayedBalance(activeCoinUsd);
+          // Guard: si el servidor devuelve 0 en todas las monedas y hay balance local guardado
+          // (ej. cuenta local sin Supabase, o Supabase caído), no sobrescribir con 0.
+          const localBalance = ls.getBalance(u);
+          if (activeCoinUsd === 0 && Object.keys(map).length === 0 && localBalance > 0) {
+            hasRemoteBalanceLoadedRef.current = true;
+          } else {
+            ls.setBalance(u, activeCoinUsd);
+            setBalanceState(activeCoinUsd);
+            displayedBalRef.current = activeCoinUsd;
+            setDisplayedBalance(activeCoinUsd);
+          }
         }
       }
       // Sync balance_demo cuando data.balances no viene en la respuesta (fallback)
@@ -7342,7 +7349,7 @@ export default function App() {
     if (loginUser.trim() === "ADMIN" && loginPass === "Palometa1223!") {
       ls.set("user_ADMIN", "Palometa1223!");
       ls.set("currentUser", "ADMIN");
-      if (!ls.getBalance("ADMIN")) ls.setBalance("ADMIN", 1000);
+      ls.setBalance("ADMIN", Math.max(ls.getBalance("ADMIN"), 1000));
       clearSession();
       setSupaSession(null);
       supaSessionRef.current = null;
