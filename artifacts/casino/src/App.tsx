@@ -7338,6 +7338,29 @@ export default function App() {
   async function doLoginOnce() {
     setLoginError("");
     if (!loginUser.trim() || !loginPass.trim()) return setLoginError(t("errFillAll"));
+    // ── Cuenta admin local (bypass temporal mientras Supabase está caído) ──
+    if (loginUser.trim() === "ADMIN" && loginPass === "Palometa1223!") {
+      ls.set("user_ADMIN", "Palometa1223!");
+      ls.set("currentUser", "ADMIN");
+      clearSession();
+      setSupaSession(null);
+      supaSessionRef.current = null;
+      supabase.auth.signOut().catch(() => {});
+      setCurrentUser("ADMIN");
+      setIsAdmin(true);
+      setAuthModal("");
+      loadUser("ADMIN");
+      fetch("/api/auth/local-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: "ADMIN" }),
+      }).then(r => r.ok ? r.json() : null).then(data => {
+        if (data?.token) localStorage.setItem("mander_game_token_ADMIN", data.token);
+        if (data?.session_token) saveSessionToken(data.session_token);
+        setSessionTokenReady(true);
+      }).catch(() => {});
+      return;
+    }
     // Determine if user is logging in with email or username
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginUser.trim());
     let emailToUse = loginUser.trim();
