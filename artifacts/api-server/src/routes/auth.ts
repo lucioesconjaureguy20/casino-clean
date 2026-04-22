@@ -398,25 +398,45 @@ router.post("/auth/lookup-email", async (req, res) => {
   if (!username) return res.status(400).json({ error: "username requerido." });
 
   try {
+    // Primary: get email directly from profiles table (fast, no auth API call)
     const r = await sbAdmin(
-      `profiles?username=ilike.${encodeURIComponent(username)}&select=id&limit=1`
+      `profiles?username=ilike.${encodeURIComponent(username)}&select=id,email&limit=1`
     );
     if (!r.ok) return res.status(500).json({ error: "Error al buscar usuario." });
     const rows: any[] = await r.json();
     if (!rows?.length) return res.status(404).json({ error: "Usuario no encontrado." });
 
-    const profileId = rows[0].id;
-    const adminR = await fetchWithTimeout(`${SUPABASE_URL}/auth/v1/admin/users/${profileId}`, {
-      headers: {
-        apikey: SUPABASE_SERVICE_KEY!,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
-      },
-    });
-    if (!adminR.ok) return res.status(500).json({ error: "Error al obtener datos del usuario." });
-    const userData = await adminR.json();
-    if (!userData.email) return res.status(404).json({ error: "Email no encontrado." });
+    const profile = rows[0];
 
-    return res.json({ email: userData.email });
+    // If email is already in the profiles table, return it immediately
+    if (profile.email) {
+      return res.json({ email: profile.email });
+    }
+
+    // Fallback: try admin auth API to get email (may be slow if auth service is down)
+    try {
+      const adminR = await fetchWithTimeout(`${SUPABASE_URL}/auth/v1/admin/users/${profile.id}`, {
+        headers: {
+          apikey: SUPABASE_SERVICE_KEY!,
+          Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        },
+      }, 4_000);
+      if (adminR.ok) {
+        const userData = await adminR.json();
+        if (userData.email) {
+          // Backfill email into profiles for future fast lookups
+          sbAdmin(`profiles?id=eq.${encodeURIComponent(profile.id)}`, {
+            method: "PATCH",
+            body: JSON.stringify({ email: userData.email }),
+          }).catch(() => {});
+          return res.json({ email: userData.email });
+        }
+      }
+    } catch {
+      // Auth API unreachable — fall through to not-found
+    }
+
+    return res.status(404).json({ error: "Email no encontrado. Intentá iniciar sesión con tu correo electrónico directamente." });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
