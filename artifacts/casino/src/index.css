@@ -300,6 +300,8 @@ html, body, * {
 
   html {
     font-family: 'Inter', sans-serif;
+    overflow-y: scroll;        /* always reserve scrollbar gutter → no layout shift */
+    scrollbar-gutter: stable;  /* belt-and-suspenders for Chromium */
   }
 
   body {
