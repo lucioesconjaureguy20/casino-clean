@@ -2044,7 +2044,17 @@ function RouletteGame({
               })}
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
+            {/* ── mzp: shared props for mobile RZone overlays ── */}
+            {(() => {
+            const mzp = {
+              tableBets, winCells, isSpinning, isDragging,
+              dragFromKey: dragGhost?.fromKey,
+              onBet: placeBet,
+              onDragStart: beginChipInteraction,
+              onTouchDragStart: beginChipInteractionTouch,
+            };
+            return (
+            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr 18px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
@@ -2095,13 +2105,52 @@ function RouletteGame({
                 </div>
               ))}
 
-              {/* ── Numbers 1-36: col3=n%3==1, col4=n%3==2, col5=n%3==0 | rows 2-13 ── */}
+              {/* ── Numbers 1-36 with split/corner overlay zones ── */}
               {Array.from({length:36},(_,i)=>i+1).map(n => {
-                const mCol = ((n-1)%3)+3;
-                const mRow = Math.floor((n-1)/3)+2;
+                const col = (n-1)%3;   // 0=left, 1=mid, 2=right
+                const row = Math.floor((n-1)/3); // 0-11
+                const mCol = col+3;
+                const mRow = row+2;
+                const zs = "rgba(255,255,255,0.07)";
+                const zb = "1px solid rgba(255,255,255,0.18)";
                 return (
-                  <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}` }}>
+                  <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}`, position:"relative", overflow:"visible" }}>
                     <NumCell num={n} cellH="40px" />
+                    {/* H-split right: n ↔ n+1 */}
+                    {col < 2 && (
+                      <RZone {...mzp} zkey={`sp_${n}_${n+1}`} title={`Split ${n}-${n+1} (17:1)`}
+                        style={{ right:-10, top:"20%", width:20, height:"60%", borderRadius:4, zIndex:12, background:zs, border:zb }} />
+                    )}
+                    {/* V-split bottom: n ↔ n+3 */}
+                    {row < 11 && (
+                      <RZone {...mzp} zkey={`sp_${n}_${n+3}`} title={`Split ${n}-${n+3} (17:1)`}
+                        style={{ bottom:-10, left:"20%", width:"60%", height:20, borderRadius:4, zIndex:12, background:zs, border:zb }} />
+                    )}
+                    {/* Corner: n, n+1, n+3, n+4 */}
+                    {col < 2 && row < 11 && (
+                      <RZone {...mzp} zkey={`co_${[n,n+1,n+3,n+4].sort((a,b)=>a-b).join("_")}`}
+                        title={`Corner ${n},${n+1},${n+3},${n+4} (8:1)`}
+                        style={{ right:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13, background:zs, border:zb }} />
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* ── Col 6: Street (calle) & Line (doble calle) zones ── */}
+              {Array.from({length:12},(_,i) => {
+                const n = i*3+1; // lowest number in this row-group: 1,4,7,...,34
+                const zs = "rgba(255,255,255,0.07)";
+                const zb = "1px solid rgba(255,255,255,0.18)";
+                return (
+                  <div key={`stli_${n}`} style={{ gridColumn:"6", gridRow:`${i+2}`, position:"relative", overflow:"visible" }}>
+                    {/* Street: all 3 numbers in this row */}
+                    <RZone {...mzp} zkey={`st_${n}`} title={`Street ${n}-${n+1}-${n+2} (11:1)`}
+                      style={{ top:2, bottom:2, left:1, right:1, borderRadius:"3px 5px 5px 3px", zIndex:12, background:zs, border:zb }} />
+                    {/* Line: this row + next row (6 numbers) */}
+                    {i < 11 && (
+                      <RZone {...mzp} zkey={`li_${n}`} title={`Line ${n}-${n+5} (5:1)`}
+                        style={{ bottom:-10, left:"50%", transform:"translateX(-50%)", width:20, height:20, borderRadius:"50%", zIndex:13, background:zs, border:zb }} />
+                    )}
                   </div>
                 );
               })}
@@ -2117,6 +2166,7 @@ function RouletteGame({
                 <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
             </div>
+            ); })()}
             </div>{/* ── close outer flex (history + grid) ── */}
           </div>
         ) : (
