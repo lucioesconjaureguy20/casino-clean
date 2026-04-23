@@ -2384,64 +2384,11 @@ function RouletteGame({
           </button>
         </div>
 
-        {/* ─── MOBILE control panel (chip selector + bet button) ──────────── */}
+        {/* ─── MOBILE control panel ──────────────────────────────────────── */}
         {isMobile && !isSpinning && !mobileWheelLinger && (
           <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
-            {/* Chip selector row */}
-            <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"6px 4px" }}>
-              <button onClick={() => setChipOffset(o => Math.max(0, o-1))} disabled={chipOffset<=0}
-                style={{ background:"none", border:"none", color: chipOffset>0 ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset>0 ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>‹</button>
-              {CHIP_VALUES.slice(chipOffset, chipOffset+4).map(v => {
-                const ck = chipKey(v);
-                const meta = CHIP_META[ck];
-                const sel = chipUsd === v;
-                return (
-                  <button key={v} onClick={() => setChipUsd(v)}
-                    style={{ flex:1, background:"none", border: sel ? "1px solid #1a9fff" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
-                      boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s",
-                      display:"flex", alignItems:"center", justifyContent:"center" }}>
-                    <CasinoChipSVG {...meta} selected={sel} size={36} />
-                  </button>
-                );
-              })}
-              <button onClick={() => setChipOffset(o => Math.min(CHIP_VALUES.length-4, o+1))} disabled={chipOffset+4>=CHIP_VALUES.length}
-                style={{ background:"none", border:"none", color: chipOffset+4<CHIP_VALUES.length ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset+4<CHIP_VALUES.length ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>›</button>
-            </div>
-            {/* Half / Double */}
-            {hasBets && (
-              <div style={{ display:"flex", gap:"8px" }}>
-                {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => (
-                  <button key={label}
-                    disabled={!(phase==="idle" && hasBets)}
-                    onClick={() => {
-                      setTableBets(prev => {
-                        const scaled: Record<string,number> = {};
-                        let sum = 0;
-                        for (const [k,v] of Object.entries(prev)) {
-                          const nv = Math.round(v*mult*10000)/10000;
-                          scaled[k] = nv; sum += nv;
-                        }
-                        if (mult>1 && sum>balance) {
-                          const cap = balance/sum;
-                          for (const k of Object.keys(scaled)) scaled[k] = Math.round(scaled[k]*cap*10000)/10000;
-                        }
-                        return scaled;
-                      });
-                    }}
-                    style={{ flex:1, padding:"10px 0", borderRadius:"6px", fontSize:"15px", fontWeight:700,
-                      border:"1px solid #252f45", background:"#1a2438", color:"#d0dcea",
-                      cursor:"pointer", fontFamily:"inherit" }}>
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {/* Balance + total bet info */}
-            <div style={{ display:"flex", justifyContent:"space-between", fontSize:"12px", color:"#7a8fa8", padding:"0 2px" }}>
-              <span>Saldo: <b style={{ color:"#c8d8f0" }}>${balance.toFixed(2)}</b></span>
-              {hasBets && <span>Apuesta: <b style={{ color:"#f0c040" }}>${totalBetUsd.toFixed(2)}</b></span>}
-            </div>
-            {/* Bet button — full width (mirrors sidebar logic) */}
+
+            {/* 1 — Bet button */}
             {(!isResult || mode === "auto") ? (
               <button onClick={handleSpin} disabled={!canSpin}
                 style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
@@ -2462,6 +2409,71 @@ function RouletteGame({
                 {gt(_lang,"bjBet")}
               </button>
             )}
+
+            {/* 2 — Chip selector row */}
+            <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"6px 4px" }}>
+              <button onClick={() => setChipOffset(o => Math.max(0, o-1))} disabled={chipOffset<=0}
+                style={{ background:"none", border:"none", color: chipOffset>0 ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset>0 ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>‹</button>
+              {CHIP_VALUES.slice(chipOffset, chipOffset+4).map(v => {
+                const ck = chipKey(v);
+                const meta = CHIP_META[ck];
+                const sel = chipUsd === v;
+                return (
+                  <button key={v} onClick={() => setChipUsd(v)}
+                    style={{ flex:1, background:"none", border: sel ? "1px solid #1a9fff" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
+                      boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s",
+                      display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <CasinoChipSVG {...meta} selected={sel} size={36} />
+                  </button>
+                );
+              })}
+              <button onClick={() => setChipOffset(o => Math.min(CHIP_VALUES.length-4, o+1))} disabled={chipOffset+4>=CHIP_VALUES.length}
+                style={{ background:"none", border:"none", color: chipOffset+4<CHIP_VALUES.length ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset+4<CHIP_VALUES.length ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>›</button>
+            </div>
+
+            {/* 3 — Total Bet card (desktop style) */}
+            <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"10px 12px" }}>
+              <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
+              <div style={{ fontSize:"16px", fontWeight:800, color: hasBets ? "#e0e8f4" : "#4a6080", opacity: currencyFade }}>
+                {hasBets ? fmtMoney(totalBetUsd) : fmtMoney(0)}
+              </div>
+            </div>
+
+            {/* 4 — Half / Double (always visible, disabled when no bets) */}
+            <div style={{ display:"flex", gap:"8px" }}>
+              {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => {
+                const canHD = phase === "idle" && hasBets && !isSpinning;
+                return (
+                  <button key={label}
+                    disabled={!canHD}
+                    onClick={() => {
+                      if (!canHD) return;
+                      setTableBets(prev => {
+                        const scaled: Record<string,number> = {};
+                        let sum = 0;
+                        for (const [k,v] of Object.entries(prev)) {
+                          const nv = Math.round(v*mult*10000)/10000;
+                          scaled[k] = nv; sum += nv;
+                        }
+                        if (mult>1 && sum>balance) {
+                          const cap = balance/sum;
+                          for (const k of Object.keys(scaled)) scaled[k] = Math.round(scaled[k]*cap*10000)/10000;
+                        }
+                        return scaled;
+                      });
+                    }}
+                    style={{ flex:1, padding:"10px 0", borderRadius:"6px", fontSize:"15px", fontWeight:700,
+                      border:"1px solid #252f45", background:"#0e1826",
+                      color: canHD ? "#9ab0d0" : "#3a4a60",
+                      cursor: canHD ? "pointer" : "not-allowed",
+                      opacity: canHD ? 1 : 0.45,
+                      fontFamily:"inherit", transition:"opacity .15s" }}>
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
           </div>
         )}
 
