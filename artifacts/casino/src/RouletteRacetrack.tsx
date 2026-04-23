@@ -10,6 +10,32 @@ const VOISINS   = new Set([22,18,29,7,28,12,35,3,26,0,32,15,19,4,21,2,25]);
 const TIERS     = new Set([27,13,36,11,30,8,23,10,5,24,16,33]);
 const ORPHELINS = new Set([1,20,14,31,9,17,34,6]);
 
+// ── Chip helpers (mirrors RouletteGame's CHIP_META / getBetChipMeta / fmtBetChipLabel) ──
+const RT_CHIP: Record<string, { bg: string; border: string; txt: string }> = {
+  "0.01": { bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
+  "0.1":  { bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
+  "1":    { bg:"#15803d", border:"#22c55e", txt:"#fff"    },
+  "5":    { bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
+  "10":   { bg:"#111827", border:"#f4a91f", txt:"#f4a91f" },
+  "100":  { bg:"#6d28d9", border:"#a78bfa", txt:"#fff"    },
+  "500":  { bg:"#0f766e", border:"#2dd4bf", txt:"#fff"    },
+  "1000": { bg:"#b91c1c", border:"#f87171", txt:"#fff"    },
+};
+function rtChipMeta(usd: number) {
+  if (usd >= 1000) return RT_CHIP["1000"];
+  if (usd >= 500)  return RT_CHIP["500"];
+  if (usd >= 100)  return RT_CHIP["100"];
+  if (usd >= 10)   return RT_CHIP["10"];
+  if (usd >= 5)    return RT_CHIP["5"];
+  if (usd >= 1)    return RT_CHIP["1"];
+  if (usd >= 0.10) return RT_CHIP["0.1"];
+  return RT_CHIP["0.01"];
+}
+function rtChipLabel(usd: number): string {
+  if (usd >= 0.1) return usd.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+  return usd.toFixed(2);
+}
+
 function getNeighbors(num: number, n: number): number[] {
   const idx = WHEEL_ORDER.indexOf(num);
   const len = WHEEL_ORDER.length;
@@ -325,14 +351,37 @@ export function RouletteRacetrack({
                   shapeRendering="geometricPrecision"
                 />
 
-                {/* Bet indicator dot — always in DOM, opacity only to avoid layout recalc */}
-                <circle
-                  cx={x} cy={y} r={3.2}
-                  fill="#f59e0b" stroke="#000" strokeWidth={0.6}
-                  opacity={hasBet && !isWin ? 1 : 0}
-                />
+                {/* Chip indicator — SVG mini-chip with value label */}
+                {hasBet && !isWin && (() => {
+                  const amt  = tableBets[`n_${num}`];
+                  const meta = rtChipMeta(amt);
+                  const lbl  = rtChipLabel(amt);
+                  return (
+                    <>
+                      {/* chip body */}
+                      <circle cx={x} cy={y} r={8.5}
+                        fill={meta.bg} stroke={meta.border} strokeWidth={1.5}
+                        style={{ pointerEvents:"none" }}
+                      />
+                      {/* inner dashed ring (notch pattern) */}
+                      <circle cx={x} cy={y} r={6}
+                        fill="none" stroke={meta.border} strokeWidth={0.8}
+                        strokeDasharray="2.2 2.2" opacity={0.75}
+                        style={{ pointerEvents:"none" }}
+                      />
+                      {/* value label */}
+                      <text
+                        x={x} y={y}
+                        textAnchor="middle" dominantBaseline="central"
+                        fill={meta.txt} fontSize={5} fontWeight="700"
+                        fontFamily="'Inter', Arial, sans-serif"
+                        style={{ pointerEvents:"none" }}
+                      >{lbl}</text>
+                    </>
+                  );
+                })()}
 
-                {/* Number — always horizontal (rot=0) on straights, radial on curves */}
+                {/* Number — hidden when a chip is shown on this cell */}
                 <text
                   x={x} y={y}
                   textAnchor="middle"
@@ -343,6 +392,7 @@ export function RouletteRacetrack({
                   fontFamily="'Inter', Arial, sans-serif"
                   textRendering="geometricPrecision"
                   transform={rot !== 0 ? `rotate(${rot},${x},${y})` : undefined}
+                  opacity={hasBet && !isWin ? 0 : 1}
                   style={{ pointerEvents: "none" }}
                 >
                   {num}
