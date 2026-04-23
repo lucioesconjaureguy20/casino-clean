@@ -1484,10 +1484,12 @@ body {
     order: 1;
   }
 
-  /* Dice controls panel: reorder sections on mobile */
+  /* Dice controls panel: reorder sections on mobile, no scroll */
   .dice-root .game-ctrl-panel {
     display: flex !important;
     flex-direction: column !important;
+    max-height: none !important;
+    overflow-y: visible !important;
   }
   .dice-root .dice-ctrl-bet-wrap   { order: 1; }
   .dice-root .dice-ctrl-amount-wrap { order: 2; }
