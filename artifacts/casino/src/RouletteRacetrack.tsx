@@ -312,26 +312,23 @@ export function RouletteRacetrack({
                   shapeRendering="geometricPrecision"
                 />
 
-                {/* Win / preview highlight — filled overlay so adjacent cells can't cut it */}
-                {isPrev && !isWin && (
-                  <path
-                    d={CELL_PATHS[i]}
-                    fill="rgba(245,158,11,0.38)"
-                    shapeRendering="geometricPrecision"
-                  />
-                )}
-                {isWin && (
-                  <path
-                    d={CELL_PATHS[i]}
-                    fill="rgba(255,255,255,0.45)"
-                    shapeRendering="geometricPrecision"
-                  />
-                )}
+                {/* Win / preview highlight — always in DOM, fill changes only */}
+                <path
+                  d={CELL_PATHS[i]}
+                  fill={
+                    isWin    ? "rgba(255,255,255,0.45)" :
+                    isPrev   ? "rgba(245,158,11,0.38)"  :
+                               "none"
+                  }
+                  shapeRendering="geometricPrecision"
+                />
 
-                {/* Bet indicator dot */}
-                {hasBet && !isWin && (
-                  <circle cx={x} cy={y} r={3.2} fill="#f59e0b" stroke="#000" strokeWidth={0.6} />
-                )}
+                {/* Bet indicator dot — always in DOM, opacity only to avoid layout recalc */}
+                <circle
+                  cx={x} cy={y} r={3.2}
+                  fill="#f59e0b" stroke="#000" strokeWidth={0.6}
+                  opacity={hasBet && !isWin ? 1 : 0}
+                />
 
                 {/* Number — always horizontal (rot=0) on straights, radial on curves */}
                 <text
