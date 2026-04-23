@@ -2353,7 +2353,7 @@ function RouletteGame({
         )}
 
         {/* ─── Undo / Clear below betting table ────────────────────────── */}
-        <div style={{ display: isMobile && (isSpinning || mobileWheelLinger) ? "none" : "flex", justifyContent:"space-between", alignItems:"center", gap:"8px" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:"8px" }}>
           <button onClick={handleUndo} disabled={isSpinning}
             style={{
               padding:"7px 18px", borderRadius:"8px",
@@ -2385,8 +2385,8 @@ function RouletteGame({
         </div>
 
         {/* ─── MOBILE control panel ──────────────────────────────────────── */}
-        {isMobile && !isSpinning && !mobileWheelLinger && (
-          <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
+        {isMobile && (
+          <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px", opacity: isSpinning ? 0.55 : 1, transition:"opacity .2s", pointerEvents: isSpinning ? "none" : "auto" }}>
 
             {/* 1 — Main action button (adapts to mode) */}
             {mode === "manual" ? (
