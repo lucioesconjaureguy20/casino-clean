@@ -1319,6 +1319,7 @@ export default function RouletteGame({
           opacity: isDragSrc ? 0.35 : 1,
         }}
         onMouseEnter={e => {
+          if ('ontouchstart' in window) return;
           if (!isSpinning && !isDragging) {
             const ov = e.currentTarget.firstChild as HTMLElement;
             if (ov?.dataset?.ov !== undefined) ov.style.background = "rgba(255,255,255,0.28)";
@@ -1327,6 +1328,7 @@ export default function RouletteGame({
           }
         }}
         onMouseLeave={e => {
+          if ('ontouchstart' in window) return;
           const ov = e.currentTarget.firstChild as HTMLElement;
           if (ov?.dataset?.ov !== undefined)
             ov.style.background = groupLit ? "rgba(255,255,255,0.2)" : "transparent";
@@ -1398,6 +1400,7 @@ export default function RouletteGame({
           ...style,
         }}
         onMouseEnter={e => {
+          if ('ontouchstart' in window) return;
           if (!isSpinning && !isDragging) {
             (e.currentTarget as HTMLElement).style.filter = "brightness(1.28)";
             (e.currentTarget as HTMLElement).style.transform = "scale(1.06)";
@@ -1406,6 +1409,7 @@ export default function RouletteGame({
           }
         }}
         onMouseLeave={e => {
+          if ('ontouchstart' in window) return;
           (e.currentTarget as HTMLElement).style.filter = "";
           (e.currentTarget as HTMLElement).style.transform = "";
           (e.currentTarget as HTMLElement).style.zIndex = "";
