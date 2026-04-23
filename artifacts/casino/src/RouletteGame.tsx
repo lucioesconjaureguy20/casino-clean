@@ -1923,21 +1923,18 @@ export default function RouletteGame({
 
             <div style={{ display:"flex", alignItems:"flex-start", width:"fit-content", margin:"0 auto" }}>
 
-            {/* ── History strip — last 8 results, vertical (appears horizontal in landscape) ── */}
-            <div style={{ display:"flex", flexDirection:"column", justifyContent:"space-around", height:`${12*40}px`, width:"26px", marginTop:"28px", flexShrink:0 }}>
-              {resultHistory.slice(0, 8).map((n, i) => {
-                const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
-                return (
-                  <div key={i} style={{ width:"22px", height:"22px", borderRadius:"50%", flexShrink:0, alignSelf:"center",
-                    background:bg, border:"1.5px solid rgba(255,255,255,0.22)",
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    fontWeight:700, fontSize:"8px", color:"#fff",
-                    opacity: Math.max(0.3, 1 - i * 0.09),
-                    boxShadow:`0 0 5px ${bg}88` }}>
-                    {n}
-                  </div>
-                );
-              })}
+            {/* ── Last result square — aligned with "1 to 18" cell ── */}
+            <div style={{ marginTop:"28px", flexShrink:0, width:"36px", height:"80px",
+              borderRadius:"6px", background: resultHistory.length > 0
+                ? (resultHistory[0] === 0 ? "#1a6b30" : RED_NUMS.has(resultHistory[0]) ? "#c0392b" : "#111827")
+                : "#111827",
+              border:"2px solid rgba(255,255,255,0.08)",
+              display:"flex", alignItems:"center", justifyContent:"center" }}>
+              {resultHistory.length > 0 && (
+                <span style={{ fontWeight:900, fontSize:"15px", color:"#fff" }}>
+                  {resultHistory[0]}
+                </span>
+              )}
             </div>
 
             <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0" }}>
