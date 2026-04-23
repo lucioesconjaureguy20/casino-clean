@@ -2388,25 +2388,42 @@ function RouletteGame({
         {isMobile && !isSpinning && !mobileWheelLinger && (
           <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
 
-            {/* 1 — Bet button */}
-            {(!isResult || mode === "auto") ? (
-              <button onClick={handleSpin} disabled={!canSpin}
-                style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                  background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
-                  color: canSpin ? "#fff" : "#3a4a60",
-                  fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
-                  cursor: canSpin ? "pointer" : "not-allowed",
-                  boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
-                  transition:"all .2s" }}>
-                {(hasBets && balance < totalBetUsd-0.0001) ? gt(_lang,"insufficientBal") : gt(_lang,"bjBet")}
-              </button>
+            {/* 1 — Main action button (adapts to mode) */}
+            {mode === "manual" ? (
+              (!isResult) ? (
+                <button onClick={handleSpin} disabled={!canSpin}
+                  style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                    background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                    color: canSpin ? "#fff" : "#3a4a60",
+                    fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
+                    cursor: canSpin ? "pointer" : "not-allowed",
+                    boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
+                    transition:"all .2s" }}>
+                  {(hasBets && balance < totalBetUsd-0.0001) ? gt(_lang,"insufficientBal") : gt(_lang,"bjBet")}
+                </button>
+              ) : (
+                <button onClick={handleNewRoundAndSpin}
+                  style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                    background:"linear-gradient(180deg,#1a9fff,#0d6fd4)", color:"#fff",
+                    fontWeight:800, fontSize:"15px", letterSpacing:"0.5px", cursor:"pointer",
+                    boxShadow:"0 4px 22px rgba(26,159,255,.35)", transition:"all .2s" }}>
+                  {gt(_lang,"bjBet")}
+                </button>
+              )
             ) : (
-              <button onClick={handleNewRoundAndSpin}
+              /* Auto mode — Start/Stop button */
+              <button
+                onClick={handleAutoButton}
+                disabled={isSpinning || autoStopping || (!autoRunning && !hasBets)}
                 style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                  background:"linear-gradient(180deg,#1a9fff,#0d6fd4)", color:"#fff",
-                  fontWeight:800, fontSize:"15px", letterSpacing:"0.5px", cursor:"pointer",
-                  boxShadow:"0 4px 22px rgba(26,159,255,.35)", transition:"all .2s" }}>
-                {gt(_lang,"bjBet")}
+                  background: isSpinning ? "#1a2438" : autoStopping ? "linear-gradient(135deg,#b07d20,#8a6010)" : autoRunning ? "linear-gradient(135deg,#c0392b,#a93226)" : hasBets ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                  color: (isSpinning || (!autoRunning && !hasBets)) ? "#3a4a60" : "#fff",
+                  fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
+                  cursor: (isSpinning || autoStopping || (!autoRunning && !hasBets)) ? "not-allowed" : "pointer",
+                  opacity: isSpinning ? 0.45 : 1,
+                  boxShadow: isSpinning ? "none" : autoStopping ? "0 4px 22px rgba(176,125,32,.4)" : autoRunning ? "0 4px 22px rgba(192,57,43,.4)" : hasBets ? "0 4px 22px rgba(26,159,255,.35)" : "none",
+                  transition:"all .2s" }}>
+                {autoStopping ? gt(_lang,"bacStopping") : autoRunning ? gt(_lang,"stopAuto") : gt(_lang,"startAuto")}
               </button>
             )}
 
@@ -2439,10 +2456,10 @@ function RouletteGame({
               </div>
             </div>
 
-            {/* 4 — Half / Double (always visible, disabled when no bets) */}
+            {/* 4 — Half / Double (always visible, disabled when no bets or autoRunning) */}
             <div style={{ display:"flex", gap:"8px" }}>
               {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => {
-                const canHD = phase === "idle" && hasBets && !isSpinning;
+                const canHD = phase === "idle" && hasBets && !isSpinning && !autoRunning;
                 return (
                   <button key={label}
                     disabled={!canHD}
@@ -2473,6 +2490,42 @@ function RouletteGame({
                 );
               })}
             </div>
+
+            {/* 5 — Manual / Auto toggle */}
+            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+              <button onClick={() => { if (!autoRunning) setMode("manual"); }} disabled={autoRunning}
+                style={{ flex:1, background:mode==="manual"?"#1e2c44":"transparent", color:mode==="manual"?"#eef3f8":"#5a6a88", border:mode==="manual"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                {gt(_lang, "tabManual")}
+              </button>
+              <button onClick={() => { if (!autoRunning) setMode("auto"); }} disabled={autoRunning}
+                style={{ flex:1, background:mode==="auto"?"#1e2c44":"transparent", color:mode==="auto"?"#eef3f8":"#5a6a88", border:mode==="auto"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                {gt(_lang, "tabAuto")}
+              </button>
+            </div>
+
+            {/* 6 — Number of rounds (only in auto mode) */}
+            {mode === "auto" && (
+              <div>
+                <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
+                <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
+                  <input
+                    value={autoRunning ? (autoInfinite ? `${999999-autoRemaining}/∞` : `${(parseInt(autoCount)||10)-autoRemaining}/${autoCount}`) : (autoInfinite ? "∞" : autoCount)}
+                    onChange={e => { setAutoInfinite(false); setAutoCount(e.target.value); }}
+                    onBlur={() => { if (!autoInfinite && (autoCount === "" || (parseInt(autoCount)||0) <= 0)) setAutoCount("1"); }}
+                    onWheel={e => { if (!autoInfinite && !autoRunning) e.currentTarget.blur(); }}
+                    type={(autoInfinite || autoRunning) ? "text" : "number"}
+                    min="1"
+                    readOnly={autoInfinite || autoRunning}
+                    disabled={autoRunning}
+                    style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
+                  />
+                  <button onClick={() => setAutoInfinite(v => !v)} disabled={autoRunning}
+                    style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
+                    ∞
+                  </button>
+                </div>
+              </div>
+            )}
 
           </div>
         )}
