@@ -479,12 +479,17 @@ interface RZoneProps {
   tableBets: Record<string, number>;
   winCells: Set<string>;
   isSpinning: boolean;
+  isDragging: boolean;
+  dragFromKey: string | undefined;
   onBet: (key: string) => void;
+  onDragStart: (key: string, amt: number, x: number, y: number, e: React.MouseEvent | React.TouchEvent) => void;
+  onTouchDragStart: (key: string, amt: number, x: number, y: number, e: React.TouchEvent) => void;
   title?: string;
 }
-function RZone({ zkey, style, tableBets, winCells, isSpinning, onBet, title }: RZoneProps) {
-  const amt  = tableBets[zkey] || 0;
-  const isWin = winCells.has(zkey);
+function RZone({ zkey, style, tableBets, winCells, isSpinning, isDragging, dragFromKey, onBet, onDragStart, onTouchDragStart, title }: RZoneProps) {
+  const amt     = tableBets[zkey] || 0;
+  const isWin   = winCells.has(zkey);
+  const isDragSrc = dragFromKey === zkey;
   return (
     <div
       data-bet-key={zkey}
@@ -492,16 +497,25 @@ function RZone({ zkey, style, tableBets, winCells, isSpinning, onBet, title }: R
       className="rt-zone"
       style={{
         position:"absolute", pointerEvents: isSpinning ? "none" : "auto",
-        cursor: isSpinning ? "default" : "pointer",
+        cursor: isSpinning ? "default" : (amt > 0 && !isDragSrc ? "grab" : "pointer"),
         display:"flex", alignItems:"center", justifyContent:"center",
         outline: isWin ? "1.5px solid #22ee66" : "none",
         boxShadow: isWin ? "0 0 7px rgba(34,238,102,0.6)" : "none",
+        opacity: isDragSrc ? 0.35 : 1,
         zIndex: 8,
         ...style,
       }}
-      onClick={() => onBet(zkey)}
+      onClick={() => { if (!isDragging) onBet(zkey); }}
     >
-      {amt > 0 && <CasinoChipSVG {...getBetChipMeta(amt)} label={fmtBetChipLabel(amt)} size={18} />}
+      {amt > 0 && !isDragSrc && (
+        <div
+          style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab" }}
+          onMouseDown={e => onDragStart(zkey, amt, e.clientX, e.clientY, e)}
+          onTouchStart={e => onTouchDragStart(zkey, amt, e.touches[0].clientX, e.touches[0].clientY, e)}
+        >
+          <CasinoChipSVG {...getBetChipMeta(amt)} label={fmtBetChipLabel(amt)} size={30} />
+        </div>
+      )}
     </div>
   );
 }
@@ -1926,39 +1940,51 @@ export default function RouletteGame({
               </div>
             </div>
 
-            {/* ── Zone overlay: horizontal splits, vertical splits, corners ── */}
-            <div style={{ position:"absolute", top:0, left:0, width:"100%", height:"134px", pointerEvents:"none", overflow:"visible" }}>
-              {/* H-splits (between adjacent columns, same row) — 11×3=33 zones */}
-              {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1,2].map(r => {
-                const n1=c*3-r, n2=(c+1)*3-r;
-                return <RZone key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Semipleno: ${n1}-${n2} (paga 17:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:r*45+15, width:14, height:14, borderRadius:"50%" }} />;
-              }))}
-              {/* V-splits (between adjacent rows, same column) — 12×2=24 zones */}
-              {[1,2,3,4,5,6,7,8,9,10,11,12].flatMap(c => [0,1].map(r => {
-                const n1=c*3-r-1, n2=c*3-r;
-                return <RZone key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Semipleno: ${n1}-${n2} (paga 17:1)`} style={{ left:37+(c-1)*45+15, top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%" }} />;
-              }))}
-              {/* Corners (intersection of 4 cells) — 11×2=22 zones */}
-              {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1].map(r => {
-                const nums=[c*3-r,(c+1)*3-r,c*3-r-1,(c+1)*3-r-1].sort((a,b)=>a-b);
-                const zkey=`co_${nums.join("_")}`;
-                return <RZone key={zkey} zkey={zkey} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Esquina: ${nums.join(",")} (paga 8:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%", zIndex:9 }} />;
-              }))}
-            </div>
+            {/* ── Zone overlay + street strip ── */}
+            {(() => {
+              const zp = {
+                tableBets, winCells, isSpinning, isDragging,
+                dragFromKey: dragGhost?.fromKey,
+                onBet: placeBet,
+                onDragStart: beginChipInteraction,
+                onTouchDragStart: beginChipInteractionTouch,
+              };
+              return (
+                <>
+                  {/* Overlay: splits & corners */}
+                  <div style={{ position:"absolute", top:0, left:0, width:"100%", height:"134px", pointerEvents:"none", overflow:"visible" }}>
+                    {/* H-splits (between adjacent columns, same row) — 11×3=33 */}
+                    {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1,2].map(r => {
+                      const n1=c*3-r, n2=(c+1)*3-r;
+                      return <RZone {...zp} key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} title={`Semipleno: ${n1}-${n2} (17:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:r*45+15, width:14, height:14, borderRadius:"50%" }} />;
+                    }))}
+                    {/* V-splits (between adjacent rows, same column) — 12×2=24 */}
+                    {[1,2,3,4,5,6,7,8,9,10,11,12].flatMap(c => [0,1].map(r => {
+                      const n1=c*3-r-1, n2=c*3-r;
+                      return <RZone {...zp} key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} title={`Semipleno: ${n1}-${n2} (17:1)`} style={{ left:37+(c-1)*45+15, top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%" }} />;
+                    }))}
+                    {/* Corners — 11×2=22 */}
+                    {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1].map(r => {
+                      const nums=[c*3-r,(c+1)*3-r,c*3-r-1,(c+1)*3-r-1].sort((a,b)=>a-b);
+                      const zkey=`co_${nums.join("_")}`;
+                      return <RZone {...zp} key={zkey} zkey={zkey} title={`Esquina: ${nums.join(",")} (8:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%", zIndex:9 }} />;
+                    }))}
+                  </div>
 
-            {/* ── Street / Line strip (below number grid) ── */}
-            <div style={{ position:"relative", height:14, marginTop:2 }}>
-              {/* Streets (one per column) */}
-              {[1,2,3,4,5,6,7,8,9,10,11,12].map(c => {
-                const n=c*3-2;
-                return <RZone key={`st_${n}`} zkey={`st_${n}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Calle: ${n},${n+1},${n+2} (paga 11:1)`} style={{ left:37+(c-1)*45, top:0, width:44, height:14, borderRadius:3 }} />;
-              })}
-              {/* Lines (between adjacent streets) */}
-              {[1,2,3,4,5,6,7,8,9,10,11].map(c => {
-                const n=c*3-2;
-                return <RZone key={`li_${n}`} zkey={`li_${n}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Doble calle: ${n}-${n+5} (paga 5:1)`} style={{ left:37+c*45-5, top:0, width:10, height:14, borderRadius:3, zIndex:9 }} />;
-              })}
-            </div>
+                  {/* Street / Line strip — flush below the number grid */}
+                  <div style={{ position:"relative", height:14, marginTop:0 }}>
+                    {[1,2,3,4,5,6,7,8,9,10,11,12].map(c => {
+                      const n=c*3-2;
+                      return <RZone {...zp} key={`st_${n}`} zkey={`st_${n}`} title={`Calle: ${n},${n+1},${n+2} (11:1)`} style={{ left:37+(c-1)*45, top:0, width:44, height:14, borderRadius:3 }} />;
+                    })}
+                    {[1,2,3,4,5,6,7,8,9,10,11].map(c => {
+                      const n=c*3-2;
+                      return <RZone {...zp} key={`li_${n}`} zkey={`li_${n}`} title={`Doble calle: ${n}-${n+5} (5:1)`} style={{ left:37+c*45-5, top:0, width:10, height:14, borderRadius:3, zIndex:9 }} />;
+                    })}
+                  </div>
+                </>
+              );
+            })()}
 
             </div>{/* end position:relative main grid wrapper */}
 
