@@ -1934,3 +1934,29 @@ body {
     font-size: 13px !important;
   }
 }
+
+/* ── Inside-bet zone hot-spots ────────────────────────────────────────────── */
+.rt-zone {
+  position: absolute;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Dim dot always visible so players can see where zones are */
+.rt-zone::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.1s;
+}
+.rt-zone:hover::before {
+  background: rgba(255, 255, 255, 0.32);
+}
+/* Suppress the global :active shrink on zones */
+.rt-zone:active {
+  transform: none !important;
+  opacity: 1 !important;
+}

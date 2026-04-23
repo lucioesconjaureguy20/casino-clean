@@ -195,6 +195,26 @@ function isInGroup(num: number, group: string): boolean {
 function evalBet(key: string, win: number): number {
   if (key.startsWith("n_")) return parseInt(key.slice(2)) === win ? 36 : 0;
   if (win === 0) return 0;
+  // Split (2 adjacent numbers) → pays 17:1 = return 18×
+  if (key.startsWith("sp_")) {
+    const [a, b] = key.slice(3).split("_").map(Number);
+    return (win === a || win === b) ? 18 : 0;
+  }
+  // Street (3 consecutive numbers in a column) → pays 11:1 = return 12×
+  if (key.startsWith("st_")) {
+    const n = parseInt(key.slice(3));
+    return (win >= n && win <= n + 2) ? 12 : 0;
+  }
+  // Corner / Esquina (4 numbers) → pays 8:1 = return 9×
+  if (key.startsWith("co_")) {
+    const nums = key.slice(3).split("_").map(Number);
+    return nums.includes(win) ? 9 : 0;
+  }
+  // Line / Doble calle (6 consecutive numbers) → pays 5:1 = return 6×
+  if (key.startsWith("li_")) {
+    const n = parseInt(key.slice(3));
+    return (win >= n && win <= n + 5) ? 6 : 0;
+  }
   if (key === "dozen_1") return win >= 1 && win <= 12  ? 3 : 0;
   if (key === "dozen_2") return win >= 13 && win <= 24 ? 3 : 0;
   if (key === "dozen_3") return win >= 25 && win <= 36 ? 3 : 0;
@@ -450,6 +470,40 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   ctx.fillStyle = "rgba(255,255,255,0.7)";
   ctx.fill();
   void rimR; // suppress unused warning
+}
+
+// ── RZone: clickable hot-zone for inside bets (splits, streets, corners, lines) ──
+interface RZoneProps {
+  zkey: string;
+  style: React.CSSProperties;
+  tableBets: Record<string, number>;
+  winCells: Set<string>;
+  isSpinning: boolean;
+  onBet: (key: string) => void;
+  title?: string;
+}
+function RZone({ zkey, style, tableBets, winCells, isSpinning, onBet, title }: RZoneProps) {
+  const amt  = tableBets[zkey] || 0;
+  const isWin = winCells.has(zkey);
+  return (
+    <div
+      data-bet-key={zkey}
+      title={title}
+      className="rt-zone"
+      style={{
+        position:"absolute", pointerEvents: isSpinning ? "none" : "auto",
+        cursor: isSpinning ? "default" : "pointer",
+        display:"flex", alignItems:"center", justifyContent:"center",
+        outline: isWin ? "1.5px solid #22ee66" : "none",
+        boxShadow: isWin ? "0 0 7px rgba(34,238,102,0.6)" : "none",
+        zIndex: 8,
+        ...style,
+      }}
+      onClick={() => onBet(zkey)}
+    >
+      {amt > 0 && <CasinoChipSVG {...getBetChipMeta(amt)} label={fmtBetChipLabel(amt)} size={18} />}
+    </div>
+  );
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -1820,7 +1874,8 @@ export default function RouletteGame({
           <div>
 
             {/* Main grid: 0 + 12 columns + 2:1 */}
-            <div style={{ display:"grid", gridTemplateColumns:"36px repeat(12, 44px) 48px", gap:"1px", marginBottom:"1px" }}>
+            <div style={{ position:"relative", marginBottom:"1px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"36px repeat(12, 44px) 48px", gap:"1px" }}>
               {/* Zero */}
               <div
                 data-bet-key="n_0"
@@ -1870,6 +1925,42 @@ export default function RouletteGame({
                 <OutsideCell label="2:1" betKey="col_1" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
             </div>
+
+            {/* ── Zone overlay: horizontal splits, vertical splits, corners ── */}
+            <div style={{ position:"absolute", top:0, left:0, width:"100%", height:"134px", pointerEvents:"none", overflow:"visible" }}>
+              {/* H-splits (between adjacent columns, same row) — 11×3=33 zones */}
+              {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1,2].map(r => {
+                const n1=c*3-r, n2=(c+1)*3-r;
+                return <RZone key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Semipleno: ${n1}-${n2} (paga 17:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:r*45+15, width:14, height:14, borderRadius:"50%" }} />;
+              }))}
+              {/* V-splits (between adjacent rows, same column) — 12×2=24 zones */}
+              {[1,2,3,4,5,6,7,8,9,10,11,12].flatMap(c => [0,1].map(r => {
+                const n1=c*3-r-1, n2=c*3-r;
+                return <RZone key={`sp_${n1}_${n2}`} zkey={`sp_${n1}_${n2}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Semipleno: ${n1}-${n2} (paga 17:1)`} style={{ left:37+(c-1)*45+15, top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%" }} />;
+              }))}
+              {/* Corners (intersection of 4 cells) — 11×2=22 zones */}
+              {[1,2,3,4,5,6,7,8,9,10,11].flatMap(c => [0,1].map(r => {
+                const nums=[c*3-r,(c+1)*3-r,c*3-r-1,(c+1)*3-r-1].sort((a,b)=>a-b);
+                const zkey=`co_${nums.join("_")}`;
+                return <RZone key={zkey} zkey={zkey} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Esquina: ${nums.join(",")} (paga 8:1)`} style={{ left:Math.round(74.5+(c-1)*45), top:Math.round(37.5+r*45), width:14, height:14, borderRadius:"50%", zIndex:9 }} />;
+              }))}
+            </div>
+
+            {/* ── Street / Line strip (below number grid) ── */}
+            <div style={{ position:"relative", height:14, marginTop:2 }}>
+              {/* Streets (one per column) */}
+              {[1,2,3,4,5,6,7,8,9,10,11,12].map(c => {
+                const n=c*3-2;
+                return <RZone key={`st_${n}`} zkey={`st_${n}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Calle: ${n},${n+1},${n+2} (paga 11:1)`} style={{ left:37+(c-1)*45, top:0, width:44, height:14, borderRadius:3 }} />;
+              })}
+              {/* Lines (between adjacent streets) */}
+              {[1,2,3,4,5,6,7,8,9,10,11].map(c => {
+                const n=c*3-2;
+                return <RZone key={`li_${n}`} zkey={`li_${n}`} tableBets={tableBets} winCells={winCells} isSpinning={isSpinning} onBet={placeBet} title={`Doble calle: ${n}-${n+5} (paga 5:1)`} style={{ left:37+c*45-5, top:0, width:10, height:14, borderRadius:3, zIndex:9 }} />;
+              })}
+            </div>
+
+            </div>{/* end position:relative main grid wrapper */}
 
             {/* Dozens */}
             <div style={{ display:"grid", gridTemplateColumns:"36px repeat(12, 44px) 48px", gap:"1px", marginBottom:"1px" }}>
