@@ -1926,7 +1926,7 @@ export default function RouletteGame({
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}>
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
                     </div>
-                  ) : <span style={{ writingMode:"vertical-rl" }}>0</span>}
+                  ) : <span>0</span>}
                 </div>
               </div>
 
@@ -1965,7 +1965,7 @@ export default function RouletteGame({
                 const mRow = Math.floor((n-1)/3)+2;
                 return (
                   <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}` }}>
-                    <NumCell num={n} cellH="40px" textStyle={{ writingMode:"vertical-rl" }} />
+                    <NumCell num={n} cellH="40px" />
                   </div>
                 );
               })}
