@@ -1924,14 +1924,14 @@ export default function RouletteGame({
             <div style={{ display:"flex", alignItems:"flex-start", gap:"60px", width:"fit-content", margin:"0 auto" }}>
 
             {/* ── Last result square — aligned with "1 to 18" cell ── */}
-            <div style={{ marginTop:"28px", flexShrink:0, width:"36px", height:"80px",
+            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", height:"80px",
               borderRadius:"6px", background: resultHistory.length > 0
                 ? (resultHistory[0] === 0 ? "#1a6b30" : RED_NUMS.has(resultHistory[0]) ? "#c0392b" : "#111827")
                 : "#111827",
               border:"2px solid rgba(255,255,255,0.08)",
               display:"flex", alignItems:"center", justifyContent:"center" }}>
               {resultHistory.length > 0 && (
-                <span style={{ fontWeight:900, fontSize:"15px", color:"#fff" }}>
+                <span style={{ fontWeight:900, fontSize:"26px", color:"#fff" }}>
                   {resultHistory[0]}
                 </span>
               )}
