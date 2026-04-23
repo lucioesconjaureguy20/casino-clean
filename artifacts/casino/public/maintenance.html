@@ -22,7 +22,6 @@
       position: relative;
     }
 
-    /* Radial glow backdrop */
     body::before {
       content: '';
       position: fixed;
@@ -33,7 +32,6 @@
       pointer-events: none;
     }
 
-    /* Animated floating particles */
     .particles {
       position: fixed;
       inset: 0;
@@ -53,7 +51,6 @@
       100% { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
-    /* Card */
     .card {
       position: relative;
       z-index: 10;
@@ -72,17 +69,16 @@
       box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.08) inset;
     }
 
-    /* Logo */
     .logo {
       width: 200px;
       filter: drop-shadow(0 4px 24px rgba(212,175,55,0.30));
     }
 
-    /* Hourglass icon */
+    /* Icon */
     .icon-wrap {
       position: relative;
-      width: 80px;
-      height: 80px;
+      width: 88px;
+      height: 88px;
     }
     .icon-bg {
       position: absolute;
@@ -95,20 +91,20 @@
       0%, 100% { transform: scale(1);   opacity: 1; }
       50%       { transform: scale(1.18); opacity: 0.6; }
     }
-    .hourglass-svg {
+    .icon-svg {
       position: relative;
       z-index: 1;
-      width: 80px;
-      height: 80px;
-      animation: spin-hourglass 3.6s ease-in-out infinite;
-      filter: drop-shadow(0 0 12px rgba(212,175,55,0.5));
+      width: 88px;
+      height: 88px;
+      filter: drop-shadow(0 0 14px rgba(212,175,55,0.45));
     }
-    @keyframes spin-hourglass {
-      0%   { transform: rotate(0deg); }
-      45%  { transform: rotate(0deg); }
-      55%  { transform: rotate(180deg); }
-      100% { transform: rotate(180deg); }
+    /* Sand stream animation inside the hourglass */
+    @keyframes sandFall {
+      0%   { opacity: 1;   transform: scaleY(1); }
+      50%  { opacity: 0.6; transform: scaleY(0.4); }
+      100% { opacity: 1;   transform: scaleY(1); }
     }
+    .sand-stream { animation: sandFall 2.2s ease-in-out infinite; transform-origin: top center; }
 
     /* Text */
     .headline {
@@ -130,14 +126,13 @@
       max-width: 380px;
     }
 
-    /* Divider */
     .divider {
       width: 100%;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(212,175,55,0.35), transparent);
     }
 
-    /* Status pill */
+    /* Status pill — no dot */
     .status {
       display: flex;
       align-items: center;
@@ -145,26 +140,27 @@
       background: rgba(212,175,55,0.08);
       border: 1px solid rgba(212,175,55,0.20);
       border-radius: 999px;
-      padding: 7px 18px;
+      padding: 7px 22px;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #d4af37;
     }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #d4af37;
-      animation: blink 1.4s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.2; }
-    }
 
-    /* Footer */
+    /* Support email */
+    .support {
+      font-size: 13px;
+      color: #8fa8c8;
+    }
+    .support a {
+      color: #d4af37;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity .15s;
+    }
+    .support a:hover { opacity: 0.75; }
+
     .footer {
       position: fixed;
       bottom: 24px;
@@ -177,38 +173,63 @@
 </head>
 <body>
 
-  <!-- Floating particles -->
   <div class="particles" id="particles"></div>
 
-  <!-- Main card -->
   <div class="card">
     <img src="/mander-logo-maintenance.png" alt="ManderBet" class="logo" />
 
+    <!-- Professional hourglass — static, no spin -->
     <div class="icon-wrap">
       <div class="icon-bg"></div>
-      <!-- Hourglass SVG -->
-      <svg class="hourglass-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="icon-svg" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="hgGold" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#f0d060"/>
-            <stop offset="100%" stop-color="#a07820"/>
+          <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="100%" stop-color="#9a6f10"/>
+          </linearGradient>
+          <linearGradient id="goldH" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="100%" stop-color="#c49a20"/>
+          </linearGradient>
+          <linearGradient id="sandTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="rgba(212,175,55,0.80)"/>
+            <stop offset="100%" stop-color="rgba(212,175,55,0.20)"/>
+          </linearGradient>
+          <linearGradient id="sandBot" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="rgba(212,175,55,0.50)"/>
+            <stop offset="100%" stop-color="rgba(212,175,55,0.90)"/>
           </linearGradient>
         </defs>
-        <!-- Frame top bar -->
-        <rect x="18" y="12" width="44" height="5" rx="2.5" fill="url(#hgGold)"/>
-        <!-- Frame bottom bar -->
-        <rect x="18" y="63" width="44" height="5" rx="2.5" fill="url(#hgGold)"/>
-        <!-- Sides -->
-        <line x1="22" y1="17" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
-        <line x1="58" y1="17" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
-        <line x1="22" y1="63" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
-        <line x1="58" y1="63" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
-        <!-- Sand top (shrinking) -->
-        <path d="M26 20 Q40 20 54 20 L44 38 Q40 42 36 38 Z" fill="rgba(212,175,55,0.55)"/>
-        <!-- Sand bottom (growing) -->
-        <path d="M34 48 Q40 44 46 48 L54 60 Q40 60 26 60 Z" fill="rgba(212,175,55,0.75)"/>
-        <!-- Neck dot -->
-        <circle cx="40" cy="43" r="2.5" fill="#d4af37"/>
+
+        <!-- Top bar -->
+        <rect x="20" y="13" width="48" height="6" rx="3" fill="url(#goldH)"/>
+        <!-- Bottom bar -->
+        <rect x="20" y="69" width="48" height="6" rx="3" fill="url(#goldH)"/>
+
+        <!-- Frame sides -->
+        <line x1="24" y1="19" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="64" y1="19" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="24" y1="69" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="64" y1="69" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+
+        <!-- Upper sand (partially empty — about 60%) -->
+        <path d="M31 22 Q44 22 57 22 L50 36 Q44 42 38 36 Z" fill="url(#sandTop)" opacity="0.85"/>
+
+        <!-- Sand stream through neck -->
+        <line class="sand-stream" x1="44" y1="44" x2="44" y2="52"
+              stroke="rgba(212,175,55,0.7)" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- Lower sand pile (growing) -->
+        <path d="M36 56 Q44 51 52 56 L58 66 Q44 66 30 66 Z" fill="url(#sandBot)" opacity="0.9"/>
+
+        <!-- Neck pivot -->
+        <circle cx="44" cy="46" r="3" fill="#d4af37"/>
+
+        <!-- Decorative corner studs -->
+        <circle cx="22" cy="16" r="2.5" fill="#f5e070" opacity="0.7"/>
+        <circle cx="66" cy="16" r="2.5" fill="#f5e070" opacity="0.7"/>
+        <circle cx="22" cy="72" r="2.5" fill="#f5e070" opacity="0.7"/>
+        <circle cx="66" cy="72" r="2.5" fill="#f5e070" opacity="0.7"/>
       </svg>
     </div>
 
@@ -221,16 +242,17 @@
 
     <div class="divider"></div>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      Back online soon
-    </div>
+    <div class="status">Back online soon</div>
+
+    <p class="support">
+      Need help? Contact us at
+      <a href="mailto:support@manderbet.com">support@manderbet.com</a>
+    </p>
   </div>
 
   <p class="footer">&copy; ManderBet Casino &mdash; All rights reserved</p>
 
   <script>
-    // Generate floating particles
     const container = document.getElementById('particles');
     for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
