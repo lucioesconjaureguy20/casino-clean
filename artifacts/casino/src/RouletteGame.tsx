@@ -521,8 +521,13 @@ function RZone({ zkey, style, tableBets, winCells, isSpinning, isDragging, dragF
   );
 }
 
+// Module-level ref: tracks drag state OUTSIDE React so the memo comparator can read it.
+// When true, all parent-triggered re-renders are blocked — the drag listener runs
+// independently and doesn't need React to paint position updates.
+const _dragging = { current: false };
+
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function RouletteGame({
+function RouletteGame({
   balance, fmtMoney, convertUsd, displayCurrency, currencyFade,
   onBack, onBalanceChange, addBet, onBetRecord,
   liveRates, lang: _lang = "es", rouletteStats, setRouletteStats,
@@ -1006,6 +1011,7 @@ export default function RouletteGame({
   }
 
   function startChipDrag(fromKey: string, amount: number, x: number, y: number) {
+    _dragging.current = true; // block parent re-renders via React.memo comparator
     dragInfoRef.current = { fromKey, amount };
     ghostPosRef.current = { x, y };
     // Show and position the ghost IMMEDIATELY — no React render needed.
@@ -1121,6 +1127,7 @@ export default function RouletteGame({
       moveGhost(e.clientX, e.clientY);
     }
     function finalizeDrop(cx: number, cy: number) {
+      _dragging.current = false; // allow parent re-renders again
       // Hide ghost immediately — no React render required
       if (ghostElRef.current) ghostElRef.current.style.display = "none";
       const ds = dragInfoRef.current;
@@ -1145,6 +1152,7 @@ export default function RouletteGame({
     function onTouchEnd(e: TouchEvent) {
       if (e.changedTouches.length > 0) finalizeDrop(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       else {
+        _dragging.current = false;
         if (ghostElRef.current) ghostElRef.current.style.display = "none";
         dragInfoRef.current = null; setDragGhost(null); setIsDragging(false);
       }
@@ -2318,3 +2326,14 @@ export default function RouletteGame({
     </div>
   );
 }
+
+// React.memo with a custom comparator: while the user is actively dragging a chip,
+// skip ALL re-renders triggered by the parent (price tickers, live-bets polling, etc.).
+// Own-state updates (tableBets, phase, etc.) still re-render normally because React
+// always re-renders a component when its OWN state changes, regardless of memo.
+export default React.memo(RouletteGame, (prev, next) => {
+  if (_dragging.current) return true; // skip parent-driven re-renders during drag
+  const keys = Object.keys(prev) as (keyof RouletteGameProps)[];
+  return keys.length === (Object.keys(next) as (keyof RouletteGameProps)[]).length
+    && keys.every(k => prev[k] === next[k]);
+});
