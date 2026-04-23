@@ -510,6 +510,7 @@ function RZone({ zkey, style, tableBets, winCells, isSpinning, isDragging, dragF
       {amt > 0 && !isDragSrc && (
         <div
           style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab" }}
+          onClick={e => e.stopPropagation()}
           onMouseDown={e => onDragStart(zkey, amt, e.clientX, e.clientY, e)}
           onTouchStart={e => onTouchDragStart(zkey, amt, e.touches[0].clientX, e.touches[0].clientY, e)}
         >
