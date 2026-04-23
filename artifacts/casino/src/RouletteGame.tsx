@@ -93,7 +93,7 @@ interface SpinData {
 // Chip display labels → actual USD amounts:
 const CHIP_VALUES = [0.01, 0.10, 1, 5, 10, 100, 500, 1_000];
 const CHIP_META: Record<string, { label: string; bg: string; border: string; txt: string }> = {
-  "0.01":  { label:".01",  bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
+  "0.01":  { label:"0.01", bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
   "0.1":   { label:"0.1",  bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
   "1":     { label:"1",    bg:"#15803d", border:"#22c55e", txt:"#fff"    },
   "5":     { label:"5",    bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
