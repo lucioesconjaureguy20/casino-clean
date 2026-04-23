@@ -1460,6 +1460,7 @@ function RouletteGame({
         {betAmt > 0 && !isDragSrc ? (
           <div
             style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
+            onClick={e => e.stopPropagation()}
             onMouseDown={e => beginChipInteraction(key, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(key, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
@@ -1533,6 +1534,7 @@ function RouletteGame({
         {betAmt > 0 && !isDragSrc ? (
           <div
             style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent", writingMode:"horizontal-tb" }}
+            onClick={e => e.stopPropagation()}
             onMouseDown={e => beginChipInteraction(betKey, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(betKey, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
@@ -2166,6 +2168,7 @@ function RouletteGame({
                     boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
                     <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
+                      onClick={e => e.stopPropagation()}
                       onMouseDown={e => beginChipInteraction("n_0", tableBets["n_0"], e.clientX, e.clientY, e)}
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}>
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
@@ -2291,6 +2294,7 @@ function RouletteGame({
                   {(tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? (
                     <div
                       style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
+                      onClick={e => e.stopPropagation()}
                       onMouseDown={e => beginChipInteraction("n_0", tableBets["n_0"], e.clientX, e.clientY, e)}
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}
                     >
