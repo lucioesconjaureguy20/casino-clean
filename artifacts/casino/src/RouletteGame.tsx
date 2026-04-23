@@ -1873,44 +1873,44 @@ export default function RouletteGame({
         {/* ─── Betting Table ─────────────────────────────────────────────── */}
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
-          <div style={{ display:"block", padding:"0 6px", overflowX:"auto" }}>
+          <div style={{ display:"block" }}>
 
 
-            <div style={{ display:"flex", alignItems:"flex-start", gap:"50px", width:"fit-content", margin:"0 auto" }}>
+            <div style={{ display:"flex", alignItems:"flex-start", gap:"6px", width:"100%" }}>
 
             {/* ── Result history column — big last number + smaller previous ones ── */}
-            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", display:"flex", flexDirection:"column", gap:"5px", alignItems:"center" }}>
+            <div style={{ marginTop:"28px", flexShrink:0, width:"60px", display:"flex", flexDirection:"column", gap:"4px", alignItems:"center" }}>
 
               {/* Big square — last result */}
               {(() => {
                 const n = resultHistory[0];
                 const bg = n === undefined ? "#111827" : n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
                 return (
-                  <div style={{ width:"80px", height:"80px", borderRadius:"6px", flexShrink:0,
+                  <div style={{ width:"60px", height:"60px", borderRadius:"6px", flexShrink:0,
                     background: bg, border:"2px solid rgba(255,255,255,0.10)",
                     display:"flex", alignItems:"center", justifyContent:"center" }}>
                     {n !== undefined && (
-                      <span style={{ fontWeight:900, fontSize:"26px", color:"#fff" }}>{n}</span>
+                      <span style={{ fontWeight:900, fontSize:"22px", color:"#fff" }}>{n}</span>
                     )}
                   </div>
                 );
               })()}
 
-              {/* Smaller squares — previous results, down to ~"19 to 36" row */}
+              {/* Smaller squares — previous results */}
               {resultHistory.slice(1, 9).map((n, i) => {
                 const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
                 return (
-                  <div key={i} style={{ width:"36px", height:"36px", borderRadius:"5px", flexShrink:0,
+                  <div key={i} style={{ width:"28px", height:"28px", borderRadius:"4px", flexShrink:0,
                     background: bg, border:"1.5px solid rgba(255,255,255,0.08)",
                     display:"flex", alignItems:"center", justifyContent:"center",
                     opacity: Math.max(0.45, 1 - i * 0.08) }}>
-                    <span style={{ fontWeight:700, fontSize:"14px", color:"#fff" }}>{n}</span>
+                    <span style={{ fontWeight:700, fontSize:"11px", color:"#fff" }}>{n}</span>
                   </div>
                 );
               })}
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
