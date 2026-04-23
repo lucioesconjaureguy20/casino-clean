@@ -18,80 +18,91 @@ function getNeighbors(num: number, n: number): number[] {
   );
 }
 
-function numBg(n: number): string {
-  if (n === 0) return "#16a34a";
-  return RED_SET.has(n) ? "#c41c1c" : "#111";
-}
-function numActiveBg(n: number): string {
-  if (n === 0) return "#22c55e";
-  return RED_SET.has(n) ? "#ef4444" : "#374151";
+function numBg(n: number, active: boolean, win: boolean): string {
+  if (win)    return "#22ee66";
+  if (n === 0) return active ? "#22c55e" : "#16a34a";
+  if (RED_SET.has(n)) return active ? "#ef4444" : "#c41c1c";
+  return active ? "#4b5563" : "#141420";
 }
 
 // ── Stadium geometry ──────────────────────────────────────────────────────────
-//  Two straight segments (top / bottom) + two semicircles (left / right).
-//  0 is at the leftmost point; numbers go counterclockwise (upward first).
 const SVG_W  = 560;
-const SVG_H  = 155;
-const CX     = SVG_W / 2;   // 280
-const CY     = SVG_H / 2;   // 77.5
-const R      = 50;           // semicircle radius
-const HALF_L = 196;          // half-length of each straight segment
+const SVG_H  = 150;
+const CX     = SVG_W / 2;    // 280
+const CY     = SVG_H / 2;    // 75
+const R      = 50;            // semicircle radius
+const HALF_L = 196;           // half-length of straight segments
 
-const CX1 = CX - HALF_L;    // left semicircle centre x
-const CX2 = CX + HALF_L;    // right semicircle centre x
+const CX1 = CX - HALF_L;     // left semicircle centre x  (84)
+const CX2 = CX + HALF_L;     // right semicircle centre x (476)
 
 const PERIMETER = 4 * HALF_L + 2 * Math.PI * R;
 
-// Cumulative arc positions for each section (0 = leftmost of left curve)
-const S1 = (Math.PI / 2) * R;                // end of left-upper quarter
-const S2 = S1 + 2 * HALF_L;                  // end of top straight
-const S3 = S2 + Math.PI * R;                  // end of right semicircle
-const S4 = S3 + 2 * HALF_L;                  // end of bottom straight
+// Section cumulative arc lengths (origin = leftmost of left curve)
+const S1 = (Math.PI / 2) * R;           // end of left-upper quarter
+const S2 = S1 + 2 * HALF_L;             // end of top straight
+const S3 = S2 + Math.PI * R;            // end of right semicircle
+const S4 = S3 + 2 * HALF_L;             // end of bottom straight
 
-/** Arc-length → position + tangent angle on the stadium perimeter. */
 function stadiumPoint(s: number): { x: number; y: number; rot: number } {
   let x: number, y: number, θ: number;
-
   if (s <= S1) {
-    // Left-upper quarter: leftmost (π) → top-left (3π/2)
     θ = Math.PI + (s / S1) * (Math.PI / 2);
     x = CX1 + R * Math.cos(θ);
     y = CY  + R * Math.sin(θ);
   } else if (s <= S2) {
-    // Top straight: left → right
     return { x: CX1 + (s - S1), y: CY - R, rot: 0 };
   } else if (s <= S3) {
-    // Right semicircle: top (−π/2) → bottom (+π/2)
     θ = -Math.PI / 2 + (s - S2) / R;
     x = CX2 + R * Math.cos(θ);
     y = CY  + R * Math.sin(θ);
   } else if (s <= S4) {
-    // Bottom straight: right → left
     return { x: CX2 - (s - S3), y: CY + R, rot: 0 };
   } else {
-    // Left-lower quarter: bottom-left (π/2) → leftmost (π)
     θ = Math.PI / 2 + ((s - S4) / ((Math.PI / 2) * R)) * (Math.PI / 2);
     x = CX1 + R * Math.cos(θ);
     y = CY  + R * Math.sin(θ);
   }
-  // Tangent for circular arcs: direction of travel = (−sinθ, cosθ)
   return { x, y, rot: Math.atan2(Math.cos(θ!), -Math.sin(θ!)) * (180 / Math.PI) };
 }
 
-// Pill dimensions — PW equals the arc-length step so pills touch with no gap
-const PW = PERIMETER / 37;  // ≈ 29.9 SVG units
-const PH = 22;               // pill height (uniform for all numbers)
-const PR = 3;                // border-radius (max 4px as requested)
+// Pill dimensions
+const PH = 18;                           // height (slightly reduced per request)
+const PW = PERIMETER / 37;              // width = arc-step → pills touch, no gaps
 
-// Precomputed positions for all 37 numbers
-const POSITIONS: { x: number; y: number; rot: number }[] =
-  WHEEL_ORDER.map((_, i) => stadiumPoint((i / 37) * PERIMETER));
+// Clip-path ring radii (slightly beyond pill edges for clean containment)
+const ORO = R + PH / 2 + 1.5;          // outer ring radius
+const IRI  = R - PH / 2 - 1.5;         // inner ring radius
 
-// Inner button area (foreignObject coords in SVG units)
-const BTN_X  = CX1 + 1;
-const BTN_Y  = CY - R + PH / 2 + 1;
-const BTN_W  = 2 * HALF_L - 2;
-const BTN_H  = 2 * R - PH - 2;
+// Precomputed number positions
+const POSITIONS = WHEEL_ORDER.map((_, i) => stadiumPoint((i / 37) * PERIMETER));
+
+// ForeignObject button area
+const BTN_X = CX1 + 1;
+const BTN_Y = CY - IRI + 1;
+const BTN_W = 2 * HALF_L - 2;
+const BTN_H = 2 * IRI - 2;
+
+// ── Clip-path path strings ────────────────────────────────────────────────────
+// Outer boundary (clockwise, sweep=1) + Inner boundary (counter-clockwise, sweep=0)
+// Together with fill-rule="evenodd" this creates the ring clip region.
+const OUTER_PATH = `
+  M ${CX1} ${CY - ORO}
+  L ${CX2} ${CY - ORO}
+  A ${ORO} ${ORO} 0 0 1 ${CX2} ${CY + ORO}
+  L ${CX1} ${CY + ORO}
+  A ${ORO} ${ORO} 0 0 1 ${CX1} ${CY - ORO}
+  Z
+`.trim();
+
+const INNER_PATH = `
+  M ${CX2} ${CY - IRI}
+  L ${CX1} ${CY - IRI}
+  A ${IRI} ${IRI} 0 0 0 ${CX1} ${CY + IRI}
+  L ${CX2} ${CY + IRI}
+  A ${IRI} ${IRI} 0 0 0 ${CX2} ${CY - IRI}
+  Z
+`.trim();
 
 // ── Props ─────────────────────────────────────────────────────────────────────
 interface Props {
@@ -155,10 +166,10 @@ export function RouletteRacetrack({
           onClick={() => setNeighborN(v => Math.max(1, v - 1))}
           disabled={isSpinning || neighborN <= 1}
           style={{
-            padding:    "5px 15px", background: "none", border: "none",
-            color:      neighborN > 1 ? "#e2e8f0" : "#2a3040",
-            fontSize:   17, fontWeight: 700, lineHeight: 1,
-            cursor:     neighborN > 1 && !isSpinning ? "pointer" : "default",
+            padding: "5px 15px", background: "none", border: "none",
+            color:   neighborN > 1 ? "#e2e8f0" : "#2a3040",
+            fontSize: 17, fontWeight: 700, lineHeight: 1,
+            cursor:  neighborN > 1 && !isSpinning ? "pointer" : "default",
             fontFamily: "'Inter', Arial, sans-serif",
           }}
         >−</button>
@@ -177,136 +188,144 @@ export function RouletteRacetrack({
           onClick={() => setNeighborN(v => Math.min(8, v + 1))}
           disabled={isSpinning || neighborN >= 8}
           style={{
-            padding:    "5px 15px", background: "none", border: "none",
-            color:      neighborN < 8 ? "#e2e8f0" : "#2a3040",
-            fontSize:   17, fontWeight: 700, lineHeight: 1,
-            cursor:     neighborN < 8 && !isSpinning ? "pointer" : "default",
+            padding: "5px 15px", background: "none", border: "none",
+            color:   neighborN < 8 ? "#e2e8f0" : "#2a3040",
+            fontSize: 17, fontWeight: 700, lineHeight: 1,
+            cursor:  neighborN < 8 && !isSpinning ? "pointer" : "default",
             fontFamily: "'Inter', Arial, sans-serif",
           }}
         >+</button>
       </div>
 
-      {/* ── Stadium racetrack (SVG) ────────────────────────────────────── */}
+      {/* ── SVG racetrack ─────────────────────────────────────────────── */}
       <div style={{ width: "100%", maxWidth: SVG_W }}>
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           width="100%"
-          style={{ display: "block", overflow: "visible" }}
+          style={{ display: "block" }}
         >
-          {/* ── Track background ring ── */}
-          {/* Outer stadium outline */}
+          <defs>
+            {/*
+              Ring clipPath: outer stadium CW + inner stadium CCW.
+              evenodd fill rule ⟹ region between the two paths is clipped TO.
+              Pills protruding beyond the ring are cut cleanly.
+            */}
+            <clipPath id="rt-ring-clip">
+              <path fillRule="evenodd" d={`${OUTER_PATH} ${INNER_PATH}`} />
+            </clipPath>
+          </defs>
+
+          {/* ── Track visual background (ring) ── */}
           <path
-            d={`
-              M ${CX1} ${CY - R - PH / 2 - 4}
-              L ${CX2} ${CY - R - PH / 2 - 4}
-              A ${R + PH / 2 + 4} ${R + PH / 2 + 4} 0 0 1
-                ${CX2} ${CY + R + PH / 2 + 4}
-              L ${CX1} ${CY + R + PH / 2 + 4}
-              A ${R + PH / 2 + 4} ${R + PH / 2 + 4} 0 0 1
-                ${CX1} ${CY - R - PH / 2 - 4}
-              Z
-            `}
-            fill="#0e0c10"
-            stroke="#222028"
-            strokeWidth={1.5}
-          />
-          {/* Inner cutout */}
-          <path
-            d={`
-              M ${CX1} ${CY - R + PH / 2 + 4}
-              L ${CX2} ${CY - R + PH / 2 + 4}
-              A ${R - PH / 2 - 4} ${R - PH / 2 - 4} 0 0 1
-                ${CX2} ${CY + R - PH / 2 - 4}
-              L ${CX1} ${CY + R - PH / 2 - 4}
-              A ${R - PH / 2 - 4} ${R - PH / 2 - 4} 0 0 1
-                ${CX1} ${CY - R + PH / 2 + 4}
-              Z
-            `}
-            fill="#0a0810"
+            d={`${OUTER_PATH} ${INNER_PATH}`}
+            fillRule="evenodd"
+            fill="#111"
+            stroke="#222"
+            strokeWidth={1}
           />
 
-          {/* ── Number pills — width = arc step → no gaps ── */}
-          {WHEEL_ORDER.map((num, i) => {
-            const { x, y, rot } = POSITIONS[i];
-            const isWin   = winNumber === num;
-            const isPrev  = preview.has(num);
-            const hasBet  = (tableBets[`n_${num}`] ?? 0) > 0;
+          {/* ── Number cells — all clipped cleanly to ring ── */}
+          <g clipPath="url(#rt-ring-clip)">
+            {WHEEL_ORDER.map((num, i) => {
+              const { x, y, rot } = POSITIONS[i];
+              const isWin  = winNumber === num;
+              const isPrev = preview.has(num);
+              const hasBet = (tableBets[`n_${num}`] ?? 0) > 0;
+              const bg     = numBg(num, isPrev, isWin);
+              const textColor = (isWin || (!isPrev && num === 0) || isPrev) && isWin ? "#000" : "#fff";
 
-            let bg        = numBg(num);
-            let textColor = "#fff";
-            if      (isWin)  { bg = "#22ee66"; textColor = "#000"; }
-            else if (isPrev) { bg = numActiveBg(num); }
-
-            return (
-              <g
-                key={num}
-                transform={`rotate(${rot},${x},${y})`}
-                onClick={() => { if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
-                onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
-                onMouseLeave={() => setHoverNum(null)}
-                style={{ cursor: isSpinning ? "default" : "pointer" }}
-              >
-                {/* Win / preview glow */}
-                {(isWin || isPrev) && (
-                  <rect
-                    x={x - PW / 2 - 2} y={y - PH / 2 - 2}
-                    width={PW + 4} height={PH + 4} rx={PR + 1}
-                    fill={isWin ? "#22ee6630" : "#f59e0b28"}
-                  />
-                )}
-
-                {/* Pill */}
-                <rect
-                  x={x - PW / 2} y={y - PH / 2}
-                  width={PW} height={PH} rx={PR}
-                  fill={bg}
-                  stroke={(isWin || isPrev) ? (isWin ? "#fff" : "#f59e0b") : "none"}
-                  strokeWidth={1.5}
-                />
-
-                {/* Bet dot */}
-                {hasBet && !isWin && (
-                  <circle
-                    cx={x + PW / 2 - 4} cy={y - PH / 2 + 4} r={3}
-                    fill="#f59e0b" stroke="#000" strokeWidth={0.5}
-                    transform={`rotate(${-rot},${x + PW / 2 - 4},${y - PH / 2 + 4})`}
-                  />
-                )}
-
-                {/* Number — always horizontal via counter-rotation */}
-                <text
-                  x={x} y={y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill={textColor}
-                  fontSize={10}
-                  fontWeight="700"
-                  fontFamily="'Inter', Arial, sans-serif"
-                  transform={`rotate(${-rot},${x},${y})`}
-                  style={{ pointerEvents: "none" }}
+              return (
+                <g
+                  key={num}
+                  transform={`rotate(${rot},${x},${y})`}
+                  onClick={() => { if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
+                  onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
+                  onMouseLeave={() => setHoverNum(null)}
+                  style={{ cursor: isSpinning ? "default" : "pointer" }}
                 >
-                  {num}
-                </text>
-              </g>
-            );
-          })}
+                  {/* Solid color block — no individual border */}
+                  <rect
+                    x={x - PW / 2} y={y - PH / 2}
+                    width={PW} height={PH}
+                    fill={bg}
+                  />
 
-          {/* ── Center section buttons (foreignObject for exact placement) ── */}
+                  {/* Thin divider line between cells (1px on the right edge) */}
+                  <line
+                    x1={x + PW / 2} y1={y - PH / 2}
+                    x2={x + PW / 2} y2={y + PH / 2}
+                    stroke="rgba(0,0,0,0.35)"
+                    strokeWidth={0.6}
+                  />
+
+                  {/* Win / preview highlight overlay */}
+                  {(isWin || isPrev) && (
+                    <rect
+                      x={x - PW / 2} y={y - PH / 2}
+                      width={PW} height={PH}
+                      fill="none"
+                      stroke={isWin ? "#fff" : "#f59e0b"}
+                      strokeWidth={2}
+                    />
+                  )}
+
+                  {/* Bet indicator dot */}
+                  {hasBet && !isWin && (
+                    <circle
+                      cx={x + PW / 2 - 4} cy={y - PH / 2 + 4} r={2.8}
+                      fill="#f59e0b" stroke="#000" strokeWidth={0.4}
+                      transform={`rotate(${-rot},${x + PW / 2 - 4},${y - PH / 2 + 4})`}
+                    />
+                  )}
+
+                  {/* Number text — always horizontal */}
+                  <text
+                    x={x} y={y}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill={isWin ? "#000" : "#fff"}
+                    fontSize={10}
+                    fontWeight="700"
+                    fontFamily="'Inter', Arial, sans-serif"
+                    transform={`rotate(${-rot},${x},${y})`}
+                    style={{ pointerEvents: "none" }}
+                  >
+                    {num}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+
+          {/* ── Ring border lines (on top of cells) ── */}
+          <path
+            d={OUTER_PATH}
+            fill="none"
+            stroke="#2a2535"
+            strokeWidth={1}
+          />
+          <path
+            d={INNER_PATH}
+            fill="none"
+            stroke="#2a2535"
+            strokeWidth={1}
+          />
+
+          {/* ── Center section — fills entire interior ── */}
           <foreignObject
             x={BTN_X} y={BTN_Y}
             width={BTN_W} height={BTN_H}
           >
             <div
-              // @ts-ignore (xmlns required for foreignObject in SVG)
+              // @ts-ignore
               xmlns="http://www.w3.org/1999/xhtml"
               style={{
-                display:         "flex",
-                width:           "100%",
-                height:          "100%",
-                background:      "#0a0810",
-                border:          "1px solid rgba(255,255,255,0.08)",
-                borderRadius:    2,
-                overflow:        "hidden",
+                display:      "flex",
+                width:        "100%",
+                height:       "100%",
+                background:   "#0a0810",
+                borderRadius: 0,
+                overflow:     "hidden",
               }}
             >
               {centerBtns.map(({ id, label, nums }, idx) => {
@@ -319,20 +338,20 @@ export function RouletteRacetrack({
                     onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
                     onMouseLeave={() => setHoverGroup(null)}
                     style={{
-                      flex:           1,
-                      padding:        0,
-                      background:     active ? "rgba(255,255,255,0.12)" : "transparent",
-                      border:         "none",
-                      borderRight:    idx < 3 ? "1px solid rgba(255,255,255,0.12)" : "none",
-                      color:          active ? "#fff" : "rgba(255,255,255,0.65)",
-                      fontSize:       10,
-                      fontWeight:     700,
-                      fontFamily:     "'Inter', Arial, sans-serif",
-                      cursor:         isSpinning ? "default" : "pointer",
-                      transition:     "background .13s, color .13s",
-                      letterSpacing:  "0.2px",
-                      whiteSpace:     "nowrap",
-                      textAlign:      "center",
+                      flex:        1,
+                      padding:     0,
+                      background:  active ? "rgba(255,255,255,0.14)" : "transparent",
+                      border:      "none",
+                      borderRight: idx < 3 ? "1px solid rgba(255,255,255,0.12)" : "none",
+                      color:       active ? "#fff" : "rgba(255,255,255,0.6)",
+                      fontSize:    10,
+                      fontWeight:  700,
+                      fontFamily:  "'Inter', Arial, sans-serif",
+                      cursor:      isSpinning ? "default" : "pointer",
+                      transition:  "background .12s, color .12s",
+                      whiteSpace:  "nowrap",
+                      textAlign:   "center",
+                      letterSpacing: "0.1px",
                     }}
                   >
                     {label}
@@ -347,9 +366,9 @@ export function RouletteRacetrack({
       {/* ── Hover hint ─────────────────────────────────────────────────── */}
       {hoverNum !== null && (
         <div style={{
-          fontSize:  10,
-          color:     "rgba(255,255,255,0.32)",
-          textAlign: "center",
+          fontSize:   10,
+          color:      "rgba(255,255,255,0.32)",
+          textAlign:  "center",
           fontFamily: "'Inter', Arial, sans-serif",
         }}>
           {gt(lang, "rtNeighborHint")} {getNeighbors(hoverNum, neighborN).join(" · ")}
