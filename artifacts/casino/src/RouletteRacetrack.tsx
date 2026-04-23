@@ -165,12 +165,14 @@ const X2  = CX1 + 210;
 const X3T = CX1 + 295;   // diagonal top-left
 const X3B = CX1 + 345;   // diagonal bottom-right
 
+// Smaller radius for J0's right arc (less bulge than the left inner-ring arc)
+const J0_R = 16;
+
 // Section path strings (each fills its slice of the inner ring perfectly)
-// J0: left arc bulges LEFT (inner ring), right arc bulges RIGHT (mirror) — pill shape
-// sweep=0 bottom→top via right = same right-half arc traversed backwards to close J0
-const J0_PATH = `M ${F(X1)} ${F(CY-IRI)} L ${F(CX1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(CX1)} ${F(CY+IRI)} L ${F(X1)} ${F(CY+IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(X1)} ${F(CY-IRI)} Z`;
-// VECINOS: left edge is the concave side of J0's right arc (sweep=1 top→bottom via right)
-const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(X1)} ${F(CY+IRI)} L ${F(X2)} ${F(CY+IRI)} Z`;
+// J0: left arc bulges LEFT (inner ring), right arc bulges RIGHT with smaller radius
+const J0_PATH = `M ${F(X1)} ${F(CY-IRI)} L ${F(CX1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(CX1)} ${F(CY+IRI)} L ${F(X1)} ${F(CY+IRI)} A ${F(J0_R)} ${F(J0_R)} 0 0 0 ${F(X1)} ${F(CY-IRI)} Z`;
+// VECINOS: left edge matches J0's right arc (same J0_R, sweep=1 = concave from VECINOS side)
+const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} A ${F(J0_R)} ${F(J0_R)} 0 0 1 ${F(X1)} ${F(CY+IRI)} L ${F(X2)} ${F(CY+IRI)} Z`;
 const HU_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(X2)} ${F(CY-IRI)} L ${F(X2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 const TE_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(CX2)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(CX2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 
@@ -388,9 +390,9 @@ export function RouletteRacetrack({
           })}
 
           {/* Divider lines between sections (thin, dark) */}
-          {/* J0 | VECINOS: circular arc (right-half of circle at X1) */}
+          {/* J0 | VECINOS: small arc (same J0_R) */}
           <path
-            d={`M ${F(X1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(X1)} ${F(CY+IRI)}`}
+            d={`M ${F(X1)} ${F(CY-IRI)} A ${F(J0_R)} ${F(J0_R)} 0 0 1 ${F(X1)} ${F(CY+IRI)}`}
             fill="none" stroke="#2a2a2a" strokeWidth={0.5}
             shapeRendering="geometricPrecision"
           />
