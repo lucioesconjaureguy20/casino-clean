@@ -558,6 +558,16 @@ export default function RouletteGame({
   const dragInfoRef = useRef<{ fromKey: string; amount: number } | null>(null);
   const ghostElRef  = useRef<HTMLDivElement | null>(null); // direct DOM ref for ghost chip
   const ghostPosRef = useRef<{ x: number; y: number } | null>(null); // tracks live cursor pos during drag
+  // Stable ref callback — inline functions re-fire with (null → el) on EVERY re-render, which
+  // causes ghostElRef.current to be null for a tick on each setDragOverKey update, making the
+  // ghost freeze while the finger is over the table. useCallback([]) = only fires on real mount/unmount.
+  const handleGhostRef = useCallback((el: HTMLDivElement | null) => {
+    ghostElRef.current = el;
+    if (el) {
+      const pos = ghostPosRef.current;
+      if (pos) el.style.transform = `translate(${pos.x - 18}px, ${pos.y - 18}px)`;
+    }
+  }, []);
   const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
 
   // Stats / volume panel
@@ -2295,15 +2305,7 @@ export default function RouletteGame({
            re-renders (e.g. from setDragOverKey) don't reset the position.      */}
       {dragGhost && createPortal(
         <div
-          ref={el => {
-            ghostElRef.current = el;
-            if (el) {
-              // Use live position (ghostPosRef) so React re-renders don't reset to initial coords
-              // Portal target is <html> (not body), so no zoom correction needed — clientX/Y map 1:1
-              const pos = ghostPosRef.current ?? { x: dragGhost.x, y: dragGhost.y };
-              el.style.transform = `translate(${pos.x - 18}px, ${pos.y - 18}px)`;
-            }
-          }}
+          ref={handleGhostRef}
           style={{
             position:"fixed",
             left: 0,
