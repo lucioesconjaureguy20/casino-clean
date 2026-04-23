@@ -1034,18 +1034,14 @@ function RouletteGame({
     return null;
   }
 
-  // Read the CSS zoom on <body> so ghost (outside zoomed body) matches cursor coords.
-  function bodyZoom(): number { return parseFloat(getComputedStyle(document.body).zoom) || 1; }
-
   // Mouse drag (desktop) — uses React state for the chip; desktop JS engine handles renders fast.
   // Does NOT set innerHTML on the ghost div (React renders CasinoChipSVG inside it via setDragGhost).
   function startChipDrag(fromKey: string, amount: number, x: number, y: number) {
     _dragging.current = true;
     dragInfoRef.current = { fromKey, amount };
     ghostPosRef.current = { x, y };
-    const bz = bodyZoom();
     if (ghostElRef.current) {
-      ghostElRef.current.style.transform = `translate(${x * bz - 18}px, ${y * bz - 18}px)`;
+      ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
       ghostElRef.current.style.display = "block";
     }
     // Dim source cell immediately without waiting for React re-render
@@ -1193,8 +1189,7 @@ function RouletteGame({
     function moveGhost(cx: number, cy: number) {
       ghostPosRef.current = { x: cx, y: cy };
       if (ghostElRef.current) {
-        const bz = bodyZoom();
-        ghostElRef.current.style.transform = `translate(${cx * bz - 18}px, ${cy * bz - 18}px)`;
+        ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
     }
     // Desktop only — touch drag position is already handled by beginChipInteractionTouch's onMove
