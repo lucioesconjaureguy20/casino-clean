@@ -2064,7 +2064,7 @@ function RouletteGame({
             }}>
               <div style={{ position:"relative", width:"270px", height:"270px" }}>
                 <canvas ref={canvasRef} width={270} height={270}
-                  style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
+                  style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block", border:"2px solid rgba(180,130,20,0.55)" }}/>
                 {/* Win popup over mobile wheel */}
                 {showWinPop && winNumber !== null && totalWageredUsd > 0 && (
                   <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:200, pointerEvents:"none" }}>
