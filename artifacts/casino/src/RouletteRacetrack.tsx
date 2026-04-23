@@ -45,7 +45,7 @@ const S3 = S2 + Math.PI * R;            // end of right semicircle
 const S4 = S3 + 2 * HALF_L;             // end of bottom straight
 
 // Pill / ring dimensions
-const PH  = 13;                          // ring thickness
+const PH  = 18;                          // ring thickness
 const PW  = PERIMETER / 37;             // arc-step per number (no gaps)
 const ORO = R + PH / 2 + 1.5;          // outer ring radius
 const IRI = R - PH / 2 - 1.5;          // inner ring radius
@@ -322,7 +322,7 @@ export function RouletteRacetrack({
                   textAnchor="middle"
                   dominantBaseline="central"
                   fill={isWin ? "#000" : "#fff"}
-                  fontSize={8.5}
+                  fontSize={10}
                   fontWeight="700"
                   fontFamily="'Inter', Arial, sans-serif"
                   transform={rot !== 0 ? `rotate(${rot},${x},${y})` : undefined}
