@@ -157,11 +157,25 @@ const DIV_LINES    = WHEEL_ORDER.map((_, i) => dividerLine(i));
 const OUTER_PATH = `M ${CX1} ${CY - ORO} L ${CX2} ${CY - ORO} A ${ORO} ${ORO} 0 0 1 ${CX2} ${CY + ORO} L ${CX1} ${CY + ORO} A ${ORO} ${ORO} 0 0 1 ${CX1} ${CY - ORO} Z`;
 const INNER_PATH = `M ${CX2} ${CY - IRI} L ${CX1} ${CY - IRI} A ${IRI} ${IRI} 0 0 0 ${CX1} ${CY + IRI} L ${CX2} ${CY + IRI} A ${IRI} ${IRI} 0 0 0 ${CX2} ${CY - IRI} Z`;
 
-// ForeignObject button area (fills interior of ring)
-const BTN_X = CX1 + 1;
-const BTN_Y = CY - IRI + 1;
-const BTN_W = 2 * HALF_L - 2;
-const BTN_H = 2 * IRI - 2;
+// ── Interior section dividers (x positions along the straight interior) ────────
+// X1: J0 | Vecinos (vertical),  X2: Vecinos | Huérfanos (vertical)
+// X3T/X3B: Huérfanos | Tercio (diagonal — top is leftmost, bottom is rightmost)
+const X1  = CX1 + 75;
+const X2  = CX1 + 210;
+const X3T = CX1 + 295;   // diagonal top-left
+const X3B = CX1 + 345;   // diagonal bottom-right
+
+// Section path strings (each fills its slice of the inner ring perfectly)
+const J0_PATH = `M ${F(X1)} ${F(CY-IRI)} L ${F(CX1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(CX1)} ${F(CY+IRI)} L ${F(X1)} ${F(CY+IRI)} Z`;
+const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} L ${F(X1)} ${F(CY+IRI)} L ${F(X2)} ${F(CY+IRI)} Z`;
+const HU_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(X2)} ${F(CY-IRI)} L ${F(X2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
+const TE_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(CX2)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(CX2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
+
+// Label x-positions (visual centroids of each section)
+const J0_LX = (CX1 - IRI * 0.5 + X1) / 2;
+const VE_LX = (X1 + X2) / 2;
+const HU_LX = (X2 + (X3T + X3B) / 2) / 2;
+const TE_LX = ((X3T + X3B) / 2 + CX2 + IRI * 0.5) / 2;
 
 // ── Props ─────────────────────────────────────────────────────────────────────
 interface Props {
@@ -195,11 +209,11 @@ export function RouletteRacetrack({
     for (const n of nums) placeBet(`n_${n}`);
   }
 
-  const centerBtns = [
-    { id: "j0", label: "Juego 0",   nums: JUEGO_0 },
-    { id: "ve", label: "Vecinos",   nums: VOISINS },
-    { id: "hu", label: "Huérfanos", nums: ORPHELINS },
-    { id: "te", label: "Tercio",    nums: TIERS },
+  const sections = [
+    { id: "j0", label: "JUEGO 0",    path: J0_PATH, lx: J0_LX, nums: JUEGO_0   },
+    { id: "ve", label: "VECINOS",    path: VE_PATH, lx: VE_LX, nums: VOISINS   },
+    { id: "hu", label: "HUÉRFANOS", path: HU_PATH, lx: HU_LX, nums: ORPHELINS },
+    { id: "te", label: "TERCIO",     path: TE_PATH, lx: TE_LX, nums: TIERS     },
   ] as const;
 
   return (
@@ -335,44 +349,45 @@ export function RouletteRacetrack({
           <path d={OUTER_PATH} fill="none" stroke="#1e1e28" strokeWidth={1} />
           <path d={INNER_PATH} fill="none" stroke="#1e1e28" strokeWidth={1} />
 
-          {/* ── Center section — fills interior ring ── */}
-          <foreignObject x={BTN_X} y={BTN_Y} width={BTN_W} height={BTN_H}>
-            <div
-              // @ts-ignore
-              xmlns="http://www.w3.org/1999/xhtml"
-              style={{
-                display: "flex", width: "100%", height: "100%",
-                background: "#050505", overflow: "hidden",
-              }}
-            >
-              {centerBtns.map(({ id, label, nums }, idx) => {
-                const active = hoverGroup === id;
-                return (
-                  <button
-                    key={id}
-                    disabled={isSpinning}
-                    onClick={() => betNums(nums)}
-                    onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
-                    onMouseLeave={() => setHoverGroup(null)}
-                    style={{
-                      flex: 1, padding: 0,
-                      background: active ? "rgba(255,255,255,0.14)" : "transparent",
-                      border: "none",
-                      borderRight: idx < 3 ? "1px solid #222" : "none",
-                      color: active ? "#fff" : "rgba(255,255,255,0.6)",
-                      fontSize: 10, fontWeight: 700,
-                      fontFamily: "'Inter', Arial, sans-serif",
-                      cursor: isSpinning ? "default" : "pointer",
-                      transition: "background .12s, color .12s",
-                      whiteSpace: "nowrap", textAlign: "center", letterSpacing: "0.1px",
-                    }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-          </foreignObject>
+          {/* ── Interior sections — SVG-native shapes with exact ring geometry ── */}
+          {sections.map(({ id, label, path, lx, nums }) => {
+            const active = hoverGroup === id;
+            return (
+              <g
+                key={id}
+                onClick={() => betNums(nums)}
+                onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
+                onMouseLeave={() => setHoverGroup(null)}
+                style={{ cursor: isSpinning ? "default" : "pointer" }}
+              >
+                {/* Section fill */}
+                <path
+                  d={path}
+                  fill={active ? "rgba(255,255,255,0.10)" : "#050505"}
+                  shapeRendering="geometricPrecision"
+                />
+                {/* Label */}
+                <text
+                  x={lx} y={CY}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fill={active ? "#fff" : "rgba(255,255,255,0.55)"}
+                  fontSize={8}
+                  fontWeight="600"
+                  fontFamily="'Inter', Arial, sans-serif"
+                  letterSpacing="0.6"
+                  style={{ pointerEvents: "none", transition: "fill .12s" }}
+                >
+                  {label}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Divider lines between sections (thin, dark) */}
+          <line x1={X1} y1={CY-IRI} x2={X1} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
+          <line x1={X2} y1={CY-IRI} x2={X2} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
+          <line x1={X3T} y1={CY-IRI} x2={X3B} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
         </svg>
       </div>
 
