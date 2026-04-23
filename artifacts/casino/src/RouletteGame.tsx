@@ -1257,7 +1257,6 @@ export default function RouletteGame({
     const groupLit   = hoverGroup !== null && isInGroup(num, hoverGroup);
     const isDragSrc  = dragGhost?.fromKey === key;
     const isDragOver = dragOverKey === key && !isDragSrc;
-    const { writingMode, ...spanOnlyStyle } = textStyle ?? {};
     return (
       <div
         data-bet-key={key}
@@ -1278,7 +1277,6 @@ export default function RouletteGame({
           transition:"box-shadow .15s, border-color .15s, transform .12s",
           userSelect:"none", height: cellH ?? "44px",
           opacity: isDragSrc ? 0.35 : 1,
-          writingMode: writingMode as React.CSSProperties["writingMode"],
         }}
         onMouseEnter={e => {
           if (!isSpinning && !isDragging) {
@@ -1311,7 +1309,7 @@ export default function RouletteGame({
             <CasinoChipSVG {...getBetChipMeta(betAmt)} label={fmtBetChipLabel(betAmt)} size={32} />
           </div>
         ) : (
-          <span style={{ position:"relative", zIndex:2, ...spanOnlyStyle }}>{num}</span>
+          <span style={{ position:"relative", zIndex:2, ...textStyle }}>{num}</span>
         )}
       </div>
     );
