@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ManderBet — Under Maintenance</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #080d14;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Radial glow backdrop */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 10%, rgba(212,175,55,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(26,100,200,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Animated floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.15);
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      padding: 56px 48px 48px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      backdrop-filter: blur(24px);
+      max-width: 520px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.08) inset;
+    }
+
+    /* Logo */
+    .logo {
+      width: 200px;
+      filter: drop-shadow(0 4px 24px rgba(212,175,55,0.30));
+    }
+
+    /* Hourglass icon */
+    .icon-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .icon-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.18); opacity: 0.6; }
+    }
+    .hourglass-svg {
+      position: relative;
+      z-index: 1;
+      width: 80px;
+      height: 80px;
+      animation: spin-hourglass 3.6s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(212,175,55,0.5));
+    }
+    @keyframes spin-hourglass {
+      0%   { transform: rotate(0deg); }
+      45%  { transform: rotate(0deg); }
+      55%  { transform: rotate(180deg); }
+      100% { transform: rotate(180deg); }
+    }
+
+    /* Text */
+    .headline {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #fff 30%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtext {
+      font-size: 15px;
+      font-weight: 400;
+      color: #8fa8c8;
+      line-height: 1.65;
+      max-width: 380px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.35), transparent);
+    }
+
+    /* Status pill */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.20);
+      border-radius: 999px;
+      padding: 7px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4af37;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #d4af37;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 24px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.04em;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Main card -->
+  <div class="card">
+    <img src="/mander-logo-maintenance.png" alt="ManderBet" class="logo" />
+
+    <div class="icon-wrap">
+      <div class="icon-bg"></div>
+      <!-- Hourglass SVG -->
+      <svg class="hourglass-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hgGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f0d060"/>
+            <stop offset="100%" stop-color="#a07820"/>
+          </linearGradient>
+        </defs>
+        <!-- Frame top bar -->
+        <rect x="18" y="12" width="44" height="5" rx="2.5" fill="url(#hgGold)"/>
+        <!-- Frame bottom bar -->
+        <rect x="18" y="63" width="44" height="5" rx="2.5" fill="url(#hgGold)"/>
+        <!-- Sides -->
+        <line x1="22" y1="17" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="58" y1="17" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="22" y1="63" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="58" y1="63" x2="40" y2="43" stroke="url(#hgGold)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Sand top (shrinking) -->
+        <path d="M26 20 Q40 20 54 20 L44 38 Q40 42 36 38 Z" fill="rgba(212,175,55,0.55)"/>
+        <!-- Sand bottom (growing) -->
+        <path d="M34 48 Q40 44 46 48 L54 60 Q40 60 26 60 Z" fill="rgba(212,175,55,0.75)"/>
+        <!-- Neck dot -->
+        <circle cx="40" cy="43" r="2.5" fill="#d4af37"/>
+      </svg>
+    </div>
+
+    <div class="headline">We're Under<br/>Maintenance</div>
+
+    <p class="subtext">
+      We'll be back shortly with an even better experience.<br/>
+      Thank you for your patience.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      Back online soon
+    </div>
+  </div>
+
+  <p class="footer">&copy; ManderBet Casino &mdash; All rights reserved</p>
+
+  <script>
+    // Generate floating particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 6 + 2;
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${Math.random() * 100}%;
+        animation-duration: ${Math.random() * 14 + 10}s;
+        animation-delay: ${Math.random() * -20}s;
+        opacity: ${Math.random() * 0.4 + 0.1};
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>

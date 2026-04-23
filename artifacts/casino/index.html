@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- ── Maintenance mode ── Set to true to redirect all visitors to maintenance.html -->
+    <script>
+      const isMaintenanceMode = false;
+      if (isMaintenanceMode) {
+        // Resolve relative to the app's base so it works at any deployment path
+        const base = document.querySelector('base')?.href || (window.location.origin + '/');
+        window.location.replace(base.replace(/\/?$/, '/') + 'maintenance.html');
+      }
+    </script>
+
     <!-- Default title & description (JS updates these on navigation) -->
     <title>ManderBet Casino | Original Games & Crypto Payments</title>
     <meta name="description" content="ManderBet is a no KYC crypto casino with original games like Dice, Plinko and Mines. Enjoy fast deposits, quick withdrawals and a private gaming experience." />
