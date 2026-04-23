@@ -1070,15 +1070,25 @@ export default function RouletteGame({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isDragging) return;
+    // Block page scroll/pan for the entire drag sequence — the chip overlay element
+    // with touchAction:"none" is removed from DOM when isDragSrc becomes true, so we
+    // must lock the body directly to prevent the browser from falling back to "manipulation".
+    const prevTouchAction = document.body.style.touchAction;
+    document.body.style.touchAction = "none";
     // clientX/Y are in viewport pixels; body has zoom:0.9 which affects all elements
     // including position:fixed — divide by zoom so the chip's visual center = cursor
     const zoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
+    let rafId = 0;
     function moveGhost(cx: number, cy: number) {
       ghostPosRef.current = { x: cx, y: cy }; // keep live position in sync for ref callback
       if (ghostElRef.current) {
         ghostElRef.current.style.transform = `translate(${cx / zoom - 18}px, ${cy / zoom - 18}px)`;
       }
-      setDragOverKey(findBetKey(document.elementFromPoint(cx, cy)));
+      // Throttle drag-over highlight to one React update per animation frame
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setDragOverKey(findBetKey(document.elementFromPoint(cx, cy)));
+      });
     }
     function onMove(e: MouseEvent) {
       e.preventDefault();
@@ -1119,6 +1129,8 @@ export default function RouletteGame({
     document.addEventListener('touchmove', onTouchMove, { passive: false });
     document.addEventListener('touchend', onTouchEnd);
     return () => {
+      document.body.style.touchAction = prevTouchAction;
+      cancelAnimationFrame(rafId);
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('touchmove', onTouchMove);
