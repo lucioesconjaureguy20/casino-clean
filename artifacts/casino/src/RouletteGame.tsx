@@ -1242,7 +1242,7 @@ export default function RouletteGame({
   };
 
   // ── Table cell renderer ────────────────────────────────────────────────────
-  function NumCell({ num }: { num: number }) {
+  function NumCell({ num, cellH }: { num: number; cellH?: string }) {
     const key        = `n_${num}`;
     const betAmt     = tableBets[key] || 0;
     const isWin      = winCells.has(key);
@@ -1268,7 +1268,7 @@ export default function RouletteGame({
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, transform .12s",
-          userSelect:"none", height:"44px",
+          userSelect:"none", height: cellH ?? "44px",
           opacity: isDragSrc ? 0.35 : 1,
         }}
         onMouseEnter={e => {
@@ -1375,8 +1375,8 @@ export default function RouletteGame({
     <div className="game-ctrl-flex" style={{ width:"100%", display:"flex", fontFamily:"'Inter',sans-serif", position:"relative", background:"#0e1320", userSelect:"none", WebkitUserSelect:"none" }}>
 
 
-      {/* ─── LEFT PANEL ──────────────────────────────────────────────────── */}
-      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#131a28", borderRight:"1px solid #1a2438", padding:"16px", display:"flex", flexDirection:"column", gap:"12px" }}>
+      {/* ─── LEFT PANEL — hidden on mobile (controls appear below table) ── */}
+      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#131a28", borderRight:"1px solid #1a2438", padding:"16px", display: isMobile ? "none" : "flex", flexDirection:"column", gap:"12px" }}>
 
         {/* Tabs: Manual / Automático */}
         <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
@@ -1872,7 +1872,7 @@ export default function RouletteGame({
         )}
 
         {/* ─── Racetrack panel ───────────────────────────────────────────── */}
-        <div style={{ padding: "4px 12px 2px", marginBottom: 4 }}>
+        <div style={{ padding: "4px 12px 2px", marginBottom: 4, display: isMobile && isSpinning ? "none" : undefined }}>
           <RouletteRacetrack
             placeBet={placeBet}
             placeGroupBet={placeGroupBet}
@@ -1885,7 +1885,88 @@ export default function RouletteGame({
         </div>
 
         {/* ─── Betting Table ─────────────────────────────────────────────── */}
-        <div style={{ overflowX:"auto", overflowY:"hidden", display:"flex", justifyContent:"center" }}>
+        {isMobile ? (
+          /* ── MOBILE: vertical Stake-style table ── */
+          <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"34px 30px 1fr 1fr 1fr", gap:"1px" }}>
+              {/* Zero — top row spanning number cols */}
+              <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
+                <div data-bet-key="n_0"
+                  onClick={() => { if (!isDragging) placeBet("n_0"); }}
+                  style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
+                    fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
+                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none",
+                    border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)",
+                    boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
+                  {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
+                    <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab" }}
+                      onMouseDown={e => beginChipInteraction("n_0", tableBets["n_0"], e.clientX, e.clientY, e)}
+                      onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}>
+                      <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
+                    </div>
+                  ) : <span>0</span>}
+                </div>
+              </div>
+              {/* Col 1: Low (rows 2-7) / High (rows 8-13) */}
+              <div style={{ gridColumn:"1", gridRow:"2 / span 6" }}>
+                <OutsideCell label={gt(_lang,"rouletteLow")} betKey="low"
+                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px", letterSpacing:"0.3px" }}/>
+              </div>
+              <div style={{ gridColumn:"1", gridRow:"8 / span 6" }}>
+                <OutsideCell label={gt(_lang,"rouletteHigh")} betKey="high"
+                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px", letterSpacing:"0.3px" }}/>
+              </div>
+              {/* Col 2: Dozen-1 (rows 2-5) / Dozen-2 (6-9) / Dozen-3 (10-13) */}
+              <div style={{ gridColumn:"2", gridRow:"2 / span 4" }}>
+                <OutsideCell label="1-12" betKey="dozen_1"
+                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
+              </div>
+              <div style={{ gridColumn:"2", gridRow:"6 / span 4" }}>
+                <OutsideCell label="13-24" betKey="dozen_2"
+                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
+              </div>
+              <div style={{ gridColumn:"2", gridRow:"10 / span 4" }}>
+                <OutsideCell label="25-36" betKey="dozen_3"
+                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
+              </div>
+              {/* Numbers 1-36: col3=n%3==1, col4=n%3==2, col5=n%3==0 | rows 2-13 */}
+              {Array.from({length:36},(_,i)=>i+1).map(n => {
+                const mCol = ((n-1)%3)+3;
+                const mRow = Math.floor((n-1)/3)+2;
+                return (
+                  <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}` }}>
+                    <NumCell num={n} cellH="32px" />
+                  </div>
+                );
+              })}
+              {/* Row 14: Even / Red / Black / Odd */}
+              <div style={{ gridColumn:"1 / span 2", gridRow:"14" }}>
+                <OutsideCell label={gt(_lang,"rouletteEven")} betKey="even" style={{ height:"24px", fontSize:8 }}/>
+              </div>
+              <div style={{ gridColumn:"3", gridRow:"14" }}>
+                <OutsideCell label={gt(_lang,"rouletteRed")} betKey="red" color="#b91c1c" style={{ height:"24px", fontSize:8 }}/>
+              </div>
+              <div style={{ gridColumn:"4", gridRow:"14" }}>
+                <OutsideCell label={gt(_lang,"rouletteBlack")} betKey="black" color="#1a1a2e" style={{ height:"24px", fontSize:8 }}/>
+              </div>
+              <div style={{ gridColumn:"5", gridRow:"14" }}>
+                <OutsideCell label={gt(_lang,"rouletteOdd")} betKey="odd" style={{ height:"24px", fontSize:8 }}/>
+              </div>
+              {/* Row 15: 2:1 column bets */}
+              <div style={{ gridColumn:"3", gridRow:"15" }}>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+              </div>
+              <div style={{ gridColumn:"4", gridRow:"15" }}>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+              </div>
+              <div style={{ gridColumn:"5", gridRow:"15" }}>
+                <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* ── DESKTOP: original horizontal table (unchanged) ── */
+          <div style={{ overflowX:"auto", overflowY:"hidden", display:"flex", justifyContent:"center" }}>
           <div>
 
             {/* Main grid: 0 + 12 columns + 2:1 */}
@@ -2011,9 +2092,10 @@ export default function RouletteGame({
             </div>
           </div>
         </div>
+        )}
 
         {/* ─── Undo / Clear below betting table ────────────────────────── */}
-        <div style={{ display:"flex", justifyContent:"space-between", gap:"8px" }}>
+        <div style={{ display: isMobile && isSpinning ? "none" : "flex", justifyContent:"space-between", gap:"8px" }}>
           <button onClick={handleUndo} disabled={isSpinning}
             style={{
               padding:"7px 18px", borderRadius:"8px",
@@ -2043,6 +2125,76 @@ export default function RouletteGame({
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display:"inline-block", verticalAlign:"middle", marginRight:"5px", marginTop:"-1px" }}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>{gt(_lang, "bacClear")}
           </button>
         </div>
+
+        {/* ─── MOBILE control panel (chip selector + bet button) ──────────── */}
+        {isMobile && !isSpinning && (
+          <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
+            {/* Chip selector row */}
+            <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"6px 4px" }}>
+              <button onClick={() => setChipOffset(o => Math.max(0, o-1))} disabled={chipOffset<=0}
+                style={{ background:"none", border:"none", color: chipOffset>0 ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset>0 ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>‹</button>
+              {CHIP_VALUES.slice(chipOffset, chipOffset+4).map(v => {
+                const ck = chipKey(v);
+                const meta = CHIP_META[ck];
+                const sel = chipUsd === v;
+                return (
+                  <button key={v} onClick={() => setChipUsd(v)}
+                    style={{ flex:1, background:"none", border: sel ? "1px solid #1a9fff" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
+                      boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s" }}>
+                    <CasinoChipSVG {...meta} selected={sel} size={36} />
+                  </button>
+                );
+              })}
+              <button onClick={() => setChipOffset(o => Math.min(CHIP_VALUES.length-4, o+1))} disabled={chipOffset+4>=CHIP_VALUES.length}
+                style={{ background:"none", border:"none", color: chipOffset+4<CHIP_VALUES.length ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset+4<CHIP_VALUES.length ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>›</button>
+            </div>
+            {/* Half / Double */}
+            {hasBets && (
+              <div style={{ display:"flex", gap:"8px" }}>
+                {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => (
+                  <button key={label}
+                    disabled={!(phase==="idle" && hasBets)}
+                    onClick={() => {
+                      setTableBets(prev => {
+                        const scaled: Record<string,number> = {};
+                        let sum = 0;
+                        for (const [k,v] of Object.entries(prev)) {
+                          const nv = Math.round(v*mult*10000)/10000;
+                          scaled[k] = nv; sum += nv;
+                        }
+                        if (mult>1 && sum>balance) {
+                          const cap = balance/sum;
+                          for (const k of Object.keys(scaled)) scaled[k] = Math.round(scaled[k]*cap*10000)/10000;
+                        }
+                        return scaled;
+                      });
+                    }}
+                    style={{ flex:1, padding:"10px 0", borderRadius:"6px", fontSize:"15px", fontWeight:700,
+                      border:"1px solid #252f45", background:"#1a2438", color:"#d0dcea",
+                      cursor:"pointer", fontFamily:"inherit" }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {/* Balance + total bet info */}
+            <div style={{ display:"flex", justifyContent:"space-between", fontSize:"12px", color:"#7a8fa8", padding:"0 2px" }}>
+              <span>Saldo: <b style={{ color:"#c8d8f0" }}>${balance.toFixed(2)}</b></span>
+              {hasBets && <span>Apuesta: <b style={{ color:"#f0c040" }}>${totalBetUsd.toFixed(2)}</b></span>}
+            </div>
+            {/* Bet button — full width */}
+            <button onClick={handleSpin} disabled={!canSpin}
+              style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                color: canSpin ? "#fff" : "#3a4a60",
+                fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
+                cursor: canSpin ? "pointer" : "not-allowed",
+                boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
+                transition:"all .2s" }}>
+              {(hasBets && balance < totalBetUsd-0.0001) ? gt(_lang,"insufficientBal") : gt(_lang,"bjBet")}
+            </button>
+          </div>
+        )}
 
       </div>
 
