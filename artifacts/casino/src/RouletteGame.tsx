@@ -1112,14 +1112,10 @@ export default function RouletteGame({
         ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
     }
+    // Desktop only — touch drag position is already handled by beginChipInteractionTouch's onMove
     function onMove(e: MouseEvent) {
       e.preventDefault();
       moveGhost(e.clientX, e.clientY);
-    }
-    function onTouchMove(e: TouchEvent) {
-      e.preventDefault();
-      const t = e.touches[0];
-      moveGhost(t.clientX, t.clientY);
     }
     function finalizeDrop(cx: number, cy: number) {
       const ds = dragInfoRef.current;
@@ -1147,13 +1143,11 @@ export default function RouletteGame({
     }
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('touchmove', onTouchMove, { passive: false });
     document.addEventListener('touchend', onTouchEnd);
     return () => {
       document.body.style.touchAction = prevTouchAction;
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onMouseUp);
-      document.removeEventListener('touchmove', onTouchMove);
       document.removeEventListener('touchend', onTouchEnd);
     };
   }, [isDragging]);
