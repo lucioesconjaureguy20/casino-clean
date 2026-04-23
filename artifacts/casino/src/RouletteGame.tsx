@@ -1892,7 +1892,7 @@ export default function RouletteGame({
             <div style={{ display:"flex", alignItems:"flex-start", gap:"50px", width:"fit-content", margin:"0 auto" }}>
 
             {/* ── Result history column — big last number + smaller previous ones ── */}
-            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", display:"flex", flexDirection:"column", gap:"5px" }}>
+            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", display:"flex", flexDirection:"column", gap:"5px", alignItems:"center" }}>
 
               {/* Big square — last result */}
               {(() => {
@@ -1913,7 +1913,7 @@ export default function RouletteGame({
               {resultHistory.slice(1, 9).map((n, i) => {
                 const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
                 return (
-                  <div key={i} style={{ width:"80px", height:"36px", borderRadius:"5px", flexShrink:0,
+                  <div key={i} style={{ width:"36px", height:"36px", borderRadius:"5px", flexShrink:0,
                     background: bg, border:"1.5px solid rgba(255,255,255,0.08)",
                     display:"flex", alignItems:"center", justifyContent:"center",
                     opacity: Math.max(0.45, 1 - i * 0.08) }}>
