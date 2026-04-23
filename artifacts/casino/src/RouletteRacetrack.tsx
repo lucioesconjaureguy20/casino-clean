@@ -166,8 +166,11 @@ const X3T = CX1 + 295;   // diagonal top-left
 const X3B = CX1 + 345;   // diagonal bottom-right
 
 // Section path strings (each fills its slice of the inner ring perfectly)
-const J0_PATH = `M ${F(X1)} ${F(CY-IRI)} L ${F(CX1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(CX1)} ${F(CY+IRI)} L ${F(X1)} ${F(CY+IRI)} Z`;
-const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} L ${F(X1)} ${F(CY+IRI)} L ${F(X2)} ${F(CY+IRI)} Z`;
+// J0: left arc bulges LEFT (inner ring), right arc bulges RIGHT (mirror) — pill shape
+// sweep=0 bottom→top via right = same right-half arc traversed backwards to close J0
+const J0_PATH = `M ${F(X1)} ${F(CY-IRI)} L ${F(CX1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(CX1)} ${F(CY+IRI)} L ${F(X1)} ${F(CY+IRI)} A ${F(IRI)} ${F(IRI)} 0 0 0 ${F(X1)} ${F(CY-IRI)} Z`;
+// VECINOS: left edge is the concave side of J0's right arc (sweep=1 top→bottom via right)
+const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(X1)} ${F(CY+IRI)} L ${F(X2)} ${F(CY+IRI)} Z`;
 const HU_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(X2)} ${F(CY-IRI)} L ${F(X2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 const TE_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(CX2)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(CX2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 
@@ -385,7 +388,12 @@ export function RouletteRacetrack({
           })}
 
           {/* Divider lines between sections (thin, dark) */}
-          <line x1={X1} y1={CY-IRI} x2={X1} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
+          {/* J0 | VECINOS: circular arc (right-half of circle at X1) */}
+          <path
+            d={`M ${F(X1)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(X1)} ${F(CY+IRI)}`}
+            fill="none" stroke="#2a2a2a" strokeWidth={0.5}
+            shapeRendering="geometricPrecision"
+          />
           <line x1={X2} y1={CY-IRI} x2={X2} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
           <line x1={X3T} y1={CY-IRI} x2={X3B} y2={CY+IRI} stroke="#2a2a2a" strokeWidth={0.5} />
         </svg>
