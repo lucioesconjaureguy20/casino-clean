@@ -885,10 +885,19 @@ function RouletteGame({
     setWinCells(winning);
     setPhase("result");
 
-    // Mobile: mantener overlay de ruleta 2s extra para que el jugador vea el número
+    // Mobile: mantener overlay de ruleta 2s extra para que el jugador vea el número.
+    // Al vencer el timer, también volver a idle para que el botón Spin quede habilitado.
     if (mobileLingerTimer.current) clearTimeout(mobileLingerTimer.current);
     setMobileWheelLinger(true);
-    mobileLingerTimer.current = setTimeout(() => setMobileWheelLinger(false), 2000);
+    mobileLingerTimer.current = setTimeout(() => {
+      setMobileWheelLinger(false);
+      // Solo volver a idle si no está corriendo auto-spin (auto lo maneja por su cuenta)
+      if (!autoRef.current) {
+        setPhase("idle");
+        setWinNumber(null);
+        setWinCells(new Set());
+      }
+    }, 2000);
 
     if (totalWin > 0) {
       setShowWinPop(true);
