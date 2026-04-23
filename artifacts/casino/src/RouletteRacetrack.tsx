@@ -387,11 +387,11 @@ export function RouletteRacetrack({
                   textAnchor="middle"
                   dominantBaseline="central"
                   fill={isWin ? "#000" : "#fff"}
-                  fontSize={10}
+                  fontSize={12}
                   fontWeight="700"
                   fontFamily="'Inter', Arial, sans-serif"
                   textRendering="geometricPrecision"
-                  transform={rot !== 0 ? `rotate(${rot},${x},${y})` : undefined}
+                  transform={`translate(${x},${y}) scale(0.75,1) translate(${-x},${-y})`}
                   opacity={hasBet && !isWin ? 0 : 1}
                   style={{ pointerEvents: "none" }}
                 >
