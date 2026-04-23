@@ -16453,6 +16453,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
 
           {/* ── AUTO TAB ── */}
           {diceTab==="auto" && <>
+            <div className="dice-ctrl-amount-wrap">
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("betAmount")}</div>
 
             {/* Input row */}
@@ -16479,7 +16480,9 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             </div>
 
             {(()=>{ const effBal=balanceDemo>0?balanceDemo:balance; const noFunds=effBal<0.001; const insuff=diceBetUsd>=0.0099&&effBal<diceBetUsd-0.0001; const belowMin=diceBetUsd<0.0099; return (belowMin||insuff) ? (<div style={{ fontSize:"11.5px",color:"#e74c3c",fontWeight:600,marginBottom:"8px",paddingLeft:"2px" }}>{(noFunds||insuff)&&<div>{t("insufficientBalance")}</div>}{belowMin&&<div>{t("minBet")} {fmtMoney(0.01)}</div>}</div>) : <div style={{ marginBottom:"6px" }} />; })()}
+            </div>{/* end dice-ctrl-amount-wrap */}
 
+            <div className="dice-ctrl-quick-wrap">
             {/* Quick-action buttons */}
             <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"14px" }}>
               {[
@@ -16494,31 +16497,39 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 </button>
               ))}
             </div>
+            </div>{/* end dice-ctrl-quick-wrap */}
 
-            <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px" }}>{t("numberOfBets")}</div>
-            {(()=>{
-              const countInvalid = !autoInfinite && (diceAutoCount==="" || (parseInt(diceAutoCount)||0) <= 0);
-              return (
-                <div>
-                  <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#252f45"}`,borderRadius:"6px",padding:"6px 10px",marginBottom: countInvalid ? "4px" : "14px" }}>
-                    <input
-                      value={diceAutoRunning ? (autoInfinite ? `${999999-diceAutoRemaining}/∞` : `${(parseInt(diceAutoCount)||0)-diceAutoRemaining}/${diceAutoCount}`) : (autoInfinite?"∞":diceAutoCount)}
-                      onChange={e=>{ setAutoInfinite(false); setDiceAutoCount(e.target.value); }}
-                      onBlur={()=>{ if(!autoInfinite && (diceAutoCount===""|| (parseInt(diceAutoCount)||0)<=0)) setDiceAutoCount("1"); }}
-                      type={(autoInfinite||diceAutoRunning)?"text":"number"} min="1" readOnly={autoInfinite || diceAutoRunning}
-                      style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"20px",padding:"4px",minWidth:0 }} />
-                    <button onClick={()=>setAutoInfinite(v=>!v)}
-                      style={{ padding:"4px 10px",borderRadius:"6px",background:autoInfinite?"#1f6fd0":"#2a4155",color:"#d0dcea",border:"none",fontWeight:500,cursor:"pointer",fontSize:"16px" }}>∞</button>
-                  </div>
-                  {countInvalid && (
-                    <div style={{ fontSize:"11.5px",color:"#e74c3c",fontWeight:600,marginBottom:"10px",paddingLeft:"2px" }}>
-                      {t("minBetsCount")}
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
+            <div className="dice-ctrl-bet-wrap">
+            {diceAutoRunning ? (
+              <button onClick={stopAutoDice}
+                style={{ width:"100%",padding:"14px",background:"#c0392b",color:"#fff",border:"none",borderRadius:"6px",fontWeight:500,fontSize:"16px",cursor:"pointer",marginBottom:"14px" }}>
+                ⏹ {t("stopAuto")}
+              </button>
+            ) : (
+              <button
+                onClick={()=>{
+                  startAutoDice({
+                    onWin: autoOnWin,
+                    onWinPct: parseFloat(autoOnWinPct)||0,
+                    onLose: autoOnLose,
+                    onLosePct: parseFloat(autoOnLosePct)||0,
+                    stopProfit: autoStopProfit ? parseFloat(autoStopProfit)||null : null,
+                    stopLoss: autoStopLoss ? parseFloat(autoStopLoss)||null : null,
+                    infinite: autoInfinite,
+                  });
+                }}
+                disabled={diceBetUsd < 0.0099 || (balanceDemo>0?balanceDemo:balance) < diceBetUsd - 0.0001 || (!autoInfinite && (diceAutoCount==="" || (parseInt(diceAutoCount)||0) <= 0))}
+                style={{ width:"100%",padding:"14px",border:"none",borderRadius:"6px",fontWeight:500,fontSize:"15px",transition:"all .2s",marginBottom:"14px",
+                  background:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"#1a2438":"linear-gradient(180deg,#1a9fff,#0d6fd4)",
+                  color:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"#3a4a60":"#fff",
+                  boxShadow:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"none":"0 4px 22px rgba(26,159,255,.35)",
+                  cursor:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"not-allowed":"pointer" }}>
+                {((balanceDemo>0?balanceDemo:balance) < diceBetUsd - 0.0001 ? t("insufficientBalance") : t("startAuto"))}
+              </button>
+            )}
+            </div>{/* end dice-ctrl-bet-wrap */}
 
+            <div className="dice-ctrl-advanced-wrap">
             {/* ── Advanced toggle ── */}
             <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",padding:"8px 12px",background:"#152334",borderRadius:"6px",border:"1px solid #1e3548" }}>
               <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>{t("advanced")}</span>
@@ -16595,34 +16606,33 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
               </div>
             </div>
             </div>}
+            </div>{/* end dice-ctrl-advanced-wrap */}
 
-            {diceAutoRunning ? (
-              <button onClick={stopAutoDice}
-                style={{ width:"100%",padding:"14px",background:"#c0392b",color:"#fff",border:"none",borderRadius:"6px",fontWeight:500,fontSize:"16px",cursor:"pointer" }}>
-                ⏹ {t("stopAuto")}
-              </button>
-            ) : (
-              <button
-                onClick={()=>{
-                  startAutoDice({
-                    onWin: autoOnWin,
-                    onWinPct: parseFloat(autoOnWinPct)||0,
-                    onLose: autoOnLose,
-                    onLosePct: parseFloat(autoOnLosePct)||0,
-                    stopProfit: autoStopProfit ? parseFloat(autoStopProfit)||null : null,
-                    stopLoss: autoStopLoss ? parseFloat(autoStopLoss)||null : null,
-                    infinite: autoInfinite,
-                  });
-                }}
-                disabled={diceBetUsd < 0.0099 || (balanceDemo>0?balanceDemo:balance) < diceBetUsd - 0.0001 || (!autoInfinite && (diceAutoCount==="" || (parseInt(diceAutoCount)||0) <= 0))}
-                style={{ width:"100%",padding:"14px",border:"none",borderRadius:"6px",fontWeight:500,fontSize:"15px",transition:"all .2s",
-                  background:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"#1a2438":"linear-gradient(180deg,#1a9fff,#0d6fd4)",
-                  color:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"#3a4a60":"#fff",
-                  boxShadow:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"none":"0 4px 22px rgba(26,159,255,.35)",
-                  cursor:(diceBetUsd<0.0099||(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001||(!autoInfinite&&(diceAutoCount===""||((parseInt(diceAutoCount)||0)<=0))))?"not-allowed":"pointer" }}>
-                {((balanceDemo>0?balanceDemo:balance) < diceBetUsd - 0.0001 ? t("insufficientBalance") : t("startAuto"))}
-              </button>
-            )}
+            <div className="dice-ctrl-numbets-wrap">
+            <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px" }}>{t("numberOfBets")}</div>
+            {(()=>{
+              const countInvalid = !autoInfinite && (diceAutoCount==="" || (parseInt(diceAutoCount)||0) <= 0);
+              return (
+                <div>
+                  <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#252f45"}`,borderRadius:"6px",padding:"6px 10px",marginBottom: countInvalid ? "4px" : "14px" }}>
+                    <input
+                      value={diceAutoRunning ? (autoInfinite ? `${999999-diceAutoRemaining}/∞` : `${(parseInt(diceAutoCount)||0)-diceAutoRemaining}/${diceAutoCount}`) : (autoInfinite?"∞":diceAutoCount)}
+                      onChange={e=>{ setAutoInfinite(false); setDiceAutoCount(e.target.value); }}
+                      onBlur={()=>{ if(!autoInfinite && (diceAutoCount===""|| (parseInt(diceAutoCount)||0)<=0)) setDiceAutoCount("1"); }}
+                      type={(autoInfinite||diceAutoRunning)?"text":"number"} min="1" readOnly={autoInfinite || diceAutoRunning}
+                      style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"20px",padding:"4px",minWidth:0 }} />
+                    <button onClick={()=>setAutoInfinite(v=>!v)}
+                      style={{ padding:"4px 10px",borderRadius:"6px",background:autoInfinite?"#1f6fd0":"#2a4155",color:"#d0dcea",border:"none",fontWeight:500,cursor:"pointer",fontSize:"16px" }}>∞</button>
+                  </div>
+                  {countInvalid && (
+                    <div style={{ fontSize:"11.5px",color:"#e74c3c",fontWeight:600,marginBottom:"10px",paddingLeft:"2px" }}>
+                      {t("minBetsCount")}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+            </div>{/* end dice-ctrl-numbets-wrap */}
           </>}
 
           {/* Icon buttons row — bottom of left panel */}
