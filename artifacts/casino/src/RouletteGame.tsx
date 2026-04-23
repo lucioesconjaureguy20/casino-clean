@@ -2140,7 +2140,8 @@ export default function RouletteGame({
                 return (
                   <button key={v} onClick={() => setChipUsd(v)}
                     style={{ flex:1, background:"none", border: sel ? "1px solid #1a9fff" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
-                      boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s" }}>
+                      boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s",
+                      display:"flex", alignItems:"center", justifyContent:"center" }}>
                     <CasinoChipSVG {...meta} selected={sel} size={36} />
                   </button>
                 );
