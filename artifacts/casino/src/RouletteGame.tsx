@@ -2054,13 +2054,13 @@ function RouletteGame({
               onTouchDragStart: beginChipInteractionTouch,
             };
             return (
-            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr 18px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
                   onTouchStart={e => { if (!isSpinning && !isDragging) { e.currentTarget.dataset.tx = String(e.touches[0].clientX); e.currentTarget.dataset.ty = String(e.touches[0].clientY); }}}
-                  onTouchEnd={e => { if (isSpinning || isDragging || (tableBetsRef.current["n_0"]||0) > 0) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
-                  onClick={() => { if (!isDragging && !('ontouchstart' in window)) placeBet("n_0"); }}
+                  onTouchEnd={e => { if (isSpinning || isDragging || (tableBetsRef.current["n_0"]||0) > 0) return; if ((e.target as Element).closest?.('.rt-zone')) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
+                  onClick={e => { if (!isDragging && !('ontouchstart' in window) && !(e.target as Element).closest?.('.rt-zone')) placeBet("n_0"); }}
                   style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
                     fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
                     borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"none", WebkitTapHighlightColor:"transparent",
@@ -2073,13 +2073,13 @@ function RouletteGame({
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
                     </div>
                   ) : <span>0</span>}
-                  {/* Zero splits: 0-1, 0-2, 0-3 at bottom edge */}
+                  {/* Zero splits: 0-1, 0-2, 0-3 — each covering full 1/3 width so chip centers over the number */}
                   <RZone {...mzp} zkey="sp_0_1" title="Split 0-1 (17:1)"
-                    style={{ bottom:-10, left:"3%", width:"30%", height:20, borderRadius:4, zIndex:13 }} />
+                    style={{ bottom:-10, left:0, width:"33.3%", height:20, borderRadius:4, zIndex:13 }} />
                   <RZone {...mzp} zkey="sp_0_2" title="Split 0-2 (17:1)"
-                    style={{ bottom:-10, left:"36%", width:"28%", height:20, borderRadius:4, zIndex:13 }} />
+                    style={{ bottom:-10, left:"33.3%", width:"33.4%", height:20, borderRadius:4, zIndex:13 }} />
                   <RZone {...mzp} zkey="sp_0_3" title="Split 0-3 (17:1)"
-                    style={{ bottom:-10, right:"3%", width:"30%", height:20, borderRadius:4, zIndex:13 }} />
+                    style={{ bottom:-10, right:0, width:"33.3%", height:20, borderRadius:4, zIndex:13 }} />
                 </div>
               </div>
 
@@ -2146,21 +2146,6 @@ function RouletteGame({
                     {col === 0 && row < 11 && (
                       <RZone {...mzp} zkey={`li_${n}`} title={`Line ${n}-${n+5} (5:1)`}
                         style={{ left:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13 }} />
-                    )}
-                  </div>
-                );
-              })}
-
-              {/* ── Col 6: Street RIGHT & Line RIGHT zones ── */}
-              {Array.from({length:12},(_,i) => {
-                const n = i*3+1;
-                return (
-                  <div key={`stli_${n}`} style={{ gridColumn:"6", gridRow:`${i+2}`, position:"relative", overflow:"visible" }}>
-                    <RZone {...mzp} zkey={`st_${n}`} title={`Street ${n}-${n+1}-${n+2} (11:1)`}
-                      style={{ top:2, bottom:2, left:1, right:1, borderRadius:"3px 5px 5px 3px", zIndex:12 }} />
-                    {i < 11 && (
-                      <RZone {...mzp} zkey={`li_${n}`} title={`Line ${n}-${n+5} (5:1)`}
-                        style={{ bottom:-10, left:"50%", transform:"translateX(-50%)", width:20, height:20, borderRadius:"50%", zIndex:13 }} />
                     )}
                   </div>
                 );
