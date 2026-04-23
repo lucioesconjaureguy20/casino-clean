@@ -16404,7 +16404,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
                 style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }} />
               <button onClick={()=>setDiceBet("0.00")}
-                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase" }}>
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight: isMobile ? "3px" : "0" }}>
                 {t("clear")}
               </button>
             </div>
@@ -16474,7 +16474,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
                 style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }} />
               <button onClick={()=>setDiceBet("0.00")}
-                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase" }}>
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight: isMobile ? "3px" : "0" }}>
                 {t("clear")}
               </button>
             </div>
