@@ -16797,7 +16797,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             </div>
 
           {/* Controls — pinned to bottom */}
-          <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap: isMobile ? "6px" : "10px",background:"#131a28",borderRadius:"6px",padding: isMobile ? "10px" : "16px" }}>
+          <div className="dice-stats-row" style={{ display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap: isMobile ? "6px" : "10px",background:"#131a28",borderRadius:"6px",padding: isMobile ? "10px" : "16px" }}>
 
             {/* Multiplier */}
             <div>
