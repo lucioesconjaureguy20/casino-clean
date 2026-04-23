@@ -557,15 +557,12 @@ export default function RouletteGame({
   const dragInfoRef = useRef<{ fromKey: string; amount: number } | null>(null);
   const ghostElRef  = useRef<HTMLDivElement | null>(null); // direct DOM ref for ghost chip
   const ghostPosRef = useRef<{ x: number; y: number } | null>(null); // tracks live cursor pos during drag
-  // Stable ref callback — inline functions re-fire with (null → el) on EVERY re-render, causing
-  // ghostElRef.current to be null for a tick and missing touchmove updates.
-  // useCallback([]) = only fires on real mount/unmount, never between renders.
+  // The ghost portal is ALWAYS mounted (never conditional).
+  // This ref is set once on component mount so ghostElRef.current is always valid —
+  // no need to wait for a React render cycle to create the ghost element.
   const handleGhostRef = useCallback((el: HTMLDivElement | null) => {
     ghostElRef.current = el;
-    if (el) {
-      const pos = ghostPosRef.current;
-      if (pos) el.style.transform = `translate(${pos.x - 18}px, ${pos.y - 18}px)`;
-    }
+    if (el) el.style.display = "none"; // hidden by default; shown imperatively in startChipDrag
   }, []);
   const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
 
@@ -1010,9 +1007,15 @@ export default function RouletteGame({
 
   function startChipDrag(fromKey: string, amount: number, x: number, y: number) {
     dragInfoRef.current = { fromKey, amount };
-    ghostPosRef.current = { x, y }; // seed live position for ref callback
-    setDragGhost({ fromKey, amount, x, y });
-    setIsDragging(true);
+    ghostPosRef.current = { x, y };
+    // Show and position the ghost IMMEDIATELY — no React render needed.
+    // ghostElRef.current is always valid because the portal is always mounted.
+    if (ghostElRef.current) {
+      ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
+      ghostElRef.current.style.display = "block";
+    }
+    setDragGhost({ fromKey, amount, x, y }); // React updates chip SVG content (non-blocking)
+    setIsDragging(true);                     // React dims source cell (non-blocking)
   }
 
   // Threshold-based: click (<5px movement) → placeBet; drag (>5px) → move chip
@@ -1118,6 +1121,8 @@ export default function RouletteGame({
       moveGhost(e.clientX, e.clientY);
     }
     function finalizeDrop(cx: number, cy: number) {
+      // Hide ghost immediately — no React render required
+      if (ghostElRef.current) ghostElRef.current.style.display = "none";
       const ds = dragInfoRef.current;
       const dropKey = findBetKey(document.elementFromPoint(cx, cy));
       if (ds) {
@@ -1139,7 +1144,10 @@ export default function RouletteGame({
     function onMouseUp(e: MouseEvent) { finalizeDrop(e.clientX, e.clientY); }
     function onTouchEnd(e: TouchEvent) {
       if (e.changedTouches.length > 0) finalizeDrop(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      else { dragInfoRef.current = null; setDragGhost(null); setIsDragging(false); }
+      else {
+        if (ghostElRef.current) ghostElRef.current.style.display = "none";
+        dragInfoRef.current = null; setDragGhost(null); setIsDragging(false);
+      }
     }
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -2285,9 +2293,10 @@ export default function RouletteGame({
       </div>
 
       {/* ── Drag ghost chip — portal to <html> (outside zoomed body).
-           transform is set ONLY via DOM ref — never in JSX style — so React
-           re-renders (e.g. from setDragOverKey) don't reset the position.      */}
-      {dragGhost && createPortal(
+           ALWAYS mounted so ghostElRef.current is valid from component mount.
+           display + transform are set imperatively via ghostElRef — React never
+           touches them (not in the style prop) so re-renders can't reset position. */}
+      {createPortal(
         <div
           ref={handleGhostRef}
           style={{
@@ -2301,7 +2310,7 @@ export default function RouletteGame({
             userSelect:"none",
           }}
         >
-          <CasinoChipSVG {...getBetChipMeta(dragGhost.amount)} label={fmtBetChipLabel(dragGhost.amount)} size={36} />
+          {dragGhost && <CasinoChipSVG {...getBetChipMeta(dragGhost.amount)} label={fmtBetChipLabel(dragGhost.amount)} size={36} />}
         </div>,
         document.documentElement
       )}
