@@ -16802,7 +16802,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             {/* Multiplier */}
             <div>
               <label style={{ display:"block",color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize: isMobile ? "11px" : "13px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{t("multiplierLabel")}</label>
-              <input value={diceMultiplier} onChange={e=>setDiceMultiplier(e.target.value)} onBlur={()=>syncDiceFields("multiplier")} type="number"
+              <input value={diceMultiplier} onChange={e=>setDiceMultiplier(e.target.value)} onBlur={()=>syncDiceFields("multiplier")} type="text" inputMode="decimal"
                 disabled={diceAutoRunning}
                 style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 6px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize: isMobile ? "13px" : "14px" }} />
             </div>
@@ -16813,7 +16813,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 {diceMode==="over" ? t("rollOver") : t("rollUnder")}
               </label>
               <div style={{ position:"relative" }}>
-                <input value={diceTarget} onChange={e=>setDiceTarget(e.target.value)} onBlur={()=>syncDiceFields("target")} type="number"
+                <input value={diceTarget} onChange={e=>setDiceTarget(e.target.value)} onBlur={()=>syncDiceFields("target")} type="text" inputMode="decimal"
                   disabled={diceAutoRunning}
                   style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 28px 8px 6px" : "10px 38px 10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize: isMobile ? "13px" : "14px" }} />
                 <button
@@ -16836,7 +16836,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             {/* Chance */}
             <div>
               <label style={{ display:"block",color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize: isMobile ? "11px" : "13px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{t("chance")+" %"}</label>
-              <input value={diceChance} onChange={e=>setDiceChance(e.target.value)} onBlur={()=>syncDiceFields("chance")} type="number"
+              <input value={diceChance} onChange={e=>setDiceChance(e.target.value)} onBlur={()=>syncDiceFields("chance")} type="text" inputMode="decimal"
                 disabled={diceAutoRunning}
                 style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 6px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize: isMobile ? "13px" : "14px" }} />
             </div>
