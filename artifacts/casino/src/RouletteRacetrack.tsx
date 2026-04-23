@@ -272,13 +272,15 @@ export function RouletteRacetrack({
 
       {/* ── SVG racetrack ─────────────────────────────────────────────── */}
       <div
-        style={{ width: "100%", maxWidth: SVG_W, overflow: "hidden" }}
+        style={{ width: "100%", maxWidth: SVG_W, overflow: "hidden", transform: "translateZ(0)" }}
         onMouseDown={e => e.preventDefault()}
       >
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+          width={SVG_W}
+          height={SVG_H}
           shapeRendering="geometricPrecision"
-          style={{ display: "block", width: SVG_W, maxWidth: "100%", height: "auto" }}
+          style={{ display: "block", maxWidth: "100%", height: "auto", transform: "translateZ(0)" }}
         >
           {/* ── Track background ring ── */}
           <path
@@ -340,6 +342,7 @@ export function RouletteRacetrack({
                   fontSize={10}
                   fontWeight="700"
                   fontFamily="'Inter', Arial, sans-serif"
+                  textRendering="geometricPrecision"
                   transform={rot !== 0 ? `rotate(${rot},${x},${y})` : undefined}
                   style={{ pointerEvents: "none" }}
                 >
