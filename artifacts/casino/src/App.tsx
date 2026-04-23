@@ -4525,6 +4525,12 @@ export default function App() {
         // sumarlos tanto al balance mostrado como a coinBalancesRef (para que el próximo cálculo
         // de setCoinBalanceUsd use la base correcta y no pierda el rakeback pendiente).
         const pendingRb = pendingRakebackRef.current;
+        // Guard: usuarios locales (no Supabase) mantienen balance local — no sobrescribir desde servidor
+        const isLocalOnlyUserCoin = ls.get("user_" + u) && ls.get("user_" + u) !== "__supabase__";
+        if (isLocalOnlyUserCoin) {
+          hasRemoteBalanceLoadedRef.current = true;
+          return;
+        }
         if (pendingRb > 0 && activePriceUsd > 0) {
           // Ajustar la cantidad nativa de la moneda activa para incluir el pendingRb
           const adjustedNative = (map[activeCoin] ?? 0) + pendingRb / activePriceUsd;
@@ -4542,7 +4548,8 @@ export default function App() {
           // Guard: si el servidor devuelve 0 en todas las monedas y hay balance local guardado
           // (ej. cuenta local sin Supabase, o Supabase caído), no sobrescribir con 0.
           const localBalance = ls.getBalance(u);
-          if (activeCoinUsd === 0 && Object.keys(map).length === 0 && localBalance > 0) {
+          const isLocalOnlyUser = ls.get("user_" + u) && ls.get("user_" + u) !== "__supabase__";
+          if ((activeCoinUsd === 0 && Object.keys(map).length === 0 && localBalance > 0) || isLocalOnlyUser) {
             hasRemoteBalanceLoadedRef.current = true;
           } else {
             ls.setBalance(u, activeCoinUsd);
