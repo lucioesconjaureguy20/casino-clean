@@ -176,10 +176,11 @@ const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} A ${F(J0_R)} ${
 const HU_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(X2)} ${F(CY-IRI)} L ${F(X2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 const TE_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(CX2)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(CX2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 
-// Label x-positions (visual centroids of each section)
+// Label x-positions — fixed, independent of divider lines so moving lines doesn't shift text
+const X2_LABEL = CX1 + 210;  // original X2 used only for label centering
 const J0_LX = (CX1 - IRI * 0.5 + X1) / 2;
-const VE_LX = (X1 + X2) / 2;
-const HU_LX = (X2 + (X3T + X3B) / 2) / 2;
+const VE_LX = (X1 + X2_LABEL) / 2;
+const HU_LX = (X2_LABEL + (X3T + X3B) / 2) / 2;
 const TE_LX = ((X3T + X3B) / 2 + CX2 + IRI * 0.5) / 2;
 
 // ── Props ─────────────────────────────────────────────────────────────────────
