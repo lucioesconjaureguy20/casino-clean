@@ -1888,7 +1888,7 @@ export default function RouletteGame({
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
           <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"54px 36px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 32px) 26px", gap:"1px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"48px 32px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 32px) 26px", gap:"0", padding:"0" }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
