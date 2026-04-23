@@ -1937,14 +1937,8 @@ function RouletteGame({
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
       <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
-        {/* Wheel row — desktop: grid. Mobile spinning: absolute centered overlay. Mobile idle: hidden */}
-        <div style={isMobile && (isSpinning || mobileWheelLinger) ? {
-          position:"absolute", inset:0, zIndex:99,
-          display:"flex", alignItems:"center", justifyContent:"center",
-          pointerEvents:"none",
-          background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
-          WebkitBackdropFilter:"blur(3px)",
-        } : {
+        {/* Wheel row — desktop only. Mobile: always hidden (canvas moved into table overlay). */}
+        <div style={{
           display: isMobile ? "none" : "grid",
           gridTemplateColumns:"1fr 245px 1fr",
           alignItems:"center", gap:"0",
@@ -1973,9 +1967,10 @@ function RouletteGame({
           </div>
           )}
 
-          {/* Center column: wheel canvas + win popup overlay */}
-          <div style={{ position:"relative", width: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", height: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", margin: isMobile ? "0 auto" : undefined }}>
-            <canvas ref={canvasRef} width={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245} height={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245}
+          {/* Center column: wheel canvas + win popup overlay — desktop only */}
+          {!isMobile && (
+          <div style={{ position:"relative", width:"245px", height:"245px" }}>
+            <canvas ref={canvasRef} width={245} height={245}
               style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
 
             {/* ── Win popup — Keno style, centered over wheel ── */}
@@ -2014,6 +2009,7 @@ function RouletteGame({
               </div>
             )}
           </div>
+          )}
 
           {/* Right column: history strip — hidden on mobile */}
           {!isMobile && (
@@ -2055,8 +2051,50 @@ function RouletteGame({
         {/* ─── Betting Table ─────────────────────────────────────────────── */}
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
-          <div style={{ display:"block" }}>
+          <div style={{ display:"block", position:"relative" }}>
 
+            {/* ── Mobile spinning wheel — overlay centered over the table only ── */}
+            <div style={{
+              position:"absolute", inset:0, zIndex:99,
+              display: (isSpinning || mobileWheelLinger) ? "flex" : "none",
+              alignItems:"center", justifyContent:"center",
+              background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
+              WebkitBackdropFilter:"blur(3px)",
+              pointerEvents:"none",
+            }}>
+              <div style={{ position:"relative", width:"270px", height:"270px" }}>
+                <canvas ref={canvasRef} width={270} height={270}
+                  style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
+                {/* Win popup over mobile wheel */}
+                {showWinPop && winNumber !== null && totalWageredUsd > 0 && (
+                  <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:200, pointerEvents:"none" }}>
+                    <div style={{
+                      background:"rgba(10,16,26,0.96)", border:"2.5px solid #22ee66",
+                      borderRadius:"6px", padding:"18px 28px", textAlign:"center",
+                      boxShadow:"0 0 52px rgba(34,238,102,.48), 0 8px 32px rgba(0,0,0,.8)",
+                      animation:"kenoCenterPop .32s cubic-bezier(.34,1.56,.64,1) both",
+                      minWidth:"130px", whiteSpace:"nowrap",
+                    }}>
+                      <div style={{
+                        width:"50px", height:"50px", borderRadius:"50%",
+                        background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#111827",
+                        border:"3px solid rgba(255,255,255,0.32)",
+                        display:"flex", alignItems:"center", justifyContent:"center",
+                        fontWeight:900, fontSize:"22px", color:"#fff",
+                        margin:"0 auto 12px", boxShadow:"0 0 18px rgba(34,238,102,0.3)",
+                      }}>{winNumber}</div>
+                      <div style={{ fontSize:"30px", fontWeight:700, color:"#22ee66", lineHeight:1, letterSpacing:"-0.5px" }}>
+                        {(winAmountUsd / totalWageredUsd).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
+                      </div>
+                      <div style={{ height:"1px", background:"#1e3a28", margin:"11px 0" }}/>
+                      <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0" }}>
+                        <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(winAmountUsd)}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
 
             <div style={{ display:"flex", alignItems:"flex-start", gap:"6px", width:"100%" }}>
 
