@@ -144,20 +144,8 @@ function cellCenter(cellIdx: number): { x: number; y: number } {
   return { x: CX1 + rm * Math.cos(θ), y: CY + rm * Math.sin(θ) };
 }
 
-// ── Text rotation (radial, pointing toward center) ────────────────────────────
-function textRot(cellIdx: number): number {
-  const sC = (cellIdx / 37) * PERIMETER;
-  const sm = ((sC % PERIMETER) + PERIMETER) % PERIMETER;
-  if (sm > S1 && sm <= S2) return 0;   // top straight → horizontal
-  if (sm > S3 && sm <= S4) return 0;   // bottom straight → horizontal (180° but text reads fine)
-  // curved sections: radial angle
-  let θ: number;
-  if (sm <= S1)       θ = Math.PI + (sm / S1) * (Math.PI / 2);
-  else if (sm <= S3)  θ = -Math.PI / 2 + (sm - S2) / R;
-  else                θ = Math.PI / 2 + ((sm - S4) / ((Math.PI / 2) * R)) * (Math.PI / 2);
-  // rotate text so it reads toward center (perpendicular to tangent, inward)
-  return (θ * 180 / Math.PI) + 90;
-}
+// All numbers always upright (horizontal)
+function textRot(_cellIdx: number): number { return 0; }
 
 // ── Precomputed geometry ──────────────────────────────────────────────────────
 const CELL_PATHS   = WHEEL_ORDER.map((_, i) => cellPath(i));
