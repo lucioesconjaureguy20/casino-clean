@@ -1935,12 +1935,16 @@ function RouletteGame({
       </div>
 
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
-      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
+      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding: isMobile ? "242px 16px 16px" : "12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
-        {/* Wheel row — desktop: grid. Mobile: always visible above table, no overlay */}
+        {/* Wheel row — desktop: grid. Mobile: always-visible overlay pinned at top of table area */}
         <div style={isMobile ? {
-          display:"flex", justifyContent:"center", alignItems:"center",
-          paddingTop:"6px", paddingBottom:"4px",
+          position:"absolute", top:0, left:0, right:0, height:"230px",
+          zIndex:99,
+          display:"flex", alignItems:"center", justifyContent:"center",
+          pointerEvents:"none",
+          background:"rgba(0,0,0,0.60)", backdropFilter:"blur(4px)",
+          WebkitBackdropFilter:"blur(4px)",
         } : {
           display:"grid",
           gridTemplateColumns:"1fr 245px 1fr",
