@@ -1904,7 +1904,7 @@ export default function RouletteGame({
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}>
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
                     </div>
-                  ) : <span style={{ writingMode:"vertical-rl", transform:"rotate(180deg)" }}>0</span>}
+                  ) : <span style={{ writingMode:"vertical-rl" }}>0</span>}
                 </div>
               </div>
 
@@ -1919,7 +1919,7 @@ export default function RouletteGame({
               ].map(({ betKey, label, row, color }) => (
                 <div key={betKey} style={{ gridColumn:"1", gridRow:`${row} / span 2`, padding:"2px 2px 2px 0", display:"flex" }}>
                   <OutsideCell label={label} betKey={betKey} color={color}
-                    style={{ flex:1, writingMode:"vertical-rl", transform:"rotate(180deg)",
+                    style={{ flex:1, writingMode:"vertical-rl",
                       fontSize:9, fontWeight:800, borderRadius:"6px" }}/>
                 </div>
               ))}
@@ -1932,7 +1932,7 @@ export default function RouletteGame({
               ].map(({ betKey, label, row }) => (
                 <div key={betKey} style={{ gridColumn:"2", gridRow:`${row} / span 4`, padding:"2px 3px 2px 3px", display:"flex" }}>
                   <OutsideCell label={label} betKey={betKey}
-                    style={{ flex:1, writingMode:"vertical-rl", transform:"rotate(180deg)",
+                    style={{ flex:1, writingMode:"vertical-rl",
                       fontSize:9, fontWeight:800, borderRadius:"6px" }}/>
                 </div>
               ))}
@@ -1943,20 +1943,20 @@ export default function RouletteGame({
                 const mRow = Math.floor((n-1)/3)+2;
                 return (
                   <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}` }}>
-                    <NumCell num={n} cellH="32px" textStyle={{ writingMode:"vertical-rl", transform:"rotate(180deg)" }} />
+                    <NumCell num={n} cellH="32px" textStyle={{ writingMode:"vertical-rl" }} />
                   </div>
                 );
               })}
 
               {/* ── Row 14: 2:1 column bets (number cols only) ── */}
               <div style={{ gridColumn:"3", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438", writingMode:"vertical-rl", transform:"rotate(180deg)" }}/>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"4", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438", writingMode:"vertical-rl", transform:"rotate(180deg)" }}/>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"5", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438", writingMode:"vertical-rl", transform:"rotate(180deg)" }}/>
+                <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
             </div>
           </div>
