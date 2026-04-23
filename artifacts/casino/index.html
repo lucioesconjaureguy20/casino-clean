@@ -6,7 +6,7 @@
 
     <!-- ── Maintenance mode ── Set to true to redirect all visitors to maintenance.html -->
     <script>
-      const isMaintenanceMode = true;
+      const isMaintenanceMode = false;
       if (isMaintenanceMode) {
         // Resolve relative to the app's base so it works at any deployment path
         const base = document.querySelector('base')?.href || (window.location.origin + '/');
