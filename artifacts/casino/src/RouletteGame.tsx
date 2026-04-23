@@ -535,6 +535,7 @@ export default function RouletteGame({
   const [chipUsd, setChipUsd] = useState(0.01);        // selected chip value (USD)
   const [chipOffset, setChipOffset] = useState(0);     // chip selector page offset
   const [tableBets, setTableBets]   = useState<Record<string,number>>({});
+  const tableBetsRef = useRef<Record<string,number>>({});
   const [betStack, setBetStack]     = useState<Array<{key:string; chip:number} | {key:'__group__'; bets:{key:string;chip:number}[]}>>([]);
   const [lastBets, setLastBets]     = useState<Record<string,number>>({});  // repeat bet
   const [phase, setPhase]           = useState<"idle"|"spinning"|"result">("idle");
@@ -763,6 +764,9 @@ export default function RouletteGame({
       osc.start(); osc.stop(ctx.currentTime + 0.5);
     } catch {}
   }, []);
+
+  // Keep ref in sync so touch handlers always see the latest bets (no stale closure)
+  tableBetsRef.current = tableBets;
 
   // ── Derived values ─────────────────────────────────────────────────────────
   const totalBetUsd = Object.values(tableBets).reduce((s, v) => s + v, 0);
@@ -1267,7 +1271,7 @@ export default function RouletteGame({
           e.currentTarget.dataset.ty = String(e.touches[0].clientY);
         }}
         onTouchEnd={e => {
-          if (isSpinning || isDragging || betAmt > 0) return; // chip overlay handles cells with existing chips
+          if (isSpinning || isDragging || (tableBetsRef.current[key] || 0) > 0) return; // chip overlay handles cells with existing chips
           const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
           const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
           if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
@@ -1283,7 +1287,7 @@ export default function RouletteGame({
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: col, color:"#fff", fontWeight:700, fontSize:"11px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px", touchAction:"manipulation",
+          borderRadius:"4px", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, transform .12s",
@@ -1345,7 +1349,7 @@ export default function RouletteGame({
           e.currentTarget.dataset.ty = String(e.touches[0].clientY);
         }}
         onTouchEnd={e => {
-          if (isSpinning || isDragging || betAmt > 0) return; // chip overlay handles cells with existing chips
+          if (isSpinning || isDragging || (tableBetsRef.current[betKey] || 0) > 0) return; // chip overlay handles cells with existing chips
           const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
           const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
           if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
@@ -1361,7 +1365,7 @@ export default function RouletteGame({
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: color || "#1a2438", color:"#c8d8f0", fontWeight:700, fontSize:"10px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px", touchAction:"manipulation",
+          borderRadius:"4px", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, filter .12s, transform .12s",
@@ -1937,11 +1941,11 @@ export default function RouletteGame({
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
                   onTouchStart={e => { if (!isSpinning && !isDragging) { e.currentTarget.dataset.tx = String(e.touches[0].clientX); e.currentTarget.dataset.ty = String(e.touches[0].clientY); }}}
-                  onTouchEnd={e => { if (isSpinning || isDragging || (tableBets["n_0"]||0) > 0) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
+                  onTouchEnd={e => { if (isSpinning || isDragging || (tableBetsRef.current["n_0"]||0) > 0) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
                   onClick={() => { if (!isDragging && !('ontouchstart' in window)) placeBet("n_0"); }}
                   style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
                     fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
-                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"manipulation",
+                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
                     border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)",
                     boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
