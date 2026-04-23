@@ -1887,7 +1887,7 @@ export default function RouletteGame({
         {/* ─── Betting Table ─────────────────────────────────────────────── */}
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
-          <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px" }}>
+          <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px", overflowX:"auto" }}>
 
             {/* Result banner — shown on mobile in result phase instead of wheel popup */}
             {isResult && winNumber !== null && (
@@ -1923,18 +1923,36 @@ export default function RouletteGame({
 
             <div style={{ display:"flex", alignItems:"flex-start", gap:"50px", width:"fit-content", margin:"0 auto" }}>
 
-            {/* ── Last result square — aligned with "1 to 18" cell ── */}
-            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", height:"80px",
-              borderRadius:"6px", background: resultHistory.length > 0
-                ? (resultHistory[0] === 0 ? "#1a6b30" : RED_NUMS.has(resultHistory[0]) ? "#c0392b" : "#111827")
-                : "#111827",
-              border:"2px solid rgba(255,255,255,0.08)",
-              display:"flex", alignItems:"center", justifyContent:"center" }}>
-              {resultHistory.length > 0 && (
-                <span style={{ fontWeight:900, fontSize:"26px", color:"#fff" }}>
-                  {resultHistory[0]}
-                </span>
-              )}
+            {/* ── Result history column — big last number + smaller previous ones ── */}
+            <div style={{ marginTop:"28px", flexShrink:0, width:"80px", display:"flex", flexDirection:"column", gap:"5px" }}>
+
+              {/* Big square — last result */}
+              {(() => {
+                const n = resultHistory[0];
+                const bg = n === undefined ? "#111827" : n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
+                return (
+                  <div style={{ width:"80px", height:"80px", borderRadius:"6px", flexShrink:0,
+                    background: bg, border:"2px solid rgba(255,255,255,0.10)",
+                    display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    {n !== undefined && (
+                      <span style={{ fontWeight:900, fontSize:"26px", color:"#fff" }}>{n}</span>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Smaller squares — previous results, down to ~"19 to 36" row */}
+              {resultHistory.slice(1, 9).map((n, i) => {
+                const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
+                return (
+                  <div key={i} style={{ width:"80px", height:"36px", borderRadius:"5px", flexShrink:0,
+                    background: bg, border:"1.5px solid rgba(255,255,255,0.08)",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    opacity: Math.max(0.45, 1 - i * 0.08) }}>
+                    <span style={{ fontWeight:700, fontSize:"14px", color:"#fff" }}>{n}</span>
+                  </div>
+                );
+              })}
             </div>
 
             <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0" }}>
