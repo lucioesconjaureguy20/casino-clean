@@ -272,14 +272,13 @@ export function RouletteRacetrack({
 
       {/* ── SVG racetrack ─────────────────────────────────────────────── */}
       <div
-        style={{ width: "100%", maxWidth: SVG_W }}
+        style={{ width: "100%", maxWidth: SVG_W, overflow: "hidden" }}
         onMouseDown={e => e.preventDefault()}
       >
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          width="100%"
           shapeRendering="geometricPrecision"
-          style={{ display: "block" }}
+          style={{ display: "block", width: SVG_W, maxWidth: "100%", height: "auto" }}
         >
           {/* ── Track background ring ── */}
           <path
