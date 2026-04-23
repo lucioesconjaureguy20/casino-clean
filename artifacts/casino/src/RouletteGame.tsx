@@ -1838,38 +1838,6 @@ export default function RouletteGame({
 
         </div>
 
-        {/* Mobile: last result + history strip below wheel */}
-        {isMobile && resultHistory.length > 0 && (
-          <div style={{ display:"flex", alignItems:"center", gap:"5px", justifyContent:"center", paddingBottom:"2px" }}>
-            {/* Last number — larger circle */}
-            {(() => {
-              const last = resultHistory[0];
-              const bg = last === 0 ? "#1a6b30" : RED_NUMS.has(last) ? "#c0392b" : "#111827";
-              return (
-                <div style={{ width:"40px", height:"40px", borderRadius:"50%", background:bg,
-                  border:"2px solid rgba(255,255,255,0.28)", flexShrink:0,
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  fontWeight:900, fontSize:"17px", color:"#fff",
-                  boxShadow:`0 0 14px ${bg}bb` }}>
-                  {last}
-                </div>
-              );
-            })()}
-            {/* Recent 8 numbers as small chips */}
-            {resultHistory.slice(1, 9).map((n, i) => {
-              const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
-              return (
-                <div key={i} style={{ flexShrink:0, width:"24px", height:"24px", borderRadius:"5px",
-                  background:bg, border:"1px solid rgba(255,255,255,0.15)",
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  fontWeight:700, fontSize:"9px", color:"#fff",
-                  opacity: Math.max(0.3, 1 - i * 0.1) }}>
-                  {n}
-                </div>
-              );
-            })}
-          </div>
-        )}
 
         {/* ─── Racetrack panel ───────────────────────────────────────────── */}
         <div style={{ padding: "4px 12px 2px", marginBottom: 4, display: isMobile ? "none" : undefined }}>
