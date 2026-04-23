@@ -351,34 +351,34 @@ export function RouletteRacetrack({
                   shapeRendering="geometricPrecision"
                 />
 
-                {/* Chip indicator — SVG mini-chip with value label */}
-                {hasBet && !isWin && (() => {
-                  const amt  = tableBets[`n_${num}`];
-                  const meta = rtChipMeta(amt);
-                  const lbl  = rtChipLabel(amt);
-                  return (
-                    <>
-                      {/* chip body */}
-                      <circle cx={x} cy={y} r={8.5}
-                        fill={meta.bg} stroke={meta.border} strokeWidth={1.5}
-                        style={{ pointerEvents:"none" }}
-                      />
-                      {/* inner dashed ring (notch pattern) */}
-                      <circle cx={x} cy={y} r={6}
-                        fill="none" stroke={meta.border} strokeWidth={0.8}
-                        strokeDasharray="2.2 2.2" opacity={0.75}
-                        style={{ pointerEvents:"none" }}
-                      />
-                      {/* value label */}
-                      <text
-                        x={x} y={y}
-                        textAnchor="middle" dominantBaseline="central"
-                        fill={meta.txt} fontSize={5} fontWeight="700"
-                        fontFamily="'Inter', Arial, sans-serif"
-                        style={{ pointerEvents:"none" }}
-                      >{lbl}</text>
-                    </>
-                  );
+                {/* Chip indicator — real chip or ghost preview */}
+                {!isWin && (() => {
+                  if (hasBet) {
+                    // Real chip
+                    const amt  = tableBets[`n_${num}`];
+                    const meta = rtChipMeta(amt);
+                    const lbl  = rtChipLabel(amt);
+                    return (
+                      <g style={{ pointerEvents:"none" }}>
+                        <circle cx={x} cy={y} r={8.5} fill={meta.bg} stroke={meta.border} strokeWidth={1.5} />
+                        <circle cx={x} cy={y} r={6} fill="none" stroke={meta.border} strokeWidth={0.8} strokeDasharray="2.2 2.2" opacity={0.75} />
+                        <text x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={meta.txt} fontSize={5} fontWeight="700" fontFamily="'Inter', Arial, sans-serif">{lbl}</text>
+                      </g>
+                    );
+                  }
+                  if (isPrev && chipUsd > 0) {
+                    // Ghost preview chip — same style, darker + semi-transparent
+                    const meta = rtChipMeta(chipUsd);
+                    const lbl  = rtChipLabel(chipUsd);
+                    return (
+                      <g style={{ pointerEvents:"none" }} opacity={0.45}>
+                        <circle cx={x} cy={y} r={8.5} fill={meta.bg} stroke={meta.border} strokeWidth={1.5} />
+                        <circle cx={x} cy={y} r={6} fill="none" stroke={meta.border} strokeWidth={0.8} strokeDasharray="2.2 2.2" opacity={0.75} />
+                        <text x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={meta.txt} fontSize={5} fontWeight="700" fontFamily="'Inter', Arial, sans-serif">{lbl}</text>
+                      </g>
+                    );
+                  }
+                  return null;
                 })()}
 
                 {/* Number — hidden when a chip is shown on this cell */}
@@ -392,7 +392,7 @@ export function RouletteRacetrack({
                   fontFamily="'Inter', Arial, sans-serif"
                   textRendering="geometricPrecision"
                   transform={`translate(${x},${y}) scale(0.75,1) translate(${-x},${-y})`}
-                  opacity={hasBet && !isWin ? 0 : 1}
+                  opacity={(hasBet || (isPrev && chipUsd > 0)) && !isWin ? 0 : 1}
                   style={{ pointerEvents: "none" }}
                 >
                   {num}
