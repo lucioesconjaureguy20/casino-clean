@@ -271,7 +271,10 @@ export function RouletteRacetrack({
       </div>
 
       {/* ── SVG racetrack ─────────────────────────────────────────────── */}
-      <div style={{ width: "100%", maxWidth: SVG_W }}>
+      <div
+        style={{ width: "100%", maxWidth: SVG_W }}
+        onMouseDown={e => e.preventDefault()}
+      >
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           width="100%"
@@ -296,7 +299,7 @@ export function RouletteRacetrack({
             return (
               <g
                 key={num}
-                onClick={() => { if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
+                onClick={e => { e.preventDefault(); if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
                 onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
                 onMouseLeave={() => setHoverNum(null)}
                 style={{ cursor: isSpinning ? "default" : "pointer" }}
@@ -366,7 +369,7 @@ export function RouletteRacetrack({
             return (
               <g
                 key={id}
-                onClick={() => betNums(nums)}
+                onClick={e => { e.preventDefault(); betNums(nums); }}
                 onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
                 onMouseLeave={() => setHoverGroup(null)}
                 style={{ cursor: isSpinning ? "default" : "pointer" }}
