@@ -574,6 +574,8 @@ function RouletteGame({
   const [resultHistory, setResultHistory] = useState<number[]>([]);
   const [showWinPop, setShowWinPop] = useState(false);
   const [autoCount, setAutoCount]   = useState("10");
+  const [autoInfinite, setAutoInfinite] = useState(false);
+  const [autoRemaining, setAutoRemaining] = useState(0);
   const [autoRunning, setAutoRunning] = useState(false);
   const [autoStopping, setAutoStopping] = useState(false); // delay de 2s al detener
   const [winCells, setWinCells]     = useState<Set<string>>(new Set());
@@ -617,7 +619,9 @@ function RouletteGame({
   const autoRef          = useRef(false);
   const autoBtnLockRef   = useRef(false); // debounce: locked while spinning, released when phase changes
   const autoBetsRef      = useRef<Record<string,number>>({}); // always-current bets for the auto loop
-  const autoCountRef     = useRef<string>("10");               // always-current count for the auto loop
+  const autoCountRef     = useRef<string>("10");               // always-current configured count
+  const autoRemainingRef = useRef<number>(0);                  // remaining spins in current session
+  const autoInfiniteRef  = useRef(false);                      // whether current session is infinite
   const popTimerRef      = useRef<ReturnType<typeof setTimeout>>();
   const ballClearTimer   = useRef<ReturnType<typeof setTimeout>>();
   const prevBetsRef      = useRef<Record<string,number>>({});
@@ -892,13 +896,10 @@ function RouletteGame({
 
     // Auto-mode — use refs (always current, never stale closure)
     if (autoRef.current) {
-      const curCount  = autoCountRef.current;
-      const remaining = parseInt(curCount) - 1;
-      if (remaining > 0 || curCount === "∞") {
-        if (curCount !== "∞") {
-          autoCountRef.current = String(remaining);
-          setAutoCount(String(remaining));
-        }
+      const remaining = autoRemainingRef.current - 1;
+      autoRemainingRef.current = remaining;
+      setAutoRemaining(remaining);
+      if (remaining > 0 || autoInfiniteRef.current) {
         const betsForNext = autoBetsRef.current;
         popTimerRef.current = setTimeout(() => {
           if (!autoRef.current) return;
@@ -906,9 +907,7 @@ function RouletteGame({
         }, 1600);
       } else {
         autoRef.current = false;
-        autoCountRef.current = "10";
         setAutoRunning(false);
-        setAutoCount("10");
       }
     }
   }
@@ -1287,6 +1286,11 @@ function RouletteGame({
     const bets = tableBets;
     setLastBets(bets);
     autoBetsRef.current = bets;  // store in ref so the auto loop never uses a stale closure
+    autoInfiniteRef.current = autoInfinite;
+    const initRemaining = autoInfinite ? 999999 : parseInt(autoCount) || 10;
+    autoRemainingRef.current = initRemaining;
+    autoCountRef.current = autoCount;
+    setAutoRemaining(initRemaining);
     autoRef.current = true;
     setAutoRunning(true);
     startSpin(bets);
@@ -1655,6 +1659,30 @@ function RouletteGame({
             </div>
           );
         })()}
+
+        {/* Auto round counter — visible only in auto tab */}
+        {mode === "auto" && (
+          <div>
+            <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
+            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
+              <input
+                value={autoRunning ? (autoInfinite ? `${999999-autoRemaining}/∞` : `${(parseInt(autoCount)||10)-autoRemaining}/${autoCount}`) : (autoInfinite ? "∞" : autoCount)}
+                onChange={e => { setAutoInfinite(false); setAutoCount(e.target.value); }}
+                onBlur={() => { if (!autoInfinite && (autoCount === "" || (parseInt(autoCount)||0) <= 0)) setAutoCount("1"); }}
+                onWheel={e => { if (!autoInfinite && !autoRunning) e.currentTarget.blur(); }}
+                type={(autoInfinite || autoRunning) ? "text" : "number"}
+                min="1"
+                readOnly={autoInfinite || autoRunning}
+                disabled={autoRunning}
+                style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
+              />
+              <button onClick={() => setAutoInfinite(v => !v)} disabled={autoRunning}
+                style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
+                ∞
+              </button>
+            </div>
+          </div>
+        )}
 
         {hasBets && !isSpinning && !isResult && balance < totalBetUsd - 0.0001 && (
           <div style={{ fontSize:"11.5px", color:"#e74c3c", fontWeight:600, marginBottom:"6px", paddingLeft:"2px" }}>
