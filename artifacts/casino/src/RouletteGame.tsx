@@ -1062,8 +1062,7 @@ export default function RouletteGame({
       // Drag already started — keep ghost moving even during the React render/useEffect gap
       ghostPosRef.current = { x: t.clientX, y: t.clientY };
       if (ghostElRef.current) {
-        const zoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
-        ghostElRef.current.style.transform = `translate(${t.clientX / zoom - 18}px, ${t.clientY / zoom - 18}px)`;
+        ghostElRef.current.style.transform = `translate(${t.clientX - 18}px, ${t.clientY - 18}px)`;
       }
     }
     function onEnd() {
@@ -1096,14 +1095,12 @@ export default function RouletteGame({
     // must lock the body directly to prevent the browser from falling back to "manipulation".
     const prevTouchAction = document.body.style.touchAction;
     document.body.style.touchAction = "none";
-    // clientX/Y are in viewport pixels; body has zoom:0.9 which affects all elements
-    // including position:fixed — divide by zoom so the chip's visual center = cursor
-    const zoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
     let rafId = 0;
     function moveGhost(cx: number, cy: number) {
       ghostPosRef.current = { x: cx, y: cy }; // keep live position in sync for ref callback
       if (ghostElRef.current) {
-        ghostElRef.current.style.transform = `translate(${cx / zoom - 18}px, ${cy / zoom - 18}px)`;
+        // Ghost is portaled to <html> (not body), so clientX/Y map 1:1 — no zoom correction
+        ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
       // Throttle drag-over highlight to one React update per animation frame
       cancelAnimationFrame(rafId);
@@ -2293,7 +2290,7 @@ export default function RouletteGame({
 
       </div>
 
-      {/* ── Drag ghost chip — portal to <html>, zoom-corrected.
+      {/* ── Drag ghost chip — portal to <html> (outside zoomed body).
            transform is set ONLY via DOM ref — never in JSX style — so React
            re-renders (e.g. from setDragOverKey) don't reset the position.      */}
       {dragGhost && createPortal(
@@ -2302,9 +2299,9 @@ export default function RouletteGame({
             ghostElRef.current = el;
             if (el) {
               // Use live position (ghostPosRef) so React re-renders don't reset to initial coords
+              // Portal target is <html> (not body), so no zoom correction needed — clientX/Y map 1:1
               const pos = ghostPosRef.current ?? { x: dragGhost.x, y: dragGhost.y };
-              const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
-              el.style.transform = `translate(${pos.x / z - 18}px, ${pos.y / z - 18}px)`;
+              el.style.transform = `translate(${pos.x - 18}px, ${pos.y - 18}px)`;
             }
           }}
           style={{
