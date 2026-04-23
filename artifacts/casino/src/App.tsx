@@ -10803,8 +10803,8 @@ export default function App() {
 
                 {/* Game row — filtered by homeCategory */}
                 {(homeCategory==="Lobby" || homeCategory==="Originals") && (
-                  <div style={{ marginBottom:"16px" }}>
-                    <div className="game-cards-grid" style={{ display:"grid",gridTemplateColumns: isMobile ? "repeat(2,1fr)" : "repeat(auto-fill,minmax(220px,1fr))",gap: isMobile ? "14px" : "14px" }}>
+                  <div style={{ marginBottom:"16px", ...(isMobile ? { margin:"0 -20px 16px -20px" } : {}) }}>
+                    <div className="game-cards-grid" style={{ display:"grid",gridTemplateColumns: isMobile ? "repeat(2,1fr)" : "repeat(auto-fill,minmax(220px,1fr))",gap: isMobile ? "14px" : "14px", ...(isMobile ? { padding:"0 10px" } : {}) }}>
                       {(() => {
                         const LOBBY_GAME_KEY: Record<string,string> = {
                           "Dice":"gameDice","Plinko":"gamePlinko","Keno":"gameKeno","Blackjack":"gameBlackjack",
