@@ -2440,7 +2440,16 @@ function RouletteGame({
 
             {/* 1 — Main action button (adapts to mode) */}
             {mode === "manual" ? (
-              (!isResult) ? (
+              (isResult && mobileWheelLinger) ? (
+                /* Wheel still visible — block spin until overlay disappears */
+                <button disabled
+                  style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                    background:"#1a2438", color:"#3a4a60",
+                    fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
+                    cursor:"not-allowed", boxShadow:"none", transition:"all .2s" }}>
+                  {gt(_lang,"bjBet")}
+                </button>
+              ) : (!isResult) ? (
                 <button onClick={handleSpin} disabled={!canSpin}
                   style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
                     background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
