@@ -165,6 +165,25 @@ function fmtBetChipLabel(usd: number): string {
   return usd.toFixed(2);
 }
 
+// Builds the chip SVG as a raw HTML string — used to update the ghost div
+// imperatively (innerHTML) so zero React re-renders happen on touch drag start.
+function buildChipSVGString(bg: string, border: string, txt: string, label: string, size: number): string {
+  const cx = size / 2, cy = size / 2;
+  const outerR = size / 2 - 2;
+  const innerR = outerR * 0.68;
+  let segs = "";
+  for (let i = 0; i < 8; i++) {
+    const a1 = -Math.PI / 2 + (i / 8) * Math.PI * 2;
+    const a2 = -Math.PI / 2 + ((i + 0.56) / 8) * Math.PI * 2;
+    const c1 = Math.cos(a1), s1 = Math.sin(a1);
+    const c2 = Math.cos(a2), s2 = Math.sin(a2);
+    const fill = i % 2 === 0 ? "rgba(255,255,255,0.88)" : bg;
+    segs += `<path d="M${cx+c1*innerR},${cy+s1*innerR} L${cx+c1*outerR},${cy+s1*outerR} A${outerR},${outerR} 0 0,1 ${cx+c2*outerR},${cy+s2*outerR} L${cx+c2*innerR},${cy+s2*innerR} A${innerR},${innerR} 0 0,0 ${cx+c1*innerR},${cy+s1*innerR} Z" fill="${fill}"/>`;
+  }
+  const fs = label.length > 3 ? size*0.21 : label.length > 2 ? size*0.25 : label.length > 1 ? size*0.3 : size*0.34;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block;pointer-events:none"><circle cx="${cx}" cy="${cy+2}" r="${outerR}" fill="rgba(0,0,0,0.4)"/><circle cx="${cx}" cy="${cy}" r="${outerR}" fill="${bg}"/>${segs}<circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${border}" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="${innerR}" fill="none" stroke="${border}" stroke-width="1" opacity="0.6"/><ellipse cx="${cx-outerR*0.18}" cy="${cy-outerR*0.28}" rx="${outerR*0.28}" ry="${outerR*0.14}" fill="rgba(255,255,255,0.13)"/><text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${txt}" font-weight="900" font-size="${fs}" font-family="Arial,sans-serif" letter-spacing="-0.5">${label}</text></svg>`;
+}
+
 function numColor(n: number) {
   if (n === 0) return "#1a6b30";
   return RED_NUMS.has(n) ? "#c0392b" : "#111827";
@@ -570,18 +589,6 @@ function RouletteGame({
     if (el) el.style.display = "none"; // hidden by default; shown imperatively in startChipDrag
   }, []);
   const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
-  const dragRafRef = useRef<number | null>(null); // RAF id for deferred state updates in startChipDrag
-
-  // Pre-warm React's fiber reconciler at idle time so the FIRST drag is smooth.
-  // Sets a dummy dragGhost (ghost stays display:none) → React creates all cell fibers
-  // in a "drag active" state → JIT-compiled → resets to null. Zero visual artifacts.
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setDragGhost({ fromKey: "__warmup__", amount: 0, x: -999, y: -999 });
-      setTimeout(() => setDragGhost(null), 32);
-    }, 400);
-    return () => clearTimeout(t);
-  }, []);
 
   // Stats / volume panel
   const [statsOpen, setStatsOpen] = useState(false);
@@ -1022,24 +1029,36 @@ function RouletteGame({
     return null;
   }
 
+  // Mouse drag (desktop) — uses React state; desktop JS engine handles the render fast.
   function startChipDrag(fromKey: string, amount: number, x: number, y: number) {
-    _dragging.current = true; // block parent re-renders via React.memo comparator
+    _dragging.current = true;
     dragInfoRef.current = { fromKey, amount };
     ghostPosRef.current = { x, y };
-    // Show and position the ghost IMMEDIATELY — no React render needed.
-    // ghostElRef.current is always valid because the portal is always mounted.
     if (ghostElRef.current) {
+      const meta = getBetChipMeta(amount);
+      ghostElRef.current.innerHTML = buildChipSVGString(meta.bg, meta.border, meta.txt, fmtBetChipLabel(amount), 36);
       ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
       ghostElRef.current.style.display = "block";
     }
-    // Defer React state updates by one frame so touchmove events run unblocked.
-    // The ghost is already visible imperatively; React only needs to update the
-    // SVG chip content and dim the source cell (both can wait ~16ms).
-    dragRafRef.current = requestAnimationFrame(() => {
-      dragRafRef.current = null;
-      setDragGhost({ fromKey, amount, x, y }); // React updates chip SVG content
-      setIsDragging(true);                     // React dims source cell + runs drag useEffect
-    });
+    setDragGhost({ fromKey, amount, x, y });
+    setIsDragging(true);
+  }
+
+  // Touch drag (mobile) — ZERO React state updates on drag start.
+  // Ghost SVG set via innerHTML; source cell dimmed via CSS attribute; no re-renders.
+  function startChipDragTouch(fromKey: string, amount: number, x: number, y: number) {
+    _dragging.current = true;
+    dragInfoRef.current = { fromKey, amount };
+    ghostPosRef.current = { x, y };
+    if (ghostElRef.current) {
+      const meta = getBetChipMeta(amount);
+      ghostElRef.current.innerHTML = buildChipSVGString(meta.bg, meta.border, meta.txt, fmtBetChipLabel(amount), 36);
+      ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
+      ghostElRef.current.style.display = "block";
+    }
+    // Dim source cell imperatively — no React render needed
+    const srcEl = document.querySelector(`[data-bet-key="${fromKey}"]`);
+    if (srcEl) (srcEl as HTMLElement).setAttribute("data-drag-src", "1");
   }
 
   // Threshold-based: click (<5px movement) → placeBet; drag (>5px) → move chip
@@ -1070,14 +1089,11 @@ function RouletteGame({
   }
 
   function beginChipInteractionTouch(fromKey: string, amount: number, startX: number, startY: number, e: React.TouchEvent) {
-    if (isSpinning || chipTouchActiveRef.current) return; // guard against overlapping interactions
+    if (isSpinning || chipTouchActiveRef.current) return;
     chipTouchActiveRef.current = true;
     e.stopPropagation();
     e.preventDefault();
 
-    // Lock body touchAction IMMEDIATELY — the browser decides pan vs JS gesture
-    // within the first touchstart frame. The useEffect lock comes too late (after
-    // a React render cycle) and the table cells' "manipulation" wins otherwise.
     const prevBodyTA = document.body.style.touchAction;
     document.body.style.touchAction = "none";
 
@@ -1085,53 +1101,60 @@ function RouletteGame({
     const THRESHOLD = 12;
 
     function onMove(mv: TouchEvent) {
-      mv.preventDefault(); // always block scroll while chip touch is active
+      mv.preventDefault();
       if (!mv.touches.length) return;
       const t = mv.touches[0];
       if (!dragging) {
         if (Math.hypot(t.clientX - startX, t.clientY - startY) > THRESHOLD) {
           dragging = true;
-          startChipDrag(fromKey, amount, t.clientX, t.clientY);
+          // ZERO React state updates — purely imperative drag start
+          startChipDragTouch(fromKey, amount, t.clientX, t.clientY);
         }
         return;
       }
-      // Drag already started — keep ghost moving even during the React render/useEffect gap
       ghostPosRef.current = { x: t.clientX, y: t.clientY };
       if (ghostElRef.current) {
         ghostElRef.current.style.transform = `translate(${t.clientX - 18}px, ${t.clientY - 18}px)`;
       }
     }
-    function onEnd(e: TouchEvent) {
+
+    function onEnd(ev: TouchEvent) {
       chipTouchActiveRef.current = false;
-      if (!dragging) document.body.style.touchAction = prevBodyTA;
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
+      document.body.style.touchAction = prevBodyTA;
+
+      // Remove source cell dim
+      const srcEl = document.querySelector(`[data-bet-key="${fromKey}"]`);
+      if (srcEl) (srcEl as HTMLElement).removeAttribute("data-drag-src");
+
       if (!dragging) {
         placeBet(fromKey);
-      } else if (dragRafRef.current !== null) {
-        // Finger lifted within the ~16ms RAF window before setIsDragging(true) ran.
-        // Cancel the pending RAF and finalize the drop directly here.
-        cancelAnimationFrame(dragRafRef.current);
-        dragRafRef.current = null;
-        _dragging.current = false;
-        if (ghostElRef.current) ghostElRef.current.style.display = "none";
-        document.body.style.touchAction = prevBodyTA;
-        const t = e.changedTouches[0];
-        if (t) {
-          const dropKey = findBetKey(document.elementFromPoint(t.clientX, t.clientY));
-          const ds = dragInfoRef.current;
-          if (ds && dropKey && dropKey !== ds.fromKey) {
-            setTableBets(prev => { const n = {...prev}; n[dropKey] = Math.round(((n[dropKey]||0)+ds.amount)*10000)/10000; delete n[ds.fromKey]; return n; });
-          } else if (ds && !dropKey) {
-            setTableBets(prev => { const n = {...prev}; delete n[ds.fromKey]; return n; });
-          }
-        }
-        dragInfoRef.current = null;
-        setDragGhost(null);
-        // setIsDragging never became true, so no need to reset it
+        return;
       }
-      // else: drag useEffect already registered its touchend listener; let it handle the drop
+
+      // Drag ended — finalize drop entirely here (no drag useEffect needed for touch)
+      _dragging.current = false;
+      if (ghostElRef.current) ghostElRef.current.style.display = "none";
+
+      const ct = ev.changedTouches[0];
+      if (ct) {
+        const dropKey = findBetKey(document.elementFromPoint(ct.clientX, ct.clientY));
+        const ds = dragInfoRef.current;
+        if (ds && dropKey && dropKey !== ds.fromKey) {
+          setTableBets(prev => {
+            const n = { ...prev };
+            n[dropKey] = Math.round(((n[dropKey] || 0) + ds.amount) * 10000) / 10000;
+            delete n[ds.fromKey];
+            return n;
+          });
+        } else if (ds && !dropKey) {
+          setTableBets(prev => { const n = { ...prev }; delete n[ds.fromKey]; return n; });
+        }
+      }
+      dragInfoRef.current = null;
     }
+
     document.addEventListener("touchmove", onMove, { passive: false });
     document.addEventListener("touchend", onEnd);
   }

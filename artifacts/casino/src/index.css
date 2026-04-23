@@ -1947,3 +1947,8 @@ body {
   transform: none !important;
   opacity: 1 !important;
 }
+
+/* Imperative chip drag (touch) — no React re-render needed */
+[data-drag-src] {
+  opacity: 0.35 !important;
+}
