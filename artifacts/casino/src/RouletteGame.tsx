@@ -554,13 +554,14 @@ export default function RouletteGame({
   // Chip drag & drop
   const [isDragging, setIsDragging] = useState(false);
   const [dragGhost, setDragGhost]   = useState<{ fromKey: string; amount: number; x: number; y: number } | null>(null);
-  const [dragOverKey, setDragOverKey] = useState<string | null>(null);
+  // dragOverKey removed — highlight is now pure DOM (no React re-renders on cell crossing)
+  const dragOverElRef = useRef<{ el: HTMLElement; border: string; shadow: string } | null>(null);
   const dragInfoRef = useRef<{ fromKey: string; amount: number } | null>(null);
   const ghostElRef  = useRef<HTMLDivElement | null>(null); // direct DOM ref for ghost chip
   const ghostPosRef = useRef<{ x: number; y: number } | null>(null); // tracks live cursor pos during drag
-  // Stable ref callback — inline functions re-fire with (null → el) on EVERY re-render, which
-  // causes ghostElRef.current to be null for a tick on each setDragOverKey update, making the
-  // ghost freeze while the finger is over the table. useCallback([]) = only fires on real mount/unmount.
+  // Stable ref callback — inline functions re-fire with (null → el) on EVERY re-render, causing
+  // ghostElRef.current to be null for a tick and missing touchmove updates.
+  // useCallback([]) = only fires on real mount/unmount, never between renders.
   const handleGhostRef = useCallback((el: HTMLDivElement | null) => {
     ghostElRef.current = el;
     if (el) {
@@ -1105,18 +1106,38 @@ export default function RouletteGame({
     // must lock the body directly to prevent the browser from falling back to "manipulation".
     const prevTouchAction = document.body.style.touchAction;
     document.body.style.touchAction = "none";
-    let rafId = 0;
+    // Highlight the cell element under the cursor via direct DOM — no React state, no re-renders
+    function applyDragOver(cx: number, cy: number) {
+      const hit = document.elementFromPoint(cx, cy);
+      let target: HTMLElement | null = hit as HTMLElement;
+      while (target && !target.dataset.betKey) target = target.parentElement as HTMLElement | null;
+      const newEl = (target?.dataset.betKey) ? target : null;
+      const prev = dragOverElRef.current;
+      if (newEl === prev?.el) return; // same cell — nothing to do
+      // Restore previous cell's original border/shadow
+      if (prev) { prev.el.style.border = prev.border; prev.el.style.boxShadow = prev.shadow; }
+      // Highlight new cell
+      if (newEl) {
+        dragOverElRef.current = { el: newEl, border: newEl.style.border, shadow: newEl.style.boxShadow };
+        newEl.style.border = "2px solid #fff";
+        newEl.style.boxShadow = "0 0 10px rgba(255,255,255,0.5)";
+      } else {
+        dragOverElRef.current = null;
+      }
+    }
+    function clearDragOver() {
+      const prev = dragOverElRef.current;
+      if (prev) { prev.el.style.border = prev.border; prev.el.style.boxShadow = prev.shadow; }
+      dragOverElRef.current = null;
+    }
     function moveGhost(cx: number, cy: number) {
       ghostPosRef.current = { x: cx, y: cy }; // keep live position in sync for ref callback
       if (ghostElRef.current) {
         // Ghost is portaled to <html> (not body), so clientX/Y map 1:1 — no zoom correction
         ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
-      // Throttle drag-over highlight to one React update per animation frame
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        setDragOverKey(findBetKey(document.elementFromPoint(cx, cy)));
-      });
+      // Cell highlight: pure DOM, zero React re-renders
+      applyDragOver(cx, cy);
     }
     function onMove(e: MouseEvent) {
       e.preventDefault();
@@ -1128,6 +1149,7 @@ export default function RouletteGame({
       moveGhost(t.clientX, t.clientY);
     }
     function finalizeDrop(cx: number, cy: number) {
+      clearDragOver();
       const ds = dragInfoRef.current;
       const dropKey = findBetKey(document.elementFromPoint(cx, cy));
       if (ds) {
@@ -1144,13 +1166,12 @@ export default function RouletteGame({
       }
       dragInfoRef.current = null;
       setDragGhost(null);
-      setDragOverKey(null);
       setIsDragging(false);
     }
     function onMouseUp(e: MouseEvent) { finalizeDrop(e.clientX, e.clientY); }
     function onTouchEnd(e: TouchEvent) {
       if (e.changedTouches.length > 0) finalizeDrop(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      else { dragInfoRef.current = null; setDragGhost(null); setDragOverKey(null); setIsDragging(false); }
+      else { clearDragOver(); dragInfoRef.current = null; setDragGhost(null); setIsDragging(false); }
     }
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -1301,7 +1322,6 @@ export default function RouletteGame({
     const col        = numColor(num);
     const groupLit   = hoverGroup !== null && isInGroup(num, hoverGroup);
     const isDragSrc  = dragGhost?.fromKey === key;
-    const isDragOver = dragOverKey === key && !isDragSrc;
     return (
       <div
         data-bet-key={key}
@@ -1328,8 +1348,8 @@ export default function RouletteGame({
           background: col, color:"#fff", fontWeight:700, fontSize:"11px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
           borderRadius:"4px", touchAction:"none", WebkitTapHighlightColor:"transparent",
-          border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
-          boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
+          border: isWin ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.06)",
+          boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, transform .12s",
           userSelect:"none", height: cellH ?? "44px",
           opacity: isDragSrc ? 0.35 : 1,
@@ -1355,7 +1375,7 @@ export default function RouletteGame({
         {/* Overlay: tints ONLY the cell background on hover/group-lit */}
         <div data-ov="" style={{
           position:"absolute", inset:0, borderRadius:"4px",
-          background: isDragOver ? "rgba(255,255,255,0.18)" : groupLit ? "rgba(255,255,255,0.2)" : "transparent",
+          background: groupLit ? "rgba(255,255,255,0.2)" : "transparent",
           pointerEvents:"none", zIndex:1, transition:"background .12s"
         }}/>
         {betAmt > 0 && !isDragSrc ? (
@@ -1381,7 +1401,6 @@ export default function RouletteGame({
     const isWin      = winCells.has(betKey);
     const gKey       = groupKey ?? betKey;
     const isDragSrc  = dragGhost?.fromKey === betKey;
-    const isDragOver = dragOverKey === betKey && !isDragSrc;
     return (
       <div
         data-bet-key={betKey}
@@ -1408,8 +1427,8 @@ export default function RouletteGame({
           background: color || "#1a2438", color:"#c8d8f0", fontWeight:700, fontSize:"10px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
           borderRadius:"4px", touchAction:"none", WebkitTapHighlightColor:"transparent",
-          border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
-          boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
+          border: isWin ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.06)",
+          boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, filter .12s, transform .12s",
           userSelect:"none", minHeight:"26px", padding:"2px 4px", textAlign:"center",
           opacity: isDragSrc ? 0.35 : 1,
@@ -2070,7 +2089,7 @@ export default function RouletteGame({
                 onClick={() => { if (!isDragging) placeBet("n_0"); }}
                 onMouseEnter={e => { if (!isSpinning && !isDragging) { (e.currentTarget as HTMLElement).style.filter = "brightness(1.25)"; (e.currentTarget as HTMLElement).style.transform = "scale(1.06)"; (e.currentTarget as HTMLElement).style.zIndex = "5"; }}}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.filter = ""; (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.zIndex = ""; }}>
-                <div style={{ position:"relative", height:"100%", background:"#1a6b30", color:"#fff", fontWeight:800, fontSize:"15px", display:"flex", alignItems:"center", justifyContent:"center", borderRadius:"6px", cursor: isSpinning ? "default" : ((tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? "grab" : "pointer"), userSelect:"none", border: winCells.has("n_0") ? "2px solid #16ff5c" : dragOverKey === "n_0" ? "2px solid #fff" : "2px solid rgba(255,255,255,0.08)", boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : dragOverKey === "n_0" ? "0 0 10px rgba(255,255,255,0.5)" : "none" }}>
+                <div style={{ position:"relative", height:"100%", background:"#1a6b30", color:"#fff", fontWeight:800, fontSize:"15px", display:"flex", alignItems:"center", justifyContent:"center", borderRadius:"6px", cursor: isSpinning ? "default" : ((tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? "grab" : "pointer"), userSelect:"none", border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)", boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? (
                     <div
                       style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
