@@ -2073,13 +2073,7 @@ function RouletteGame({
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
                     </div>
                   ) : <span>0</span>}
-                  {/* Zero splits: 0-1, 0-2, 0-3 — each covering full 1/3 width so chip centers over the number */}
-                  <RZone {...mzp} zkey="sp_0_1" title="Split 0-1 (17:1)"
-                    style={{ bottom:-10, left:0, width:"33.3%", height:20, borderRadius:4, zIndex:13 }} />
-                  <RZone {...mzp} zkey="sp_0_2" title="Split 0-2 (17:1)"
-                    style={{ bottom:-10, left:"33.3%", width:"33.4%", height:20, borderRadius:4, zIndex:13 }} />
-                  <RZone {...mzp} zkey="sp_0_3" title="Split 0-3 (17:1)"
-                    style={{ bottom:-10, right:0, width:"33.3%", height:20, borderRadius:4, zIndex:13 }} />
+                  {/* zero splits shown as top-edge zones on cells 1/2/3 — see number cells map below */}
                 </div>
               </div>
 
@@ -2136,6 +2130,11 @@ function RouletteGame({
                       <RZone {...mzp} zkey={`co_${[n,n+1,n+3,n+4].sort((a,b)=>a-b).join("_")}`}
                         title={`Corner ${n},${n+1},${n+3},${n+4} (8:1)`}
                         style={{ right:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13 }} />
+                    )}
+                    {/* Split 0-n: top edge of row-0 cells (boundary between zero and 1/2/3) */}
+                    {row === 0 && (
+                      <RZone {...mzp} zkey={`sp_0_${n}`} title={`Split 0-${n} (17:1)`}
+                        style={{ top:-10, left:"15%", width:"70%", height:20, borderRadius:4, zIndex:12 }} />
                     )}
                     {/* Street LEFT edge (col=0 only) — accessible from docenas side */}
                     {col === 0 && (
