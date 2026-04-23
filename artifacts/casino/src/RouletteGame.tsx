@@ -1828,6 +1828,7 @@ export default function RouletteGame({
               chipUsd={chipUsd}
               isSpinning={isSpinning}
               winNumber={winNumber}
+              lang={_lang}
             />
           </div>
         )}
