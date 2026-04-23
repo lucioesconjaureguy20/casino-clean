@@ -1475,6 +1475,14 @@ body {
   .bet-table-outer {
     overflow-x: visible !important;
   }
+
+  /* Dice: game display (center panel) goes first, controls go last */
+  .dice-root .game-ctrl-panel {
+    order: 2;
+  }
+  .dice-root .game-ctrl-grid > div:last-child {
+    order: 1;
+  }
 }
 
 /* Bet table: horizontal scroll on mobile */
