@@ -406,15 +406,19 @@ export function RouletteRacetrack({
         </svg>
       </div>
 
-      {/* ── Hover hint ─────────────────────────────────────────────────── */}
-      {hoverNum !== null && (
-        <div style={{
-          fontSize: 10, color: "rgba(255,255,255,0.32)",
-          textAlign: "center", fontFamily: "'Inter', Arial, sans-serif",
-        }}>
-          {gt(lang, "rtNeighborHint")} {getNeighbors(hoverNum, neighborN).join(" · ")}
-        </div>
-      )}
+      {/* ── Hover hint — always rendered to avoid layout shift ─────────── */}
+      <div style={{
+        fontSize: 10,
+        color: hoverNum !== null ? "rgba(255,255,255,0.32)" : "transparent",
+        textAlign: "center",
+        fontFamily: "'Inter', Arial, sans-serif",
+        minHeight: 14,
+        userSelect: "none",
+      }}>
+        {hoverNum !== null
+          ? `${gt(lang, "rtNeighborHint")} ${getNeighbors(hoverNum, neighborN).join(" · ")}`
+          : "\u00a0"}
+      </div>
     </div>
   );
 }
