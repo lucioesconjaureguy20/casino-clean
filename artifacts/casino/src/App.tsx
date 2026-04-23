@@ -16827,7 +16827,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                     setDiceTarget((newMode==="over" ? Math.min(98,Math.max(4,invT)) : Math.min(96,Math.max(2,invT))).toFixed(2));
                   }}
                   title={t("invertDir")}
-                  style={{ position:"absolute",right: isMobile ? "4px" : "8px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:diceAutoRunning?"#252f45":"#6db3f2",cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"17px",lineHeight:1,padding:"2px",display:"flex",alignItems:"center",opacity:diceAutoRunning?0.35:1,transition:"opacity .2s,color .2s" }}>
+                  style={{ position:"absolute",right: isMobile ? "4px" : "8px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",outline:"none",color:diceAutoRunning?"#252f45":"#6db3f2",cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"17px",lineHeight:1,padding:"2px",display:"flex",alignItems:"center",opacity:diceAutoRunning?0.35:1,transition:"opacity .2s,color .2s" }}>
                   ↺
                 </button>
               </div>
