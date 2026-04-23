@@ -1033,7 +1033,7 @@ export default function RouletteGame({
     e.stopPropagation();
     e.preventDefault();
     let dragging = false;
-    const THRESHOLD = 5;
+    const THRESHOLD = 12;
 
     function onMove(mv: TouchEvent) {
       if (dragging || !mv.touches.length) return;
@@ -1260,18 +1260,29 @@ export default function RouletteGame({
     return (
       <div
         data-bet-key={key}
+        onTouchStart={e => {
+          if (isSpinning || isDragging) return;
+          e.currentTarget.dataset.tx = String(e.touches[0].clientX);
+          e.currentTarget.dataset.ty = String(e.touches[0].clientY);
+        }}
+        onTouchEnd={e => {
+          if (isSpinning || isDragging) return;
+          const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
+          const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
+          if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
+            e.preventDefault();
+            placeBet(key);
+          }
+        }}
         onClick={e => {
-          if (isDragging) return;
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = "";
-          el.style.zIndex = "";
+          if (isDragging || ('ontouchstart' in window)) return;
           placeBet(key);
         }}
         style={{
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: col, color:"#fff", fontWeight:700, fontSize:"11px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px",
+          borderRadius:"4px", touchAction:"manipulation",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, transform .12s",
@@ -1327,19 +1338,29 @@ export default function RouletteGame({
     return (
       <div
         data-bet-key={betKey}
+        onTouchStart={e => {
+          if (isSpinning || isDragging) return;
+          e.currentTarget.dataset.tx = String(e.touches[0].clientX);
+          e.currentTarget.dataset.ty = String(e.touches[0].clientY);
+        }}
+        onTouchEnd={e => {
+          if (isSpinning || isDragging) return;
+          const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
+          const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
+          if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
+            e.preventDefault();
+            placeBet(betKey);
+          }
+        }}
         onClick={e => {
-          if (isDragging) return;
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = "";
-          el.style.filter = "";
-          el.style.zIndex = "";
+          if (isDragging || ('ontouchstart' in window)) return;
           placeBet(betKey);
         }}
         style={{
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: color || "#1a2438", color:"#c8d8f0", fontWeight:700, fontSize:"10px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px",
+          borderRadius:"4px", touchAction:"manipulation",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, filter .12s, transform .12s",
@@ -1914,10 +1935,12 @@ export default function RouletteGame({
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
-                  onClick={() => { if (!isDragging) placeBet("n_0"); }}
+                  onTouchStart={e => { if (!isSpinning && !isDragging) { e.currentTarget.dataset.tx = String(e.touches[0].clientX); e.currentTarget.dataset.ty = String(e.touches[0].clientY); }}}
+                  onTouchEnd={e => { if (isSpinning || isDragging) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
+                  onClick={() => { if (!isDragging && !('ontouchstart' in window)) placeBet("n_0"); }}
                   style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
                     fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
-                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none",
+                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"manipulation",
                     border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)",
                     boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
