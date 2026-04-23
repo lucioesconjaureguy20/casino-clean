@@ -96,15 +96,17 @@
       z-index: 1;
       width: 88px;
       height: 88px;
-      filter: drop-shadow(0 0 14px rgba(212,175,55,0.45));
+      filter: drop-shadow(0 0 16px rgba(212,175,55,0.50));
     }
-    /* Sand stream animation inside the hourglass */
-    @keyframes sandFall {
-      0%   { opacity: 1;   transform: scaleY(1); }
-      50%  { opacity: 0.6; transform: scaleY(0.4); }
-      100% { opacity: 1;   transform: scaleY(1); }
+    /* Slow gear spin */
+    @keyframes gearSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
-    .sand-stream { animation: sandFall 2.2s ease-in-out infinite; transform-origin: top center; }
+    .gear-spin {
+      transform-origin: 44px 44px;
+      animation: gearSpin 8s linear infinite;
+    }
 
     /* Text */
     .headline {
@@ -178,58 +180,60 @@
   <div class="card">
     <img src="/mander-logo-maintenance.png" alt="ManderBet" class="logo" />
 
-    <!-- Professional hourglass — static, no spin -->
+    <!-- Casino chip + gear icon -->
     <div class="icon-wrap">
       <div class="icon-bg"></div>
       <svg class="icon-svg" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id="chipRim" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="100%" stop-color="#8a5e08"/>
+          </linearGradient>
+          <linearGradient id="chipFace" cx="50%" cy="50%" r="50%" fx="40%" fy="35%" id="chipFace" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#1e2a42"/>
+            <stop offset="100%" stop-color="#0d1520"/>
+          </linearGradient>
+          <linearGradient id="gearGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="60%"  stop-color="#d4af37"/>
             <stop offset="100%" stop-color="#9a6f10"/>
-          </linearGradient>
-          <linearGradient id="goldH" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#f5e070"/>
-            <stop offset="100%" stop-color="#c49a20"/>
-          </linearGradient>
-          <linearGradient id="sandTop" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="rgba(212,175,55,0.80)"/>
-            <stop offset="100%" stop-color="rgba(212,175,55,0.20)"/>
-          </linearGradient>
-          <linearGradient id="sandBot" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="rgba(212,175,55,0.50)"/>
-            <stop offset="100%" stop-color="rgba(212,175,55,0.90)"/>
           </linearGradient>
         </defs>
 
-        <!-- Top bar -->
-        <rect x="20" y="13" width="48" height="6" rx="3" fill="url(#goldH)"/>
-        <!-- Bottom bar -->
-        <rect x="20" y="69" width="48" height="6" rx="3" fill="url(#goldH)"/>
+        <!-- Chip outer border -->
+        <circle cx="44" cy="44" r="40" fill="#0e1928" stroke="url(#chipRim)" stroke-width="3"/>
 
-        <!-- Frame sides -->
-        <line x1="24" y1="19" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="64" y1="19" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="24" y1="69" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="64" y1="69" x2="44" y2="46" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- 8 edge stripes (like real casino chips) -->
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(0   44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(45  44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(90  44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(135 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(180 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(225 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(270 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(315 44 44)"/>
 
-        <!-- Upper sand (partially empty — about 60%) -->
-        <path d="M31 22 Q44 22 57 22 L50 36 Q44 42 38 36 Z" fill="url(#sandTop)" opacity="0.85"/>
+        <!-- Chip inner ring -->
+        <circle cx="44" cy="44" r="30" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="1"/>
 
-        <!-- Sand stream through neck -->
-        <line class="sand-stream" x1="44" y1="44" x2="44" y2="52"
-              stroke="rgba(212,175,55,0.7)" stroke-width="2" stroke-linecap="round"/>
-
-        <!-- Lower sand pile (growing) -->
-        <path d="M36 56 Q44 51 52 56 L58 66 Q44 66 30 66 Z" fill="url(#sandBot)" opacity="0.9"/>
-
-        <!-- Neck pivot -->
-        <circle cx="44" cy="46" r="3" fill="#d4af37"/>
-
-        <!-- Decorative corner studs -->
-        <circle cx="22" cy="16" r="2.5" fill="#f5e070" opacity="0.7"/>
-        <circle cx="66" cy="16" r="2.5" fill="#f5e070" opacity="0.7"/>
-        <circle cx="22" cy="72" r="2.5" fill="#f5e070" opacity="0.7"/>
-        <circle cx="66" cy="72" r="2.5" fill="#f5e070" opacity="0.7"/>
+        <!-- Gear (slowly spinning) -->
+        <g class="gear-spin">
+          <!-- 8 teeth -->
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(0   44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(45  44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(90  44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(135 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(180 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(225 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(270 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(315 44 44)"/>
+          <!-- Gear body -->
+          <circle cx="44" cy="44" r="16" fill="url(#gearGrad)"/>
+          <!-- Center hole -->
+          <circle cx="44" cy="44" r="7"  fill="#0e1928"/>
+          <!-- Inner hub ring -->
+          <circle cx="44" cy="44" r="4"  fill="none" stroke="rgba(212,175,55,0.6)" stroke-width="1.5"/>
+        </g>
       </svg>
     </div>
 
