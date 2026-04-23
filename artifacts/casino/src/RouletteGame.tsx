@@ -509,7 +509,7 @@ function RZone({ zkey, style, tableBets, winCells, isSpinning, isDragging, dragF
     >
       {amt > 0 && !isDragSrc && (
         <div
-          style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none" }}
+          style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
           onClick={e => e.stopPropagation()}
           onMouseDown={e => onDragStart(zkey, amt, e.clientX, e.clientY, e)}
           onTouchStart={e => onTouchDragStart(zkey, amt, e.touches[0].clientX, e.touches[0].clientY, e)}
@@ -558,6 +558,7 @@ export default function RouletteGame({
   const dragInfoRef = useRef<{ fromKey: string; amount: number } | null>(null);
   const ghostElRef  = useRef<HTMLDivElement | null>(null); // direct DOM ref for ghost chip
   const ghostPosRef = useRef<{ x: number; y: number } | null>(null); // tracks live cursor pos during drag
+  const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
 
   // Stats / volume panel
   const [statsOpen, setStatsOpen] = useState(false);
@@ -1033,7 +1034,8 @@ export default function RouletteGame({
   }
 
   function beginChipInteractionTouch(fromKey: string, amount: number, startX: number, startY: number, e: React.TouchEvent) {
-    if (isSpinning) return;
+    if (isSpinning || chipTouchActiveRef.current) return; // guard against overlapping interactions
+    chipTouchActiveRef.current = true;
     e.stopPropagation();
     e.preventDefault();
     let dragging = false;
@@ -1049,6 +1051,7 @@ export default function RouletteGame({
       }
     }
     function onEnd() {
+      chipTouchActiveRef.current = false;
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
       if (!dragging) placeBet(fromKey);
@@ -1330,7 +1333,7 @@ export default function RouletteGame({
         }}/>
         {betAmt > 0 && !isDragSrc ? (
           <div
-            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none" }}
+            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
             onMouseDown={e => beginChipInteraction(key, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(key, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
@@ -1402,7 +1405,7 @@ export default function RouletteGame({
       >
         {betAmt > 0 && !isDragSrc ? (
           <div
-            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none" }}
+            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
             onMouseDown={e => beginChipInteraction(betKey, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(betKey, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
@@ -1961,7 +1964,7 @@ export default function RouletteGame({
                     border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)",
                     boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
-                    <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none" }}
+                    <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
                       onMouseDown={e => beginChipInteraction("n_0", tableBets["n_0"], e.clientX, e.clientY, e)}
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}>
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
@@ -2041,7 +2044,7 @@ export default function RouletteGame({
                 <div style={{ position:"relative", height:"100%", background:"#1a6b30", color:"#fff", fontWeight:800, fontSize:"15px", display:"flex", alignItems:"center", justifyContent:"center", borderRadius:"6px", cursor: isSpinning ? "default" : ((tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? "grab" : "pointer"), userSelect:"none", border: winCells.has("n_0") ? "2px solid #16ff5c" : dragOverKey === "n_0" ? "2px solid #fff" : "2px solid rgba(255,255,255,0.08)", boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : dragOverKey === "n_0" ? "0 0 10px rgba(255,255,255,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0) > 0 && dragGhost?.fromKey !== "n_0" ? (
                     <div
-                      style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none" }}
+                      style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
                       onMouseDown={e => beginChipInteraction("n_0", tableBets["n_0"], e.clientX, e.clientY, e)}
                       onTouchStart={e => beginChipInteractionTouch("n_0", tableBets["n_0"], e.touches[0].clientX, e.touches[0].clientY, e)}
                     >
