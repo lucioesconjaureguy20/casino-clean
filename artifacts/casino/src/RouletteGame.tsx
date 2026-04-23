@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { gt } from "./lib/gameLabels";
+import { RouletteRacetrack } from "./RouletteRacetrack";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const WHEEL_NUMBERS = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
@@ -477,6 +478,7 @@ export default function RouletteGame({
   const [autoRunning, setAutoRunning] = useState(false);
   const [autoStopping, setAutoStopping] = useState(false); // delay de 2s al detener
   const [winCells, setWinCells]     = useState<Set<string>>(new Set());
+  const [showRacetrack, setShowRacetrack] = useState(false);
 
   // Chip drag & drop
   const [isDragging, setIsDragging] = useState(false);
@@ -1773,6 +1775,60 @@ export default function RouletteGame({
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* ─── Racetrack toggle ──────────────────────────────────────────── */}
+        <div style={{ display:"flex", justifyContent:"center", marginBottom: showRacetrack ? 4 : 0 }}>
+          <button
+            onClick={() => setShowRacetrack(v => !v)}
+            style={{
+              display:       "flex",
+              alignItems:    "center",
+              gap:           5,
+              padding:       "4px 14px",
+              borderRadius:  20,
+              border:        `1px solid ${showRacetrack ? "#f59e0b88" : "rgba(255,255,255,0.10)"}`,
+              background:    showRacetrack ? "#f59e0b18" : "transparent",
+              color:         showRacetrack ? "#f59e0b" : "rgba(255,255,255,0.35)",
+              fontSize:      10,
+              fontWeight:    700,
+              cursor:        "pointer",
+              letterSpacing: "0.5px",
+              textTransform: "uppercase",
+              fontFamily:    "inherit",
+              transition:    "all .15s",
+            }}
+          >
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <ellipse cx="12" cy="12" rx="10" ry="5"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+            </svg>
+            Racetrack
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              {showRacetrack
+                ? <polyline points="18 15 12 9 6 15"/>
+                : <polyline points="6 9 12 15 18 9"/>}
+            </svg>
+          </button>
+        </div>
+
+        {/* ─── Racetrack panel ───────────────────────────────────────────── */}
+        {showRacetrack && (
+          <div style={{
+            padding:      "10px 12px",
+            background:   "#080b12",
+            borderRadius: 12,
+            border:       "1px solid rgba(255,255,255,0.07)",
+            marginBottom: 6,
+          }}>
+            <RouletteRacetrack
+              placeBet={placeBet}
+              tableBets={tableBets}
+              chipUsd={chipUsd}
+              isSpinning={isSpinning}
+              winNumber={winNumber}
+            />
           </div>
         )}
 
