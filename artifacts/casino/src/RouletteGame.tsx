@@ -1921,7 +1921,7 @@ export default function RouletteGame({
               </div>
             )}
 
-            <div style={{ display:"flex", alignItems:"flex-start", gap:"8px", width:"fit-content", margin:"0 auto" }}>
+            <div style={{ display:"flex", alignItems:"flex-start", gap:"22px", width:"fit-content", margin:"0 auto" }}>
 
             {/* ── Last result square — aligned with "1 to 18" cell ── */}
             <div style={{ marginTop:"28px", flexShrink:0, width:"36px", height:"80px",
