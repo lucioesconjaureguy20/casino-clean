@@ -1038,6 +1038,13 @@ export default function RouletteGame({
     chipTouchActiveRef.current = true;
     e.stopPropagation();
     e.preventDefault();
+
+    // Lock body touchAction IMMEDIATELY — the browser decides pan vs JS gesture
+    // within the first touchstart frame. The useEffect lock comes too late (after
+    // a React render cycle) and the table cells' "manipulation" wins otherwise.
+    const prevBodyTA = document.body.style.touchAction;
+    document.body.style.touchAction = "none";
+
     let dragging = false;
     const THRESHOLD = 12;
 
@@ -1052,6 +1059,8 @@ export default function RouletteGame({
     }
     function onEnd() {
       chipTouchActiveRef.current = false;
+      // Only restore if the drag useEffect hasn't taken over (isDragging still false)
+      if (!dragging) document.body.style.touchAction = prevBodyTA;
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
       if (!dragging) placeBet(fromKey);
