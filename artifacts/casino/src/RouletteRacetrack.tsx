@@ -176,9 +176,9 @@ const VE_PATH = `M ${F(X2)} ${F(CY-IRI)} L ${F(X1)} ${F(CY-IRI)} A ${F(J0_R)} ${
 const HU_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(X2)} ${F(CY-IRI)} L ${F(X2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 const TE_PATH = `M ${F(X3T)} ${F(CY-IRI)} L ${F(CX2)} ${F(CY-IRI)} A ${F(IRI)} ${F(IRI)} 0 0 1 ${F(CX2)} ${F(CY+IRI)} L ${F(X3B)} ${F(CY+IRI)} Z`;
 
-// Label x-positions — midpoint of each section's actual x-range
-const J0_LX  = (CX1 - IRI + X1 + J0_R) / 2;
-const VE_LX  = (X1 + X2) / 2;
+// Label x-positions — centered in each section's visible interior
+const J0_LX  = (CX1 + X1) / 2;                          // center of J0's straight body
+const VE_LX  = (X1 + J0_R + X2) / 2;                    // account for J0 arc biting left
 const HU_LX  = (X2 + (X3T + X3B) / 2) / 2;
 const TE_LX  = ((X3T + X3B) / 2 + CX2 + IRI) / 2;
 
