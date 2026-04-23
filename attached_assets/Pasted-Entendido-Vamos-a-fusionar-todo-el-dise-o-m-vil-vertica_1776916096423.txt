@@ -1,0 +1,50 @@
+Entendido. Vamos a fusionar todo: el diseño móvil vertical estilo Stake, la lógica de transición (ocultar mesa / mostrar ruleta) y el historial de resultados.
+
+Copia y pega este prompt "Maestro" en la IA de Replit. Está diseñado para que no rompa lo que ya tienes en PC y solo aplique los cambios en el flujo de juego y en dispositivos móviles.
+
+Prompt Maestro: Interfaz Móvil Stake + Game Loop
+"Reescribe la estructura y lógica de la ruleta para implementar el formato móvil y el flujo de juego profesional. Sigue estas instrucciones estrictas:
+
+1. Formato Móvil (Estilo Stake):
+
+Usa una Media Query @media (max-width: 768px).
+
+El tablero debe ponerse en vertical. El número 0 arriba (ancho completo). Debajo, los números 1-36 en una cuadrícula de 3 columnas.
+
+A la izquierda de los números, coloca las apuestas externas (1-18, Even, Red, Black, etc.) en columnas, tal como en la imagen de Stake.
+
+Los botones 'Undo' y 'Clear' deben estar justo debajo del tablero, seguidos por el botón 'Bet' (ancho completo).
+
+2. Lógica de Transición (Game Loop):
+
+Crea dos contenedores principales: #betting-view (donde está el tablero) y #wheel-view (donde está la ruleta animada).
+
+Por defecto, #wheel-view debe estar oculto (display: none).
+
+Al presionar 'Bet':
+
+Oculta #betting-view.
+
+Muestra #wheel-view e inicia la animación de giro.
+
+Genera el número ganador.
+
+Al terminar el giro:
+
+Muestra el número ganador en grande por 2 segundos.
+
+Agrega el número al Historial.
+
+Oculta #wheel-view y vuelve a mostrar #betting-view para la siguiente ronda.
+
+3. Historial de Números:
+
+Crea un contenedor #history-log debajo de la mesa.
+
+Los números deben aparecer como círculos pequeños con su color correspondiente (rojo, negro o verde).
+
+El número más reciente debe aparecer siempre a la izquierda con una animación de entrada suave.
+
+4. Preservación de Lógica:
+
+No modifiques la lógica de las apuestas en PC. Solo cambia la visualización en móvil mediante CSS y gestiona la visibilidad de los contenedores con JavaScript. Asegúrate de que las fichas apostadas se limpien automáticamente al volver a la mesa."
