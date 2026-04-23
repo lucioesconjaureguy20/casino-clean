@@ -26,12 +26,12 @@ function numBg(n: number, active: boolean, win: boolean): string {
 }
 
 // ── Stadium geometry ──────────────────────────────────────────────────────────
-const SVG_W  = 560;
-const SVG_H  = 150;
-const CX     = SVG_W / 2;    // 280
-const CY     = SVG_H / 2;    // 75
+const SVG_W  = 628;           // +15% wider container
+const SVG_H  = 138;
+const CX     = SVG_W / 2;    // 314
+const CY     = SVG_H / 2;    // 69
 const R      = 50;            // semicircle radius
-const HALF_L = 196;           // half-length of straight segments
+const HALF_L = 226;           // +15% longer straights
 
 const CX1 = CX - HALF_L;     // left semicircle centre x  (84)
 const CX2 = CX + HALF_L;     // right semicircle centre x (476)
@@ -67,7 +67,7 @@ function stadiumPoint(s: number): { x: number; y: number; rot: number } {
 }
 
 // Pill dimensions
-const PH = 18;                           // height (slightly reduced per request)
+const PH = 13;                           // thin ring (12-14px as requested)
 const PW = PERIMETER / 37;              // width = arc-step → pills touch, no gaps
 
 // Clip-path ring radii (slightly beyond pill edges for clean containment)
@@ -211,7 +211,11 @@ export function RouletteRacetrack({
               Pills protruding beyond the ring are cut cleanly.
             */}
             <clipPath id="rt-ring-clip">
-              <path fillRule="evenodd" d={`${OUTER_PATH} ${INNER_PATH}`} />
+              <path
+                fillRule="evenodd"
+                shapeRendering="geometricPrecision"
+                d={`${OUTER_PATH} ${INNER_PATH}`}
+              />
             </clipPath>
           </defs>
 
@@ -284,7 +288,7 @@ export function RouletteRacetrack({
                     textAnchor="middle"
                     dominantBaseline="central"
                     fill={isWin ? "#000" : "#fff"}
-                    fontSize={10}
+                    fontSize={8.5}
                     fontWeight="700"
                     fontFamily="'Inter', Arial, sans-serif"
                     transform={`rotate(${-rot},${x},${y})`}
@@ -323,7 +327,7 @@ export function RouletteRacetrack({
                 display:      "flex",
                 width:        "100%",
                 height:       "100%",
-                background:   "#0a0810",
+                background:   "#050505",
                 borderRadius: 0,
                 overflow:     "hidden",
               }}
@@ -342,7 +346,7 @@ export function RouletteRacetrack({
                       padding:     0,
                       background:  active ? "rgba(255,255,255,0.14)" : "transparent",
                       border:      "none",
-                      borderRight: idx < 3 ? "1px solid rgba(255,255,255,0.12)" : "none",
+                      borderRight: idx < 3 ? "1px solid #222" : "none",
                       color:       active ? "#fff" : "rgba(255,255,255,0.6)",
                       fontSize:    10,
                       fontWeight:  700,
