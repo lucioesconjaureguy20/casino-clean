@@ -1857,37 +1857,6 @@ export default function RouletteGame({
           /* ── MOBILE: vertical Stake-style table ── */
           <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px", overflowX:"auto" }}>
 
-            {/* Result banner — shown on mobile in result phase instead of wheel popup */}
-            {isResult && winNumber !== null && (
-              <div style={{
-                display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
-                marginBottom:"10px",
-                background:"rgba(10,16,26,0.96)", border:"2px solid #22ee66",
-                borderRadius:"10px", padding:"10px 16px",
-                boxShadow:"0 0 28px rgba(34,238,102,.35)",
-                animation:"kenoCenterPop .32s cubic-bezier(.34,1.56,.64,1) both",
-              }}>
-                <div style={{
-                  width:"44px", height:"44px", borderRadius:"50%", flexShrink:0,
-                  background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#111827",
-                  border:"2.5px solid rgba(255,255,255,0.3)",
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  fontWeight:900, fontSize:"20px", color:"#fff",
-                }}>
-                  {winNumber}
-                </div>
-                {totalWageredUsd > 0 && (
-                  <div style={{ textAlign:"center" }}>
-                    <div style={{ fontSize:"26px", fontWeight:700, color:"#22ee66", lineHeight:1 }}>
-                      {(winAmountUsd / totalWageredUsd).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
-                    </div>
-                    <div style={{ fontSize:"13px", color:"#8aabb0", marginTop:"3px" }}>
-                      <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(winAmountUsd)}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
 
             <div style={{ display:"flex", alignItems:"flex-start", gap:"50px", width:"fit-content", margin:"0 auto" }}>
 
