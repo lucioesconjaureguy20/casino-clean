@@ -2044,7 +2044,7 @@ function RouletteGame({
               })}
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"36px 36px 1fr 1fr 1fr 26px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", flex:1 }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
@@ -2102,6 +2102,31 @@ function RouletteGame({
                 return (
                   <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}` }}>
                     <NumCell num={n} cellH="40px" />
+                  </div>
+                );
+              })}
+
+              {/* ── Col 6: Street bets — one per row of numbers ── */}
+              {Array.from({length:12}, (_, i) => {
+                const sn = i * 3 + 1; // 1, 4, 7, ..., 34
+                const sKey = `st_${sn}`;
+                const mzp = {
+                  tableBets, winCells, isSpinning, isDragging,
+                  dragFromKey: dragGhost?.fromKey,
+                  onBet: placeBet,
+                  onDragStart: beginChipInteraction,
+                  onTouchDragStart: beginChipInteractionTouch,
+                };
+                return (
+                  <div key={sKey} style={{ gridColumn:"6", gridRow:`${i+2}`, paddingLeft:"1px" }}
+                    onTouchStart={e => { if (!isSpinning && !isDragging && !(tableBetsRef.current[sKey]||0)) { e.currentTarget.dataset.tx=String(e.touches[0].clientX); e.currentTarget.dataset.ty=String(e.touches[0].clientY); }}}
+                    onTouchEnd={e => { if (isSpinning || isDragging || (tableBetsRef.current[sKey]||0)>0) return; const tx=parseFloat(e.currentTarget.dataset.tx??"0"),ty=parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx,e.changedTouches[0].clientY-ty)<10){e.preventDefault();placeBet(sKey);} }}
+                  >
+                    <RZone {...mzp} zkey={sKey} title={`Calle ${sn}-${sn+2} (11:1)`}
+                      style={{ height:"100%", width:"100%", borderRadius:"4px",
+                        background: (tableBets[sKey]||0) > 0 ? "rgba(26,159,255,0.22)" : "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        fontSize:7, color:"rgba(255,255,255,0.4)" }} />
                   </div>
                 );
               })}
