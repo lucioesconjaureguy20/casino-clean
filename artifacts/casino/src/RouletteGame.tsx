@@ -1888,7 +1888,7 @@ export default function RouletteGame({
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
           <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"48px 32px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 32px) 26px", gap:"0", padding:"0" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"66px 28px 1fr 1fr 1fr", gridTemplateRows:"28px repeat(12, 32px) 26px", gap:"0" }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
@@ -1908,45 +1908,34 @@ export default function RouletteGame({
                 </div>
               </div>
 
-              {/* ── Col 1: 6 outside bets × 2 rows each ── */}
-              <div style={{ gridColumn:"1", gridRow:"2 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteLow")} betKey="low"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px", letterSpacing:"0.3px" }}/>
-              </div>
-              <div style={{ gridColumn:"1", gridRow:"4 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteEven")} betKey="even"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"1", gridRow:"6 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteRed")} betKey="red" color="#b91c1c"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"1", gridRow:"8 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteBlack")} betKey="black" color="#1a1a2e"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"1", gridRow:"10 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteOdd")} betKey="odd"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"1", gridRow:"12 / span 2" }}>
-                <OutsideCell label={gt(_lang,"rouletteHigh")} betKey="high"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px", letterSpacing:"0.3px" }}/>
-              </div>
+              {/* ── Col 1: 6 outside bets × 2 rows each — texto horizontal, ancho, con gap visual ── */}
+              {[
+                { betKey:"low",   label: gt(_lang,"rouletteLow"),   row:2,  color: undefined },
+                { betKey:"even",  label: gt(_lang,"rouletteEven"),  row:4,  color: undefined },
+                { betKey:"red",   label: gt(_lang,"rouletteRed"),   row:6,  color: "#b91c1c" },
+                { betKey:"black", label: gt(_lang,"rouletteBlack"), row:8,  color: "#1c1f2e" },
+                { betKey:"odd",   label: gt(_lang,"rouletteOdd"),   row:10, color: undefined },
+                { betKey:"high",  label: gt(_lang,"rouletteHigh"),  row:12, color: undefined },
+              ].map(({ betKey, label, row, color }) => (
+                <div key={betKey} style={{ gridColumn:"1", gridRow:`${row} / span 2`, padding:"2px 2px 2px 0" }}>
+                  <OutsideCell label={label} betKey={betKey} color={color}
+                    style={{ height:"100%", fontSize:9, fontWeight:800, textAlign:"center",
+                      lineHeight:"1.2", borderRadius:"6px", padding:"2px 4px" }}/>
+                </div>
+              ))}
 
-              {/* ── Col 2: Dozens × 4 rows each ── */}
-              <div style={{ gridColumn:"2", gridRow:"2 / span 4" }}>
-                <OutsideCell label="1-12" betKey="dozen_1"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"2", gridRow:"6 / span 4" }}>
-                <OutsideCell label="13-24" betKey="dozen_2"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
-              <div style={{ gridColumn:"2", gridRow:"10 / span 4" }}>
-                <OutsideCell label="25-36" betKey="dozen_3"
-                  style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)", fontSize:8, padding:"2px" }}/>
-              </div>
+              {/* ── Col 2: Dozens × 4 rows each — texto vertical ── */}
+              {[
+                { betKey:"dozen_1", label:"1-12",  row:2  },
+                { betKey:"dozen_2", label:"13-24", row:6  },
+                { betKey:"dozen_3", label:"25-36", row:10 },
+              ].map(({ betKey, label, row }) => (
+                <div key={betKey} style={{ gridColumn:"2", gridRow:`${row} / span 4`, padding:"2px 2px 2px 2px" }}>
+                  <OutsideCell label={label} betKey={betKey}
+                    style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)",
+                      fontSize:8, padding:"2px", borderRadius:"6px" }}/>
+                </div>
+              ))}
 
               {/* ── Numbers 1-36: col3=n%3==1, col4=n%3==2, col5=n%3==0 | rows 2-13 ── */}
               {Array.from({length:36},(_,i)=>i+1).map(n => {
