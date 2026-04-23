@@ -1930,10 +1930,10 @@ export default function RouletteGame({
                 { betKey:"dozen_2", label:"13-24", row:6  },
                 { betKey:"dozen_3", label:"25-36", row:10 },
               ].map(({ betKey, label, row }) => (
-                <div key={betKey} style={{ gridColumn:"2", gridRow:`${row} / span 4`, padding:"2px 2px 2px 2px" }}>
+                <div key={betKey} style={{ gridColumn:"2", gridRow:`${row} / span 4`, padding:"2px 0", display:"flex" }}>
                   <OutsideCell label={label} betKey={betKey}
-                    style={{ height:"100%", writingMode:"vertical-rl", transform:"rotate(180deg)",
-                      fontSize:8, padding:"2px", borderRadius:"6px" }}/>
+                    style={{ flex:1, writingMode:"vertical-rl", transform:"rotate(180deg)",
+                      fontSize:9, fontWeight:800, borderRadius:"6px" }}/>
                 </div>
               ))}
 
