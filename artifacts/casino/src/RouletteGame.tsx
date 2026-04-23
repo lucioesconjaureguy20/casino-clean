@@ -213,12 +213,12 @@ function isInGroup(num: number, group: string): boolean {
 // Returns total return per unit bet (0 = lose)
 function evalBet(key: string, win: number): number {
   if (key.startsWith("n_")) return parseInt(key.slice(2)) === win ? 36 : 0;
-  if (win === 0) return 0;
-  // Split (2 adjacent numbers) → pays 17:1 = return 18×
+  // Split checked before zero-guard so sp_0_X pays when ball=0
   if (key.startsWith("sp_")) {
     const [a, b] = key.slice(3).split("_").map(Number);
     return (win === a || win === b) ? 18 : 0;
   }
+  if (win === 0) return 0;
   // Street (3 consecutive numbers in a column) → pays 11:1 = return 12×
   if (key.startsWith("st_")) {
     const n = parseInt(key.slice(3));
@@ -2073,6 +2073,13 @@ function RouletteGame({
                       <CasinoChipSVG {...getBetChipMeta(tableBets["n_0"])} label={fmtBetChipLabel(tableBets["n_0"])} size={22} />
                     </div>
                   ) : <span>0</span>}
+                  {/* Zero splits: 0-1, 0-2, 0-3 at bottom edge */}
+                  <RZone {...mzp} zkey="sp_0_1" title="Split 0-1 (17:1)"
+                    style={{ bottom:-10, left:"3%", width:"30%", height:20, borderRadius:4, zIndex:13 }} />
+                  <RZone {...mzp} zkey="sp_0_2" title="Split 0-2 (17:1)"
+                    style={{ bottom:-10, left:"36%", width:"28%", height:20, borderRadius:4, zIndex:13 }} />
+                  <RZone {...mzp} zkey="sp_0_3" title="Split 0-3 (17:1)"
+                    style={{ bottom:-10, right:"3%", width:"30%", height:20, borderRadius:4, zIndex:13 }} />
                 </div>
               </div>
 
@@ -2105,51 +2112,55 @@ function RouletteGame({
                 </div>
               ))}
 
-              {/* ── Numbers 1-36 with split/corner overlay zones ── */}
+              {/* ── Numbers 1-36 with split/corner overlay zones (invisible hotspots) ── */}
               {Array.from({length:36},(_,i)=>i+1).map(n => {
                 const col = (n-1)%3;   // 0=left, 1=mid, 2=right
                 const row = Math.floor((n-1)/3); // 0-11
                 const mCol = col+3;
                 const mRow = row+2;
-                const zs = "rgba(255,255,255,0.07)";
-                const zb = "1px solid rgba(255,255,255,0.18)";
                 return (
                   <div key={n} style={{ gridColumn:`${mCol}`, gridRow:`${mRow}`, position:"relative", overflow:"visible" }}>
                     <NumCell num={n} cellH="40px" />
                     {/* H-split right: n ↔ n+1 */}
                     {col < 2 && (
                       <RZone {...mzp} zkey={`sp_${n}_${n+1}`} title={`Split ${n}-${n+1} (17:1)`}
-                        style={{ right:-10, top:"20%", width:20, height:"60%", borderRadius:4, zIndex:12, background:zs, border:zb }} />
+                        style={{ right:-10, top:"15%", width:20, height:"70%", borderRadius:4, zIndex:12 }} />
                     )}
                     {/* V-split bottom: n ↔ n+3 */}
                     {row < 11 && (
                       <RZone {...mzp} zkey={`sp_${n}_${n+3}`} title={`Split ${n}-${n+3} (17:1)`}
-                        style={{ bottom:-10, left:"20%", width:"60%", height:20, borderRadius:4, zIndex:12, background:zs, border:zb }} />
+                        style={{ bottom:-10, left:"15%", width:"70%", height:20, borderRadius:4, zIndex:12 }} />
                     )}
                     {/* Corner: n, n+1, n+3, n+4 */}
                     {col < 2 && row < 11 && (
                       <RZone {...mzp} zkey={`co_${[n,n+1,n+3,n+4].sort((a,b)=>a-b).join("_")}`}
                         title={`Corner ${n},${n+1},${n+3},${n+4} (8:1)`}
-                        style={{ right:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13, background:zs, border:zb }} />
+                        style={{ right:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13 }} />
+                    )}
+                    {/* Street LEFT edge (col=0 only) — accessible from docenas side */}
+                    {col === 0 && (
+                      <RZone {...mzp} zkey={`st_${n}`} title={`Street ${n}-${n+1}-${n+2} (11:1)`}
+                        style={{ left:-10, top:"15%", width:20, height:"70%", borderRadius:4, zIndex:12 }} />
+                    )}
+                    {/* Line LEFT-bottom (col=0, not last row) */}
+                    {col === 0 && row < 11 && (
+                      <RZone {...mzp} zkey={`li_${n}`} title={`Line ${n}-${n+5} (5:1)`}
+                        style={{ left:-10, bottom:-10, width:20, height:20, borderRadius:"50%", zIndex:13 }} />
                     )}
                   </div>
                 );
               })}
 
-              {/* ── Col 6: Street (calle) & Line (doble calle) zones ── */}
+              {/* ── Col 6: Street RIGHT & Line RIGHT zones ── */}
               {Array.from({length:12},(_,i) => {
-                const n = i*3+1; // lowest number in this row-group: 1,4,7,...,34
-                const zs = "rgba(255,255,255,0.07)";
-                const zb = "1px solid rgba(255,255,255,0.18)";
+                const n = i*3+1;
                 return (
                   <div key={`stli_${n}`} style={{ gridColumn:"6", gridRow:`${i+2}`, position:"relative", overflow:"visible" }}>
-                    {/* Street: all 3 numbers in this row */}
                     <RZone {...mzp} zkey={`st_${n}`} title={`Street ${n}-${n+1}-${n+2} (11:1)`}
-                      style={{ top:2, bottom:2, left:1, right:1, borderRadius:"3px 5px 5px 3px", zIndex:12, background:zs, border:zb }} />
-                    {/* Line: this row + next row (6 numbers) */}
+                      style={{ top:2, bottom:2, left:1, right:1, borderRadius:"3px 5px 5px 3px", zIndex:12 }} />
                     {i < 11 && (
                       <RZone {...mzp} zkey={`li_${n}`} title={`Line ${n}-${n+5} (5:1)`}
-                        style={{ bottom:-10, left:"50%", transform:"translateX(-50%)", width:20, height:20, borderRadius:"50%", zIndex:13, background:zs, border:zb }} />
+                        style={{ bottom:-10, left:"50%", transform:"translateX(-50%)", width:20, height:20, borderRadius:"50%", zIndex:13 }} />
                     )}
                   </div>
                 );
