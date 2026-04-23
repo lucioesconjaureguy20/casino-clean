@@ -10,7 +10,6 @@ const VOISINS   = new Set([22,18,29,7,28,12,35,3,26,0,32,15,19,4,21,2,25]);
 const TIERS     = new Set([27,13,36,11,30,8,23,10,5,24,16,33]);
 const ORPHELINS = new Set([1,20,14,31,9,17,34,6]);
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
 function getNeighbors(num: number, n: number): number[] {
   const idx = WHEEL_ORDER.indexOf(num);
   const len = WHEEL_ORDER.length;
@@ -19,33 +18,42 @@ function getNeighbors(num: number, n: number): number[] {
   );
 }
 
-function numBg(n: number) {
+function numBg(n: number): string {
   if (n === 0) return "#16a34a";
-  return RED_SET.has(n) ? "#991b1b" : "#111827";
+  return RED_SET.has(n) ? "#b91c1c" : "#1c1c28";
 }
-function numHoverBg(n: number) {
+function numActiveBg(n: number): string {
   if (n === 0) return "#22c55e";
-  return RED_SET.has(n) ? "#ef4444" : "#374151";
+  return RED_SET.has(n) ? "#ef4444" : "#4b5563";
 }
 
-// ── Layout ────────────────────────────────────────────────────────────────────
-const SZ      = 340;          // SVG viewBox size
-const CX      = SZ / 2;      // center x
-const CY      = SZ / 2;      // center y
-const TRACK_R = 147;          // radius of number pill centers
-const NUM_R   = 14.5;         // radius of each number pill
+// ── Oval layout constants ─────────────────────────────────────────────────────
+// Numbers are placed in European wheel order starting from 0 at the left vertex,
+// going counter-clockwise (upward) — same layout as Pragmatic Play.
+//
+//   θ_i = π + (i / 37) * 2π
+//   x = CX + TRX * cos(θ_i)
+//   y = CY + TRY * sin(θ_i)
+//
+const SVG_W = 600;
+const SVG_H = 185;
+const CX    = SVG_W / 2;   // 300
+const CY    = SVG_H / 2;   // 92.5
+const TRX   = 270;          // horizontal track radius
+const TRY   = 68;           // vertical track radius
+const PW    = 24;           // pill width
+const PH    = 17;           // pill height
+const PR    = 4.5;          // pill corner radius
 
-// ── Arc path between two wheel indices (clockwise) ────────────────────────────
-function arcPath(firstIdx: number, lastIdx: number): string {
-  const TAU = 2 * Math.PI;
-  const θ1  = (firstIdx / 37) * TAU - Math.PI / 2;
-  const θ2  = (lastIdx  / 37) * TAU - Math.PI / 2;
-  const x1  = CX + TRACK_R * Math.cos(θ1);
-  const y1  = CY + TRACK_R * Math.sin(θ1);
-  const x2  = CX + TRACK_R * Math.cos(θ2);
-  const y2  = CY + TRACK_R * Math.sin(θ2);
-  // span is always ≤ 17/37 < 0.5 of the circle → largeArc = 0
-  return `M ${x1} ${y1} A ${TRACK_R} ${TRACK_R} 0 0 1 ${x2} ${y2}`;
+function numPos(i: number): { x: number; y: number; rot: number } {
+  const θ  = Math.PI + (i / 37) * 2 * Math.PI;
+  const x  = CX + TRX * Math.cos(θ);
+  const y  = CY + TRY * Math.sin(θ);
+  // Tangent angle — rotates the pill to follow the oval edge
+  const tx  = -TRX * Math.sin(θ);
+  const ty  =  TRY * Math.cos(θ);
+  const rot = Math.atan2(ty, tx) * (180 / Math.PI);
+  return { x, y, rot };
 }
 
 // ── Component props ───────────────────────────────────────────────────────────
@@ -66,7 +74,6 @@ export function RouletteRacetrack({
   const [hoverNum,   setHoverNum]   = useState<number | null>(null);
   const [hoverGroup, setHoverGroup] = useState<string | null>(null);
 
-  // Set of numbers to highlight (preview before click)
   const preview = useMemo<Set<number>>(() => {
     if (hoverNum   !== null)  return new Set(getNeighbors(hoverNum, neighborN));
     if (hoverGroup === "j0")  return JUEGO_0;
@@ -81,230 +88,184 @@ export function RouletteRacetrack({
     for (const n of nums) placeBet(`n_${n}`);
   }
 
-  // Neighbor arc for hovered number
-  const hoverArc = useMemo<string | null>(() => {
-    if (hoverNum === null) return null;
-    const neighbors = getNeighbors(hoverNum, neighborN);
-    const firstIdx  = WHEEL_ORDER.indexOf(neighbors[0]);
-    const lastIdx   = WHEEL_ORDER.indexOf(neighbors[neighbors.length - 1]);
-    return arcPath(firstIdx, lastIdx);
-  }, [hoverNum, neighborN]);
-
-  // Group arc for hovered center button
-  const groupArc = useMemo<string | null>(() => {
-    let group: Set<number> | null = null;
-    if (hoverGroup === "j0") group = JUEGO_0;
-    else if (hoverGroup === "ve") group = VOISINS;
-    else if (hoverGroup === "hu") group = ORPHELINS;
-    else if (hoverGroup === "te") group = TIERS;
-    if (!group) return null;
-    const indices = [...group]
-      .map(n => WHEEL_ORDER.indexOf(n))
-      .sort((a, b) => a - b);
-    return arcPath(indices[0], indices[indices.length - 1]);
-  }, [hoverGroup]);
-
   const centerBtns = [
-    { id: "j0", label: "Juego 0",   nums: JUEGO_0,   color: "#16a34a" },
-    { id: "ve", label: "Vecinos",   nums: VOISINS,   color: "#1d4ed8" },
-    { id: "hu", label: "Huérfanos", nums: ORPHELINS, color: "#b45309" },
-    { id: "te", label: "Tercio",    nums: TIERS,     color: "#7c3aed" },
+    { id: "j0", label: "Juego 0",   nums: JUEGO_0,   border: "#16a34a", bg: "#14532d" },
+    { id: "ve", label: "Vecinos",   nums: VOISINS,   border: "#1d4ed8", bg: "#1e3a8a" },
+    { id: "hu", label: "Huérfanos", nums: ORPHELINS, border: "#b45309", bg: "#451a03" },
+    { id: "te", label: "Tercio",    nums: TIERS,     border: "#7c3aed", bg: "#3b0764" },
   ] as const;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, userSelect: "none" }}>
+    <div style={{
+      display:        "flex",
+      flexDirection:  "column",
+      alignItems:     "center",
+      gap:            8,
+      userSelect:     "none",
+      width:          "100%",
+    }}>
 
       {/* ── Neighbor count control ─────────────────────────────────────── */}
       <div style={{
         display:      "flex",
         alignItems:   "center",
-        background:   "#0d0f18",
-        borderRadius: 8,
-        border:       "1px solid rgba(255,255,255,0.12)",
+        background:   "#0d0d14",
+        border:       "1px solid rgba(255,255,255,0.13)",
+        borderRadius: 6,
         overflow:     "hidden",
       }}>
         <button
           onClick={() => setNeighborN(v => Math.max(1, v - 1))}
           disabled={isSpinning || neighborN <= 1}
           style={{
-            padding:    "6px 16px",
-            background: "transparent",
+            padding:    "5px 15px",
+            background: "none",
             border:     "none",
-            color:      neighborN > 1 ? "#e2e8f0" : "#2a3850",
-            cursor:     neighborN > 1 && !isSpinning ? "pointer" : "default",
-            fontSize:   18,
+            color:      neighborN > 1 ? "#e2e8f0" : "#2a3040",
+            fontSize:   17,
             fontWeight: 700,
+            cursor:     neighborN > 1 && !isSpinning ? "pointer" : "default",
             fontFamily: "inherit",
-            transition: "color .12s",
+            lineHeight: 1,
           }}
         >−</button>
 
-        <div style={{
-          padding:      "6px 14px",
-          fontSize:     12,
+        <span style={{
+          padding:      "5px 14px",
+          fontSize:     13,
           fontWeight:   700,
           color:        "#f59e0b",
-          minWidth:     80,
-          textAlign:    "center",
           borderLeft:   "1px solid rgba(255,255,255,0.08)",
           borderRight:  "1px solid rgba(255,255,255,0.08)",
-          letterSpacing: "0.2px",
+          minWidth:     24,
+          textAlign:    "center",
         }}>
-          {neighborN} {neighborN === 1 ? "vecino" : "vecinos"}
-        </div>
+          {neighborN}
+        </span>
 
         <button
           onClick={() => setNeighborN(v => Math.min(8, v + 1))}
           disabled={isSpinning || neighborN >= 8}
           style={{
-            padding:    "6px 16px",
-            background: "transparent",
+            padding:    "5px 15px",
+            background: "none",
             border:     "none",
-            color:      neighborN < 8 ? "#e2e8f0" : "#2a3850",
-            cursor:     neighborN < 8 && !isSpinning ? "pointer" : "default",
-            fontSize:   18,
+            color:      neighborN < 8 ? "#e2e8f0" : "#2a3040",
+            fontSize:   17,
             fontWeight: 700,
+            cursor:     neighborN < 8 && !isSpinning ? "pointer" : "default",
             fontFamily: "inherit",
-            transition: "color .12s",
+            lineHeight: 1,
           }}
         >+</button>
       </div>
 
-      {/* ── Circular SVG racetrack ─────────────────────────────────────── */}
-      <div style={{ position: "relative", width: "100%", maxWidth: SZ }}>
+      {/* ── Oval racetrack ─────────────────────────────────────────────── */}
+      <div style={{ position: "relative", width: "100%", maxWidth: SVG_W }}>
+
         <svg
-          viewBox={`0 0 ${SZ} ${SZ}`}
+          viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           width="100%"
           style={{ display: "block", overflow: "visible" }}
-          aria-label="Racetrack de ruleta"
         >
-          {/* ── Background disc ── */}
-          <circle cx={CX} cy={CY} r={SZ / 2 - 1}
-            fill="#0a0c14"
-            stroke="rgba(255,255,255,0.06)"
+          {/* ── Track background (outer ellipse) ── */}
+          <ellipse
+            cx={CX} cy={CY}
+            rx={TRX + PW / 2 + 6}
+            ry={TRY + PH / 2 + 6}
+            fill="#0e0c10"
+            stroke="#2a2030"
             strokeWidth={1.5}
           />
 
-          {/* ── Track groove ── */}
-          <circle cx={CX} cy={CY} r={TRACK_R}
-            fill="none"
-            stroke="#0f1117"
-            strokeWidth={36}
-          />
-          {/* subtle inner edge */}
-          <circle cx={CX} cy={CY} r={TRACK_R - 18}
-            fill="none"
-            stroke="rgba(255,255,255,0.04)"
+          {/* ── Inner clear area ── */}
+          <ellipse
+            cx={CX} cy={CY}
+            rx={TRX - PW / 2 - 5}
+            ry={TRY - PH / 2 - 5}
+            fill="#0a0810"
+            stroke="#1a1525"
             strokeWidth={1}
           />
-          {/* subtle outer edge */}
-          <circle cx={CX} cy={CY} r={TRACK_R + 18}
-            fill="none"
-            stroke="rgba(255,255,255,0.04)"
-            strokeWidth={1}
-          />
-
-          {/* ── Center inner disc ── */}
-          <circle cx={CX} cy={CY} r={TRACK_R - NUM_R - 14}
-            fill="#0d0f1c"
-            stroke="rgba(255,255,255,0.07)"
-            strokeWidth={1}
-          />
-
-          {/* ── Neighbor arc highlight ── */}
-          {hoverArc && (
-            <path
-              d={hoverArc}
-              fill="none"
-              stroke="#f59e0b"
-              strokeWidth={6}
-              strokeLinecap="round"
-              opacity={0.55}
-            />
-          )}
-          {groupArc && !hoverArc && (
-            <path
-              d={groupArc}
-              fill="none"
-              stroke="#a78bfa"
-              strokeWidth={6}
-              strokeLinecap="round"
-              opacity={0.4}
-            />
-          )}
 
           {/* ── Number pills ── */}
           {WHEEL_ORDER.map((num, i) => {
-            const θ       = (i / 37) * 2 * Math.PI - Math.PI / 2;
-            const x       = CX + TRACK_R * Math.cos(θ);
-            const y       = CY + TRACK_R * Math.sin(θ);
+            const { x, y, rot } = numPos(i);
             const isWin   = winNumber === num;
             const isPrev  = preview.has(num);
             const hasBet  = (tableBets[`n_${num}`] ?? 0) > 0;
-            const bet     = tableBets[`n_${num}`] ?? 0;
 
-            let fill      = numBg(num);
-            let textFill  = "#fff";
+            let bg        = numBg(num);
+            let textColor = "#fff";
+            if      (isWin)  { bg = "#22ee66"; textColor = "#000"; }
+            else if (isPrev) { bg = numActiveBg(num); }
 
-            if (isWin) {
-              fill     = "#22ee66";
-              textFill = "#000";
-            } else if (isPrev) {
-              fill = numHoverBg(num);
-            }
+            const ringColor = isWin ? "#ffffff" : "#f59e0b";
+            const showRing  = isWin || isPrev;
 
             return (
               <g
                 key={num}
+                // rotate pill to follow oval tangent; text is counter-rotated
+                transform={`rotate(${rot},${x},${y})`}
                 onClick={() => { if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
                 onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
                 onMouseLeave={() => setHoverNum(null)}
                 style={{ cursor: isSpinning ? "default" : "pointer" }}
               >
-                {/* Outer glow ring */}
-                {(isWin || isPrev) && (
-                  <circle
-                    cx={x} cy={y}
-                    r={NUM_R + 5}
-                    fill={isWin ? "#22ee6618" : "#f59e0b14"}
+                {/* Glow halo */}
+                {showRing && (
+                  <rect
+                    x={x - PW / 2 - 3} y={y - PH / 2 - 3}
+                    width={PW + 6} height={PH + 6}
+                    rx={PR + 2}
+                    fill={isWin ? "#22ee6628" : "#f59e0b20"}
                   />
                 )}
 
-                {/* Highlight ring */}
-                {(isWin || isPrev || hasBet) && (
-                  <circle
-                    cx={x} cy={y}
-                    r={NUM_R + 2.5}
+                {/* Pill fill */}
+                <rect
+                  x={x - PW / 2} y={y - PH / 2}
+                  width={PW} height={PH}
+                  rx={PR}
+                  fill={bg}
+                />
+
+                {/* Pill ring */}
+                {showRing && (
+                  <rect
+                    x={x - PW / 2} y={y - PH / 2}
+                    width={PW} height={PH}
+                    rx={PR}
                     fill="none"
-                    stroke={isWin ? "#ffffff" : isPrev ? "#f59e0b" : "#f59e0b55"}
-                    strokeWidth={isWin || isPrev ? 2 : 1.5}
+                    stroke={ringColor}
+                    strokeWidth={1.5}
                   />
                 )}
 
-                {/* Number circle */}
-                <circle cx={x} cy={y} r={NUM_R} fill={fill} />
-
-                {/* Bet indicator dot */}
+                {/* Bet dot */}
                 {hasBet && !isWin && (
                   <circle
-                    cx={x + NUM_R * 0.62}
-                    cy={y - NUM_R * 0.62}
-                    r={4.5}
+                    cx={x + PW / 2 - 3.5}
+                    cy={y - PH / 2 + 3.5}
+                    r={3.2}
                     fill="#f59e0b"
                     stroke="#000"
-                    strokeWidth={0.8}
+                    strokeWidth={0.6}
+                    transform={`rotate(${-rot},${x + PW / 2 - 3.5},${y - PH / 2 + 3.5})`}
                   />
                 )}
 
-                {/* Number text */}
+                {/* Number text — always horizontal via counter-rotation */}
                 <text
                   x={x} y={y}
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fill={textFill}
-                  fontSize={num >= 10 ? 8.5 : 10}
+                  fill={textColor}
+                  fontSize={num >= 10 ? 8 : 9.5}
                   fontWeight="800"
                   fontFamily="Arial, sans-serif"
+                  transform={`rotate(${-rot},${x},${y})`}
                   style={{ pointerEvents: "none" }}
                 >
                   {num}
@@ -314,44 +275,48 @@ export function RouletteRacetrack({
           })}
         </svg>
 
-        {/* ── Center buttons overlay ─────────────────────────────────── */}
+        {/* ── Center overlay — 4 bet group buttons ───────────────────── */}
         <div style={{
           position:            "absolute",
           top:                 "50%",
           left:                "50%",
           transform:           "translate(-50%, -50%)",
-          display:             "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap:                 6,
-          width:               "min(190px, 54%)",
+          display:             "flex",
+          flexDirection:       "row",
+          gap:                 5,
+          width:               "58%",
         }}>
-          {centerBtns.map(({ id, label, nums, color }) => (
-            <button
-              key={id}
-              disabled={isSpinning}
-              onClick={() => betNums(nums)}
-              onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
-              onMouseLeave={() => setHoverGroup(null)}
-              style={{
-                padding:       "8px 4px",
-                borderRadius:  7,
-                border:        `1.5px solid ${hoverGroup === id ? color : color + "55"}`,
-                background:    hoverGroup === id ? color : color + "1a",
-                color:         hoverGroup === id ? "#fff" : "#bbc",
-                fontSize:      10,
-                fontWeight:    700,
-                cursor:        isSpinning ? "default" : "pointer",
-                transition:    "all .15s",
-                whiteSpace:    "nowrap",
-                fontFamily:    "inherit",
-                lineHeight:    1.2,
-                textAlign:     "center",
-                boxShadow:     hoverGroup === id ? `0 0 10px ${color}66` : "none",
-              }}
-            >
-              {label}
-            </button>
-          ))}
+          {centerBtns.map(({ id, label, nums, border, bg }) => {
+            const active = hoverGroup === id;
+            return (
+              <button
+                key={id}
+                disabled={isSpinning}
+                onClick={() => betNums(nums)}
+                onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
+                onMouseLeave={() => setHoverGroup(null)}
+                style={{
+                  flex:          1,
+                  padding:       "7px 3px",
+                  borderRadius:  5,
+                  border:        `1.5px solid ${active ? border : border + "55"}`,
+                  background:    active ? bg : bg + "88",
+                  color:         active ? "#fff" : "#99a",
+                  fontSize:      9.5,
+                  fontWeight:    700,
+                  cursor:        isSpinning ? "default" : "pointer",
+                  transition:    "all .13s",
+                  whiteSpace:    "nowrap",
+                  fontFamily:    "inherit",
+                  textAlign:     "center",
+                  lineHeight:    1.2,
+                  boxShadow:     active ? `0 0 8px ${border}55` : "none",
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -359,9 +324,9 @@ export function RouletteRacetrack({
       {hoverNum !== null && (
         <div style={{
           fontSize:      10,
-          color:         "rgba(255,255,255,0.35)",
-          letterSpacing: "0.3px",
+          color:         "rgba(255,255,255,0.32)",
           textAlign:     "center",
+          letterSpacing: "0.3px",
         }}>
           {gt(lang, "rtNeighborHint")} {getNeighbors(hoverNum, neighborN).join(" · ")}
         </div>
