@@ -2058,8 +2058,8 @@ function RouletteGame({
               position:"absolute", top:0, bottom:0, left:"-16px", right:"-16px", zIndex:99,
               display: (isSpinning || mobileWheelLinger) ? "flex" : "none",
               alignItems:"center", justifyContent:"center",
-              background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
-              WebkitBackdropFilter:"blur(3px)",
+              background:"rgba(0,0,0,0.35)", backdropFilter:"blur(1px)",
+              WebkitBackdropFilter:"blur(1px)",
               pointerEvents:"none",
             }}>
               <div style={{ position:"relative", width:"270px", height:"270px" }}>
