@@ -1921,7 +1921,26 @@ export default function RouletteGame({
               </div>
             )}
 
-            <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", width:"fit-content", margin:"0 auto" }}>
+            <div style={{ display:"flex", alignItems:"flex-start", width:"fit-content", margin:"0 auto" }}>
+
+            {/* ── History strip — last 8 results, vertical (appears horizontal in landscape) ── */}
+            <div style={{ display:"flex", flexDirection:"column", justifyContent:"space-around", height:`${12*40}px`, width:"26px", marginTop:"28px", flexShrink:0 }}>
+              {resultHistory.slice(0, 8).map((n, i) => {
+                const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
+                return (
+                  <div key={i} style={{ width:"22px", height:"22px", borderRadius:"50%", flexShrink:0, alignSelf:"center",
+                    background:bg, border:"1.5px solid rgba(255,255,255,0.22)",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    fontWeight:700, fontSize:"8px", color:"#fff",
+                    opacity: Math.max(0.3, 1 - i * 0.09),
+                    boxShadow:`0 0 5px ${bg}88` }}>
+                    {n}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0" }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
@@ -1992,6 +2011,7 @@ export default function RouletteGame({
                 <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
             </div>
+            </div>{/* ── close outer flex (history + grid) ── */}
           </div>
         ) : (
           /* ── DESKTOP: original horizontal table (unchanged) ── */
