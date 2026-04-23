@@ -307,20 +307,25 @@ export function RouletteRacetrack({
                   shapeRendering="geometricPrecision"
                 />
 
-                {/* Win / preview highlight as arc path */}
-                {(isWin || isPrev) && (
+                {/* Win / preview highlight — filled overlay so adjacent cells can't cut it */}
+                {isPrev && !isWin && (
                   <path
                     d={CELL_PATHS[i]}
-                    fill="none"
-                    stroke={isWin ? "#fff" : "#f59e0b"}
-                    strokeWidth={1.5}
+                    fill="rgba(245,158,11,0.38)"
+                    shapeRendering="geometricPrecision"
+                  />
+                )}
+                {isWin && (
+                  <path
+                    d={CELL_PATHS[i]}
+                    fill="rgba(255,255,255,0.45)"
                     shapeRendering="geometricPrecision"
                   />
                 )}
 
                 {/* Bet indicator dot */}
                 {hasBet && !isWin && (
-                  <circle cx={x} cy={y} r={2.5} fill="#f59e0b" stroke="#000" strokeWidth={0.5} />
+                  <circle cx={x} cy={y} r={3.2} fill="#f59e0b" stroke="#000" strokeWidth={0.6} />
                 )}
 
                 {/* Number — always horizontal (rot=0) on straights, radial on curves */}
