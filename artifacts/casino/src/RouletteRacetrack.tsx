@@ -160,7 +160,7 @@ const INNER_PATH = `M ${CX2} ${CY - IRI} L ${CX1} ${CY - IRI} A ${IRI} ${IRI} 0 
 // ── Interior section dividers (x positions along the straight interior) ────────
 // X1: J0 | Vecinos (vertical),  X2: Vecinos | Huérfanos (vertical)
 // X3T/X3B: Huérfanos | Tercio (diagonal — top is leftmost, bottom is rightmost)
-const X1  = CX1 + 75;
+const X1  = CX1 + 42;
 const X2  = CX1 + 210;
 const X3T = CX1 + 295;   // diagonal top-left
 const X3B = CX1 + 345;   // diagonal bottom-right
