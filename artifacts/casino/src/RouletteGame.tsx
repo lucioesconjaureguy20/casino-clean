@@ -1748,8 +1748,24 @@ export default function RouletteGame({
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
       <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320" }}>
 
-        {/* Wheel row — responsive: grid on desktop, centered on mobile. On mobile only shown while spinning */}
-        <div style={{ display: isMobile && !isSpinning ? "none" : "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 245px 1fr", alignItems:"center", gap:"0", height: isMobile ? "auto" : "265px", paddingBottom: isMobile ? "6px" : "0" }}>
+        {/* Backdrop — darkens + blurs the table behind the wheel overlay on mobile */}
+        {isMobile && isSpinning && (
+          <div style={{ position:"fixed", inset:0, zIndex:98,
+            background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
+            WebkitBackdropFilter:"blur(3px)" }} />
+        )}
+
+        {/* Wheel row — desktop: grid. Mobile spinning: fixed centered overlay. Mobile idle: hidden */}
+        <div style={isMobile && isSpinning ? {
+          position:"fixed", inset:0, zIndex:99,
+          display:"flex", alignItems:"center", justifyContent:"center",
+          pointerEvents:"none",
+        } : {
+          display: isMobile ? "none" : "grid",
+          gridTemplateColumns:"1fr 245px 1fr",
+          alignItems:"center", gap:"0",
+          height:"265px", paddingBottom:"0",
+        }}>
 
           {/* Left column: último número — hidden on mobile (shown in strip below) */}
           {!isMobile && (
@@ -1774,9 +1790,9 @@ export default function RouletteGame({
           )}
 
           {/* Center column: wheel canvas + win popup overlay */}
-          <div style={{ position:"relative", width: isMobile ? "210px" : "245px", height: isMobile ? "210px" : "245px", margin: isMobile ? "0 auto" : undefined }}>
-            <canvas ref={canvasRef} width={isMobile ? 210 : 245} height={isMobile ? 210 : 245}
-              style={{ borderRadius:"50%", boxShadow:"0 0 40px rgba(0,0,0,0.85), 0 0 16px rgba(244,169,31,0.18)", display:"block" }}/>
+          <div style={{ position:"relative", width: isMobile ? (isSpinning ? "300px" : "210px") : "245px", height: isMobile ? (isSpinning ? "300px" : "210px") : "245px", margin: isMobile ? "0 auto" : undefined }}>
+            <canvas ref={canvasRef} width={isMobile ? (isSpinning ? 300 : 210) : 245} height={isMobile ? (isSpinning ? 300 : 210) : 245}
+              style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
 
             {/* ── Win popup — Keno style, centered over wheel ── */}
             {showWinPop && winNumber !== null && totalWageredUsd > 0 && (
@@ -1855,7 +1871,7 @@ export default function RouletteGame({
         {/* ─── Betting Table ─────────────────────────────────────────────── */}
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
-          <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px", overflowX:"auto" }}>
+          <div style={{ display:"block", padding:"0 6px", overflowX:"auto" }}>
 
 
             <div style={{ display:"flex", alignItems:"flex-start", gap:"50px", width:"fit-content", margin:"0 auto" }}>
