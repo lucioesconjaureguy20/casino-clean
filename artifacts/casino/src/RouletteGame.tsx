@@ -2182,17 +2182,27 @@ export default function RouletteGame({
               <span>Saldo: <b style={{ color:"#c8d8f0" }}>${balance.toFixed(2)}</b></span>
               {hasBets && <span>Apuesta: <b style={{ color:"#f0c040" }}>${totalBetUsd.toFixed(2)}</b></span>}
             </div>
-            {/* Bet button — full width */}
-            <button onClick={handleSpin} disabled={!canSpin}
-              style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
-                color: canSpin ? "#fff" : "#3a4a60",
-                fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
-                cursor: canSpin ? "pointer" : "not-allowed",
-                boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
-                transition:"all .2s" }}>
-              {(hasBets && balance < totalBetUsd-0.0001) ? gt(_lang,"insufficientBal") : gt(_lang,"bjBet")}
-            </button>
+            {/* Bet button — full width (mirrors sidebar logic) */}
+            {(!isResult || mode === "auto") ? (
+              <button onClick={handleSpin} disabled={!canSpin}
+                style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                  background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                  color: canSpin ? "#fff" : "#3a4a60",
+                  fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
+                  cursor: canSpin ? "pointer" : "not-allowed",
+                  boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
+                  transition:"all .2s" }}>
+                {(hasBets && balance < totalBetUsd-0.0001) ? gt(_lang,"insufficientBal") : gt(_lang,"bjBet")}
+              </button>
+            ) : (
+              <button onClick={handleNewRoundAndSpin}
+                style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
+                  background:"linear-gradient(180deg,#1a9fff,#0d6fd4)", color:"#fff",
+                  fontWeight:800, fontSize:"15px", letterSpacing:"0.5px", cursor:"pointer",
+                  boxShadow:"0 4px 22px rgba(26,159,255,.35)", transition:"all .2s" }}>
+                {gt(_lang,"bjBet")}
+              </button>
+            )}
           </div>
         )}
 
