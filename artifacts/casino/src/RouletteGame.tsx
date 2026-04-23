@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, startTransition } from "react";
 import { createPortal } from "react-dom";
 import { gt } from "./lib/gameLabels";
 import { RouletteRacetrack } from "./RouletteRacetrack";
@@ -570,6 +570,8 @@ function RouletteGame({
     if (el) el.style.display = "none"; // hidden by default; shown imperatively in startChipDrag
   }, []);
   const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
+  // If touchend fires before the drag useEffect registers (startTransition delay), store coords here
+  const pendingDropRef = useRef<{ cx: number; cy: number } | "cancel" | null>(null);
 
   // Stats / volume panel
   const [statsOpen, setStatsOpen] = useState(false);
@@ -1020,8 +1022,12 @@ function RouletteGame({
       ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
       ghostElRef.current.style.display = "block";
     }
-    setDragGhost({ fromKey, amount, x, y }); // React updates chip SVG content (non-blocking)
-    setIsDragging(true);                     // React dims source cell (non-blocking)
+    // startTransition: React renders in non-blocking chunks (~5ms each) so touchmove
+    // events can fire between chunks — eliminates the first-drag freeze.
+    startTransition(() => {
+      setDragGhost({ fromKey, amount, x, y }); // renders chip SVG + dims source cell
+      setIsDragging(true);                     // drag useEffect runs after this
+    });
   }
 
   // Threshold-based: click (<5px movement) → placeBet; drag (>5px) → move chip
@@ -1083,13 +1089,20 @@ function RouletteGame({
         ghostElRef.current.style.transform = `translate(${t.clientX - 18}px, ${t.clientY - 18}px)`;
       }
     }
-    function onEnd() {
+    function onEnd(e: TouchEvent) {
       chipTouchActiveRef.current = false;
-      // Only restore if the drag useEffect hasn't taken over (isDragging still false)
       if (!dragging) document.body.style.touchAction = prevBodyTA;
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
-      if (!dragging) placeBet(fromKey);
+      if (!dragging) {
+        placeBet(fromKey);
+      } else {
+        // Drag useEffect may not have registered its touchend yet (startTransition delay).
+        // Store the drop position so the useEffect can finalize it when it runs.
+        pendingDropRef.current = e.changedTouches.length > 0
+          ? { cx: e.changedTouches[0].clientX, cy: e.changedTouches[0].clientY }
+          : "cancel";
+      }
     }
     document.addEventListener("touchmove", onMove, { passive: false });
     document.addEventListener("touchend", onEnd);
@@ -1108,6 +1121,24 @@ function RouletteGame({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isDragging) return;
+    // If touchend fired before this effect ran (startTransition delay), finalize now.
+    if (pendingDropRef.current !== null) {
+      const pd = pendingDropRef.current;
+      pendingDropRef.current = null;
+      _dragging.current = false;
+      if (ghostElRef.current) ghostElRef.current.style.display = "none";
+      if (pd !== "cancel") {
+        const dropKey = findBetKey(document.elementFromPoint(pd.cx, pd.cy));
+        const ds = dragInfoRef.current;
+        if (ds && dropKey && dropKey !== ds.fromKey) {
+          setTableBets(prev => { const n = { ...prev }; n[dropKey] = Math.round(((n[dropKey] || 0) + ds.amount) * 10000) / 10000; delete n[ds.fromKey]; return n; });
+        } else if (ds && !dropKey) {
+          setTableBets(prev => { const n = { ...prev }; delete n[ds.fromKey]; return n; });
+        }
+      }
+      dragInfoRef.current = null; setDragGhost(null); setIsDragging(false);
+      return;
+    }
     // Block page scroll/pan for the entire drag sequence — the chip overlay element
     // with touchAction:"none" is removed from DOM when isDragSrc becomes true, so we
     // must lock the body directly to prevent the browser from falling back to "manipulation".
