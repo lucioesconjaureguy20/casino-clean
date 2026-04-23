@@ -4303,9 +4303,9 @@ export default function App() {
 
   // Dice state
   const [diceBet, setDiceBet] = useState("3.00");
-  const [diceMultiplier, setDiceMultiplier] = useState("2.0000");
+  const [diceMultiplier, setDiceMultiplier] = useState("2.00");
   const [diceTarget, setDiceTarget] = useState("50.50");
-  const [diceChance, setDiceChance] = useState("49.5000");
+  const [diceChance, setDiceChance] = useState("49.50");
   const [diceAutoCount, setDiceAutoCount] = useState("10");
   const [diceAutoRemaining, setDiceAutoRemaining] = useState(0);
   const [diceMarkerLeft, setDiceMarkerLeft] = useState(5);
@@ -8676,8 +8676,8 @@ export default function App() {
     else if (source==="chance") { c=Math.min(96,Math.max(2,c)); t=isOver ? 100-c : c; m=99/c; }
     else { m=Math.min(49.5,Math.max(1.03125,m)); c=Math.min(96,Math.max(2,99/m)); t=isOver ? 100-c : c; }
     setDiceTarget(t.toFixed(2));
-    setDiceChance(c.toFixed(4));
-    setDiceMultiplier(m.toFixed(4));
+    setDiceChance(c.toFixed(2));
+    setDiceMultiplier(m.toFixed(2));
   }
 
   diceVolRef.current = diceVol;
@@ -16316,8 +16316,8 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
       const c = isOv ? 100 - t : t;
       const m = 99 / c;
       setDiceTarget(t.toFixed(2));
-      setDiceChance(c.toFixed(4));
-      setDiceMultiplier(m.toFixed(4));
+      setDiceChance(c.toFixed(2));
+      setDiceMultiplier(m.toFixed(2));
       if (Math.abs(t - lastTickPos.current) >= 3) {
         lastTickPos.current = t;
         playSliderTick(t);
