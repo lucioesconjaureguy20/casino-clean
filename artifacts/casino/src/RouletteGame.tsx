@@ -2058,19 +2058,13 @@ function RouletteGame({
               position:"absolute", top:0, bottom:0, left:"-16px", right:"-16px", zIndex:99,
               display: (isSpinning || mobileWheelLinger) ? "flex" : "none",
               alignItems:"center", justifyContent:"center",
-              background:"rgba(0,0,0,0.35)", backdropFilter:"blur(1px)",
-              WebkitBackdropFilter:"blur(1px)",
+              background:"rgba(0,0,0,0.35)", backdropFilter:"blur(2px)",
+              WebkitBackdropFilter:"blur(2px)",
               pointerEvents:"none",
             }}>
               <div style={{ position:"relative", width:"270px", height:"270px" }}>
-                {/* Soft blur halo around the wheel */}
-                <div style={{
-                  position:"absolute", inset:"-10px", borderRadius:"50%",
-                  backdropFilter:"blur(4px)", WebkitBackdropFilter:"blur(4px)",
-                  zIndex:0, pointerEvents:"none",
-                }} />
                 <canvas ref={canvasRef} width={270} height={270}
-                  style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block", position:"relative", zIndex:1 }}/>
+                  style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
                 {/* Win popup over mobile wheel */}
                 {showWinPop && winNumber !== null && totalWageredUsd > 0 && (
                   <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:200, pointerEvents:"none" }}>
