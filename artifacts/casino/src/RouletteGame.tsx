@@ -2114,7 +2114,7 @@ export default function RouletteGame({
         )}
 
         {/* ─── Undo / Clear below betting table ────────────────────────── */}
-        <div style={{ display: isMobile && isSpinning ? "none" : "flex", justifyContent:"space-between", gap:"8px" }}>
+        <div style={{ display: isMobile && (isSpinning || mobileWheelLinger) ? "none" : "flex", justifyContent:"space-between", gap:"8px" }}>
           <button onClick={handleUndo} disabled={isSpinning}
             style={{
               padding:"7px 18px", borderRadius:"8px",
@@ -2146,7 +2146,7 @@ export default function RouletteGame({
         </div>
 
         {/* ─── MOBILE control panel (chip selector + bet button) ──────────── */}
-        {isMobile && !isSpinning && (
+        {isMobile && !isSpinning && !mobileWheelLinger && (
           <div style={{ padding:"8px 6px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
             {/* Chip selector row */}
             <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"6px 4px" }}>
