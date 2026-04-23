@@ -16370,7 +16370,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
         {/* ── Left panel ── */}
         <div className="game-ctrl-panel" style={{ background:"#131a28",padding:"16px",display:"flex",flexDirection:"column",gap:"0",overflowY:"auto",minHeight:0 }}>
           {/* Mode tabs */}
-          <div style={{ display:"flex",alignItems:"center",background:"#0e1826",borderRadius:"6px",padding:"5px",gap:"4px",marginBottom:"16px" }}>
+          <div className="dice-ctrl-tabs" style={{ display:"flex",alignItems:"center",background:"#0e1826",borderRadius:"6px",padding:"5px",gap:"4px",marginBottom:"16px" }}>
             <button onClick={()=>{ if(!diceAutoRunning) setDiceTab("manual"); }} disabled={diceAutoRunning}
               style={{ flex:1,background:diceTab==="manual"?"#1e2c44":"transparent",color:diceTab==="manual"?"#eef3f8":"#5a6a88",border:diceTab==="manual"?"1px solid #3a4a60":"1px solid transparent",borderRadius:"6px",padding:"10px",fontWeight:500,cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"14px",opacity:diceAutoRunning&&diceTab!=="manual"?0.45:1,transition:"opacity .2s" }}>
               {t("manual")}
@@ -16383,6 +16383,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
 
           {/* ── MANUAL TAB ── */}
           {diceTab==="manual" && <>
+            <div className="dice-ctrl-amount-wrap">
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("betAmount")}</div>
 
             {/* Input row */}
@@ -16409,7 +16410,9 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             </div>
 
             {(()=>{ const effBal=balanceDemo>0?balanceDemo:balance; const noFunds=effBal<0.001; const insuff=diceBetUsd>=0.0099&&effBal<diceBetUsd-0.0001; const belowMin=diceBetUsd<0.0099; return (belowMin||insuff) ? (<div style={{ fontSize:"11.5px",color:"#e74c3c",fontWeight:600,marginBottom:"8px",paddingLeft:"2px" }}>{(noFunds||insuff)&&<div>{t("insufficientBalance")}</div>}{belowMin&&<div>{t("minBet")} {fmtMoney(0.01)}</div>}</div>) : <div style={{ marginBottom:"6px" }} />; })()}
+            </div>{/* end dice-ctrl-amount-wrap */}
 
+            <div className="dice-ctrl-quick-wrap">
             {/* Quick-action buttons */}
             <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"8px" }}>
               {[
@@ -16424,7 +16427,9 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 </button>
               ))}
             </div>
+            </div>{/* end dice-ctrl-quick-wrap */}
 
+            <div className="dice-ctrl-bet-wrap">
             <button onClick={placeDiceBet} disabled={diceRolling||diceBetUsd<0.0099||(!!currentUser&&(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001)}
               style={{ width:"100%",marginBottom:"14px",border:"none",borderRadius:"6px",padding:"14px",fontWeight:500,fontSize:"15px",transition:"all .2s",opacity:1,
                 background:((currentUser&&(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001)||diceBetUsd<0.0099)?"#1a2438":"linear-gradient(180deg,#1a9fff,#0d6fd4)",
@@ -16433,7 +16438,9 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 cursor:(diceRolling||diceBetUsd<0.0099||(!!currentUser&&(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001))?"not-allowed":"pointer" }}>
               {(currentUser&&(balanceDemo>0?balanceDemo:balance)<diceBetUsd-0.0001) ? t("insufficientBalance") : t("bet")}
             </button>
+            </div>{/* end dice-ctrl-bet-wrap */}
 
+            <div className="dice-ctrl-towin-wrap">
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("toWin")}</div>
             <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 14px",marginBottom:"14px" }}>
               <span style={{ fontSize:"16px",color:"#5a6a88",fontWeight:500,whiteSpace:"nowrap",...dMStyle }}>{currLabel}</span>
@@ -16441,6 +16448,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 value={diceBetNum > 0 ? (()=>{ const p = diceBetNum * Math.max(1.01, parseFloat(diceMultiplier)||2); return displayInFiat ? p.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) : p.toFixed(2); })() : "—"}
                 style={{ flex:1,background:"transparent",border:"none",color:diceBetNum>0?"#00d95f":"#4a6070",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }} />
             </div>
+            </div>{/* end dice-ctrl-towin-wrap */}
           </>}
 
           {/* ── AUTO TAB ── */}
@@ -16618,7 +16626,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
           </>}
 
           {/* Icon buttons row — bottom of left panel */}
-          <div style={{ marginTop:"auto",paddingTop:"18px",display:"flex",gap:"8px",position:"relative" }}>
+          <div className="dice-ctrl-icons" style={{ marginTop:"auto",paddingTop:"18px",display:"flex",gap:"8px",position:"relative" }}>
             <button
               onClick={()=>setShowStats(v=>!v)}
               title={t("statsLabel")}

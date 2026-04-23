@@ -1483,6 +1483,18 @@ body {
   .dice-root .game-ctrl-grid > div:last-child {
     order: 1;
   }
+
+  /* Dice controls panel: reorder sections on mobile */
+  .dice-root .game-ctrl-panel {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .dice-root .dice-ctrl-bet-wrap   { order: 1; }
+  .dice-root .dice-ctrl-amount-wrap { order: 2; }
+  .dice-root .dice-ctrl-quick-wrap  { order: 3; }
+  .dice-root .dice-ctrl-towin-wrap  { order: 4; }
+  .dice-root .dice-ctrl-tabs        { order: 5; border-top: 1px solid #1a2438; margin-top: 8px; padding-top: 8px; margin-bottom: 0 !important; }
+  .dice-root .dice-ctrl-icons       { order: 6; }
 }
 
 /* Bet table: horizontal scroll on mobile */
