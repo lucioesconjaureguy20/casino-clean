@@ -554,8 +554,6 @@ export default function RouletteGame({
   // Chip drag & drop
   const [isDragging, setIsDragging] = useState(false);
   const [dragGhost, setDragGhost]   = useState<{ fromKey: string; amount: number; x: number; y: number } | null>(null);
-  // dragOverKey removed — highlight is now pure DOM (no React re-renders on cell crossing)
-  const dragOverElRef = useRef<{ el: HTMLElement; border: string; shadow: string } | null>(null);
   const dragInfoRef = useRef<{ fromKey: string; amount: number } | null>(null);
   const ghostElRef  = useRef<HTMLDivElement | null>(null); // direct DOM ref for ghost chip
   const ghostPosRef = useRef<{ x: number; y: number } | null>(null); // tracks live cursor pos during drag
@@ -1106,45 +1104,13 @@ export default function RouletteGame({
     // must lock the body directly to prevent the browser from falling back to "manipulation".
     const prevTouchAction = document.body.style.touchAction;
     document.body.style.touchAction = "none";
-    let rafId = 0; // throttle applyDragOver to one DOM read+write per animation frame
-    // Highlight the cell element under the cursor via direct DOM — no React state, no re-renders
-    function applyDragOver(cx: number, cy: number) {
-      const hit = document.elementFromPoint(cx, cy);
-      let target: HTMLElement | null = hit as HTMLElement;
-      while (target && !target.dataset.betKey) target = target.parentElement as HTMLElement | null;
-      const newEl = (target?.dataset.betKey) ? target : null;
-      const prev = dragOverElRef.current;
-      if (newEl === prev?.el) return; // same cell — nothing to do
-      // Restore previous cell's original border/shadow
-      if (prev) { prev.el.style.border = prev.border; prev.el.style.boxShadow = prev.shadow; }
-      // Highlight new cell
-      if (newEl) {
-        dragOverElRef.current = { el: newEl, border: newEl.style.border, shadow: newEl.style.boxShadow };
-        newEl.style.border = "2px solid #fff";
-        newEl.style.boxShadow = "0 0 10px rgba(255,255,255,0.5)";
-      } else {
-        dragOverElRef.current = null;
-      }
-    }
-    function clearDragOver() {
-      const prev = dragOverElRef.current;
-      if (prev) { prev.el.style.border = prev.border; prev.el.style.boxShadow = prev.shadow; }
-      dragOverElRef.current = null;
-    }
+    // moveGhost: ONLY updates the ghost chip position — no cell highlight, no RAF,
+    // no DOM reads. Identical to what happens when dragging outside the table.
     function moveGhost(cx: number, cy: number) {
-      ghostPosRef.current = { x: cx, y: cy }; // keep live position in sync for ref callback
+      ghostPosRef.current = { x: cx, y: cy };
       if (ghostElRef.current) {
-        // Ghost is portaled to <html> (not body), so clientX/Y map 1:1 — no zoom correction
-        // Compositor-only change — no layout recalculation, always synchronous
         ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
-      // Cell highlight: throttled to RAF so elementFromPoint (DOM read) never immediately
-      // follows a border/shadow write — avoids forced synchronous layout on every touchmove
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const p = ghostPosRef.current;
-        if (p) applyDragOver(p.x, p.y);
-      });
     }
     function onMove(e: MouseEvent) {
       e.preventDefault();
@@ -1156,7 +1122,6 @@ export default function RouletteGame({
       moveGhost(t.clientX, t.clientY);
     }
     function finalizeDrop(cx: number, cy: number) {
-      clearDragOver();
       const ds = dragInfoRef.current;
       const dropKey = findBetKey(document.elementFromPoint(cx, cy));
       if (ds) {
@@ -1178,7 +1143,7 @@ export default function RouletteGame({
     function onMouseUp(e: MouseEvent) { finalizeDrop(e.clientX, e.clientY); }
     function onTouchEnd(e: TouchEvent) {
       if (e.changedTouches.length > 0) finalizeDrop(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      else { clearDragOver(); dragInfoRef.current = null; setDragGhost(null); setIsDragging(false); }
+      else { dragInfoRef.current = null; setDragGhost(null); setIsDragging(false); }
     }
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -1186,8 +1151,6 @@ export default function RouletteGame({
     document.addEventListener('touchend', onTouchEnd);
     return () => {
       document.body.style.touchAction = prevTouchAction;
-      cancelAnimationFrame(rafId); // cancel pending highlight RAF
-      clearDragOver();             // restore any highlighted cell before unmount
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('touchmove', onTouchMove);
