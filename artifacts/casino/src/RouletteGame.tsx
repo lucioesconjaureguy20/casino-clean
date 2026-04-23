@@ -2353,7 +2353,7 @@ function RouletteGame({
         )}
 
         {/* ─── Undo / Clear below betting table ────────────────────────── */}
-        <div style={{ display: isMobile && (isSpinning || mobileWheelLinger) ? "none" : "flex", justifyContent:"space-between", gap:"8px" }}>
+        <div style={{ display: isMobile && (isSpinning || mobileWheelLinger) ? "none" : "flex", justifyContent:"space-between", alignItems:"center", gap:"8px" }}>
           <button onClick={handleUndo} disabled={isSpinning}
             style={{
               padding:"7px 18px", borderRadius:"8px",
