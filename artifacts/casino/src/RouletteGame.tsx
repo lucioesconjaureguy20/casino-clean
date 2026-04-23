@@ -1106,6 +1106,7 @@ export default function RouletteGame({
     // must lock the body directly to prevent the browser from falling back to "manipulation".
     const prevTouchAction = document.body.style.touchAction;
     document.body.style.touchAction = "none";
+    let rafId = 0; // throttle applyDragOver to one DOM read+write per animation frame
     // Highlight the cell element under the cursor via direct DOM — no React state, no re-renders
     function applyDragOver(cx: number, cy: number) {
       const hit = document.elementFromPoint(cx, cy);
@@ -1134,10 +1135,16 @@ export default function RouletteGame({
       ghostPosRef.current = { x: cx, y: cy }; // keep live position in sync for ref callback
       if (ghostElRef.current) {
         // Ghost is portaled to <html> (not body), so clientX/Y map 1:1 — no zoom correction
+        // Compositor-only change — no layout recalculation, always synchronous
         ghostElRef.current.style.transform = `translate(${cx - 18}px, ${cy - 18}px)`;
       }
-      // Cell highlight: pure DOM, zero React re-renders
-      applyDragOver(cx, cy);
+      // Cell highlight: throttled to RAF so elementFromPoint (DOM read) never immediately
+      // follows a border/shadow write — avoids forced synchronous layout on every touchmove
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const p = ghostPosRef.current;
+        if (p) applyDragOver(p.x, p.y);
+      });
     }
     function onMove(e: MouseEvent) {
       e.preventDefault();
@@ -1179,7 +1186,8 @@ export default function RouletteGame({
     document.addEventListener('touchend', onTouchEnd);
     return () => {
       document.body.style.touchAction = prevTouchAction;
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(rafId); // cancel pending highlight RAF
+      clearDragOver();             // restore any highlighted cell before unmount
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('touchmove', onTouchMove);
