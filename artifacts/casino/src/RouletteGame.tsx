@@ -570,6 +570,7 @@ function RouletteGame({
     if (el) el.style.display = "none"; // hidden by default; shown imperatively in startChipDrag
   }, []);
   const chipTouchActiveRef = useRef(false); // prevents overlapping chip touch interactions
+  const dragRafRef = useRef<number | null>(null); // RAF id for deferred state updates in startChipDrag
 
   // Pre-warm React's fiber reconciler at idle time so the FIRST drag is smooth.
   // Sets a dummy dragGhost (ghost stays display:none) → React creates all cell fibers
@@ -1031,8 +1032,14 @@ function RouletteGame({
       ghostElRef.current.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
       ghostElRef.current.style.display = "block";
     }
-    setDragGhost({ fromKey, amount, x, y }); // React updates chip SVG content
-    setIsDragging(true);                     // React dims source cell
+    // Defer React state updates by one frame so touchmove events run unblocked.
+    // The ghost is already visible imperatively; React only needs to update the
+    // SVG chip content and dim the source cell (both can wait ~16ms).
+    dragRafRef.current = requestAnimationFrame(() => {
+      dragRafRef.current = null;
+      setDragGhost({ fromKey, amount, x, y }); // React updates chip SVG content
+      setIsDragging(true);                     // React dims source cell + runs drag useEffect
+    });
   }
 
   // Threshold-based: click (<5px movement) → placeBet; drag (>5px) → move chip
@@ -1094,13 +1101,36 @@ function RouletteGame({
         ghostElRef.current.style.transform = `translate(${t.clientX - 18}px, ${t.clientY - 18}px)`;
       }
     }
-    function onEnd() {
+    function onEnd(e: TouchEvent) {
       chipTouchActiveRef.current = false;
-      // Only restore if the drag useEffect hasn't taken over (isDragging still false)
       if (!dragging) document.body.style.touchAction = prevBodyTA;
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
-      if (!dragging) placeBet(fromKey);
+      if (!dragging) {
+        placeBet(fromKey);
+      } else if (dragRafRef.current !== null) {
+        // Finger lifted within the ~16ms RAF window before setIsDragging(true) ran.
+        // Cancel the pending RAF and finalize the drop directly here.
+        cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
+        _dragging.current = false;
+        if (ghostElRef.current) ghostElRef.current.style.display = "none";
+        document.body.style.touchAction = prevBodyTA;
+        const t = e.changedTouches[0];
+        if (t) {
+          const dropKey = findBetKey(document.elementFromPoint(t.clientX, t.clientY));
+          const ds = dragInfoRef.current;
+          if (ds && dropKey && dropKey !== ds.fromKey) {
+            setTableBets(prev => { const n = {...prev}; n[dropKey] = Math.round(((n[dropKey]||0)+ds.amount)*10000)/10000; delete n[ds.fromKey]; return n; });
+          } else if (ds && !dropKey) {
+            setTableBets(prev => { const n = {...prev}; delete n[ds.fromKey]; return n; });
+          }
+        }
+        dragInfoRef.current = null;
+        setDragGhost(null);
+        // setIsDragging never became true, so no need to reset it
+      }
+      // else: drag useEffect already registered its touchend listener; let it handle the drop
     }
     document.addEventListener("touchmove", onMove, { passive: false });
     document.addEventListener("touchend", onEnd);
