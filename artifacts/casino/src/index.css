@@ -1499,9 +1499,7 @@ body {
   .dice-root .dice-ctrl-advanced-wrap { order: 6; }
   .dice-root .dice-ctrl-tabs          { order: 7; border-top: 1px solid #1a2438; margin-top: 8px; padding-top: 8px; margin-bottom: 0 !important; }
   .dice-root .dice-ctrl-icons         { order: 8; }
-  .dice-stats-row input[type=number]::-webkit-inner-spin-button,
-  .dice-stats-row input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-  .dice-stats-row input[type=number] { -moz-appearance: textfield; font-size: 11px !important; padding-left: 4px !important; padding-right: 4px !important; }
+  .dice-stats-row input { font-size: 11px !important; }
 }
 
 /* Bet table: horizontal scroll on mobile */
