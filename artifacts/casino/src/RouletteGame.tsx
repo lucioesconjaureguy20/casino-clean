@@ -1050,11 +1050,20 @@ export default function RouletteGame({
 
     function onMove(mv: TouchEvent) {
       mv.preventDefault(); // always block scroll while chip touch is active
-      if (dragging || !mv.touches.length) return;
+      if (!mv.touches.length) return;
       const t = mv.touches[0];
-      if (Math.hypot(t.clientX - startX, t.clientY - startY) > THRESHOLD) {
-        dragging = true;
-        startChipDrag(fromKey, amount, t.clientX, t.clientY);
+      if (!dragging) {
+        if (Math.hypot(t.clientX - startX, t.clientY - startY) > THRESHOLD) {
+          dragging = true;
+          startChipDrag(fromKey, amount, t.clientX, t.clientY);
+        }
+        return;
+      }
+      // Drag already started — keep ghost moving even during the React render/useEffect gap
+      ghostPosRef.current = { x: t.clientX, y: t.clientY };
+      if (ghostElRef.current) {
+        const zoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
+        ghostElRef.current.style.transform = `translate(${t.clientX / zoom - 18}px, ${t.clientY / zoom - 18}px)`;
       }
     }
     function onEnd() {
@@ -1311,7 +1320,7 @@ export default function RouletteGame({
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: col, color:"#fff", fontWeight:700, fontSize:"11px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
+          borderRadius:"4px", touchAction:"none", WebkitTapHighlightColor:"transparent",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, transform .12s",
@@ -1391,7 +1400,7 @@ export default function RouletteGame({
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
           background: color || "#1a2438", color:"#c8d8f0", fontWeight:700, fontSize:"10px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
-          borderRadius:"4px", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
+          borderRadius:"4px", touchAction:"none", WebkitTapHighlightColor:"transparent",
           border: isWin ? "2px solid #16ff5c" : isDragOver ? "2px solid #fff" : "2px solid rgba(255,255,255,0.06)",
           boxShadow: isWin ? "0 0 10px rgba(22,255,92,0.5)" : isDragOver ? "0 0 10px rgba(255,255,255,0.5)" : "none",
           transition:"box-shadow .15s, border-color .15s, filter .12s, transform .12s",
@@ -1973,7 +1982,7 @@ export default function RouletteGame({
                   onClick={() => { if (!isDragging && !('ontouchstart' in window)) placeBet("n_0"); }}
                   style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
                     fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
-                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"manipulation", WebkitTapHighlightColor:"transparent",
+                    borderRadius:"4px", cursor: isSpinning?"default":"pointer", userSelect:"none", touchAction:"none", WebkitTapHighlightColor:"transparent",
                     border: winCells.has("n_0") ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.08)",
                     boxShadow: winCells.has("n_0") ? "0 0 10px rgba(22,255,92,0.5)" : "none" }}>
                   {(tableBets["n_0"]||0)>0 && dragGhost?.fromKey!=="n_0" ? (
