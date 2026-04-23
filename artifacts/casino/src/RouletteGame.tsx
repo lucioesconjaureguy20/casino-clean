@@ -2060,8 +2060,8 @@ function RouletteGame({
               alignItems:"center", justifyContent:"center",
               background:"rgba(0,0,0,0.35)", backdropFilter:"blur(2px)",
               WebkitBackdropFilter:"blur(2px)",
-              maskImage:"linear-gradient(to bottom, black 55%, transparent 100%)",
-              WebkitMaskImage:"linear-gradient(to bottom, black 55%, transparent 100%)",
+              maskImage:"linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
+              WebkitMaskImage:"linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
               pointerEvents:"none",
             }}>
               <div style={{ position:"relative", width:"270px", height:"270px" }}>
