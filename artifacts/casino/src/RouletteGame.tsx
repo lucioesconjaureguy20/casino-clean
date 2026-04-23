@@ -2491,19 +2491,7 @@ function RouletteGame({
               })}
             </div>
 
-            {/* 5 — Manual / Auto toggle */}
-            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
-              <button onClick={() => { if (!autoRunning) setMode("manual"); }} disabled={autoRunning}
-                style={{ flex:1, background:mode==="manual"?"#1e2c44":"transparent", color:mode==="manual"?"#eef3f8":"#5a6a88", border:mode==="manual"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
-                {gt(_lang, "tabManual")}
-              </button>
-              <button onClick={() => { if (!autoRunning) setMode("auto"); }} disabled={autoRunning}
-                style={{ flex:1, background:mode==="auto"?"#1e2c44":"transparent", color:mode==="auto"?"#eef3f8":"#5a6a88", border:mode==="auto"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
-                {gt(_lang, "tabAuto")}
-              </button>
-            </div>
-
-            {/* 6 — Number of rounds (only in auto mode) */}
+            {/* 5 — Number of rounds (only in auto mode, above toggle) */}
             {mode === "auto" && (
               <div>
                 <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
@@ -2526,6 +2514,18 @@ function RouletteGame({
                 </div>
               </div>
             )}
+
+            {/* 6 — Manual / Auto toggle */}
+            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+              <button onClick={() => { if (!autoRunning) setMode("manual"); }} disabled={autoRunning}
+                style={{ flex:1, background:mode==="manual"?"#1e2c44":"transparent", color:mode==="manual"?"#eef3f8":"#5a6a88", border:mode==="manual"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                {gt(_lang, "tabManual")}
+              </button>
+              <button onClick={() => { if (!autoRunning) setMode("auto"); }} disabled={autoRunning}
+                style={{ flex:1, background:mode==="auto"?"#1e2c44":"transparent", color:mode==="auto"?"#eef3f8":"#5a6a88", border:mode==="auto"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                {gt(_lang, "tabAuto")}
+              </button>
+            </div>
 
           </div>
         )}
