@@ -1748,8 +1748,8 @@ export default function RouletteGame({
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
       <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320" }}>
 
-        {/* Wheel row — responsive: grid on desktop, centered on mobile */}
-        <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 245px 1fr", alignItems:"center", gap:"0", height: isMobile ? "auto" : "265px", paddingBottom: isMobile ? "6px" : "0" }}>
+        {/* Wheel row — responsive: grid on desktop, centered on mobile. On mobile only shown while spinning */}
+        <div style={{ display: isMobile && !isSpinning ? "none" : "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 245px 1fr", alignItems:"center", gap:"0", height: isMobile ? "auto" : "265px", paddingBottom: isMobile ? "6px" : "0" }}>
 
           {/* Left column: último número — hidden on mobile (shown in strip below) */}
           {!isMobile && (
@@ -1872,7 +1872,7 @@ export default function RouletteGame({
         )}
 
         {/* ─── Racetrack panel ───────────────────────────────────────────── */}
-        <div style={{ padding: "4px 12px 2px", marginBottom: 4, display: isMobile && isSpinning ? "none" : undefined }}>
+        <div style={{ padding: "4px 12px 2px", marginBottom: 4, display: isMobile ? "none" : undefined }}>
           <RouletteRacetrack
             placeBet={placeBet}
             placeGroupBet={placeGroupBet}
@@ -1888,6 +1888,39 @@ export default function RouletteGame({
         {isMobile ? (
           /* ── MOBILE: vertical Stake-style table ── */
           <div style={{ display: isSpinning ? "none" : "block", padding:"0 6px" }}>
+
+            {/* Result banner — shown on mobile in result phase instead of wheel popup */}
+            {isResult && winNumber !== null && (
+              <div style={{
+                display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
+                marginBottom:"10px",
+                background:"rgba(10,16,26,0.96)", border:"2px solid #22ee66",
+                borderRadius:"10px", padding:"10px 16px",
+                boxShadow:"0 0 28px rgba(34,238,102,.35)",
+                animation:"kenoCenterPop .32s cubic-bezier(.34,1.56,.64,1) both",
+              }}>
+                <div style={{
+                  width:"44px", height:"44px", borderRadius:"50%", flexShrink:0,
+                  background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#111827",
+                  border:"2.5px solid rgba(255,255,255,0.3)",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  fontWeight:900, fontSize:"20px", color:"#fff",
+                }}>
+                  {winNumber}
+                </div>
+                {totalWageredUsd > 0 && (
+                  <div style={{ textAlign:"center" }}>
+                    <div style={{ fontSize:"26px", fontWeight:700, color:"#22ee66", lineHeight:1 }}>
+                      {(winAmountUsd / totalWageredUsd).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
+                    </div>
+                    <div style={{ fontSize:"13px", color:"#8aabb0", marginTop:"3px" }}>
+                      <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(winAmountUsd)}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div style={{ display:"grid", gridTemplateColumns:"56px 56px 56px 56px 56px", gridTemplateRows:"28px repeat(12, 40px) 26px", gap:"0", width:"fit-content", margin:"0 auto" }}>
               {/* Zero — top row spanning number cols only */}
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
