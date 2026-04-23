@@ -1266,7 +1266,7 @@ export default function RouletteGame({
           e.currentTarget.dataset.ty = String(e.touches[0].clientY);
         }}
         onTouchEnd={e => {
-          if (isSpinning || isDragging) return;
+          if (isSpinning || isDragging || betAmt > 0) return; // chip overlay handles cells with existing chips
           const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
           const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
           if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
@@ -1344,7 +1344,7 @@ export default function RouletteGame({
           e.currentTarget.dataset.ty = String(e.touches[0].clientY);
         }}
         onTouchEnd={e => {
-          if (isSpinning || isDragging) return;
+          if (isSpinning || isDragging || betAmt > 0) return; // chip overlay handles cells with existing chips
           const tx = parseFloat(e.currentTarget.dataset.tx ?? "0");
           const ty = parseFloat(e.currentTarget.dataset.ty ?? "0");
           if (Math.hypot(e.changedTouches[0].clientX - tx, e.changedTouches[0].clientY - ty) < 10) {
@@ -1936,7 +1936,7 @@ export default function RouletteGame({
               <div style={{ gridColumn:"3 / span 3", gridRow:"1" }}>
                 <div data-bet-key="n_0"
                   onTouchStart={e => { if (!isSpinning && !isDragging) { e.currentTarget.dataset.tx = String(e.touches[0].clientX); e.currentTarget.dataset.ty = String(e.touches[0].clientY); }}}
-                  onTouchEnd={e => { if (isSpinning || isDragging) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
+                  onTouchEnd={e => { if (isSpinning || isDragging || (tableBets["n_0"]||0) > 0) return; const tx = parseFloat(e.currentTarget.dataset.tx??"0"); const ty = parseFloat(e.currentTarget.dataset.ty??"0"); if (Math.hypot(e.changedTouches[0].clientX-tx, e.changedTouches[0].clientY-ty) < 10) { e.preventDefault(); placeBet("n_0"); }}}
                   onClick={() => { if (!isDragging && !('ontouchstart' in window)) placeBet("n_0"); }}
                   style={{ position:"relative", height:"28px", background:"#1a6b30", color:"#fff",
                     fontWeight:800, fontSize:"13px", display:"flex", alignItems:"center", justifyContent:"center",
