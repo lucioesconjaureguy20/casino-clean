@@ -2262,10 +2262,10 @@ function RouletteGame({
 
               {/* ── Row 14: 2:1 column bets (number cols only) ── */}
               <div style={{ gridColumn:"3", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_1" chipRotate={90} style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"4", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_2" chipRotate={90} style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"5", gridRow:"14" }}>
                 <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
@@ -2319,7 +2319,7 @@ function RouletteGame({
               ))}
               {/* Column 2 2:1 */}
               <div style={{ gridRow:"2" }}>
-                <OutsideCell label="2:1" betKey="col_2" chipRotate={90} style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
 
               {/* Bot row: 1,4,7,...,34 */}
@@ -2328,7 +2328,7 @@ function RouletteGame({
               ))}
               {/* Column 1 2:1 */}
               <div style={{ gridRow:"3" }}>
-                <OutsideCell label="2:1" betKey="col_1" chipRotate={90} style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
             </div>
 
