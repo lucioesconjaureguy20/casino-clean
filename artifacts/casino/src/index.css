@@ -1495,8 +1495,8 @@ body {
   .dice-root .dice-ctrl-amount-wrap   { order: 2; }
   .dice-root .dice-ctrl-quick-wrap    { order: 3; }
   .dice-root .dice-ctrl-towin-wrap    { order: 4; }
-  .dice-root .dice-ctrl-advanced-wrap { order: 5; }
-  .dice-root .dice-ctrl-numbets-wrap  { order: 6; }
+  .dice-root .dice-ctrl-numbets-wrap  { order: 5; }
+  .dice-root .dice-ctrl-advanced-wrap { order: 6; }
   .dice-root .dice-ctrl-tabs          { order: 7; border-top: 1px solid #1a2438; margin-top: 8px; padding-top: 8px; margin-bottom: 0 !important; }
   .dice-root .dice-ctrl-icons         { order: 8; }
 }
