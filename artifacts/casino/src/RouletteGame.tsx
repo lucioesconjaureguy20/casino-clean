@@ -1472,9 +1472,9 @@ function RouletteGame({
     );
   }
 
-  function OutsideCell({ label, betKey, color, style = {}, groupKey }: {
+  function OutsideCell({ label, betKey, color, style = {}, groupKey, chipRotate = 0 }: {
     label: React.ReactNode; betKey: string; color?: string;
-    style?: React.CSSProperties; groupKey?: string;
+    style?: React.CSSProperties; groupKey?: string; chipRotate?: number;
   }) {
     const betAmt     = tableBets[betKey] || 0;
     const isWin      = winCells.has(betKey);
@@ -1536,7 +1536,9 @@ function RouletteGame({
             onMouseDown={e => beginChipInteraction(betKey, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(betKey, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
-            <CasinoChipSVG {...getBetChipMeta(betAmt)} label={fmtBetChipLabel(betAmt)} size={28} />
+            <div style={{ transform: chipRotate ? `rotate(${chipRotate}deg)` : undefined }}>
+              <CasinoChipSVG {...getBetChipMeta(betAmt)} label={fmtBetChipLabel(betAmt)} size={28} />
+            </div>
           </div>
         ) : (
           <span style={{ position:"relative", zIndex:1 }}>{label}</span>
@@ -2260,10 +2262,10 @@ function RouletteGame({
 
               {/* ── Row 14: 2:1 column bets (number cols only) ── */}
               <div style={{ gridColumn:"3", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_1" chipRotate={90} style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"4", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_2" chipRotate={90} style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"5", gridRow:"14" }}>
                 <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
@@ -2317,7 +2319,7 @@ function RouletteGame({
               ))}
               {/* Column 2 2:1 */}
               <div style={{ gridRow:"2" }}>
-                <OutsideCell label="2:1" betKey="col_2" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_2" chipRotate={90} style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
 
               {/* Bot row: 1,4,7,...,34 */}
@@ -2326,7 +2328,7 @@ function RouletteGame({
               ))}
               {/* Column 1 2:1 */}
               <div style={{ gridRow:"3" }}>
-                <OutsideCell label="2:1" betKey="col_1" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
+                <OutsideCell label="2:1" betKey="col_1" chipRotate={90} style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
             </div>
 
