@@ -27,34 +27,90 @@ function numActiveBg(n: number): string {
   return RED_SET.has(n) ? "#ef4444" : "#4b5563";
 }
 
-// ── Oval layout constants ─────────────────────────────────────────────────────
-// Numbers are placed in European wheel order starting from 0 at the left vertex,
-// going counter-clockwise (upward) — same layout as Pragmatic Play.
+// ── Stadium (racetrack) geometry ──────────────────────────────────────────────
 //
-//   θ_i = π + (i / 37) * 2π
-//   x = CX + TRX * cos(θ_i)
-//   y = CY + TRY * sin(θ_i)
+//  Shape: two straight horizontal segments connected by two semicircles.
 //
-const SVG_W = 540;
-const SVG_H = 210;
-const CX    = SVG_W / 2;   // 270
-const CY    = SVG_H / 2;   // 105
-const TRX   = 238;          // horizontal track radius
-const TRY   = 90;           // vertical track radius — taller so sides spread out
-const PW    = 24;           // pill width
-const PH    = 17;           // pill height
-const PR    = 4.5;          // pill corner radius
+//    top-left (cx1, cy−R) ────── top-right (cx2, cy−R)
+//           ╮                                   ╭
+//  leftmost (cx1−R, cy)                rightmost (cx2+R, cy)
+//           ╯                                   ╰
+//    btm-left (cx1, cy+R) ────── btm-right (cx2, cy+R)
+//
+//  0 is at the leftmost point. Numbers go counterclockwise (upward first):
+//  leftmost → up through left-upper quarter → top-straight (L→R) →
+//  right semicircle (T→B) → bottom-straight (R→L) → left-lower quarter → back.
+//
+const SVG_W  = 560;
+const SVG_H  = 170;
+const CX     = SVG_W / 2;
+const CY     = SVG_H / 2;
+const R      = 52;          // semicircle radius
+const HALF_L = 196;         // half-length of each straight segment
 
-function numPos(i: number): { x: number; y: number; rot: number } {
-  const θ  = Math.PI + (i / 37) * 2 * Math.PI;
-  const x  = CX + TRX * Math.cos(θ);
-  const y  = CY + TRY * Math.sin(θ);
-  // Tangent angle — rotates the pill to follow the oval edge
-  const tx  = -TRX * Math.sin(θ);
-  const ty  =  TRY * Math.cos(θ);
-  const rot = Math.atan2(ty, tx) * (180 / Math.PI);
+// Derived
+const CX1 = CX - HALF_L;   // left semicircle center x
+const CX2 = CX + HALF_L;   // right semicircle center x
+
+// Section arc lengths
+const ARC_QUARTER  = (Math.PI / 2) * R;         // quarter-circle
+const ARC_STRAIGHT = 2 * HALF_L;                // one straight
+const ARC_HALF     = Math.PI * R;               // half-circle (right/left full)
+const PERIMETER    = 4 * HALF_L + 2 * Math.PI * R;
+
+// Section cumulative endpoints (0 = leftmost, counterclockwise)
+const S1 = ARC_QUARTER;                         // end of left-upper quarter
+const S2 = S1 + ARC_STRAIGHT;                   // end of top straight
+const S3 = S2 + ARC_HALF;                       // end of right semicircle
+const S4 = S3 + ARC_STRAIGHT;                   // end of bottom straight
+// S5 = PERIMETER (end of left-lower quarter → back to leftmost)
+
+/** Map arc-length position s → {x, y, rot} on the stadium perimeter. */
+function stadiumPoint(s: number): { x: number; y: number; rot: number } {
+  let x: number, y: number, θ: number;
+
+  if (s <= S1) {
+    // Left-upper quarter: leftmost (θ=π) → top-left (θ=3π/2)
+    θ = Math.PI + (s / S1) * (Math.PI / 2);
+    x = CX1 + R * Math.cos(θ);
+    y = CY  + R * Math.sin(θ);
+  } else if (s <= S2) {
+    // Top straight: left→right (y = CY−R)
+    x = CX1 + (s - S1);
+    y = CY - R;
+    return { x, y, rot: 0 };
+  } else if (s <= S3) {
+    // Right semicircle: top (θ=−π/2) → bottom (θ=+π/2)
+    θ = -Math.PI / 2 + (s - S2) / R;
+    x = CX2 + R * Math.cos(θ);
+    y = CY  + R * Math.sin(θ);
+  } else if (s <= S4) {
+    // Bottom straight: right→left (y = CY+R)
+    x = CX2 - (s - S3);
+    y = CY + R;
+    return { x, y, rot: 0 };   // pills flat; text counter-rotates as usual
+  } else {
+    // Left-lower quarter: bottom-left (θ=π/2) → leftmost (θ=π)
+    const t = (s - S4) / ARC_QUARTER;           // 0→1
+    θ = Math.PI / 2 + t * (Math.PI / 2);
+    x = CX1 + R * Math.cos(θ);
+    y = CY  + R * Math.sin(θ);
+  }
+
+  // Tangent for circular sections: direction of travel = (−sinθ, cosθ)
+  const rot = Math.atan2(Math.cos(θ!), -Math.sin(θ!)) * (180 / Math.PI);
   return { x, y, rot };
 }
+
+/** Positions for all 37 wheel numbers with equal arc-length spacing. */
+const POSITIONS: { x: number; y: number; rot: number }[] = WHEEL_ORDER.map((_, i) =>
+  stadiumPoint((i / 37) * PERIMETER)
+);
+
+// Pill dimensions
+const PW = 23;   // pill width
+const PH = 16;   // pill height
+const PR = 4;    // pill corner radius
 
 // ── Component props ───────────────────────────────────────────────────────────
 interface Props {
@@ -97,12 +153,12 @@ export function RouletteRacetrack({
 
   return (
     <div style={{
-      display:        "flex",
-      flexDirection:  "column",
-      alignItems:     "center",
-      gap:            8,
-      userSelect:     "none",
-      width:          "100%",
+      display:       "flex",
+      flexDirection: "column",
+      alignItems:    "center",
+      gap:           8,
+      userSelect:    "none",
+      width:         "100%",
     }}>
 
       {/* ── Neighbor count control ─────────────────────────────────────── */}
@@ -119,26 +175,20 @@ export function RouletteRacetrack({
           disabled={isSpinning || neighborN <= 1}
           style={{
             padding:    "5px 15px",
-            background: "none",
-            border:     "none",
+            background: "none", border: "none",
             color:      neighborN > 1 ? "#e2e8f0" : "#2a3040",
-            fontSize:   17,
-            fontWeight: 700,
+            fontSize: 17, fontWeight: 700,
             cursor:     neighborN > 1 && !isSpinning ? "pointer" : "default",
-            fontFamily: "inherit",
-            lineHeight: 1,
+            fontFamily: "inherit", lineHeight: 1,
           }}
         >−</button>
 
         <span style={{
-          padding:      "5px 14px",
-          fontSize:     13,
-          fontWeight:   700,
-          color:        "#f59e0b",
-          borderLeft:   "1px solid rgba(255,255,255,0.08)",
-          borderRight:  "1px solid rgba(255,255,255,0.08)",
-          minWidth:     24,
-          textAlign:    "center",
+          padding:     "5px 14px",
+          fontSize:    13, fontWeight: 700, color: "#f59e0b",
+          borderLeft:  "1px solid rgba(255,255,255,0.08)",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
+          minWidth: 24, textAlign: "center",
         }}>
           {neighborN}
         </span>
@@ -148,19 +198,16 @@ export function RouletteRacetrack({
           disabled={isSpinning || neighborN >= 8}
           style={{
             padding:    "5px 15px",
-            background: "none",
-            border:     "none",
+            background: "none", border: "none",
             color:      neighborN < 8 ? "#e2e8f0" : "#2a3040",
-            fontSize:   17,
-            fontWeight: 700,
+            fontSize: 17, fontWeight: 700,
             cursor:     neighborN < 8 && !isSpinning ? "pointer" : "default",
-            fontFamily: "inherit",
-            lineHeight: 1,
+            fontFamily: "inherit", lineHeight: 1,
           }}
         >+</button>
       </div>
 
-      {/* ── Oval racetrack ─────────────────────────────────────────────── */}
+      {/* ── Stadium racetrack ──────────────────────────────────────────── */}
       <div style={{ position: "relative", width: "100%", maxWidth: SVG_W }}>
 
         <svg
@@ -168,29 +215,40 @@ export function RouletteRacetrack({
           width="100%"
           style={{ display: "block", overflow: "visible" }}
         >
-          {/* ── Track background (outer ellipse) ── */}
-          <ellipse
-            cx={CX} cy={CY}
-            rx={TRX + PW / 2 + 6}
-            ry={TRY + PH / 2 + 6}
+          {/* ── Track outline (background of the ring) ── */}
+          {/* Outer stadium path */}
+          <path
+            d={`
+              M ${CX1} ${CY - R - PH / 2 - 5}
+              L ${CX2} ${CY - R - PH / 2 - 5}
+              A ${R + PH / 2 + 5} ${R + PH / 2 + 5} 0 0 1 ${CX2} ${CY + R + PH / 2 + 5}
+              L ${CX1} ${CY + R + PH / 2 + 5}
+              A ${R + PH / 2 + 5} ${R + PH / 2 + 5} 0 0 1 ${CX1} ${CY - R - PH / 2 - 5}
+              Z
+            `}
             fill="#0e0c10"
-            stroke="#2a2030"
+            stroke="#25203a"
             strokeWidth={1.5}
           />
 
-          {/* ── Inner clear area ── */}
-          <ellipse
-            cx={CX} cy={CY}
-            rx={TRX - PW / 2 - 5}
-            ry={TRY - PH / 2 - 5}
+          {/* Inner cutout (creates ring effect) */}
+          <path
+            d={`
+              M ${CX1} ${CY - R + PH / 2 + 5}
+              L ${CX2} ${CY - R + PH / 2 + 5}
+              A ${R - PH / 2 - 5} ${R - PH / 2 - 5} 0 0 1 ${CX2} ${CY + R - PH / 2 - 5}
+              L ${CX1} ${CY + R - PH / 2 - 5}
+              A ${R - PH / 2 - 5} ${R - PH / 2 - 5} 0 0 1 ${CX1} ${CY - R + PH / 2 + 5}
+              Z
+            `}
             fill="#0a0810"
-            stroke="#1a1525"
+            stroke="#1a1528"
             strokeWidth={1}
           />
 
           {/* ── Number pills ── */}
           {WHEEL_ORDER.map((num, i) => {
-            const { x, y, rot } = numPos(i);
+            const { x, y, rot } = POSITIONS[i];
             const isWin   = winNumber === num;
             const isPrev  = preview.has(num);
             const hasBet  = (tableBets[`n_${num}`] ?? 0) > 0;
@@ -200,13 +258,12 @@ export function RouletteRacetrack({
             if      (isWin)  { bg = "#22ee66"; textColor = "#000"; }
             else if (isPrev) { bg = numActiveBg(num); }
 
-            const ringColor = isWin ? "#ffffff" : "#f59e0b";
             const showRing  = isWin || isPrev;
+            const ringColor = isWin ? "#fff" : "#f59e0b";
 
             return (
               <g
                 key={num}
-                // rotate pill to follow oval tangent; text is counter-rotated
                 transform={`rotate(${rot},${x},${y})`}
                 onClick={() => { if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
                 onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
@@ -217,8 +274,7 @@ export function RouletteRacetrack({
                 {showRing && (
                   <rect
                     x={x - PW / 2 - 3} y={y - PH / 2 - 3}
-                    width={PW + 6} height={PH + 6}
-                    rx={PR + 2}
+                    width={PW + 6} height={PH + 6} rx={PR + 2}
                     fill={isWin ? "#22ee6628" : "#f59e0b20"}
                   />
                 )}
@@ -226,8 +282,7 @@ export function RouletteRacetrack({
                 {/* Pill fill */}
                 <rect
                   x={x - PW / 2} y={y - PH / 2}
-                  width={PW} height={PH}
-                  rx={PR}
+                  width={PW} height={PH} rx={PR}
                   fill={bg}
                 />
 
@@ -235,34 +290,26 @@ export function RouletteRacetrack({
                 {showRing && (
                   <rect
                     x={x - PW / 2} y={y - PH / 2}
-                    width={PW} height={PH}
-                    rx={PR}
-                    fill="none"
-                    stroke={ringColor}
-                    strokeWidth={1.5}
+                    width={PW} height={PH} rx={PR}
+                    fill="none" stroke={ringColor} strokeWidth={1.5}
                   />
                 )}
 
                 {/* Bet dot */}
                 {hasBet && !isWin && (
                   <circle
-                    cx={x + PW / 2 - 3.5}
-                    cy={y - PH / 2 + 3.5}
-                    r={3.2}
-                    fill="#f59e0b"
-                    stroke="#000"
-                    strokeWidth={0.6}
+                    cx={x + PW / 2 - 3.5} cy={y - PH / 2 + 3.5} r={3}
+                    fill="#f59e0b" stroke="#000" strokeWidth={0.5}
                     transform={`rotate(${-rot},${x + PW / 2 - 3.5},${y - PH / 2 + 3.5})`}
                   />
                 )}
 
-                {/* Number text — always horizontal via counter-rotation */}
+                {/* Number text — always horizontal */}
                 <text
                   x={x} y={y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
+                  textAnchor="middle" dominantBaseline="central"
                   fill={textColor}
-                  fontSize={num >= 10 ? 8 : 9.5}
+                  fontSize={num >= 10 ? 7.5 : 9}
                   fontWeight="800"
                   fontFamily="Arial, sans-serif"
                   transform={`rotate(${-rot},${x},${y})`}
@@ -277,14 +324,13 @@ export function RouletteRacetrack({
 
         {/* ── Center overlay — 4 bet group buttons ───────────────────── */}
         <div style={{
-          position:            "absolute",
-          top:                 "50%",
-          left:                "50%",
-          transform:           "translate(-50%, -50%)",
-          display:             "flex",
-          flexDirection:       "row",
-          gap:                 5,
-          width:               "58%",
+          position:  "absolute",
+          top:       "50%",
+          left:      "50%",
+          transform: "translate(-50%, -50%)",
+          display:   "flex",
+          gap:       5,
+          width:     "56%",
         }}>
           {centerBtns.map(({ id, label, nums, border, bg }) => {
             const active = hoverGroup === id;
@@ -323,10 +369,9 @@ export function RouletteRacetrack({
       {/* ── Hover hint ─────────────────────────────────────────────────── */}
       {hoverNum !== null && (
         <div style={{
-          fontSize:      10,
-          color:         "rgba(255,255,255,0.32)",
-          textAlign:     "center",
-          letterSpacing: "0.3px",
+          fontSize:  10,
+          color:     "rgba(255,255,255,0.32)",
+          textAlign: "center",
         }}>
           {gt(lang, "rtNeighborHint")} {getNeighbors(hoverNum, neighborN).join(" · ")}
         </div>
