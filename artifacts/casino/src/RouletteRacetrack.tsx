@@ -280,6 +280,7 @@ export function RouletteRacetrack({
           width={SVG_W}
           height={SVG_H}
           shapeRendering="geometricPrecision"
+          onMouseDown={e => e.preventDefault()}
           style={{ display: "block", maxWidth: "100%", height: "auto", transform: "translateZ(0)" }}
         >
           {/* ── Track background ring ── */}
@@ -301,6 +302,7 @@ export function RouletteRacetrack({
               <g
                 key={num}
                 onClick={e => { e.preventDefault(); if (!isSpinning) betNums(getNeighbors(num, neighborN)); }}
+                onMouseDown={e => e.preventDefault()}
                 onMouseEnter={() => { if (!isSpinning) setHoverNum(num); }}
                 onMouseLeave={() => setHoverNum(null)}
                 style={{ cursor: isSpinning ? "default" : "pointer" }}
@@ -369,6 +371,7 @@ export function RouletteRacetrack({
               <g
                 key={id}
                 onClick={e => { e.preventDefault(); betNums(nums); }}
+                onMouseDown={e => e.preventDefault()}
                 onMouseEnter={() => { if (!isSpinning) setHoverGroup(id); }}
                 onMouseLeave={() => setHoverGroup(null)}
                 style={{ cursor: isSpinning ? "default" : "pointer" }}

@@ -1004,6 +1004,12 @@ button:not(:disabled):active {
   opacity: 0.75;
   transition: transform 0.06s ease, opacity 0.06s ease;
 }
+/* No shrink effect on SVG interactive elements (racetrack cells/sections) */
+svg [style*="cursor: pointer"]:active,
+svg [style*="cursor:pointer"]:active {
+  transform: none !important;
+  opacity: 1 !important;
+}
 /* No shrink effect for sidebar nav items */
 .casino-sidebar ul li > div:active {
   transform: none !important;
