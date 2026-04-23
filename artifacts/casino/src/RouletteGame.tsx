@@ -1937,15 +1937,12 @@ function RouletteGame({
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
       <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
-        {/* Wheel row — desktop: grid. Mobile spinning: absolute centered overlay. Mobile idle: hidden */}
-        <div style={isMobile && (isSpinning || mobileWheelLinger) ? {
-          position:"absolute", inset:0, zIndex:99,
-          display:"flex", alignItems:"center", justifyContent:"center",
-          pointerEvents:"none",
-          background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
-          WebkitBackdropFilter:"blur(3px)",
+        {/* Wheel row — desktop: grid. Mobile: always visible above table, no overlay */}
+        <div style={isMobile ? {
+          display:"flex", justifyContent:"center", alignItems:"center",
+          paddingTop:"6px", paddingBottom:"4px",
         } : {
-          display: isMobile ? "none" : "grid",
+          display:"grid",
           gridTemplateColumns:"1fr 245px 1fr",
           alignItems:"center", gap:"0",
           height:"265px", paddingBottom:"0",
@@ -1974,8 +1971,8 @@ function RouletteGame({
           )}
 
           {/* Center column: wheel canvas + win popup overlay */}
-          <div style={{ position:"relative", width: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", height: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", margin: isMobile ? "0 auto" : undefined }}>
-            <canvas ref={canvasRef} width={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245} height={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245}
+          <div style={{ position:"relative", width: isMobile ? "200px" : "245px", height: isMobile ? "200px" : "245px", margin: isMobile ? "0 auto" : undefined }}>
+            <canvas ref={canvasRef} width={isMobile ? 200 : 245} height={isMobile ? 200 : 245}
               style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
 
             {/* ── Win popup — Keno style, centered over wheel ── */}
