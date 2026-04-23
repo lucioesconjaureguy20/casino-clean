@@ -91,12 +91,12 @@ interface SpinData {
 }
 
 // Chip display labels → actual USD amounts:
-const CHIP_VALUES = [0.01, 0.10, 0.5, 1, 10, 100, 500, 1_000];
+const CHIP_VALUES = [0.01, 0.10, 1, 5, 10, 100, 500, 1_000];
 const CHIP_META: Record<string, { label: string; bg: string; border: string; txt: string }> = {
   "0.01":  { label:".01",  bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
   "0.1":   { label:"0.1",  bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
-  "0.5":   { label:"0.5",  bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
   "1":     { label:"1",    bg:"#15803d", border:"#22c55e", txt:"#fff"    },
+  "5":     { label:"5",    bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
   "10":    { label:"10",   bg:"#111827", border:"#f4a91f", txt:"#f4a91f" },
   "100":   { label:"100",  bg:"#6d28d9", border:"#a78bfa", txt:"#fff"    },
   "500":   { label:"500",  bg:"#0f766e", border:"#2dd4bf", txt:"#fff"    },
@@ -148,8 +148,8 @@ function getBetChipMeta(usd: number) {
   if (usd >= 500)    return CHIP_META["500"];
   if (usd >= 100)    return CHIP_META["100"];
   if (usd >= 10)     return CHIP_META["10"];
+  if (usd >= 5)      return CHIP_META["5"];
   if (usd >= 1)      return CHIP_META["1"];
-  if (usd >= 0.5)    return CHIP_META["0.5"];
   if (usd >= 0.10)   return CHIP_META["0.1"];
   return CHIP_META["0.01"];
 }
