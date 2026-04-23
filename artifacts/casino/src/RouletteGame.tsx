@@ -1532,13 +1532,11 @@ function RouletteGame({
       >
         {betAmt > 0 && !isDragSrc ? (
           <div
-            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent" }}
+            style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:3, cursor:"grab", touchAction:"none", WebkitTapHighlightColor:"transparent", writingMode:"horizontal-tb" }}
             onMouseDown={e => beginChipInteraction(betKey, betAmt, e.clientX, e.clientY, e)}
             onTouchStart={e => beginChipInteractionTouch(betKey, betAmt, e.touches[0].clientX, e.touches[0].clientY, e)}
           >
-            <div style={{ transform: chipRotate ? `rotate(${chipRotate}deg)` : undefined }}>
-              <CasinoChipSVG {...getBetChipMeta(betAmt)} label={fmtBetChipLabel(betAmt)} size={28} />
-            </div>
+            <CasinoChipSVG {...getBetChipMeta(betAmt)} label={fmtBetChipLabel(betAmt)} size={28} />
           </div>
         ) : (
           <span style={{ position:"relative", zIndex:1 }}>{label}</span>
