@@ -663,13 +663,14 @@ function RouletteGame({
         const t       = Math.min(elapsed / SPIN_MS, 1);
         ballRef.current = computeBallState(t, sd, canvas);
         if (t >= 1) {
-          // Lock ball to wheel: record offset from wheel angle at moment of landing
+          // Lock ball to wheel using the ACTUAL wheel angle at landing,
+          // snapping ball to the exact center of the winning segment (avoids timing jitter).
+          const segCenterOffset = -90 + sd.resultIdx * SEG_DEG + SEG_DEG / 2;
+          ballWheelOffsetRef.current = segCenterOffset;
           const finalState = computeBallState(1, sd, canvas);
-          ballWheelOffsetRef.current = finalState.angleDeg - angleRef.current;
+          ballRef.current = { ...finalState, angleDeg: angleRef.current + segCenterOffset };
           spinDataRef.current = null;
           sd.onComplete();
-          // Ball stays locked to wheel until the NEXT spin starts (cleared in startSpin).
-          ballRef.current = { ...finalState };
         }
       }
 
