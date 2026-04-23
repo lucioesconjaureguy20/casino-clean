@@ -2055,7 +2055,7 @@ function RouletteGame({
 
             {/* ── Mobile spinning wheel — overlay centered over the table only ── */}
             <div style={{
-              position:"absolute", inset:0, zIndex:99,
+              position:"absolute", top:0, bottom:0, left:"-16px", right:"-16px", zIndex:99,
               display: (isSpinning || mobileWheelLinger) ? "flex" : "none",
               alignItems:"center", justifyContent:"center",
               background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
