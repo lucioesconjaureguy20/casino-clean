@@ -35,12 +35,12 @@ function numActiveBg(n: number): string {
 //   x = CX + TRX * cos(θ_i)
 //   y = CY + TRY * sin(θ_i)
 //
-const SVG_W = 600;
-const SVG_H = 185;
-const CX    = SVG_W / 2;   // 300
-const CY    = SVG_H / 2;   // 92.5
-const TRX   = 270;          // horizontal track radius
-const TRY   = 68;           // vertical track radius
+const SVG_W = 540;
+const SVG_H = 210;
+const CX    = SVG_W / 2;   // 270
+const CY    = SVG_H / 2;   // 105
+const TRX   = 238;          // horizontal track radius
+const TRY   = 90;           // vertical track radius — taller so sides spread out
 const PW    = 24;           // pill width
 const PH    = 17;           // pill height
 const PR    = 4.5;          // pill corner radius
