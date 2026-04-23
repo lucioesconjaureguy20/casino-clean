@@ -161,7 +161,7 @@ function fmtBetChipLabel(usd: number): string {
   if (usd >= 100)    return String(Math.round(usd));
   if (usd >= 10)     return usd % 1 === 0 ? String(usd) : usd.toFixed(1);
   if (usd >= 1)      return usd % 1 === 0 ? String(usd) : usd.toFixed(2).replace(/0$/, "");
-  if (usd >= 0.1)    return usd.toFixed(1);
+  if (usd >= 0.1)    return usd.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
   return usd.toFixed(2);
 }
 
