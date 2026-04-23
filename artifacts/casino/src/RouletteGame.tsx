@@ -547,6 +547,8 @@ export default function RouletteGame({
   const [autoRunning, setAutoRunning] = useState(false);
   const [autoStopping, setAutoStopping] = useState(false); // delay de 2s al detener
   const [winCells, setWinCells]     = useState<Set<string>>(new Set());
+  const [mobileWheelLinger, setMobileWheelLinger] = useState(false);
+  const mobileLingerTimer = useRef<ReturnType<typeof setTimeout>|null>(null);
 
   // Chip drag & drop
   const [isDragging, setIsDragging] = useState(false);
@@ -837,6 +839,11 @@ export default function RouletteGame({
     setResultHistory(prev => [result, ...prev].slice(0, 20));
     setWinCells(winning);
     setPhase("result");
+
+    // Mobile: mantener overlay de ruleta 2s extra para que el jugador vea el número
+    if (mobileLingerTimer.current) clearTimeout(mobileLingerTimer.current);
+    setMobileWheelLinger(true);
+    mobileLingerTimer.current = setTimeout(() => setMobileWheelLinger(false), 2000);
 
     if (totalWin > 0) {
       setShowWinPop(true);
@@ -1749,7 +1756,7 @@ export default function RouletteGame({
       <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
         {/* Wheel row — desktop: grid. Mobile spinning: absolute centered overlay. Mobile idle: hidden */}
-        <div style={isMobile && isSpinning ? {
+        <div style={isMobile && (isSpinning || mobileWheelLinger) ? {
           position:"absolute", inset:0, zIndex:99,
           display:"flex", alignItems:"center", justifyContent:"center",
           pointerEvents:"none",
@@ -1785,8 +1792,8 @@ export default function RouletteGame({
           )}
 
           {/* Center column: wheel canvas + win popup overlay */}
-          <div style={{ position:"relative", width: isMobile ? (isSpinning ? "300px" : "210px") : "245px", height: isMobile ? (isSpinning ? "300px" : "210px") : "245px", margin: isMobile ? "0 auto" : undefined }}>
-            <canvas ref={canvasRef} width={isMobile ? (isSpinning ? 300 : 210) : 245} height={isMobile ? (isSpinning ? 300 : 210) : 245}
+          <div style={{ position:"relative", width: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", height: isMobile ? ((isSpinning||mobileWheelLinger) ? "300px" : "210px") : "245px", margin: isMobile ? "0 auto" : undefined }}>
+            <canvas ref={canvasRef} width={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245} height={isMobile ? ((isSpinning||mobileWheelLinger) ? 300 : 210) : 245}
               style={{ borderRadius:"50%", boxShadow:"0 0 60px rgba(0,0,0,0.9), 0 0 24px rgba(244,169,31,0.25)", display:"block" }}/>
 
             {/* ── Win popup — Keno style, centered over wheel ── */}
