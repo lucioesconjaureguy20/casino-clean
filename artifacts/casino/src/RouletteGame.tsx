@@ -1746,20 +1746,15 @@ export default function RouletteGame({
       </div>
 
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
-      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320" }}>
+      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
-        {/* Backdrop — darkens + blurs the table behind the wheel overlay on mobile */}
-        {isMobile && isSpinning && (
-          <div style={{ position:"fixed", inset:0, zIndex:98,
-            background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
-            WebkitBackdropFilter:"blur(3px)" }} />
-        )}
-
-        {/* Wheel row — desktop: grid. Mobile spinning: fixed centered overlay. Mobile idle: hidden */}
+        {/* Wheel row — desktop: grid. Mobile spinning: absolute centered overlay. Mobile idle: hidden */}
         <div style={isMobile && isSpinning ? {
-          position:"fixed", inset:0, zIndex:99,
+          position:"absolute", inset:0, zIndex:99,
           display:"flex", alignItems:"center", justifyContent:"center",
           pointerEvents:"none",
+          background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)",
+          WebkitBackdropFilter:"blur(3px)",
         } : {
           display: isMobile ? "none" : "grid",
           gridTemplateColumns:"1fr 245px 1fr",
