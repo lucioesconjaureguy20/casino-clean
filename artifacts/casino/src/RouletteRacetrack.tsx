@@ -221,7 +221,7 @@ interface Props {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function RouletteRacetrack({
-  placeBet, placeGroupBet, tableBets, isSpinning, winNumber, lang = "es",
+  placeBet, placeGroupBet, tableBets, chipUsd, isSpinning, winNumber, lang = "es",
 }: Props) {
   const [neighborN,  setNeighborN]  = useState(2);
   const [hoverNum,   setHoverNum]   = useState<number | null>(null);
