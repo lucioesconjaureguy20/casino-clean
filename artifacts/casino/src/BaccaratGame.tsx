@@ -845,15 +845,14 @@ export default function BaccaratGame({
             </div>
           </div>
 
-          {tab === "manual" ? (
-            <>
-              {/* Half / Double */}
+          {/* Half / Double — always below Total Bet, shared between manual and auto tabs */}
+          {(()=>{
+            const canHD = phase === "idle" && hasBets && !isDealing && !autoRunning;
+            return (
               <div style={{ display:"flex", gap:"8px" }}>
-                {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => {
-                  const canHalfDouble = phase === "idle" && hasBets && !isDealing;
-                  return (
+                {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => (
                   <button key={label} onClick={() => {
-                    if (phase !== "idle" || isDealing) return;
+                    if (!canHD) return;
                     setZoneBets(prev => {
                       const next = {
                         player: Math.round(prev.player * mult * 10000) / 10000,
@@ -868,13 +867,17 @@ export default function BaccaratGame({
                       return next;
                     });
                   }}
-                    disabled={!canHalfDouble}
-                    style={{ flex:1, padding:"9px 0", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", color: canHalfDouble ? "#9ab0d0" : "#3a4a60", fontSize:"13px", fontWeight:700, cursor: canHalfDouble ? "pointer" : "not-allowed", opacity: isDealing ? 0.45 : 1, transition:"opacity .15s" }}>
+                    disabled={!canHD}
+                    style={{ flex:1, padding:"9px 0", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", color: canHD ? "#9ab0d0" : "#3a4a60", fontSize:"13px", fontWeight:700, cursor: canHD ? "pointer" : "not-allowed", opacity: (!canHD) ? 0.45 : 1, transition:"opacity .15s", fontFamily:"inherit" }}>
                     {label}
                   </button>
-                  );
-                })}
+                ))}
               </div>
+            );
+          })()}
+
+          {tab === "manual" ? (
+            <>
 
               {phase === "idle" && hasBets && balance < totalBet && (
                 <div style={{ fontSize:"11.5px", color:"#e74c3c", fontWeight:600, marginBottom:"6px", paddingLeft:"2px" }}>
@@ -924,35 +927,6 @@ export default function BaccaratGame({
                   </button>
                 </div>
               </div>
-              {/* Half / Double — same as manual tab */}
-              <div style={{ display:"flex", gap:"8px" }}>
-                {([["½", 0.5],["2×", 2]] as [string,number][]).map(([label,mult]) => {
-                  const canHD = hasBets && !autoRunning;
-                  return (
-                    <button key={label} onClick={() => {
-                      if (!canHD) return;
-                      setZoneBets(prev => {
-                        const next = {
-                          player: Math.round(prev.player * mult * 10000) / 10000,
-                          tie:    Math.round(prev.tie    * mult * 10000) / 10000,
-                          banker: Math.round(prev.banker * mult * 10000) / 10000,
-                        };
-                        setZoneChips({
-                          player: computeChipsFromAmount(next.player),
-                          tie:    computeChipsFromAmount(next.tie),
-                          banker: computeChipsFromAmount(next.banker),
-                        });
-                        return next;
-                      });
-                    }}
-                      disabled={!canHD}
-                      style={{ flex:1, padding:"9px 0", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", color: canHD ? "#9ab0d0" : "#3a4a60", fontSize:"13px", fontWeight:700, cursor: canHD ? "pointer" : "not-allowed", opacity: autoRunning ? 0.45 : 1, transition:"opacity .15s", fontFamily:"inherit" }}>
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-
               {(()=>{
                 const isDealing = phase === "dealing";
                 const btnDisabled = isDealing || autoStopping || (!autoRunning && (!hasBets || balance < totalBet));
