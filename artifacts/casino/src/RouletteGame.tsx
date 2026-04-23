@@ -218,6 +218,11 @@ function evalBet(key: string, win: number): number {
     const [a, b] = key.slice(3).split("_").map(Number);
     return (win === a || win === b) ? 18 : 0;
   }
+  // Trio (0-1-2 or 0-2-3) checked before zero-guard → pays 11:1 = 12×
+  if (key.startsWith("tr_")) {
+    const nums = key.slice(3).split("_").map(Number);
+    return nums.includes(win) ? 12 : 0;
+  }
   if (win === 0) return 0;
   // Street (3 consecutive numbers in a column) → pays 11:1 = return 12×
   if (key.startsWith("st_")) {
@@ -2135,6 +2140,16 @@ function RouletteGame({
                     {row === 0 && (
                       <RZone {...mzp} zkey={`sp_0_${n}`} title={`Split 0-${n} (17:1)`}
                         style={{ top:-10, left:"15%", width:"70%", height:20, borderRadius:4, zIndex:12 }} />
+                    )}
+                    {/* Trio 0-1-2: top-left corner of cell 2 (intersection between sp_0_1, sp_0_2, sp_1_2) */}
+                    {row === 0 && col === 1 && (
+                      <RZone {...mzp} zkey="tr_0_1_2" title="Trío 0-1-2 (11:1)"
+                        style={{ top:-10, left:-10, width:20, height:20, borderRadius:"50%", zIndex:14 }} />
+                    )}
+                    {/* Trio 0-2-3: top-left corner of cell 3 (intersection between sp_0_2, sp_0_3, sp_2_3) */}
+                    {row === 0 && col === 2 && (
+                      <RZone {...mzp} zkey="tr_0_2_3" title="Trío 0-2-3 (11:1)"
+                        style={{ top:-10, left:-10, width:20, height:20, borderRadius:"50%", zIndex:14 }} />
                     )}
                     {/* Street LEFT edge (col=0 only) — accessible from docenas side */}
                     {col === 0 && (
