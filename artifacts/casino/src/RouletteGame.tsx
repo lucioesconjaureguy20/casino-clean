@@ -433,7 +433,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
     bx = cx;
     by = cy - ballTrackR;
   }
-  const ballG = ctx.createRadialGradient(bx - br * 0.35, by - br * 0.35, 0, bx, by, br);
+  const ballG = ctx.createRadialGradient(bx, by - br * 0.32, 0, bx, by, br);
   ballG.addColorStop(0, "#ffffff");
   ballG.addColorStop(0.5, "#dddddd");
   ballG.addColorStop(1, "#777777");
