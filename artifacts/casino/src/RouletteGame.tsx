@@ -466,7 +466,7 @@ export default function RouletteGame({
   const [chipUsd, setChipUsd] = useState(0.01);        // selected chip value (USD)
   const [chipOffset, setChipOffset] = useState(0);     // chip selector page offset
   const [tableBets, setTableBets]   = useState<Record<string,number>>({});
-  const [betStack, setBetStack]     = useState<Array<{key:string; chip:number}>>([]);
+  const [betStack, setBetStack]     = useState<Array<{key:string; chip:number} | {key:'__group__'; bets:{key:string;chip:number}[]}>>([]);
   const [lastBets, setLastBets]     = useState<Record<string,number>>({});  // repeat bet
   const [phase, setPhase]           = useState<"idle"|"spinning"|"result">("idle");
   const [winNumber, setWinNumber]   = useState<number|null>(null);
@@ -883,14 +883,26 @@ export default function RouletteGame({
     if (betStack.length === 0) return;
     const last = betStack[betStack.length - 1];
     setBetStack(prev => prev.slice(0, -1));
-    setTableBets(prev => {
-      const next = { ...prev };
-      const cur = next[last.key] || 0;
-      const newVal = Math.round((cur - last.chip) * 10000) / 10000;
-      if (newVal <= 0) delete next[last.key];
-      else next[last.key] = newVal;
-      return next;
-    });
+    if ('bets' in last) {
+      setTableBets(prev => {
+        const next = { ...prev };
+        for (const { key: k, chip } of last.bets) {
+          const newVal = Math.round(((next[k] || 0) - chip) * 10000) / 10000;
+          if (newVal <= 0) delete next[k];
+          else next[k] = newVal;
+        }
+        return next;
+      });
+    } else {
+      setTableBets(prev => {
+        const next = { ...prev };
+        const cur = next[last.key] || 0;
+        const newVal = Math.round((cur - last.chip) * 10000) / 10000;
+        if (newVal <= 0) delete next[last.key];
+        else next[last.key] = newVal;
+        return next;
+      });
+    }
   }
 
   function handleClear() {
@@ -1047,6 +1059,19 @@ export default function RouletteGame({
       setBetStack(prev => [...prev, { key, chip: chipUsd }]);
       setTableBets(prev => ({ ...prev, [key]: Math.round(((prev[key] || 0) + chipUsd) * 10000) / 10000 }));
     }
+  }
+
+  function placeGroupBet(keys: string[]) {
+    if (isSpinning || keys.length === 0) return;
+    playChipSound(volRef.current);
+    const bets = keys.map(k => ({ key: k, chip: chipUsd }));
+    setBetStack(prev => [...prev, { key: '__group__', bets }]);
+    setTableBets(prev => {
+      const next = { ...prev };
+      for (const { key: k, chip } of bets)
+        next[k] = Math.round(((next[k] || 0) + chip) * 10000) / 10000;
+      return next;
+    });
   }
 
   function handleAutoStart() {
@@ -1822,6 +1847,7 @@ export default function RouletteGame({
           }}>
             <RouletteRacetrack
               placeBet={placeBet}
+              placeGroupBet={placeGroupBet}
               tableBets={tableBets}
               chipUsd={chipUsd}
               isSpinning={isSpinning}

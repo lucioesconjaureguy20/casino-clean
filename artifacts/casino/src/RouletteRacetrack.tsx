@@ -185,6 +185,7 @@ const TE_LX  = ((X3T + X3B) / 2 + CX2 + IRI) / 2;
 // ── Props ─────────────────────────────────────────────────────────────────────
 interface Props {
   placeBet:   (key: string) => void;
+  placeGroupBet: (keys: string[]) => void;
   tableBets:  Record<string, number>;
   chipUsd:    number;
   isSpinning: boolean;
@@ -194,7 +195,7 @@ interface Props {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function RouletteRacetrack({
-  placeBet, tableBets, isSpinning, winNumber, lang = "es",
+  placeBet, placeGroupBet, tableBets, isSpinning, winNumber, lang = "es",
 }: Props) {
   const [neighborN,  setNeighborN]  = useState(2);
   const [hoverNum,   setHoverNum]   = useState<number | null>(null);
@@ -211,7 +212,7 @@ export function RouletteRacetrack({
 
   function betNums(nums: Iterable<number>) {
     if (isSpinning) return;
-    for (const n of nums) placeBet(`n_${n}`);
+    placeGroupBet([...nums].map(n => `n_${n}`));
   }
 
   const sections = [
