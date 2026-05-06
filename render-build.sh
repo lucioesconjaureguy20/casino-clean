@@ -7,7 +7,7 @@ npm install -g pnpm@9
 
 # ── Install dependencies ────────────────────────────────────────────────────
 echo "==> Installing workspace dependencies..."
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 
 # ── Build shared libs ───────────────────────────────────────────────────────
 echo "==> Building shared libraries..."
