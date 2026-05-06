@@ -1,0 +1,55 @@
+services:
+  # ── API Backend ──────────────────────────────────────────────────────────
+  - type: web
+    name: manderbet-api
+    runtime: node
+    region: oregon
+    plan: starter
+    buildCommand: bash render-build.sh
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
+    healthCheckPath: /api/healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        generateValue: false
+        value: "10000"
+      - key: SESSION_SECRET
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: PLISIO_SECRET_KEY
+        sync: false
+      - key: PLISIO_IPN_SECRET
+        sync: false
+      - key: NOWPAYMENTS_API_KEY
+        sync: false
+      - key: CRYPTOMUS_MERCHANT_ID
+        sync: false
+      - key: CRYPTOMUS_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: ADMIN_USERNAMES
+        sync: false
+
+  # ── Casino Frontend (Static Site) ────────────────────────────────────────
+  - type: web
+    name: manderbet-casino
+    runtime: static
+    region: oregon
+    plan: starter
+    buildCommand: bash render-build.sh
+    staticPublishPath: artifacts/casino/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
