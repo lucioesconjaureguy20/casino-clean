@@ -18,3 +18,24 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 80
+
+[[ports]]
+localPort = 22412
+externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+ADMIN_USERNAMES = "ADMIN, ADMIN2"
+APP_URL = "https://manderbet.com"
+TELEGRAM_BOT_TOKEN = "8769114613:AAEY1hJZR0c68sGCeizg0enOz4kYXWc-HA4"
+TELEGRAM_DEPOSIT_CHAT_ID = "-5151626053"
+TELEGRAM_WITHDRAW_CHAT_ID = "-5220450784"

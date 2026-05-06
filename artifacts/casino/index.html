@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ── Maintenance mode ── Set to true to redirect all visitors to maintenance.html -->
+    <script>
+      const isMaintenanceMode = false;
+      if (isMaintenanceMode) {
+        // Resolve relative to the app's base so it works at any deployment path
+        const base = document.querySelector('base')?.href || (window.location.origin + '/');
+        window.location.replace(base.replace(/\/?$/, '/') + 'maintenance.html');
+      }
+    </script>
+
+    <!-- Default title & description (JS updates these on navigation) -->
+    <title>ManderBet Casino | Original Games & Crypto Payments</title>
+    <meta name="description" content="ManderBet is a no KYC crypto casino with original games like Dice, Plinko and Mines. Enjoy fast deposits, quick withdrawals and a private gaming experience." />
+    <meta name="robots" content="max-image-preview:none" />
+
+    <!-- Open Graph (Discord, WhatsApp, Telegram, Facebook) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="ManderBet Casino" />
+    <meta property="og:url"         content="https://manderbet.com/" />
+    <meta property="og:title"       content="ManderBet Casino | Original Games & Crypto Payments" />
+    <meta property="og:description" content="ManderBet is a no KYC crypto casino with original games like Dice, Plinko and Mines. Enjoy fast deposits, quick withdrawals and a private gaming experience." />
+
+    <!-- Twitter / X Card — "summary" shows text only when no image is set -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:site"        content="@manderbet" />
+    <meta name="twitter:title"       content="ManderBet Casino | Original Games & Crypto Payments" />
+    <meta name="twitter:description" content="ManderBet is a no KYC crypto casino with original games like Dice, Plinko and Mines. Enjoy fast deposits, quick withdrawals and a private gaming experience." />
+
+    <link rel="icon" href="/favicon.ico?v=v5" />
+    <link rel="shortcut icon" href="/favicon.ico?v=v5" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=v5" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=v5" />
+    <meta name="apple-mobile-web-app-title" content="Manderbet" />
+    <link rel="manifest" href="/site.webmanifest?v=v5" />
+    <!-- Structured Data for Google Sitelinks -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ManderBet Casino",
+      "url": "https://manderbet.com/",
+      "description": "ManderBet is a no KYC crypto casino with original games like Dice, Plinko and Mines. Enjoy fast deposits, quick withdrawals and a private gaming experience.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://manderbet.com/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ManderBet Casino",
+      "url": "https://manderbet.com/",
+      "logo": "https://manderbet.com/favicon-96x96.png",
+      "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "ManderBet Casino Games & Sections",
+      "itemListElement": [
+        {
+          "@type": "SiteLinksSearchBox",
+          "url": "https://manderbet.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Juegos Originales",
+          "description": "Jugá Plinko, Dice, Mines, Hilo y más juegos originales con crypto.",
+          "url": "https://manderbet.com/games"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Depósito con Crypto",
+          "description": "Depositá y retirá fácil con Bitcoin, Ethereum, USDT y más.",
+          "url": "https://manderbet.com/deposit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Bonos y Recompensas VIP",
+          "description": "Ganá recompensas y subí de nivel en nuestro programa VIP.",
+          "url": "https://manderbet.com/vip"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Afiliados",
+          "description": "Invitá amigos y ganá comisiones por cada apuesta que hagan.",
+          "url": "https://manderbet.com/affiliates"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Registrarse",
+          "description": "Creá tu cuenta gratis. Sin KYC ni verificación de identidad.",
+          "url": "https://manderbet.com/register"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Preload critical above-the-fold images -->
+    <link rel="preload" as="image" href="/mander-logo.webp"      type="image/webp" fetchpriority="high" />
+    <!-- Banner & game card preloads with correct ?v= hashes are injected by the
+         preloadCriticalPlugin in vite.config.ts at build / dev-server start. -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- Unified scroll controller:
+         1. Fixed pixel step per wheel notch (STEP px, always identical).
+         2. Smooth easing animation via RAF — ticks stack on the target so
+            rapid scrolling accumulates naturally.
+         3. Correct routing: sidebar → sidebar <ul>, modal/panel → that container,
+            page → <html>.
+         4. is-scrolling class → pointer-events:none during scroll (hover jank fix). -->
+    <script>
+      (function(){
+        var STEP   = 100;   // px per wheel notch
+        var EASE   = 0.16;  // lerp factor per frame (lower = slower/smoother, 0.08-0.20)
+        var _t;
+        var root   = document.documentElement;
+
+        /* ── Smooth scroll state (one target per scroll container) ── */
+        var pageTgt = null;   // null = uninitialised (use live scrollTop on first tick)
+        var pageCur = 0;
+        var pageRaf = null;
+
+        var sbTgt   = null;
+        var sbCur   = 0;
+        var sbRaf   = null;
+
+        /* ── is-scrolling marker ──────────────────────────────────────────────
+           Only triggered by real user input (wheel / touch), NOT by the scroll
+           events that our own RAF loop fires when it sets scrollTop.
+           This means pointer-events are re-enabled 200 ms after the user
+           stops wheeling — cards become clickable again immediately.        */
+        function mark(){
+          root.classList.add('is-scrolling');
+          clearTimeout(_t);
+          _t = setTimeout(function(){ root.classList.remove('is-scrolling'); }, 200);
+        }
+        window.addEventListener('touchmove', mark, { passive:true });
+        /* NOTE: intentionally NO scroll event → mark() here.
+           Our RAF animation fires scroll events itself; listening to them
+           would keep is-scrolling active for the entire animation duration
+           and block all clicks on cards. */
+
+        /* ── RAF loop for page ── */
+        function animatePage(){
+          var dist = pageTgt - pageCur;
+          if (Math.abs(dist) < 0.6){
+            pageCur = pageTgt;
+            root.scrollTop = Math.round(pageTgt);
+            pageRaf = null;
+            return;
+          }
+          pageCur += dist * EASE;
+          root.scrollTop = Math.round(pageCur);
+          pageRaf = requestAnimationFrame(animatePage);
+        }
+
+        /* ── RAF loop for sidebar ── */
+        function animateSidebar(ul){
+          var dist = sbTgt - sbCur;
+          if (Math.abs(dist) < 0.6){
+            sbCur = sbTgt;
+            ul.scrollTop = Math.round(sbTgt);
+            sbRaf = null;
+            return;
+          }
+          sbCur += dist * EASE;
+          ul.scrollTop = Math.round(sbCur);
+          sbRaf = requestAnimationFrame(function(){ animateSidebar(ul); });
+        }
+
+        /* ── Wheel handler ── */
+        window.addEventListener('wheel', function(e){
+          if (!e.deltaY) return;
+          if (e.ctrlKey || e.metaKey) return;
+          mark();
+          e.preventDefault();
+
+          var dir    = e.deltaY > 0 ? 1 : -1;
+          var amount = dir * STEP;
+
+          /* ① Sidebar — check first via contains() so the entire sidebar area
+             (including the header/logo zone at the top) is captured regardless
+             of how deep the target is in the DOM tree. */
+          var sidebarEl = document.querySelector('.casino-sidebar');
+          if (sidebarEl && sidebarEl.contains(e.target)) {
+            var ul = sidebarEl.querySelector('ul');
+            if (ul) {
+              if (!sbRaf) { sbTgt = sbCur = ul.scrollTop; }
+              sbTgt = Math.max(0, Math.min(sbTgt + amount, ul.scrollHeight - ul.clientHeight));
+              if (!sbRaf) sbRaf = requestAnimationFrame(function(){ animateSidebar(ul); });
+            }
+            return; /* never fall through to page when cursor is inside sidebar */
+          }
+
+          /* Walk up from target (max 8 levels) to find the right scroll container.
+             getComputedStyle is only called when scrollHeight > clientHeight (cheap guard first). */
+          var el = e.target;
+          var depth = 0;
+          while (el && el !== root && depth < 8){
+            depth++;
+
+            /* (sidebar already handled above) */
+
+            /* ② Other scrollable containers (modal, game panel) — instant scroll */
+            if (el !== document.body && el.scrollHeight > el.clientHeight){
+              var oy = getComputedStyle(el).overflowY;
+              if (oy === 'scroll' || oy === 'auto'){
+                var canScroll = dir > 0
+                  ? el.scrollTop + el.clientHeight < el.scrollHeight - 1
+                  : el.scrollTop > 0;
+                if (canScroll){ el.scrollTop += amount; return; }
+                break;   // at limit → fall through to page
+              }
+            }
+
+            el = el.parentElement;
+          }
+
+          /* ③ Page — smooth.
+             Only sync pageCur from DOM when animation is idle to avoid forced layout. */
+          if (!pageRaf) { pageTgt = pageCur = root.scrollTop; }
+          var maxScroll = root.scrollHeight - root.clientHeight;
+          pageTgt = Math.max(0, Math.min(pageTgt + amount, maxScroll));
+          if (!pageRaf) pageRaf = requestAnimationFrame(animatePage);
+
+        }, { passive:false });
+      })();
+    </script>
+    <!-- SEO internal links – visually hidden, semantically present -->
+    <nav aria-label="Site sections" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
+      <a href="/">Crypto Casino Games</a>
+      <a href="/fairness">Provably Fair</a>
+      <a href="/rewards">VIP Rewards</a>
+      <a href="/referrals">Affiliates</a>
+      <a href="/about">About ManderBet</a>
+      <a href="/contact">Contact</a>
+      <a href="/dice">Dice</a>
+      <a href="/plinko">Plinko</a>
+      <a href="/mines">Mines</a>
+      <a href="/blackjack">Blackjack</a>
+      <a href="/roulette">Roulette</a>
+      <a href="/baccarat">Baccarat</a>
+      <a href="/keno">Keno</a>
+      <a href="/hilo">HiLo</a>
+      <a href="/limbo">Limbo</a>
+    </nav>
+  </body>
+</html>

@@ -8,4 +8,14 @@ router.get("/healthz", (_req, res) => {
   res.json(data);
 });
 
+router.get("/api/my-ip", async (_req, res) => {
+  try {
+    const r = await fetch("https://api.ipify.org?format=json");
+    const data = await r.json();
+    res.json({ server_ip: data.ip });
+  } catch {
+    res.status(500).json({ error: "No se pudo obtener el IP" });
+  }
+});
+
 export default router;

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ManderBet — Under Maintenance</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #080d14;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      padding: 40px 16px 60px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 10%, rgba(212,175,55,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(26,100,200,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.15);
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      padding: 48px 40px 40px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      backdrop-filter: blur(24px);
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.08) inset;
+    }
+
+    .logo {
+      width: 180px;
+      filter: drop-shadow(0 4px 24px rgba(212,175,55,0.30));
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 24px 12px 48px; }
+      .card { gap: 20px; padding: 36px 24px 32px; border-radius: 18px; }
+      .logo { width: 140px; }
+      .icon-wrap { width: 72px; height: 72px; }
+      .icon-svg { width: 72px; height: 72px; }
+      .icon-bg { border-radius: 50%; }
+      .gear-spin { transform-origin: 36px 36px; }
+      .headline { font-size: 18px; }
+      .subtext { font-size: 13px; }
+      .status { font-size: 11px; padding: 6px 16px; }
+      .support { font-size: 12px; }
+      .footer { font-size: 11px; bottom: 14px; }
+    }
+
+    /* Icon */
+    .icon-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+    }
+    .icon-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.18); opacity: 0.6; }
+    }
+    .icon-svg {
+      position: relative;
+      z-index: 1;
+      width: 88px;
+      height: 88px;
+      filter: drop-shadow(0 0 16px rgba(212,175,55,0.50));
+    }
+    /* Slow gear spin */
+    @keyframes gearSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .gear-spin {
+      transform-origin: 44px 44px;
+      animation: gearSpin 8s linear infinite;
+    }
+
+    /* Text */
+    .headline {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #fff 30%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtext {
+      font-size: 15px;
+      font-weight: 400;
+      color: #8fa8c8;
+      line-height: 1.65;
+      max-width: 380px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.35), transparent);
+    }
+
+    /* Status pill — no dot */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.20);
+      border-radius: 999px;
+      padding: 7px 22px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4af37;
+    }
+
+    /* Support email */
+    .support {
+      font-size: 13px;
+      color: #8fa8c8;
+    }
+    .support a {
+      color: #d4af37;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity .15s;
+    }
+    .support a:hover { opacity: 0.75; }
+
+    .footer {
+      position: relative;
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.04em;
+      z-index: 10;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="card">
+    <img src="/mander-logo-maintenance.png" alt="ManderBet" class="logo" style="position:relative;left:-6px;" />
+
+    <!-- Casino chip + gear icon -->
+    <div class="icon-wrap">
+      <div class="icon-bg"></div>
+      <svg class="icon-svg" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="chipRim" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="100%" stop-color="#8a5e08"/>
+          </linearGradient>
+          <linearGradient id="chipFace" cx="50%" cy="50%" r="50%" fx="40%" fy="35%" id="chipFace" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#1e2a42"/>
+            <stop offset="100%" stop-color="#0d1520"/>
+          </linearGradient>
+          <linearGradient id="gearGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5e070"/>
+            <stop offset="60%"  stop-color="#d4af37"/>
+            <stop offset="100%" stop-color="#9a6f10"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Chip outer border -->
+        <circle cx="44" cy="44" r="40" fill="#0e1928" stroke="url(#chipRim)" stroke-width="3"/>
+
+        <!-- 8 edge stripes (like real casino chips) -->
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(0   44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(45  44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(90  44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(135 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(180 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(225 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(270 44 44)"/>
+        <rect x="42" y="5"  width="4" height="11" rx="2" fill="url(#chipRim)" transform="rotate(315 44 44)"/>
+
+        <!-- Chip inner ring -->
+        <circle cx="44" cy="44" r="30" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="1"/>
+
+        <!-- Gear (slowly spinning) -->
+        <g class="gear-spin">
+          <!-- 8 teeth -->
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(0   44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(45  44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(90  44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(135 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(180 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(225 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(270 44 44)"/>
+          <rect x="41" y="14" width="6" height="10" rx="3" fill="url(#gearGrad)" transform="rotate(315 44 44)"/>
+          <!-- Gear body -->
+          <circle cx="44" cy="44" r="16" fill="url(#gearGrad)"/>
+          <!-- Center hole -->
+          <circle cx="44" cy="44" r="7"  fill="#0e1928"/>
+          <!-- Inner hub ring -->
+          <circle cx="44" cy="44" r="4"  fill="none" stroke="rgba(212,175,55,0.6)" stroke-width="1.5"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="headline">We're Under<br/>Maintenance</div>
+
+    <p class="subtext">
+      We'll be back shortly with an even better experience.<br/>
+      Thank you for your patience.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="status">Back online soon</div>
+
+    <p class="support">
+      Need help? Contact us at
+      <a href="mailto:support@manderbet.com">support@manderbet.com</a>
+    </p>
+  </div>
+
+  <p class="footer">&copy; ManderBet Casino &mdash; All rights reserved</p>
+
+  <script>
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 6 + 2;
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${Math.random() * 100}%;
+        animation-duration: ${Math.random() * 14 + 10}s;
+        animation-delay: ${Math.random() * -20}s;
+        opacity: ${Math.random() * 0.4 + 0.1};
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>
