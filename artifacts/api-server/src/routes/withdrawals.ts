@@ -384,10 +384,13 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
   const isStreamer = !!profile.is_streamer;
   if (!isAdmin && !isStreamer) {
     try {
-      const mid   = encodeURIComponent(profile.mander_id);
+      const uid   = encodeURIComponent(req.authUser!.id);
       const uname = encodeURIComponent(profile.username);
-      const txRes = await sbAdmin(
-        `transactions?mander_id=eq.${mid}&type=neq.bet&select=type,amount,currency,status&limit=5000`,
+      // Use deposits table (stores actual crypto amounts) so the price conversion is correct.
+      // The transactions table stores USD amounts in the `amount` field despite the crypto currency label,
+      // which would cause double-conversion when multiplied by getPriceUsd().
+      const depRes = await sbAdmin(
+        `deposits?user_id=eq.${uid}&status=in.(confirmed,completed)&select=amount,currency&limit=5000`,
         { headers: { Prefer: "count=none" } }
       );
       // Paginate through all game_bets (PostgREST caps at 1000 rows per request)
@@ -407,11 +410,10 @@ router.post("/withdraw/create", requireAuth, async (req: Request, res: Response)
           offset += PAGE;
         }
       }
-      if (txRes.ok) {
-        const txRows: { type: string; amount: number; currency: string; status: string }[] = await txRes.json();
-        const totalDeposit = txRows
-          .filter(t => t.type === "deposit" && (t.status === "completed" || t.status === "confirmed"))
-          .reduce((s, t) => s + Math.abs(Number(t.amount)) * getPriceUsd(String(t.currency || "USDT").trim().toUpperCase()), 0);
+      if (depRes.ok) {
+        const depRows: { amount: number; currency: string }[] = await depRes.json();
+        const totalDeposit = depRows
+          .reduce((s, d) => s + Math.abs(Number(d.amount)) * getPriceUsd(String(d.currency || "USDT").trim().toUpperCase()), 0);
         const wageredTotal = betRows.reduce((s, b) => s + Math.abs(Number(b.bet_usd)), 0);
         const remaining = Math.max(0, +(totalDeposit * 5 - wageredTotal).toFixed(4));
         if (remaining > 0.01) {
