@@ -247,9 +247,14 @@ router.post("/force-confirm-deposit", async (req: Request, res: Response) => {
 
 // GET /api/admin/users
 // Returns all users with their balances per currency
-// Cached for 10 s to avoid hammering Supabase on every admin panel load
+// Cached for 60 s to avoid hammering Supabase on every admin panel load
 let _usersCache: { data: unknown; at: number } | null = null;
 const USERS_CACHE_TTL = 60_000;
+
+/** Call this after any mutation that changes user profile state (block, flag, etc.) */
+export function invalidateUsersCache() {
+  _usersCache = null;
+}
 
 router.get("/users", async (_req: Request, res: Response) => {
   if (_usersCache && Date.now() - _usersCache.at < USERS_CACHE_TTL) {

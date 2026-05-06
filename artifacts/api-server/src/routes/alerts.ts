@@ -10,6 +10,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { verifyGameToken } from "../lib/gameToken.js";
 import { fetchWithTimeout } from "../lib/fetchWithTimeout";
+import { invalidateUsersCache } from "./admin.js";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -582,6 +583,7 @@ router.post("/admin/user/block", requireAdmin, async (req: Request, res: Respons
 
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
+  invalidateUsersCache();
   console.log(`[BLOCK] ${updated.username} by admin=${req.authUser?.id}. Reason: ${reason ?? "—"}`);
   writeAudit({ action: "block", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id, reason: reason ?? null });
   return res.json({ ok: true, message: `Usuario ${updated.username} bloqueado.` });
@@ -611,6 +613,7 @@ router.post("/admin/user/unblock", requireAdmin, async (req: Request, res: Respo
   }
   const [updated] = await r.json();
   if (!updated) return res.status(404).json({ error: "Usuario no encontrado." });
+  invalidateUsersCache();
   console.log(`[UNBLOCK] ${updated.username} by admin=${req.authUser?.id}`);
   writeAudit({ action: "unblock", target_user_id: updated.id, target_username: updated.username, admin_id: req.authUser?.id });
   return res.json({ ok: true, message: `Usuario ${updated.username} desbloqueado.` });
