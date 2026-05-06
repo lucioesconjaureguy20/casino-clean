@@ -9558,7 +9558,9 @@ export default function App() {
     // Pure binomial: 50/50 L/R at each peg — fair, unbiased RNG.
     // High-value slots (>=5x) are rejection-sampled to reduce their frequency
     // across all risk levels and row counts. The 1000x slot (high/16) is always excluded.
-    let path: ("L"|"R")[], slot: number, accepted = false;
+    let path: ("L"|"R")[] = [];
+    let slot = 0;
+    let accepted = false;
     do {
       path = Array.from({ length: plinkoRows }, () => Math.random() < 0.5 ? "L" : "R");
       slot = path.filter(d => d === "R").length;

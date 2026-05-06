@@ -292,26 +292,23 @@ router.get("/users", async (_req: Request, res: Response) => {
 
     if (!profiles.length) return res.json({ users: [] });
 
-    const manderIds = profiles.map((p) => p.mander_id).filter(Boolean);
+    const manderIdSet = new Set(profiles.map((p) => p.mander_id).filter(Boolean));
     const usernameSet = new Set(profiles.map((p) => p.username).filter(Boolean));
-    const idsParam = `(${manderIds.map((id) => `"${id}"`).join(",")})`;
 
     // ── Run all independent queries in parallel ───────────────────────────────
-    // Fetch ALL referrals (no giant IN clause) and filter in memory
-    const [br, refRows, authUsersRes] = await Promise.all([
-      sbAdmin(`balances?mander_id=in.${idsParam}&select=mander_id,currency,balance`, { headers: { Prefer: "count=none" } }),
+    // Fetch ALL balances (no giant IN clause in URL — filter in memory instead)
+    const [balRows, refRows, authUsersRes] = await Promise.all([
+      fetchAllRows(`balances?select=mander_id,currency,balance&order=mander_id.asc`).catch(() => [] as any[]),
       fetchAllRows(`affiliate_referrals?select=referred_username,referrer_username&order=id.asc`).catch(() => [] as any[]),
       getCachedAuthUsers().catch(() => [] as any[]),
     ]);
 
     // ── Balances ──────────────────────────────────────────────────────────────
     const balanceMap: Record<string, { currency: string; balance: number }[]> = {};
-    if (br.ok) {
-      const balRows: { mander_id: string; currency: string; balance: number }[] = await br.json();
-      for (const b of balRows) {
-        if (!balanceMap[b.mander_id]) balanceMap[b.mander_id] = [];
-        balanceMap[b.mander_id].push({ currency: b.currency, balance: Number(b.balance) });
-      }
+    for (const b of (balRows as { mander_id: string; currency: string; balance: number }[])) {
+      if (!manderIdSet.has(b.mander_id)) continue;
+      if (!balanceMap[b.mander_id]) balanceMap[b.mander_id] = [];
+      balanceMap[b.mander_id].push({ currency: b.currency, balance: Number(b.balance) });
     }
 
     // ── Referrals + affiliate links (links need referrers set first) ──────────
