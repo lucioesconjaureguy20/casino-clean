@@ -2797,13 +2797,13 @@ const PLINKO_MULTS: Record<string, Record<number, number[]>> = {
 
 // ─── Plinko house-factor system ──────────────────────────────────────────────
 // Ball path: PURE BINOMIAL — 50/50 left/right at every peg (fair RNG, no bias).
-// Effective RTP = 96.5% enforced via a per-config multiplicative house factor:
-//   factor[risk][rows] = 0.965 / Σ P_binom(k) × mult[k]
+// Effective RTP = 94% enforced via a per-config multiplicative house factor:
+//   factor[risk][rows] = 0.94 / Σ P_binom(k) × mult[k]
 // Factor is always < 1 because base RTP (Stake mults + binomial) ≈ 98.9–99.3%.
 // Applied in settlePlinkoLanding: actual_payout = bet × displayed_mult × factor.
 
 function _computePlinkoFactors(): Record<string, Record<number, number>> {
-  const TARGET = 0.965;
+  const TARGET = 0.94;
   const result: Record<string, Record<number, number>> = {};
   for (const risk of ['low', 'medium', 'high']) {
     result[risk] = {};
