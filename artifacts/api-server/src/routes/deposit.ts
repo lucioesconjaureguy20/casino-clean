@@ -501,7 +501,7 @@ router.post("/deposit/plisio", requireAuth, async (req: Request, res: Response) 
       amount:       String(invoiceAmt),
       order_number: String(depositId),
       order_name:   `Deposit ${cur}`,
-      expire_min:   "43200",
+      expire_min:   "4320",
     };
     if (callbackUrl) params.callback_url = callbackUrl;
 
@@ -510,7 +510,9 @@ router.post("/deposit/plisio", requireAuth, async (req: Request, res: Response) 
       { signal: AbortSignal.timeout(20000) },
     );
     if (!invRes.ok) {
-      console.error("[Plisio deposit] HTTP error:", invRes.status);
+      let errBody = "";
+      try { errBody = await invRes.text(); } catch {}
+      console.error("[Plisio deposit] HTTP error:", invRes.status, errBody.slice(0, 400));
       await sbAdmin(`deposits?id=eq.${depositId}`, { method: "DELETE" });
       return res.status(502).json({ error: "Error al conectar con Plisio." });
     }
