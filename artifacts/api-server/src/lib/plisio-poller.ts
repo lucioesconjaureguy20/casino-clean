@@ -158,7 +158,9 @@ async function creditIfConfirmed(deposit: any, txnId: string, inv: any) {
     console.log(`[plisio-poller] dep=${deposit.id} amount actualizado → ${amountToStore} (recv=${receivedNum} status=${status})`);
   }
 
-  if (status !== "completed" && status !== "mismatch") return;
+  // También acreditar si la invoice expiró pero el pago llegó igual (received_amount > 0)
+  const isExpiredWithPayment = status === "expired" && receivedNum > 0;
+  if (status !== "completed" && status !== "mismatch" && !isExpiredWithPayment) return;
 
   const psysCid   = inv.psys_cid ?? inv.currency ?? "";
   const casinoCoin = PLISIO_TO_CASINO[psysCid];

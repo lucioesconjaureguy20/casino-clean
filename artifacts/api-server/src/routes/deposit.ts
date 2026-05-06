@@ -447,7 +447,7 @@ router.post("/deposit/plisio", requireAuth, async (req: Request, res: Response) 
   );
   if (existRes.ok) {
     const rows = await existRes.json();
-    const cutoff = Date.now() - 47 * 60 * 60 * 1000;
+    const cutoff = Date.now() - 29 * 24 * 60 * 60 * 1000;
     const reusable = rows?.find((d: any) =>
       d.address && d.address !== "pending" &&
       d.address.length >= minAddrLenForNet(net) &&
@@ -501,7 +501,7 @@ router.post("/deposit/plisio", requireAuth, async (req: Request, res: Response) 
       amount:       String(invoiceAmt),
       order_number: String(depositId),
       order_name:   `Deposit ${cur}`,
-      expire_min:   "2880",
+      expire_min:   "43200",
     };
     if (callbackUrl) params.callback_url = callbackUrl;
 
