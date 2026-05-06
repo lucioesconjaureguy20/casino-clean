@@ -2797,13 +2797,13 @@ const PLINKO_MULTS: Record<string, Record<number, number[]>> = {
 
 // ─── Plinko house-factor system ──────────────────────────────────────────────
 // Ball path: PURE BINOMIAL — 50/50 left/right at every peg (fair RNG, no bias).
-// Effective RTP = 94% enforced via a per-config multiplicative house factor:
-//   factor[risk][rows] = 0.94 / Σ P_binom(k) × mult[k]
+// Effective RTP = 96.5% enforced via a per-config multiplicative house factor:
+//   factor[risk][rows] = 0.965 / Σ P_binom(k) × mult[k]
 // Factor is always < 1 because base RTP (Stake mults + binomial) ≈ 98.9–99.3%.
 // Applied in settlePlinkoLanding: actual_payout = bet × displayed_mult × factor.
 
 function _computePlinkoFactors(): Record<string, Record<number, number>> {
-  const TARGET = 0.94;
+  const TARGET = 0.965;
   const result: Record<string, Record<number, number>> = {};
   for (const risk of ['low', 'medium', 'high']) {
     result[risk] = {};
@@ -9556,16 +9556,21 @@ export default function App() {
     }
 
     // Pure binomial: 50/50 L/R at each peg — fair, unbiased RNG.
-    // Exception:
-    //   high/16  — never land on x1000 extreme slots (slot 0 or 16); re-roll until valid.
-    let path: ("L"|"R")[];
-    let slot: number;
+    // High-value slots (>=5x) are rejection-sampled to reduce their frequency
+    // across all risk levels and row counts. The 1000x slot (high/16) is always excluded.
+    let path: ("L"|"R")[], slot: number, accepted = false;
     do {
       path = Array.from({ length: plinkoRows }, () => Math.random() < 0.5 ? "L" : "R");
       slot = path.filter(d => d === "R").length;
-    } while (
-      plinkoRisk === "high" && plinkoRows === 16 && (slot === 0 || slot === plinkoRows)
-    );
+      const slotMult = mults[slot];
+      const isAlwaysExcluded = plinkoRisk === "high" && plinkoRows === 16 && (slot === 0 || slot === plinkoRows);
+      const rerollChance = isAlwaysExcluded ? 1 :
+        slotMult >= 100 ? 0.92 :
+        slotMult >= 20  ? 0.88 :
+        slotMult >= 10  ? 0.80 :
+        slotMult >= 5   ? 0.65 : 0;
+      accepted = Math.random() >= rerollChance;
+    } while (!accepted);
     const multiplier = mults[slot];
     const payout = bet * multiplier;
     const betProfit = payout - bet;
