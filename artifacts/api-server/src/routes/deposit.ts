@@ -501,7 +501,7 @@ router.post("/deposit/plisio", requireAuth, async (req: Request, res: Response) 
       amount:       String(invoiceAmt),
       order_number: String(depositId),
       order_name:   `Deposit ${cur}`,
-      expire_min:   "4320",
+      expire_min:   "2880",
     };
     if (callbackUrl) params.callback_url = callbackUrl;
 
