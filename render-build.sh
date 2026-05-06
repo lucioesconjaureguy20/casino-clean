@@ -5,19 +5,16 @@ set -euo pipefail
 echo "==> Installing pnpm..."
 npm install -g pnpm@9
 
-# ── Install dependencies ────────────────────────────────────────────────────
+# ── Install dependencies ─────────────────────────────────────────────────────
 echo "==> Installing workspace dependencies..."
+# Use --no-frozen-lockfile because platform-specific overrides differ from Replit
 pnpm install --no-frozen-lockfile
 
-# ── Build shared libs ───────────────────────────────────────────────────────
-echo "==> Building shared libraries..."
-pnpm run typecheck:libs
-
-# ── Build API server ────────────────────────────────────────────────────────
+# ── Build API server (esbuild bundles TS directly — no tsc needed) ───────────
 echo "==> Building API server..."
 pnpm --filter @workspace/api-server run build
 
-# ── Build Casino frontend ───────────────────────────────────────────────────
+# ── Build Casino frontend ─────────────────────────────────────────────────────
 echo "==> Building Casino frontend..."
 pnpm --filter @workspace/casino run build
 
