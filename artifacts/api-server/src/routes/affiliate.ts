@@ -4,7 +4,7 @@ import { verifyGameToken } from "../lib/gameToken.js";
 import { fetchWithTimeout } from "../lib/fetchWithTimeout";
 import { getPriceUsd } from "../lib/prices.js";
 import { txToUsd } from "../lib/txToUsd.js";
-import { getCachedBetRows } from "../lib/supabaseCache";
+import { getCachedBetRows, fetchAllRows } from "../lib/supabaseCache";
 
 const router = Router();
 
@@ -646,19 +646,17 @@ router.get("/admin/affiliates", requireAdmin, async (req: Request, res: Response
         ngr: "0.00", commission_earned: "0.00", commission_paid: "0.00", last_activity: null,
       })));
     }
-    const referredInFilter = allReferred.map((u: string) => encodeURIComponent(u)).join(",");
-
     // 3. game_bets para NGR real + última apuesta
     // Note: PostgREST v11 doesn't support aggregate functions — fetch rows and sum in JS
-    const profiles: any[] = await supabaseFetch(
-      `profiles?username=in.(${referredInFilter})&select=username,id,mander_id&limit=500`
-    ).catch(() => []);
+    // Fetch ALL profiles and filter in memory (avoids URL-too-long with large IN clause)
+    const allReferredSet = new Set(allReferred.map((u: string) => u.toLowerCase()));
+    const allProfiles: any[] = await fetchAllRows(`profiles?select=username,id,mander_id&order=id.asc`).catch(() => []);
+    const profiles: any[] = allProfiles.filter((p: any) => allReferredSet.has((p.username ?? "").toLowerCase()));
 
     const ngrMap: Record<string, number>    = {};
     const wagerMap: Record<string, number>  = {};
     const lastBetMap: Record<string, string> = {};
     // Shared cached bet rows (5-min TTL, singleflight — same cache as /admin/stats)
-    const allReferredSet = new Set(allReferred.map((u: string) => u.toLowerCase()));
     const betRows: any[] = await getCachedBetRows().catch(() => []);
     for (const row of betRows) {
       if (!allReferredSet.has((row.username ?? "").toLowerCase())) continue;
@@ -670,27 +668,27 @@ router.get("/admin/affiliates", requireAdmin, async (req: Request, res: Response
       if (!lastBetMap[u] || row.created_at > lastBetMap[u]) lastBetMap[u] = row.created_at;
     }
 
-    // uuid → username
+    // uuid → username (from filtered profiles)
     const uuidToUserMain: Record<string, string> = {};
-    const userUuidMain: string[] = [];
-    for (const p of (Array.isArray(profiles) ? profiles : [])) {
-      if (p.id) { uuidToUserMain[p.id] = p.username; userUuidMain.push(encodeURIComponent(p.id)); }
+    const uuidSetMain = new Set<string>();
+    for (const p of profiles) {
+      if (p.id) { uuidToUserMain[p.id] = p.username; uuidSetMain.add(p.id); }
     }
 
-    // 4. Depósitos reales desde tabla `deposits` (fuente canónica)
-    let depositRows: any[] = [];
-    if (userUuidMain.length) {
-      depositRows = await supabaseFetch(
-        `deposits?user_id=in.(${userUuidMain.join(",")})&status=eq.confirmed&select=user_id,amount,currency,created_at&limit=100000`
-      ).catch(() => []) || [];
-    }
+    // 4. Depósitos reales desde tabla `deposits` — fetch ALL, filter in memory
+    // (avoids URL-too-long with giant user_id=in.(...) clause)
+    const allDepositRows: any[] = await fetchAllRows(
+      `deposits?status=eq.confirmed&select=user_id,amount,currency,created_at&order=id.asc`
+    ).catch(() => []);
     const depositAmtMap: Record<string, number> = {};
     const depositCntMap: Record<string, number> = {};
     const lastDepMap: Record<string, string>    = {};
-    for (const d of depositRows) {
+    for (const d of allDepositRows) {
+      if (!uuidSetMain.has(d.user_id)) continue;
       const u = uuidToUserMain[d.user_id];
       if (!u) continue;
-      depositAmtMap[u] = (depositAmtMap[u] || 0) + txToUsd({ amount: d.amount, currency: d.currency, notes: "" });
+      const priceUsd = getPriceUsd((d.currency ?? "USDT").trim().toUpperCase());
+      depositAmtMap[u] = (depositAmtMap[u] || 0) + parseFloat(d.amount || 0) * priceUsd;
       depositCntMap[u] = (depositCntMap[u] || 0) + 1;
       if (!lastDepMap[u] || d.created_at > lastDepMap[u]) lastDepMap[u] = d.created_at;
     }
