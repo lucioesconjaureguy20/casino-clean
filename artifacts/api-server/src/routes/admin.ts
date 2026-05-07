@@ -922,7 +922,8 @@ router.get("/bets", requireAdmin, async (req: Request, res: Response) => {
   const bc = _betsCache.get(cacheKey);
   if (bc && Date.now() - bc.at < BETS_CACHE_TTL) return res.json(bc.data);
   try {
-    const { username, game, from, to, min_bet, max_bet, is_demo } = req.query as Record<string, string>;
+    const { username, game, from, to, min_bet, max_bet } = req.query as Record<string, string>;
+    const is_demo = (req.query.is_demo as string) ?? "false";
     const limit  = Math.min(parseInt((req.query.limit  as string) || "50", 10), 200);
     const offset = Math.max(parseInt((req.query.offset as string) || "0",  10), 0);
 
@@ -1002,7 +1003,8 @@ router.get("/bets/summary", requireAdmin, async (req: Request, res: Response) =>
   const bsc = _betsSummaryCache.get(cacheKey);
   if (bsc && Date.now() - bsc.at < BETS_SUMMARY_CACHE_TTL) return res.json(bsc.data);
   try {
-    const { username, game, from, to, min_bet, max_bet, is_demo } = req.query as Record<string, string>;
+    const { username, game, from, to, min_bet, max_bet } = req.query as Record<string, string>;
+    const is_demo = (req.query.is_demo as string) ?? "false";
 
     const demoCol = await isDemoColAvailable();
 
