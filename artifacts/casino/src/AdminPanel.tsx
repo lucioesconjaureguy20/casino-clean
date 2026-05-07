@@ -5387,7 +5387,8 @@ interface DeviceReport { duplicates: { hash: string; info: string; users: string
 function DevicesTab({ token }: { token: string }) {
   const [report, setReport] = useState<DeviceReport | null>(null);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
+  const [codeSearch, setCodeSearch] = useState("");
+  const [userSearch, setUserSearch] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -5399,22 +5400,20 @@ function DevicesTab({ token }: { token: string }) {
 
   useEffect(() => { load(); }, []);
 
-  const searchLow = search.toLowerCase().trim();
+  const codeLow = codeSearch.toLowerCase().trim();
+  const userLow = userSearch.toLowerCase().trim();
+  const hasFilter = codeLow.length > 0 || userLow.length > 0;
 
   // ── Affiliate-code filter ─────────────────────────────────────────────────
   const codeMatchUsers = new Set(
-    searchLow ? (report?.all ?? []).filter(e => (e.ref_code_used ?? "").toLowerCase() === searchLow).map(e => e.username) : []
+    codeLow ? (report?.all ?? []).filter(e => (e.ref_code_used ?? "").toLowerCase() === codeLow).map(e => e.username) : []
   );
-  const isCodeFilter = searchLow.length > 0 && codeMatchUsers.size > 0;
+  const isCodeFilter = codeLow.length > 0 && codeMatchUsers.size > 0;
 
   // ── Username filter with "device sibling" expansion ───────────────────────
-  // Both filters (code + username) can be active simultaneously — results are merged.
   const directMatchUsernames = new Set(
-    searchLow
-      ? (report?.all ?? []).filter(e => e.username.toLowerCase().includes(searchLow)).map(e => e.username)
-      : []
+    userLow ? (report?.all ?? []).filter(e => e.username.toLowerCase().includes(userLow)).map(e => e.username) : []
   );
-  // Collect all hashes used by the matching users
   const matchedHashes = new Set<string>();
   if (directMatchUsernames.size > 0) {
     for (const e of (report?.all ?? [])) {
@@ -5423,7 +5422,6 @@ function DevicesTab({ token }: { token: string }) {
       }
     }
   }
-  // Find sibling usernames: accounts sharing any of those hashes (from ALL devices, not just duplicates)
   const siblingUsernames = new Set<string>();
   if (matchedHashes.size > 0) {
     for (const e of (report?.all ?? [])) {
@@ -5434,7 +5432,6 @@ function DevicesTab({ token }: { token: string }) {
   }
   const isUserFilter = directMatchUsernames.size > 0;
 
-  // Shared-hash entries to show as alerts when filtering by user
   const userSharedHashes = matchedHashes.size > 0
     ? [...matchedHashes].filter(h => {
         const usersWithHash = (report?.all ?? []).filter(e => e.devices.some(d => d.hash === h));
@@ -5442,28 +5439,26 @@ function DevicesTab({ token }: { token: string }) {
       })
     : [];
 
-  // ── Filtered duplicates — code AND username filters combined (OR) ──────────
+  // ── Filtered duplicates — both filters combined (OR) ─────────────────────
   const filteredDups = report?.duplicates.filter(d => {
-    if (!searchLow) return true;
+    if (!hasFilter) return true;
     if (isCodeFilter && d.users.some(u => codeMatchUsers.has(u))) return true;
     if (isUserFilter && d.users.some(u => directMatchUsernames.has(u) || siblingUsernames.has(u))) return true;
     if (!isCodeFilter && !isUserFilter)
-      return d.hash.includes(searchLow) || d.info.toLowerCase().includes(searchLow) || d.users.some(u => u.toLowerCase().includes(searchLow));
+      return d.users.some(u => u.toLowerCase().includes(userLow) || u.toLowerCase().includes(codeLow));
     return false;
   }) ?? [];
 
-  // ── Filtered table rows — code AND username filters combined (OR) ──────────
+  // ── Filtered table rows — both filters combined (OR) ─────────────────────
   const filtered = report?.all.filter(e => {
-    if (!searchLow) return true;
+    if (!hasFilter) return true;
     if (isCodeFilter && codeMatchUsers.has(e.username)) return true;
     if (isUserFilter && (directMatchUsernames.has(e.username) || siblingUsernames.has(e.username))) return true;
     if (!isCodeFilter && !isUserFilter) {
       return (
-        e.username.toLowerCase().includes(searchLow) ||
-        e.lastHash.includes(searchLow) ||
-        e.lastInfo.toLowerCase().includes(searchLow) ||
-        (e.ref_code_used ?? "").toLowerCase().includes(searchLow) ||
-        (e.referred_by ?? "").toLowerCase().includes(searchLow)
+        e.username.toLowerCase().includes(userLow || codeLow) ||
+        (e.ref_code_used ?? "").toLowerCase().includes(codeLow) ||
+        (e.referred_by ?? "").toLowerCase().includes(userLow)
       );
     }
     return false;
@@ -5485,23 +5480,34 @@ function DevicesTab({ token }: { token: string }) {
         </button>
       </div>
 
-      <div style={{ position:"relative", marginBottom:16 }}>
-        <input
-          value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Filtrar por código (ej: VKNG), usuario, dispositivo…"
-          style={{ width:"100%", padding:"9px 12px 9px 36px", borderRadius:6, border:`1px solid ${isCodeFilter ? "#166534" : "#1e2a3d"}`, background:"#0d1520", color:"#e2e8f0", fontSize:13, boxSizing:"border-box" as const }}
-        />
-        <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color: isCodeFilter ? "#86efac" : "#475569", fontSize:14 }}>
-          {isCodeFilter ? "🏷" : "🔍"}
-        </span>
-        {search && (
-          <button onClick={() => setSearch("")} style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:16, lineHeight:1 }}>×</button>
-        )}
+      <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:16 }}>
+        <div style={{ position:"relative" }}>
+          <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color: isCodeFilter ? "#86efac" : "#475569", fontSize:13, userSelect:"none" as const }}>🏷</span>
+          <input
+            value={codeSearch} onChange={e => setCodeSearch(e.target.value)}
+            placeholder="Código de afiliado (ej: VKNG)"
+            style={{ width:"100%", padding:"9px 12px 9px 34px", borderRadius:6, border:`1px solid ${isCodeFilter ? "#166534" : "#1e2a3d"}`, background:"#0d1520", color:"#e2e8f0", fontSize:13, boxSizing:"border-box" as const, outline:"none" }}
+          />
+          {codeSearch && (
+            <button onClick={() => setCodeSearch("")} style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:16, lineHeight:1 }}>×</button>
+          )}
+        </div>
+        <div style={{ position:"relative" }}>
+          <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color: isUserFilter ? "#93c5fd" : "#475569", fontSize:13, userSelect:"none" as const }}>👤</span>
+          <input
+            value={userSearch} onChange={e => setUserSearch(e.target.value)}
+            placeholder="Nombre de usuario (ej: juanito23)"
+            style={{ width:"100%", padding:"9px 12px 9px 34px", borderRadius:6, border:`1px solid ${isUserFilter ? "#1e3a5f" : "#1e2a3d"}`, background:"#0d1520", color:"#e2e8f0", fontSize:13, boxSizing:"border-box" as const, outline:"none" }}
+          />
+          {userSearch && (
+            <button onClick={() => setUserSearch("")} style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:16, lineHeight:1 }}>×</button>
+          )}
+        </div>
       </div>
 
       {isCodeFilter && (
-        <div style={{ marginBottom:12, padding:"6px 12px", borderRadius:6, background:"#0a1a0a", border:"1px solid #166534", color:"#86efac", fontSize:12 }}>
-          Mostrando dispositivos del código <strong style={{ fontFamily:"monospace" }}>{search.toUpperCase()}</strong> — {codeMatchUsers.size} usuario{codeMatchUsers.size !== 1 ? "s" : ""}
+        <div style={{ marginBottom:10, padding:"6px 12px", borderRadius:6, background:"#0a1a0a", border:"1px solid #166534", color:"#86efac", fontSize:12 }}>
+          🏷 Código <strong style={{ fontFamily:"monospace" }}>{codeSearch.toUpperCase()}</strong> — {codeMatchUsers.size} usuario{codeMatchUsers.size !== 1 ? "s" : ""} referido{codeMatchUsers.size !== 1 ? "s" : ""}
         </div>
       )}
 
