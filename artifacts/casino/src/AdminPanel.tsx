@@ -5544,9 +5544,9 @@ function DevicesTab({ token }: { token: string }) {
         </div>
       )}
 
-      {isUserFilter && siblingUsernames.size === 0 && searchLow && (
+      {isUserFilter && siblingUsernames.size === 0 && userLow && (
         <div style={{ marginBottom:12, padding:"8px 14px", borderRadius:6, background:"#0a1a0a", border:"1px solid #166534", color:"#86efac", fontSize:13 }}>
-          ✓ <strong>{search}</strong> no comparte dispositivo con ninguna otra cuenta registrada.
+          ✓ <strong>{userSearch}</strong> no comparte dispositivo con ninguna otra cuenta registrada.
         </div>
       )}
 
@@ -5584,7 +5584,7 @@ function DevicesTab({ token }: { token: string }) {
           ✓ No se detectaron dispositivos compartidos entre cuentas.
         </div>
       )}
-      {report && filteredDups.length === 0 && (isCodeFilter || searchLow) && !isUserFilter && report.duplicates.length > 0 && (
+      {report && filteredDups.length === 0 && (isCodeFilter || userLow || codeLow) && !isUserFilter && report.duplicates.length > 0 && (
         <div style={{ marginBottom:24, background:"#0d1520", border:"1px solid #1e2a3d", borderRadius:8, padding:14, color:"#64748b", fontSize:13 }}>
           Sin dispositivos duplicados para este filtro.
         </div>
