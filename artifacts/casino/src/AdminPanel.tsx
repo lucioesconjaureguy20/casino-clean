@@ -5408,10 +5408,9 @@ function DevicesTab({ token }: { token: string }) {
   const isCodeFilter = searchLow.length > 0 && codeMatchUsers.size > 0;
 
   // ── Username filter with "device sibling" expansion ───────────────────────
-  // When you search for a username, we find ALL hashes that user has ever used,
-  // then expand to show every other account sharing any of those hashes.
+  // Both filters (code + username) can be active simultaneously — results are merged.
   const directMatchUsernames = new Set(
-    searchLow && !isCodeFilter
+    searchLow
       ? (report?.all ?? []).filter(e => e.username.toLowerCase().includes(searchLow)).map(e => e.username)
       : []
   );
@@ -5443,26 +5442,31 @@ function DevicesTab({ token }: { token: string }) {
       })
     : [];
 
-  // ── Filtered duplicates ───────────────────────────────────────────────────
+  // ── Filtered duplicates — code AND username filters combined (OR) ──────────
   const filteredDups = report?.duplicates.filter(d => {
     if (!searchLow) return true;
-    if (isCodeFilter) return d.users.some(u => codeMatchUsers.has(u));
-    if (isUserFilter) return d.users.some(u => directMatchUsernames.has(u) || siblingUsernames.has(u));
-    return d.hash.includes(searchLow) || d.info.toLowerCase().includes(searchLow) || d.users.some(u => u.toLowerCase().includes(searchLow));
+    if (isCodeFilter && d.users.some(u => codeMatchUsers.has(u))) return true;
+    if (isUserFilter && d.users.some(u => directMatchUsernames.has(u) || siblingUsernames.has(u))) return true;
+    if (!isCodeFilter && !isUserFilter)
+      return d.hash.includes(searchLow) || d.info.toLowerCase().includes(searchLow) || d.users.some(u => u.toLowerCase().includes(searchLow));
+    return false;
   }) ?? [];
 
-  // ── Filtered table rows ───────────────────────────────────────────────────
+  // ── Filtered table rows — code AND username filters combined (OR) ──────────
   const filtered = report?.all.filter(e => {
     if (!searchLow) return true;
-    if (isCodeFilter) return codeMatchUsers.has(e.username) || filteredDups.some(d => d.users.includes(e.username));
-    if (isUserFilter) return directMatchUsernames.has(e.username) || siblingUsernames.has(e.username);
-    return (
-      e.username.toLowerCase().includes(searchLow) ||
-      e.lastHash.includes(searchLow) ||
-      e.lastInfo.toLowerCase().includes(searchLow) ||
-      (e.ref_code_used ?? "").toLowerCase().includes(searchLow) ||
-      (e.referred_by ?? "").toLowerCase().includes(searchLow)
-    );
+    if (isCodeFilter && codeMatchUsers.has(e.username)) return true;
+    if (isUserFilter && (directMatchUsernames.has(e.username) || siblingUsernames.has(e.username))) return true;
+    if (!isCodeFilter && !isUserFilter) {
+      return (
+        e.username.toLowerCase().includes(searchLow) ||
+        e.lastHash.includes(searchLow) ||
+        e.lastInfo.toLowerCase().includes(searchLow) ||
+        (e.ref_code_used ?? "").toLowerCase().includes(searchLow) ||
+        (e.referred_by ?? "").toLowerCase().includes(searchLow)
+      );
+    }
+    return false;
   }) ?? [];
 
   const dupUsernames = new Set(report?.duplicates.flatMap(d => d.users) ?? []);
