@@ -8515,6 +8515,13 @@ export default function App() {
   useEffect(() => {
     if (!sessionTokenReady) return;
     console.log(`[session] sessionReady=true for "${currentUser}" at ${new Date().toISOString()} — API polling will now start`);
+    // Send device fingerprint once session is ready
+    const tok = supaSessionRef.current?.access_token || localStorage.getItem(`mander_game_token_${currentUser || ""}`);
+    if (tok) {
+      import("./deviceFingerprint").then(({ sendDeviceFingerprint }) => {
+        sendDeviceFingerprint(tok).catch(() => {});
+      }).catch(() => {});
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionTokenReady]);
 

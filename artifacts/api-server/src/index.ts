@@ -5,6 +5,7 @@ import { startPlisioHashEnricher } from "./lib/plisio-hash-enricher";
 import { initCounters } from "./lib/counters";
 import { startDemoBetsCorrector } from "./lib/fixDemoBets";
 import { runMigration } from "./lib/migration";
+import { initDeviceStore } from "./lib/deviceStore";
 
 const rawPort = process.env["PORT"];
 
@@ -33,6 +34,7 @@ runMigration()
             process.exit(1);
           }
           logger.info({ port }, "Server listening");
+          initDeviceStore();
           // Stagger background tasks to avoid Supabase overload on startup
           setTimeout(() => startPlisioPoller(),        30_000);   // +30s
           setTimeout(() => startPlisioHashEnricher(),  15_000);   // +15s

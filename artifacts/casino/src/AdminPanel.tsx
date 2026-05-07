@@ -5379,7 +5379,171 @@ function IpsTab({ token }: { token: string }) {
   );
 }
 
-type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts" | "transactions" | "affiliates" | "bets" | "support" | "ips";
+// ── DevicesTab ────────────────────────────────────────────────────────────────
+interface DeviceEntry { hash: string; info: string; firstSeen: string; lastSeen: string; }
+interface UserDeviceEntry { userId: string; username: string; devices: DeviceEntry[]; lastHash: string; lastInfo: string; lastSeen: string; referred_by?: string | null; ref_code_used?: string | null; }
+interface DeviceReport { duplicates: { hash: string; info: string; users: string[] }[]; all: UserDeviceEntry[]; }
+
+function DevicesTab({ token }: { token: string }) {
+  const [report, setReport] = useState<DeviceReport | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/device-report", { headers: { Authorization: `Bearer ${token}` } });
+      if (r.ok) setReport(await r.json());
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const searchLow = search.toLowerCase().trim();
+
+  const codeMatchUsers = new Set(
+    searchLow ? (report?.all ?? []).filter(e => (e.ref_code_used ?? "").toLowerCase() === searchLow).map(e => e.username) : []
+  );
+  const isCodeFilter = searchLow.length > 0 && codeMatchUsers.size > 0;
+
+  const filteredDups = report?.duplicates.filter(d => {
+    if (!searchLow) return true;
+    if (isCodeFilter) return d.users.some(u => codeMatchUsers.has(u));
+    return d.hash.includes(searchLow) || d.info.toLowerCase().includes(searchLow) || d.users.some(u => u.toLowerCase().includes(searchLow));
+  }) ?? [];
+
+  const filtered = report?.all.filter(e => {
+    if (!searchLow) return true;
+    if (isCodeFilter) return codeMatchUsers.has(e.username) || filteredDups.some(d => d.users.includes(e.username));
+    return (
+      e.username.toLowerCase().includes(searchLow) ||
+      e.lastHash.includes(searchLow) ||
+      e.lastInfo.toLowerCase().includes(searchLow) ||
+      (e.ref_code_used ?? "").toLowerCase().includes(searchLow) ||
+      (e.referred_by ?? "").toLowerCase().includes(searchLow)
+    );
+  }) ?? [];
+
+  const dupUsernames = new Set(report?.duplicates.flatMap(d => d.users) ?? []);
+
+  return (
+    <div>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:20, flexWrap:"wrap", gap:10 }}>
+        <div>
+          <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:"#e2e8f0" }}>Detección de Dispositivos Compartidos</h2>
+          <p style={{ margin:"4px 0 0", color:"#64748b", fontSize:13 }}>
+            Fingerprint del browser (canvas, WebGL, resolución, timezone). Detecta misma máquina con diferente IP o cuenta.
+          </p>
+        </div>
+        <button onClick={load} disabled={loading} style={{ padding:"8px 16px", borderRadius:6, border:"none", background:"#1e3a5f", color:"#93c5fd", fontWeight:600, fontSize:13, cursor:"pointer" }}>
+          {loading ? "Cargando…" : "↻ Actualizar"}
+        </button>
+      </div>
+
+      <div style={{ position:"relative", marginBottom:16 }}>
+        <input
+          value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Filtrar por código (ej: VKNG), usuario, dispositivo…"
+          style={{ width:"100%", padding:"9px 12px 9px 36px", borderRadius:6, border:`1px solid ${isCodeFilter ? "#166534" : "#1e2a3d"}`, background:"#0d1520", color:"#e2e8f0", fontSize:13, boxSizing:"border-box" as const }}
+        />
+        <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color: isCodeFilter ? "#86efac" : "#475569", fontSize:14 }}>
+          {isCodeFilter ? "🏷" : "🔍"}
+        </span>
+        {search && (
+          <button onClick={() => setSearch("")} style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:16, lineHeight:1 }}>×</button>
+        )}
+      </div>
+
+      {isCodeFilter && (
+        <div style={{ marginBottom:12, padding:"6px 12px", borderRadius:6, background:"#0a1a0a", border:"1px solid #166534", color:"#86efac", fontSize:12 }}>
+          Mostrando dispositivos del código <strong style={{ fontFamily:"monospace" }}>{search.toUpperCase()}</strong> — {codeMatchUsers.size} usuario{codeMatchUsers.size !== 1 ? "s" : ""}
+        </div>
+      )}
+
+      {report && filteredDups.length > 0 && (
+        <div style={{ marginBottom:24, background:"#1a0a0a", border:"1px solid #7f1d1d", borderRadius:8, padding:16 }}>
+          <h3 style={{ margin:"0 0 12px", fontSize:14, fontWeight:700, color:"#fca5a5" }}>
+            ⚠ {filteredDups.length} dispositivo{filteredDups.length > 1 ? "s" : ""} compartido{filteredDups.length > 1 ? "s" : ""} detectado{filteredDups.length > 1 ? "s" : ""}
+          </h3>
+          <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+            {filteredDups.map(d => (
+              <div key={d.hash} style={{ background:"#2a0e0e", borderRadius:6, padding:"10px 14px", display:"flex", flexDirection:"column", gap:6 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
+                  <span style={{ fontFamily:"monospace", fontSize:12, color:"#ef4444", fontWeight:700 }}>{d.hash}</span>
+                  <span style={{ fontSize:12, color:"#f87171" }}>{d.info}</span>
+                  <span style={{ marginLeft:"auto", color:"#dc2626", fontSize:12, fontWeight:600 }}>{d.users.length} cuentas</span>
+                </div>
+                <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                  {d.users.map(u => (
+                    <span key={u} style={{ background: codeMatchUsers.has(u) ? "#14532d" : "#7f1d1d", color: codeMatchUsers.has(u) ? "#86efac" : "#fca5a5", borderRadius:4, padding:"2px 8px", fontSize:12, fontWeight:600 }}>{u}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {report && filteredDups.length === 0 && !isCodeFilter && report.duplicates.length === 0 && (
+        <div style={{ marginBottom:24, background:"#0a1a0a", border:"1px solid #14532d", borderRadius:8, padding:14, color:"#86efac", fontSize:13 }}>
+          ✓ No se detectaron dispositivos compartidos entre cuentas.
+        </div>
+      )}
+      {report && filteredDups.length === 0 && (isCodeFilter || searchLow) && report.duplicates.length > 0 && (
+        <div style={{ marginBottom:24, background:"#0d1520", border:"1px solid #1e2a3d", borderRadius:8, padding:14, color:"#64748b", fontSize:13 }}>
+          Sin dispositivos duplicados para este filtro.
+        </div>
+      )}
+
+      {loading && !report && <div style={{ color:"#64748b", textAlign:"center", padding:40 }}>Cargando…</div>}
+      {filtered.length === 0 && !loading && (
+        <div style={{ color:"#64748b", textAlign:"center", padding:40, fontSize:13 }}>
+          {report ? "Sin registros aún. Los fingerprints se capturan al hacer login." : ""}
+        </div>
+      )}
+
+      {filtered.length > 0 && (
+        <div style={{ overflowX:"auto" }}>
+          <table style={{ width:"100%", borderCollapse:"collapse", fontSize:13 }}>
+            <thead>
+              <tr style={{ borderBottom:"1px solid #1e2a3d" }}>
+                {["Usuario","Referido por","Último dispositivo","Hash","Dispositivos vistos","Última vez"].map(h => (
+                  <th key={h} style={{ textAlign:"left", padding:"8px 12px", color:"#64748b", fontWeight:600, whiteSpace:"nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(e => (
+                <tr key={e.userId} style={{ borderBottom:"1px solid #0e1826", background: dupUsernames.has(e.username) ? "#1a0d0d" : "transparent" }}>
+                  <td style={{ padding:"9px 12px" }}>
+                    <span style={{ fontWeight:600, color: dupUsernames.has(e.username) ? "#fca5a5" : "#e2e8f0" }}>
+                      {dupUsernames.has(e.username) ? "⚠ " : ""}{e.username}
+                    </span>
+                  </td>
+                  <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12 }}>
+                    {e.referred_by
+                      ? <><span style={{ color:"#64748b" }}>{e.referred_by}</span>{e.ref_code_used && <span style={{ marginLeft:4, background:"#1e3a2f", color:"#86efac", borderRadius:3, padding:"1px 5px", fontSize:11, fontFamily:"monospace" }}>{e.ref_code_used}</span>}</>
+                      : <span style={{ color:"#334155" }}>—</span>}
+                  </td>
+                  <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12, maxWidth:200 }}>{e.lastInfo || "—"}</td>
+                  <td style={{ padding:"9px 12px" }}>
+                    <span style={{ fontFamily:"monospace", fontSize:11, color: dupUsernames.has(e.username) ? "#ef4444" : "#4a6fa5", background:"#0d1827", padding:"2px 6px", borderRadius:4 }}>{e.lastHash}</span>
+                  </td>
+                  <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12 }}>{e.devices.length}</td>
+                  <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12, whiteSpace:"nowrap" }}>
+                    {new Date(e.lastSeen).toLocaleString("es-AR", { dateStyle:"short", timeStyle:"short" })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts" | "transactions" | "affiliates" | "bets" | "support" | "ips" | "devices";
 
 export default function AdminPanel({ token: initialToken, username }: { token: string; username?: string }) {
   const [tab, setTab] = useState<TabId>("stats");
@@ -5425,6 +5589,7 @@ export default function AdminPanel({ token: initialToken, username }: { token: s
     { id: "users",        label: "Usuarios",      icon: "👤" },
     { id: "transactions", label: "Transacciones", icon: "🔍" },
     { id: "ips",          label: "IPs",           icon: "🌐" },
+    { id: "devices",      label: "Dispositivos",  icon: "📱" },
   ];
 
   return (
@@ -5477,6 +5642,7 @@ export default function AdminPanel({ token: initialToken, username }: { token: s
         {tab === "users"         && <UsersTab token={token} />}
         {tab === "transactions"  && <TransactionsTab token={token} />}
         {tab === "ips"           && <IpsTab token={token} />}
+        {tab === "devices"       && <DevicesTab token={token} />}
       </div>
     </div>
   );

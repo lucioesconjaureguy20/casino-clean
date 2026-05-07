@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import { getPriceUsd } from "../lib/prices.js";
 import { nextDepositDisplayId } from "../lib/counters.js";
 import { getIpReport, recordIp, seedUser, flushSeeds } from "../lib/ipStore.js";
+import { recordDevice, getDeviceReport } from "../lib/deviceStore.js";
 import { pool } from "@workspace/db";
 import { getAuthUsers as getCachedAuthUsers, getCachedBetRows, fetchAllRows } from "../lib/supabaseCache";
 
@@ -1548,6 +1549,98 @@ router.post("/ip-import", requireAdmin, async (_req: Request, res: Response) => 
     return res.json({ seeded, note: "IPs históricas no disponibles — se capturan en tiempo real al hacer login." });
   } catch (err: any) {
     return res.status(500).json({ error: err?.message ?? "Error desconocido" });
+  }
+});
+
+// ── POST /api/admin/device-fp ─────────────────────────────────────────────────
+// Receives a browser fingerprint from the client (any authenticated user).
+// No requireAdmin — anyone logged in can submit their device fingerprint.
+router.post("/device-fp", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) return res.status(401).json({ ok: false });
+    const token = authHeader.slice(7);
+
+    let userId: string | null = null;
+    let username = "";
+
+    try { const g = verifyGameToken(token) as any; if (g) { userId = g.profileId; username = g.username || ""; } } catch {}
+
+    if (!userId) {
+      try {
+        const r = await fetchWithTimeout(`${SUPABASE_URL}/auth/v1/user`, {
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+        });
+        if (r.ok) { const u = await r.json(); userId = u.id; }
+      } catch {}
+    }
+
+    if (!userId) return res.status(401).json({ ok: false });
+
+    if (!username) {
+      try {
+        const pr = await sbAdmin(`profiles?id=eq.${encodeURIComponent(userId)}&select=username&limit=1`);
+        if (pr.ok) { const rows = await pr.json(); username = rows[0]?.username || ""; }
+      } catch {}
+    }
+
+    const { hash, info } = req.body as { hash?: string; info?: string };
+    if (!hash) return res.status(400).json({ ok: false, error: "hash required" });
+
+    recordDevice(userId, username, hash, info ?? "");
+    return res.json({ ok: true });
+  } catch (err: any) {
+    return res.status(500).json({ ok: false, error: err?.message });
+  }
+});
+
+// ── GET /api/admin/device-report ──────────────────────────────────────────────
+// Returns all tracked device fingerprints; highlights accounts sharing the same device.
+router.get("/device-report", requireAdmin, async (_req: Request, res: Response) => {
+  const base = getDeviceReport();
+
+  try {
+    const usernames = base.all.map(e => e.username).filter(Boolean);
+    if (usernames.length === 0) return res.json(base);
+
+    const CHUNK = 80;
+    const referralMap: Record<string, string> = {};
+    const refCodeMap:  Record<string, string> = {};
+
+    for (let i = 0; i < usernames.length; i += CHUNK) {
+      const chunk = usernames.slice(i, i + CHUNK);
+      const param = `(${chunk.map(u => `"${encodeURIComponent(u)}"`).join(",")})`;
+      const rr = await sbAdminRaw(
+        `affiliate_referrals?referred_username=in.${param}&select=referred_username,referrer_username`,
+        { headers: { Prefer: "count=none" } }
+      );
+      if (rr.ok) {
+        const rows: { referred_username: string; referrer_username: string }[] = await rr.json();
+        const referrers = new Set<string>();
+        for (const row of rows) {
+          referralMap[row.referred_username.toLowerCase()] = row.referrer_username;
+          referrers.add(row.referrer_username);
+        }
+        if (referrers.size > 0) {
+          const rParam = `(${[...referrers].map(u => `"${encodeURIComponent(u)}"`).join(",")})`;
+          const lr = await sbAdminRaw(`affiliate_links?username=in.${rParam}&select=username,ref_code`, { headers: { Prefer: "count=none" } });
+          if (lr.ok) {
+            const linkRows: { username: string; ref_code: string }[] = await lr.json();
+            for (const row of linkRows) refCodeMap[row.username] = row.ref_code;
+          }
+        }
+      }
+    }
+
+    return res.json({
+      ...base,
+      all: base.all.map(e => {
+        const referrer = referralMap[e.username.toLowerCase()] ?? null;
+        return { ...e, referred_by: referrer, ref_code_used: referrer ? (refCodeMap[referrer] ?? null) : null };
+      }),
+    });
+  } catch {
+    return res.json(base);
   }
 });
 
