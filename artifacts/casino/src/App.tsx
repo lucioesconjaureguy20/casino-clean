@@ -2913,7 +2913,7 @@ const ls = {
     localStorage.setItem("email_" + u, u + "@example.com");
     localStorage.setItem("mander_id_" + u, "MND" + Math.random().toString(36).slice(2, 8).toUpperCase());
     localStorage.setItem("registered_at_" + u, regDate);
-    localStorage.setItem("referral_" + u, "lucio123");
+    localStorage.setItem("referral_" + u, "MANDER");
     localStorage.setItem("balance_" + u, String(bal));
     localStorage.setItem("total_wagered_" + u, String(wagered));
     localStorage.setItem("transactions_" + u, JSON.stringify([
