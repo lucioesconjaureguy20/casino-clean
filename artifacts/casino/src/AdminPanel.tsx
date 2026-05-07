@@ -1251,6 +1251,7 @@ function WithdrawalsTab({ token }: { token: string }) {
   const [acting, setActing]           = useState<string | null>(null);
   const [toast, setToast]             = useState<{ msg: string; ok: boolean } | null>(null);
   const [filter, setFilter]           = useState<string>("all");
+  const [usernameSearch, setUsernameSearch] = useState<string>("");
   const [dismissedDemoAlerts, setDismissedDemoAlerts] = useState<Set<string>>(new Set());
 
   const load = useCallback(async () => {
@@ -1311,7 +1312,10 @@ function WithdrawalsTab({ token }: { token: string }) {
     } finally { setActing(null); }
   }
 
-  const filtered = filter === "all" ? withdrawals : withdrawals.filter(w => w.status === filter);
+  const filtered = withdrawals.filter(w =>
+    (filter === "all" || w.status === filter) &&
+    (!usernameSearch.trim() || (w.username ?? "").toLowerCase().includes(usernameSearch.trim().toLowerCase()))
+  );
   const counts   = withdrawals.reduce<Record<string, number>>((acc, w) => {
     acc[w.status] = (acc[w.status] ?? 0) + 1; return acc;
   }, {});
@@ -1369,6 +1373,17 @@ function WithdrawalsTab({ token }: { token: string }) {
           </p>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <input
+            type="text"
+            placeholder="Buscar usuario..."
+            value={usernameSearch}
+            onChange={e => setUsernameSearch(e.target.value)}
+            style={{
+              background: "#0d1117", border: "1px solid #2a3550", borderRadius: 8,
+              color: "#e2e8f0", fontSize: 12, fontWeight: 500, padding: "6px 12px",
+              fontFamily: "'Inter', sans-serif", outline: "none", width: 160,
+            }}
+          />
           {["all","pending","approved","paid","rejected"].map(s => (
             <button key={s} onClick={() => setFilter(s)} style={{
               background: filter === s ? "#f59e0b" : "transparent",
