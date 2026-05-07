@@ -1,0 +1,105 @@
+Build an admin-panel feature called Wallet Relationship Detection System for my crypto casino platform.
+
+Goal:
+Detect multi-account abuse by analyzing blockchain deposit wallets and finding hidden relationships between them.
+
+Main logic:
+
+Every deposit must store:
+user_id
+username
+deposit_wallet (sender wallet)
+casino_wallet (receiver wallet)
+tx_hash
+blockchain (TRC20, ERC20, BTC, etc.)
+amount
+timestamp
+Create a wallet graph system:
+Each wallet is a node.
+Each transaction is an edge.
+
+Example:
+Root Wallet A → Wallet B
+Root Wallet A → Wallet C
+Root Wallet A → Wallet D
+
+Wallet B → User1 deposit
+Wallet C → User2 deposit
+Wallet D → User3 deposit
+
+System must detect:
+
+shared root wallet funding
+same parent wallet funding multiple deposit wallets
+multi-hop connections (up to 3 hops)
+repeated equal-value transfers
+suspicious timing patterns
+Fraud detection rules:
+Flag users when:
+2 or more accounts are funded from the same root wallet
+deposits happen within a short timeframe (1h)
+same or similar deposit amounts
+same affiliate/referral code
+same IP/device fingerprint (if available)
+Admin panel UI:
+Create a new admin page:
+Wallet Detection
+
+Features:
+
+Search by wallet
+Search by user
+Search by tx hash
+Show wallet relationship tree (graph visualization)
+Show linked accounts
+Show risk score
+Show root wallet
+Show number of connected accounts
+Show total deposited amount
+Show affiliate code used
+Risk scoring:
+Example:
+Shared root wallet = +50
+Same amount = +20
+Less than 1h = +20
+Same affiliate code = +30
+Same IP/device = +40
+
+If score > 70 → mark as HIGH RISK
+
+Alerts:
+Create automatic admin alerts when:
+one wallet funds multiple accounts
+multiple users deposit from connected wallets
+suspicious circular transfers are detected
+Blockchain integrations:
+Make the system modular for:
+TRON (TRC20)
+Ethereum (ERC20)
+Bitcoin
+
+Use blockchain explorer APIs to trace wallet history and parent wallets.
+
+Database:
+Create normalized tables for:
+wallets
+wallet_transactions
+wallet_links
+wallet_risk_scores
+wallet_alerts
+Visualization:
+Use an interactive graph (nodes + edges) in admin panel to display wallet connections like a money-flow map.
+Performance:
+Do not scan the whole blockchain.
+Only analyze wallets related to deposits into the casino.
+
+Tech requirements:
+
+clean code
+scalable architecture
+background jobs for analysis
+caching for blockchain lookups
+admin filters
+export suspicious wallet clusters to CSV
+
+Make it production-ready and integrate it into the existing admin dashboard.

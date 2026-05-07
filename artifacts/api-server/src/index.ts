@@ -35,6 +35,8 @@ runMigration()
           }
           logger.info({ port }, "Server listening");
           initDeviceStore();
+          // Kick off initial wallet analysis after 60s (non-blocking)
+          setTimeout(() => { import("./lib/walletStore.js").then(m => m.analyzeWallets()).catch(() => {}); }, 60_000);
           // Stagger background tasks to avoid Supabase overload on startup
           setTimeout(() => startPlisioPoller(),        30_000);   // +30s
           setTimeout(() => startPlisioHashEnricher(),  15_000);   // +15s

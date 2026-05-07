@@ -8,6 +8,7 @@ import { getIpReport, recordIp, seedUser, flushSeeds } from "../lib/ipStore.js";
 import { recordDevice, getDeviceReport } from "../lib/deviceStore.js";
 import { pool } from "@workspace/db";
 import { getAuthUsers as getCachedAuthUsers, getCachedBetRows, fetchAllRows } from "../lib/supabaseCache";
+import { analyzeWallets } from "../lib/walletStore.js";
 
 const SB_URL = process.env.SUPABASE_URL ?? "";
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY ?? "";
@@ -1641,6 +1642,17 @@ router.get("/device-report", requireAdmin, async (_req: Request, res: Response) 
     });
   } catch {
     return res.json(base);
+  }
+});
+
+// ── Wallet Relationship Detection ────────────────────────────────────────────
+router.get("/wallet-report", async (req: Request, res: Response) => {
+  try {
+    const force = req.query.refresh === "1";
+    const report = await analyzeWallets(force);
+    return res.json(report);
+  } catch (err: unknown) {
+    return res.status(500).json({ error: String(err) });
   }
 });
 

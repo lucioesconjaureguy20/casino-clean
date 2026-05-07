@@ -5380,6 +5380,300 @@ function IpsTab({ token }: { token: string }) {
 }
 
 // ── DevicesTab ────────────────────────────────────────────────────────────────
+// ─── Wallet Detection Tab ────────────────────────────────────────────────────
+
+interface DepositNode { depositId:number; userId:string; username:string; address:string; txHash:string; network:string; currency:string; amount:number; amountUsd:number; createdAt:string; refCode:string; }
+interface RiskFactor  { label:string; score:number; }
+interface WalletCluster { id:string; reason:string; users:string[]; deposits:DepositNode[]; riskScore:number; riskFactors:RiskFactor[]; totalUsd:number; detectedAt:string; }
+interface WalletAlert   { id:string; severity:"high"|"medium"|"low"; message:string; users:string[]; clusterId:string; detectedAt:string; resolved:boolean; }
+interface WalletReport  { clusters:WalletCluster[]; alerts:WalletAlert[]; all:DepositNode[]; analyzedAt:string; }
+
+const RISK_REASON: Record<string,string> = {
+  shared_address:     "Dirección compartida",
+  same_tx:            "TX hash duplicado",
+  timing_amount:      "Timing + monto similar",
+  affiliate_ip_device:"Afiliado + IP/Dispositivo",
+};
+
+function riskColor(score: number): string {
+  if (score >= 100) return "#ef4444";
+  if (score >= 70)  return "#f97316";
+  return "#eab308";
+}
+function riskLabel(score: number): string {
+  if (score >= 100) return "ALTO";
+  if (score >= 70)  return "MEDIO";
+  return "BAJO";
+}
+function riskBg(score: number): string {
+  if (score >= 100) return "#2a0e0e";
+  if (score >= 70)  return "#1f1205";
+  return "#1a1a05";
+}
+
+// ── Mini SVG cluster graph ──────────────────────────────────────────────────
+function ClusterGraph({ cluster }: { cluster: WalletCluster }) {
+  const users = cluster.users.slice(0, 8);
+  const cx = 90, cy = 90, r = 62;
+  const color = riskColor(cluster.riskScore);
+  return (
+    <svg width={180} height={180} style={{ flexShrink: 0 }}>
+      {/* center node */}
+      <circle cx={cx} cy={cy} r={18} fill={riskBg(cluster.riskScore)} stroke={color} strokeWidth={2} />
+      <text x={cx} y={cy+1} textAnchor="middle" dominantBaseline="middle" fontSize={14}>🔗</text>
+      {/* user nodes */}
+      {users.map((u, i) => {
+        const angle = (2 * Math.PI * i) / users.length - Math.PI / 2;
+        const nx = cx + r * Math.cos(angle);
+        const ny = cy + r * Math.sin(angle);
+        return (
+          <g key={u}>
+            <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={color} strokeWidth={1} strokeOpacity={0.35} />
+            <circle cx={nx} cy={ny} r={14} fill="#0d1520" stroke={color} strokeWidth={1.5} />
+            <text x={nx} y={ny+1} textAnchor="middle" dominantBaseline="middle" fontSize={9} fill="#94a3b8"
+              style={{ userSelect:"none" as const }}>{u.slice(0,7)}</text>
+          </g>
+        );
+      })}
+      {users.length < cluster.users.length && (
+        <text x={cx} y={cy+72} textAnchor="middle" fontSize={9} fill="#64748b">+{cluster.users.length - users.length} más</text>
+      )}
+    </svg>
+  );
+}
+
+// ── CSV export ───────────────────────────────────────────────────────────────
+function exportWalletCsv(clusters: WalletCluster[]) {
+  const rows = ["Risk,Score,Razón,Usuarios,Total USD,Dirección,TX Hash,Red,Detectado"];
+  for (const c of clusters) {
+    for (const d of c.deposits) {
+      rows.push([
+        riskLabel(c.riskScore), c.riskScore,
+        RISK_REASON[c.reason] ?? c.reason,
+        c.users.join("|"),
+        c.totalUsd.toFixed(2),
+        d.address, d.txHash, d.network,
+        new Date(c.detectedAt).toLocaleString("es-AR"),
+      ].join(","));
+    }
+  }
+  const blob = new Blob([rows.join("\n")], { type:"text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `wallet-clusters-${Date.now()}.csv`;
+  a.click();
+}
+
+function WalletDetectionTab({ token }: { token: string }) {
+  const [report, setReport]   = useState<WalletReport | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch]   = useState("");
+  const [severityFilter, setSeverityFilter] = useState<"all"|"high"|"medium"|"low">("all");
+  const [expandedCluster, setExpandedCluster] = useState<string|null>(null);
+
+  const load = async (force = false) => {
+    setLoading(true);
+    try {
+      const r = await fetch(`/api/admin/wallet-report${force ? "?refresh=1" : ""}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (r.ok) setReport(await r.json());
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const q = search.toLowerCase().trim();
+  const clusters = (report?.clusters ?? []).filter(c => {
+    if (severityFilter !== "all") {
+      const lbl = riskLabel(c.riskScore).toLowerCase();
+      if (severityFilter === "high"   && lbl !== "alto")  return false;
+      if (severityFilter === "medium" && lbl !== "medio") return false;
+      if (severityFilter === "low"    && lbl !== "bajo")  return false;
+    }
+    if (!q) return true;
+    return (
+      c.users.some(u => u.toLowerCase().includes(q)) ||
+      c.deposits.some(d => d.address.toLowerCase().includes(q) || d.txHash.toLowerCase().includes(q))
+    );
+  });
+
+  const highCount   = (report?.clusters ?? []).filter(c => c.riskScore >= 100).length;
+  const medCount    = (report?.clusters ?? []).filter(c => c.riskScore >= 70 && c.riskScore < 100).length;
+  const alertsHigh  = (report?.alerts ?? []).filter(a => a.severity === "high");
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:20, flexWrap:"wrap", gap:10 }}>
+        <div>
+          <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:"#e2e8f0" }}>Detección de Relaciones de Wallet</h2>
+          <p style={{ margin:"4px 0 0", color:"#64748b", fontSize:13 }}>
+            Análisis de patrones entre cuentas: dirección compartida, TX duplicado, timing, afiliado + IP/dispositivo.
+          </p>
+        </div>
+        <div style={{ display:"flex", gap:8 }}>
+          {report && <button onClick={() => exportWalletCsv(clusters)} style={{ padding:"8px 14px", borderRadius:6, border:"none", background:"#14532d", color:"#86efac", fontWeight:600, fontSize:12, cursor:"pointer" }}>⬇ CSV</button>}
+          <button onClick={() => load(true)} disabled={loading} style={{ padding:"8px 16px", borderRadius:6, border:"none", background:"#1e3a5f", color:"#93c5fd", fontWeight:600, fontSize:13, cursor:"pointer" }}>
+            {loading ? "Analizando…" : "↻ Actualizar"}
+          </button>
+        </div>
+      </div>
+
+      {/* Summary cards */}
+      {report && (
+        <div style={{ display:"flex", gap:12, marginBottom:20, flexWrap:"wrap" }}>
+          {[
+            { label:"Clusters totales",   value: report.clusters.length,          color:"#93c5fd", bg:"#0d1520" },
+            { label:"Alto riesgo",         value: highCount,                       color:"#ef4444", bg:"#1a0808" },
+            { label:"Riesgo medio",        value: medCount,                        color:"#f97316", bg:"#1a0e05" },
+            { label:"Alertas activas",     value: report.alerts.length,            color:"#facc15", bg:"#1a1800" },
+            { label:"Depósitos analizados",value: report.all.length,               color:"#64748b", bg:"#0d1117" },
+          ].map(c => (
+            <div key={c.label} style={{ flex:"1 1 110px", minWidth:110, background:c.bg, border:`1px solid ${c.color}22`, borderRadius:8, padding:"12px 14px", textAlign:"center" }}>
+              <div style={{ fontSize:22, fontWeight:800, color:c.color }}>{c.value}</div>
+              <div style={{ fontSize:11, color:"#64748b", marginTop:2 }}>{c.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Active high-risk alerts */}
+      {alertsHigh.length > 0 && (
+        <div style={{ marginBottom:20, background:"#1a0808", border:"1px solid #7f1d1d", borderRadius:8, padding:14 }}>
+          <div style={{ fontSize:13, fontWeight:700, color:"#fca5a5", marginBottom:10 }}>🚨 {alertsHigh.length} alertas de alto riesgo</div>
+          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+            {alertsHigh.slice(0, 5).map(a => (
+              <div key={a.id} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"8px 10px", borderRadius:6, background:"#2a0e0e", border:"1px solid #991b1b" }}>
+                <span style={{ fontSize:16, flexShrink:0 }}>⚠</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ color:"#fca5a5", fontSize:12 }}>{a.message}</div>
+                  <div style={{ display:"flex", gap:6, marginTop:4, flexWrap:"wrap" }}>
+                    {a.users.map(u => <span key={u} style={{ background:"#7f1d1d", color:"#fca5a5", borderRadius:4, padding:"1px 7px", fontSize:11 }}>{u}</span>)}
+                  </div>
+                </div>
+                <span style={{ fontSize:10, color:"#64748b", whiteSpace:"nowrap", flexShrink:0 }}>{new Date(a.detectedAt).toLocaleString("es-AR",{dateStyle:"short",timeStyle:"short"})}</span>
+              </div>
+            ))}
+            {alertsHigh.length > 5 && <div style={{ color:"#64748b", fontSize:12, textAlign:"center" }}>+{alertsHigh.length - 5} alertas más</div>}
+          </div>
+        </div>
+      )}
+
+      {/* Search + filter */}
+      <div style={{ display:"flex", gap:8, marginBottom:16, flexWrap:"wrap" }}>
+        <div style={{ position:"relative", flex:"1 1 220px" }}>
+          <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color:"#475569", fontSize:13 }}>🔍</span>
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Buscar por wallet, usuario o TX hash…"
+            style={{ width:"100%", padding:"9px 12px 9px 32px", borderRadius:6, border:"1px solid #1e2a3d", background:"#0d1520", color:"#e2e8f0", fontSize:13, boxSizing:"border-box" as const, outline:"none" }}
+          />
+          {search && <button onClick={() => setSearch("")} style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:16 }}>×</button>}
+        </div>
+        {(["all","high","medium","low"] as const).map(s => (
+          <button key={s} onClick={() => setSeverityFilter(s)} style={{
+            padding:"8px 14px", borderRadius:6, border:"none", cursor:"pointer", fontSize:12, fontWeight:600,
+            background: severityFilter === s ? (s === "high" ? "#7f1d1d" : s === "medium" ? "#7c2d12" : s === "low" ? "#713f12" : "#1e3a5f") : "#0d1520",
+            color: severityFilter === s ? "#fff" : "#64748b",
+          }}>{s === "all" ? "Todos" : s === "high" ? "🔴 Alto" : s === "medium" ? "🟠 Medio" : "🟡 Bajo"}</button>
+        ))}
+      </div>
+
+      {loading && !report && <div style={{ color:"#64748b", textAlign:"center", padding:60 }}>Analizando depósitos…</div>}
+
+      {report && clusters.length === 0 && (
+        <div style={{ background:"#0a1a0a", border:"1px solid #14532d", borderRadius:8, padding:20, color:"#86efac", fontSize:13, textAlign:"center" }}>
+          ✓ {q ? "Sin clusters que coincidan con la búsqueda." : "No se detectaron relaciones sospechosas entre wallets."}
+        </div>
+      )}
+
+      {/* Clusters list */}
+      <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+        {clusters.map(c => {
+          const isExpanded = expandedCluster === c.id;
+          const color = riskColor(c.riskScore);
+          return (
+            <div key={c.id} style={{ background: riskBg(c.riskScore), border:`1px solid ${color}44`, borderRadius:8, overflow:"hidden" }}>
+              {/* Cluster header */}
+              <div
+                onClick={() => setExpandedCluster(isExpanded ? null : c.id)}
+                style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", cursor:"pointer", flexWrap:"wrap" }}
+              >
+                <span style={{ background: riskBg(c.riskScore), border:`1px solid ${color}`, color, borderRadius:4, padding:"2px 8px", fontSize:11, fontWeight:800, flexShrink:0 }}>
+                  {riskLabel(c.riskScore)} {c.riskScore}pts
+                </span>
+                <span style={{ color:"#94a3b8", fontSize:12, flexShrink:0 }}>
+                  {RISK_REASON[c.reason] ?? c.reason}
+                </span>
+                <div style={{ display:"flex", gap:5, flexWrap:"wrap", flex:1 }}>
+                  {c.users.slice(0, 6).map(u => (
+                    <span key={u} style={{ background:"#0d1520", color, borderRadius:4, padding:"1px 7px", fontSize:12, border:`1px solid ${color}33` }}>{u}</span>
+                  ))}
+                  {c.users.length > 6 && <span style={{ color:"#64748b", fontSize:12 }}>+{c.users.length - 6}</span>}
+                </div>
+                <div style={{ display:"flex", gap:16, alignItems:"center", flexShrink:0 }}>
+                  <span style={{ color:"#64748b", fontSize:12 }}>${c.totalUsd.toFixed(2)} USD</span>
+                  <span style={{ color:"#64748b", fontSize:11 }}>{new Date(c.detectedAt).toLocaleString("es-AR",{dateStyle:"short",timeStyle:"short"})}</span>
+                  <span style={{ color:"#475569", fontSize:16 }}>{isExpanded ? "▲" : "▼"}</span>
+                </div>
+              </div>
+
+              {/* Expanded detail */}
+              {isExpanded && (
+                <div style={{ borderTop:`1px solid ${color}22`, padding:"16px", display:"flex", gap:20, flexWrap:"wrap" }}>
+                  {/* Graph */}
+                  <ClusterGraph cluster={c} />
+
+                  {/* Detail */}
+                  <div style={{ flex:1, minWidth:220 }}>
+                    {/* Risk factors */}
+                    <div style={{ marginBottom:14 }}>
+                      <div style={{ fontSize:11, fontWeight:700, color:"#64748b", marginBottom:6, textTransform:"uppercase" as const, letterSpacing:"0.05em" }}>Factores de riesgo</div>
+                      {c.riskFactors.map((f, i) => (
+                        <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
+                          <span style={{ fontSize:12, color:"#94a3b8" }}>{f.label}</span>
+                          <span style={{ fontWeight:700, fontSize:12, color, background:`${color}22`, borderRadius:4, padding:"1px 7px" }}>+{f.score}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Deposits */}
+                    <div style={{ fontSize:11, fontWeight:700, color:"#64748b", marginBottom:6, textTransform:"uppercase" as const, letterSpacing:"0.05em" }}>Depósitos vinculados</div>
+                    <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                      {c.deposits.map(d => (
+                        <div key={d.depositId} style={{ background:"#0d1520", borderRadius:6, padding:"8px 12px", fontSize:12 }}>
+                          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
+                            <span style={{ fontWeight:700, color:"#e2e8f0" }}>{d.username}</span>
+                            <span style={{ color:"#93c5fd" }}>{d.amountUsd.toFixed(2)} USD</span>
+                          </div>
+                          <div style={{ color:"#4a6fa5", fontFamily:"monospace", fontSize:11, marginBottom:2 }}>
+                            📍 {d.address.slice(0,18)}…{d.address.slice(-6)}
+                          </div>
+                          {d.txHash && (
+                            <div style={{ color:"#64748b", fontFamily:"monospace", fontSize:10 }}>
+                              TX: {d.txHash.slice(0,16)}…
+                            </div>
+                          )}
+                          <div style={{ display:"flex", gap:8, marginTop:4 }}>
+                            <span style={{ background:"#1e2a3d", color:"#94a3b8", borderRadius:3, padding:"1px 6px", fontSize:10 }}>{d.network}</span>
+                            <span style={{ background:"#1e2a3d", color:"#94a3b8", borderRadius:3, padding:"1px 6px", fontSize:10 }}>{d.currency}</span>
+                            {d.refCode && <span style={{ background:"#14532d", color:"#86efac", borderRadius:3, padding:"1px 6px", fontSize:10 }}>🏷 {d.refCode}</span>}
+                            <span style={{ color:"#334155", fontSize:10, marginLeft:"auto" }}>{new Date(d.createdAt).toLocaleString("es-AR",{dateStyle:"short",timeStyle:"short"})}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 interface DeviceEntry { hash: string; info: string; firstSeen: string; lastSeen: string; }
 interface UserDeviceEntry { userId: string; username: string; devices: DeviceEntry[]; lastHash: string; lastInfo: string; lastSeen: string; referred_by?: string | null; ref_code_used?: string | null; }
 interface DeviceReport { duplicates: { hash: string; info: string; users: string[] }[]; all: UserDeviceEntry[]; }
@@ -5646,7 +5940,7 @@ function DevicesTab({ token }: { token: string }) {
   );
 }
 
-type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts" | "transactions" | "affiliates" | "bets" | "support" | "ips" | "devices";
+type TabId = "deposits" | "withdrawals" | "users" | "stats" | "alerts" | "transactions" | "affiliates" | "bets" | "support" | "ips" | "devices" | "wallets";
 
 export default function AdminPanel({ token: initialToken, username }: { token: string; username?: string }) {
   const [tab, setTab] = useState<TabId>("stats");
@@ -5693,6 +5987,7 @@ export default function AdminPanel({ token: initialToken, username }: { token: s
     { id: "transactions", label: "Transacciones", icon: "🔍" },
     { id: "ips",          label: "IPs",           icon: "🌐" },
     { id: "devices",      label: "Dispositivos",  icon: "📱" },
+    { id: "wallets",      label: "Wallets",       icon: "🕸" },
   ];
 
   return (
@@ -5746,6 +6041,7 @@ export default function AdminPanel({ token: initialToken, username }: { token: s
         {tab === "transactions"  && <TransactionsTab token={token} />}
         {tab === "ips"           && <IpsTab token={token} />}
         {tab === "devices"       && <DevicesTab token={token} />}
+        {tab === "wallets"       && <WalletDetectionTab token={token} />}
       </div>
     </div>
   );
