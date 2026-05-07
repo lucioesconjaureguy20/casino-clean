@@ -1,0 +1,17 @@
+[
+  {
+    "userId": "10b63f0e-5074-49df-a14a-17c73c254a22",
+    "username": "ADMIN",
+    "lastHash": "7efdf6da9f509020",
+    "lastInfo": "💻 Windows · Chrome · 1920×1080",
+    "lastSeen": "2026-05-07T21:55:20.240Z",
+    "devices": [
+      {
+        "hash": "7efdf6da9f509020",
+        "info": "💻 Windows · Chrome · 1920×1080",
+        "firstSeen": "2026-05-07T21:55:20.240Z",
+        "lastSeen": "2026-05-07T21:55:20.240Z"
+      }
+    ]
+  }
+]

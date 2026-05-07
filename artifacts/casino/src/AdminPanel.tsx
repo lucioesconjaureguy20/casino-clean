@@ -5401,20 +5401,61 @@ function DevicesTab({ token }: { token: string }) {
 
   const searchLow = search.toLowerCase().trim();
 
+  // ── Affiliate-code filter ─────────────────────────────────────────────────
   const codeMatchUsers = new Set(
     searchLow ? (report?.all ?? []).filter(e => (e.ref_code_used ?? "").toLowerCase() === searchLow).map(e => e.username) : []
   );
   const isCodeFilter = searchLow.length > 0 && codeMatchUsers.size > 0;
 
+  // ── Username filter with "device sibling" expansion ───────────────────────
+  // When you search for a username, we find ALL hashes that user has ever used,
+  // then expand to show every other account sharing any of those hashes.
+  const directMatchUsernames = new Set(
+    searchLow && !isCodeFilter
+      ? (report?.all ?? []).filter(e => e.username.toLowerCase().includes(searchLow)).map(e => e.username)
+      : []
+  );
+  // Collect all hashes used by the matching users
+  const matchedHashes = new Set<string>();
+  if (directMatchUsernames.size > 0) {
+    for (const e of (report?.all ?? [])) {
+      if (directMatchUsernames.has(e.username)) {
+        for (const d of e.devices) matchedHashes.add(d.hash);
+      }
+    }
+  }
+  // Find sibling usernames: accounts sharing any of those hashes (from ALL devices, not just duplicates)
+  const siblingUsernames = new Set<string>();
+  if (matchedHashes.size > 0) {
+    for (const e of (report?.all ?? [])) {
+      if (!directMatchUsernames.has(e.username) && e.devices.some(d => matchedHashes.has(d.hash))) {
+        siblingUsernames.add(e.username);
+      }
+    }
+  }
+  const isUserFilter = directMatchUsernames.size > 0;
+
+  // Shared-hash entries to show as alerts when filtering by user
+  const userSharedHashes = matchedHashes.size > 0
+    ? [...matchedHashes].filter(h => {
+        const usersWithHash = (report?.all ?? []).filter(e => e.devices.some(d => d.hash === h));
+        return usersWithHash.length > 1;
+      })
+    : [];
+
+  // ── Filtered duplicates ───────────────────────────────────────────────────
   const filteredDups = report?.duplicates.filter(d => {
     if (!searchLow) return true;
     if (isCodeFilter) return d.users.some(u => codeMatchUsers.has(u));
+    if (isUserFilter) return d.users.some(u => directMatchUsernames.has(u) || siblingUsernames.has(u));
     return d.hash.includes(searchLow) || d.info.toLowerCase().includes(searchLow) || d.users.some(u => u.toLowerCase().includes(searchLow));
   }) ?? [];
 
+  // ── Filtered table rows ───────────────────────────────────────────────────
   const filtered = report?.all.filter(e => {
     if (!searchLow) return true;
     if (isCodeFilter) return codeMatchUsers.has(e.username) || filteredDups.some(d => d.users.includes(e.username));
+    if (isUserFilter) return directMatchUsernames.has(e.username) || siblingUsernames.has(e.username);
     return (
       e.username.toLowerCase().includes(searchLow) ||
       e.lastHash.includes(searchLow) ||
@@ -5460,6 +5501,45 @@ function DevicesTab({ token }: { token: string }) {
         </div>
       )}
 
+      {isUserFilter && siblingUsernames.size > 0 && (
+        <div style={{ marginBottom:16, padding:"12px 16px", borderRadius:8, background:"#1a0c0a", border:"1px solid #c2410c", display:"flex", flexDirection:"column", gap:8 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontSize:16 }}>🚨</span>
+            <span style={{ color:"#fb923c", fontWeight:700, fontSize:14 }}>
+              Mismo dispositivo detectado en {siblingUsernames.size + directMatchUsernames.size} cuenta{siblingUsernames.size + directMatchUsernames.size !== 1 ? "s" : ""}
+            </span>
+          </div>
+          <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
+            {[...directMatchUsernames].map(u => (
+              <span key={u} style={{ background:"#7c2d12", color:"#fed7aa", borderRadius:5, padding:"3px 10px", fontSize:13, fontWeight:700, border:"2px solid #ea580c" }}>🔍 {u}</span>
+            ))}
+            <span style={{ color:"#64748b", fontSize:13 }}>comparte dispositivo con</span>
+            {[...siblingUsernames].map(u => (
+              <span key={u} style={{ background:"#2a1506", color:"#fb923c", borderRadius:5, padding:"3px 10px", fontSize:13, fontWeight:600, border:"1px solid #c2410c" }}>⚠ {u}</span>
+            ))}
+          </div>
+          {userSharedHashes.length > 0 && (
+            <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginTop:2 }}>
+              {userSharedHashes.map(h => {
+                const allUsers = (report?.all ?? []).filter(e => e.devices.some(d => d.hash === h));
+                const info = allUsers[0]?.devices.find(d => d.hash === h)?.info ?? "";
+                return (
+                  <span key={h} style={{ background:"#0d1520", borderRadius:4, padding:"2px 8px", fontSize:11, color:"#ef4444", fontFamily:"monospace" }}>
+                    {h} {info && <span style={{ fontFamily:"sans-serif", color:"#94a3b8" }}>— {info}</span>}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {isUserFilter && siblingUsernames.size === 0 && searchLow && (
+        <div style={{ marginBottom:12, padding:"8px 14px", borderRadius:6, background:"#0a1a0a", border:"1px solid #166534", color:"#86efac", fontSize:13 }}>
+          ✓ <strong>{search}</strong> no comparte dispositivo con ninguna otra cuenta registrada.
+        </div>
+      )}
+
       {report && filteredDups.length > 0 && (
         <div style={{ marginBottom:24, background:"#1a0a0a", border:"1px solid #7f1d1d", borderRadius:8, padding:16 }}>
           <h3 style={{ margin:"0 0 12px", fontSize:14, fontWeight:700, color:"#fca5a5" }}>
@@ -5475,7 +5555,12 @@ function DevicesTab({ token }: { token: string }) {
                 </div>
                 <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
                   {d.users.map(u => (
-                    <span key={u} style={{ background: codeMatchUsers.has(u) ? "#14532d" : "#7f1d1d", color: codeMatchUsers.has(u) ? "#86efac" : "#fca5a5", borderRadius:4, padding:"2px 8px", fontSize:12, fontWeight:600 }}>{u}</span>
+                    <span key={u} style={{
+                      background: directMatchUsernames.has(u) ? "#7c2d12" : codeMatchUsers.has(u) ? "#14532d" : siblingUsernames.has(u) ? "#2a1506" : "#7f1d1d",
+                      color:      directMatchUsernames.has(u) ? "#fed7aa" : codeMatchUsers.has(u) ? "#86efac" : siblingUsernames.has(u) ? "#fb923c" : "#fca5a5",
+                      borderRadius:4, padding:"2px 8px", fontSize:12, fontWeight:600,
+                      border: directMatchUsernames.has(u) ? "1px solid #ea580c" : "none",
+                    }}>{directMatchUsernames.has(u) ? "🔍 " : siblingUsernames.has(u) ? "⚠ " : ""}{u}</span>
                   ))}
                 </div>
               </div>
@@ -5484,12 +5569,12 @@ function DevicesTab({ token }: { token: string }) {
         </div>
       )}
 
-      {report && filteredDups.length === 0 && !isCodeFilter && report.duplicates.length === 0 && (
+      {report && filteredDups.length === 0 && !isCodeFilter && !isUserFilter && report.duplicates.length === 0 && (
         <div style={{ marginBottom:24, background:"#0a1a0a", border:"1px solid #14532d", borderRadius:8, padding:14, color:"#86efac", fontSize:13 }}>
           ✓ No se detectaron dispositivos compartidos entre cuentas.
         </div>
       )}
-      {report && filteredDups.length === 0 && (isCodeFilter || searchLow) && report.duplicates.length > 0 && (
+      {report && filteredDups.length === 0 && (isCodeFilter || searchLow) && !isUserFilter && report.duplicates.length > 0 && (
         <div style={{ marginBottom:24, background:"#0d1520", border:"1px solid #1e2a3d", borderRadius:8, padding:14, color:"#64748b", fontSize:13 }}>
           Sin dispositivos duplicados para este filtro.
         </div>
@@ -5513,28 +5598,36 @@ function DevicesTab({ token }: { token: string }) {
               </tr>
             </thead>
             <tbody>
-              {filtered.map(e => (
-                <tr key={e.userId} style={{ borderBottom:"1px solid #0e1826", background: dupUsernames.has(e.username) ? "#1a0d0d" : "transparent" }}>
-                  <td style={{ padding:"9px 12px" }}>
-                    <span style={{ fontWeight:600, color: dupUsernames.has(e.username) ? "#fca5a5" : "#e2e8f0" }}>
-                      {dupUsernames.has(e.username) ? "⚠ " : ""}{e.username}
-                    </span>
-                  </td>
-                  <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12 }}>
-                    {e.referred_by
-                      ? <><span style={{ color:"#64748b" }}>{e.referred_by}</span>{e.ref_code_used && <span style={{ marginLeft:4, background:"#1e3a2f", color:"#86efac", borderRadius:3, padding:"1px 5px", fontSize:11, fontFamily:"monospace" }}>{e.ref_code_used}</span>}</>
-                      : <span style={{ color:"#334155" }}>—</span>}
-                  </td>
-                  <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12, maxWidth:200 }}>{e.lastInfo || "—"}</td>
-                  <td style={{ padding:"9px 12px" }}>
-                    <span style={{ fontFamily:"monospace", fontSize:11, color: dupUsernames.has(e.username) ? "#ef4444" : "#4a6fa5", background:"#0d1827", padding:"2px 6px", borderRadius:4 }}>{e.lastHash}</span>
-                  </td>
-                  <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12 }}>{e.devices.length}</td>
-                  <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12, whiteSpace:"nowrap" }}>
-                    {new Date(e.lastSeen).toLocaleString("es-AR", { dateStyle:"short", timeStyle:"short" })}
-                  </td>
-                </tr>
-              ))}
+              {filtered.map(e => {
+                const isSearched = directMatchUsernames.has(e.username);
+                const isSibling  = siblingUsernames.has(e.username);
+                const isDup      = dupUsernames.has(e.username);
+                const rowBg = isSearched ? "#1e100a" : isSibling ? "#160d04" : isDup ? "#1a0d0d" : "transparent";
+                const nameColor = isSearched ? "#fed7aa" : isSibling ? "#fb923c" : isDup ? "#fca5a5" : "#e2e8f0";
+                const hashColor = isSearched ? "#ea580c" : isSibling ? "#fb923c" : isDup ? "#ef4444" : "#4a6fa5";
+                const prefix = isSearched ? "🔍 " : isSibling ? "⚠ " : isDup ? "⚠ " : "";
+                return (
+                  <tr key={e.userId} style={{ borderBottom:"1px solid #0e1826", background: rowBg }}>
+                    <td style={{ padding:"9px 12px" }}>
+                      <span style={{ fontWeight:700, color: nameColor }}>{prefix}{e.username}</span>
+                      {isSibling && <span style={{ marginLeft:6, fontSize:10, color:"#c2410c", background:"#2a1506", borderRadius:3, padding:"1px 5px", verticalAlign:"middle" }}>misma máquina</span>}
+                    </td>
+                    <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12 }}>
+                      {e.referred_by
+                        ? <><span style={{ color:"#64748b" }}>{e.referred_by}</span>{e.ref_code_used && <span style={{ marginLeft:4, background:"#1e3a2f", color:"#86efac", borderRadius:3, padding:"1px 5px", fontSize:11, fontFamily:"monospace" }}>{e.ref_code_used}</span>}</>
+                        : <span style={{ color:"#334155" }}>—</span>}
+                    </td>
+                    <td style={{ padding:"9px 12px", color:"#94a3b8", fontSize:12, maxWidth:200 }}>{e.lastInfo || "—"}</td>
+                    <td style={{ padding:"9px 12px" }}>
+                      <span style={{ fontFamily:"monospace", fontSize:11, color: hashColor, background:"#0d1827", padding:"2px 6px", borderRadius:4 }}>{e.lastHash}</span>
+                    </td>
+                    <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12 }}>{e.devices.length}</td>
+                    <td style={{ padding:"9px 12px", color:"#64748b", fontSize:12, whiteSpace:"nowrap" }}>
+                      {new Date(e.lastSeen).toLocaleString("es-AR", { dateStyle:"short", timeStyle:"short" })}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
