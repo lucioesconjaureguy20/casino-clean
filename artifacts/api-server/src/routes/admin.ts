@@ -99,10 +99,15 @@ router.get("/deposits", async (req: Request, res: Response) => {
     const deposits: any[] = await r.json();
     if (!deposits.length) return res.json({ deposits: [] });
     const ids = [...new Set(deposits.map((d: any) => d.user_id))];
-    const idsParam = `(${ids.map((id: string) => `"${id}"`).join(",")})`;
-    const pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username,mander_id,is_flagged`);
+    // Fetch profiles in chunks of 80 to avoid URL/header overflow with many unique users
+    const CHUNK = 80;
     let profileMap: Record<string, any> = {};
-    if (pr.ok) { const profiles: any[] = await pr.json(); for (const p of profiles) profileMap[p.id] = p; }
+    for (let i = 0; i < ids.length; i += CHUNK) {
+      const chunk = ids.slice(i, i + CHUNK);
+      const idsParam = `(${chunk.join(",")})`;
+      const pr = await sbAdmin(`profiles?id=in.${idsParam}&select=id,username,mander_id,is_flagged`);
+      if (pr.ok) { const profiles: any[] = await pr.json(); for (const p of profiles) profileMap[p.id] = p; }
+    }
     const depositsData = { deposits: deposits.map((d: any) => ({ ...d, username: profileMap[d.user_id]?.username ?? d.user_id, mander_id: profileMap[d.user_id]?.mander_id ?? "", is_flagged: profileMap[d.user_id]?.is_flagged ?? false, amount_usd: parseFloat((d.amount * getPriceUsd(String(d.currency ?? "").trim().toUpperCase())).toFixed(4)) })) };
     _depositsCache.set(status, { data: depositsData, at: Date.now() });
     return res.json(depositsData);
