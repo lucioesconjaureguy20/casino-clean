@@ -6,6 +6,7 @@ import { initCounters } from "./lib/counters";
 import { startDemoBetsCorrector } from "./lib/fixDemoBets";
 import { runMigration } from "./lib/migration";
 import { initDeviceStore } from "./lib/deviceStore";
+import { initWalletTracer } from "./lib/walletTracer";
 
 const rawPort = process.env["PORT"];
 
@@ -35,8 +36,30 @@ runMigration()
           }
           logger.info({ port }, "Server listening");
           initDeviceStore();
-          // Kick off initial wallet analysis after 60s (non-blocking)
+          initWalletTracer();
+          // Kick off initial wallet analysis + trace queue after startup
           setTimeout(() => { import("./lib/walletStore.js").then(m => m.analyzeWallets()).catch(() => {}); }, 60_000);
+          // Queue untraced confirmed deposits for blockchain tracing after 90s
+          setTimeout(async () => {
+            try {
+              const { queueMultiple } = await import("./lib/walletTracer.js");
+              const SB_URL = process.env.SUPABASE_URL?.replace(/\/$/, "") ?? "";
+              const SB_KEY = process.env.SUPABASE_SERVICE_KEY ?? "";
+              const r = await fetch(`${SB_URL}/rest/v1/deposits?status=eq.confirmed&address=neq.pending&order=created_at.desc&limit=500&select=id,user_id,amount,currency,network,address,created_at`, {
+                headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` }
+              });
+              if (r.ok) {
+                const rows: any[] = await r.json();
+                const items = rows.map((d: any) => ({
+                  depositId: d.id, casinoAddr: d.address ?? "", network: d.network ?? "",
+                  currency: d.currency ?? "", amount: parseFloat(d.amount ?? 0),
+                  timestamp: d.created_at ?? "", userId: d.user_id ?? "", username: d.user_id ?? "",
+                })).filter((d: any) => d.casinoAddr.length > 5);
+                const n = queueMultiple(items);
+                logger.info({ n }, "[wallet-tracer] queued deposits for blockchain tracing");
+              }
+            } catch (e) { logger.error({ err: e }, "[wallet-tracer] startup queue failed"); }
+          }, 90_000);
           // Stagger background tasks to avoid Supabase overload on startup
           setTimeout(() => startPlisioPoller(),        30_000);   // +30s
           setTimeout(() => startPlisioHashEnricher(),  15_000);   // +15s

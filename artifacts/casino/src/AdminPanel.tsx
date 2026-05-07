@@ -5388,11 +5388,44 @@ interface WalletCluster { id:string; reason:string; users:string[]; deposits:Dep
 interface WalletAlert   { id:string; severity:"high"|"medium"|"low"; message:string; users:string[]; clusterId:string; detectedAt:string; resolved:boolean; }
 interface WalletReport  { clusters:WalletCluster[]; alerts:WalletAlert[]; all:DepositNode[]; analyzedAt:string; }
 
+// ── Blockchain tracing types ──────────────────────────────────────────────────
+interface WalletTrace {
+  depositId:       number;
+  casinoAddr:      string;
+  network:         string;
+  depositorWallet: string | null;
+  ancestors:       string[];
+  rootWallet:      string | null;
+  userId:          string;
+  username:        string;
+  tracedAt:        string;
+  hops:            number;
+  pending:         boolean;
+  error?:          string;
+}
+interface RootWalletGroup {
+  rootWallet:  string;
+  network:     string;
+  usernames:   string[];
+  traces:      WalletTrace[];
+  fanOut:      number;
+  detectedAt:  string;
+}
+interface AncestryReport {
+  traces:       WalletTrace[];
+  rootGroups:   RootWalletGroup[];
+  queueLength:  number;
+  workerBusy:   boolean;
+  totalTraced:  number;
+  analyzedAt:   string;
+}
+
 const RISK_REASON: Record<string,string> = {
   shared_address:     "Dirección compartida",
   same_tx:            "TX hash duplicado",
   timing_amount:      "Timing + monto similar",
   affiliate_ip_device:"Afiliado + IP/Dispositivo",
+  shared_root_wallet: "Wallet raíz compartida",
 };
 
 function riskColor(score: number): string {
@@ -5439,6 +5472,283 @@ function ClusterGraph({ cluster }: { cluster: WalletCluster }) {
         <text x={cx} y={cy+72} textAnchor="middle" fontSize={9} fill="#64748b">+{cluster.users.length - users.length} más</text>
       )}
     </svg>
+  );
+}
+
+// ── Root wallet tree SVG ──────────────────────────────────────────────────────
+function RootWalletTree({ group }: { group: RootWalletGroup }) {
+  const depositorWallets = [...new Set(group.traces.map(t => t.depositorWallet).filter(Boolean))] as string[];
+  const users = group.usernames;
+
+  // Layout constants
+  const W = 520;
+  const rowDep = 140, rowUser = 240;
+  const rootX = W / 2;
+
+  // Depositor columns
+  const depCount  = depositorWallets.length;
+  const depSpacing = depCount > 1 ? Math.min(160, (W - 60) / (depCount - 1)) : 0;
+  const depStartX = depCount > 1 ? rootX - (depSpacing * (depCount - 1)) / 2 : rootX;
+
+  // User columns (map each user to their depositor wallet(s))
+  const traceByUser = new Map<string, WalletTrace>();
+  for (const t of group.traces) if (t.username) traceByUser.set(t.username, t);
+
+  const userCount   = users.length;
+  const userSpacing = userCount > 1 ? Math.min(120, (W - 40) / (userCount - 1)) : 0;
+  const userStartX  = userCount > 1 ? rootX - (userSpacing * (userCount - 1)) / 2 : rootX;
+
+  const addr = (s: string) => `${s.slice(0, 8)}…${s.slice(-4)}`;
+
+  return (
+    <svg width={W} height={290} style={{ display:"block", maxWidth:"100%", overflow:"visible" }}>
+      {/* Root wallet node */}
+      <rect x={rootX - 80} y={18} width={160} height={40} rx={8}
+        fill="#1a0808" stroke="#ef4444" strokeWidth={1.5} />
+      <text x={rootX} y={34} textAnchor="middle" fill="#fca5a5" fontSize={9} fontFamily="monospace">ROOT WALLET</text>
+      <text x={rootX} y={48} textAnchor="middle" fill="#ef4444" fontSize={10} fontFamily="monospace" fontWeight="bold">{addr(group.rootWallet)}</text>
+      <text x={rootX} y={62} textAnchor="middle" fill="#64748b" fontSize={9}>{group.network}</text>
+
+      {/* Depositor wallet nodes */}
+      {depositorWallets.map((dw, i) => {
+        const dx = depStartX + i * depSpacing;
+        return (
+          <g key={dw}>
+            {/* Line root → depositor */}
+            <line x1={rootX} y1={58} x2={dx} y2={rowDep - 14}
+              stroke="#ef444466" strokeWidth={1.5} strokeDasharray="4,3" />
+            {/* Depositor node */}
+            <rect x={dx - 56} y={rowDep - 14} width={112} height={34} rx={6}
+              fill="#1a0e05" stroke="#f97316" strokeWidth={1} />
+            <text x={dx} y={rowDep + 2} textAnchor="middle" fill="#fb923c" fontSize={9} fontFamily="monospace">DEPOSITOR</text>
+            <text x={dx} y={rowDep + 14} textAnchor="middle" fill="#f97316" fontSize={9} fontFamily="monospace">{addr(dw)}</text>
+          </g>
+        );
+      })}
+
+      {/* User nodes */}
+      {users.slice(0, 8).map((u, i) => {
+        const ux = userStartX + i * userSpacing;
+        const trace = traceByUser.get(u);
+        const dw = trace?.depositorWallet;
+        const depIdx = dw ? depositorWallets.indexOf(dw) : -1;
+        const depX = depIdx >= 0 ? depStartX + depIdx * depSpacing : rootX;
+
+        return (
+          <g key={u}>
+            {/* Line depositor → user */}
+            <line x1={depX} y1={rowDep + 20} x2={ux} y2={rowUser - 14}
+              stroke="#f9731666" strokeWidth={1} strokeDasharray="3,3" />
+            {/* Casino icon + user */}
+            <rect x={ux - 44} y={rowUser - 14} width={88} height={44} rx={6}
+              fill="#0d1520" stroke="#3b82f6" strokeWidth={1} />
+            <text x={ux} y={rowUser + 4} textAnchor="middle" fontSize={14}>🎰</text>
+            <text x={ux} y={rowUser + 18} textAnchor="middle" fill="#93c5fd" fontSize={10} fontWeight="bold">{u.slice(0, 10)}</text>
+            <text x={ux} y={rowUser + 30} textAnchor="middle" fill="#64748b" fontSize={8}>casino user</text>
+          </g>
+        );
+      })}
+      {users.length > 8 && (
+        <text x={W - 10} y={rowUser + 18} textAnchor="end" fill="#64748b" fontSize={9}>+{users.length - 8} más</text>
+      )}
+    </svg>
+  );
+}
+
+// ── Root Wallet Detection section ─────────────────────────────────────────────
+function RootWalletSection({ token }: { token: string }) {
+  const [ancestry, setAncestry] = useState<AncestryReport | null>(null);
+  const [loading, setLoading]   = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [queueing, setQueueing] = useState(false);
+  const [queueMsg, setQueueMsg] = useState("");
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/wallet-ancestry", { headers: { Authorization: `Bearer ${token}` } });
+      if (r.ok) setAncestry(await r.json());
+    } finally { setLoading(false); }
+  };
+
+  const triggerQueue = async () => {
+    setQueueing(true);
+    setQueueMsg("");
+    try {
+      const r = await fetch("/api/admin/wallet-ancestry/queue", { method:"POST", headers:{ Authorization:`Bearer ${token}` } });
+      if (r.ok) { const d = await r.json(); setQueueMsg(d.message ?? "Encolado"); await load(); }
+    } finally { setQueueing(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const groups = ancestry?.rootGroups ?? [];
+  const traced = ancestry?.totalTraced ?? 0;
+  const queued = ancestry?.queueLength ?? 0;
+  const busy   = ancestry?.workerBusy ?? false;
+
+  return (
+    <div style={{ marginTop:28 }}>
+      {/* Section header */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16, flexWrap:"wrap", gap:8 }}>
+        <div>
+          <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:"#e2e8f0", display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontSize:18 }}>🌳</span> Detección de Wallet Raíz (Blockchain Tracing)
+          </h3>
+          <p style={{ margin:"4px 0 0", color:"#64748b", fontSize:12 }}>
+            Traza hasta 3 saltos hacia atrás en la blockchain para detectar wallets padre/raíz compartidas entre usuarios.
+            Soporta BEP20 (BSC), TRC20 (TRON), ERC20, LTC y SOL.
+          </p>
+        </div>
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+          <button onClick={triggerQueue} disabled={queueing || busy}
+            style={{ padding:"8px 14px", borderRadius:6, border:"none", background:"#1e3a5f", color:"#93c5fd", fontWeight:600, fontSize:12, cursor:"pointer", opacity: (queueing||busy)?0.6:1 }}>
+            {queueing ? "Encolando…" : busy ? `⚙ Trazando (${queued} en cola)` : "▶ Iniciar trazado"}
+          </button>
+          <button onClick={load} disabled={loading}
+            style={{ padding:"8px 14px", borderRadius:6, border:"none", background:"#0d1520", color:"#64748b", fontWeight:600, fontSize:12, cursor:"pointer" }}>
+            {loading ? "…" : "↻"}
+          </button>
+        </div>
+      </div>
+
+      {/* Queue message */}
+      {queueMsg && (
+        <div style={{ background:"#0d1f0d", border:"1px solid #14532d", borderRadius:6, padding:"8px 14px", marginBottom:12, color:"#86efac", fontSize:12 }}>
+          ✓ {queueMsg}
+        </div>
+      )}
+
+      {/* Status bar */}
+      <div style={{ display:"flex", gap:10, marginBottom:16, flexWrap:"wrap" }}>
+        {[
+          { label:"Wallets raíz sospechosas", value: groups.length,            color:"#ef4444", bg:"#1a0808" },
+          { label:"Depósitos trazados",        value: traced,                   color:"#93c5fd", bg:"#0d1520" },
+          { label:"En cola",                   value: queued,                   color:"#facc15", bg:"#1a1800" },
+          { label:"Worker",                    value: busy ? "activo" : "idle", color: busy ? "#86efac" : "#64748b", bg:"#0d1117" },
+        ].map(c => (
+          <div key={c.label} style={{ flex:"1 1 100px", minWidth:100, background:c.bg, border:`1px solid ${c.color}22`, borderRadius:8, padding:"10px 12px", textAlign:"center" }}>
+            <div style={{ fontSize:18, fontWeight:800, color:c.color }}>{c.value}</div>
+            <div style={{ fontSize:10, color:"#64748b", marginTop:2 }}>{c.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Worker activity indicator */}
+      {busy && (
+        <div style={{ background:"#0d1f2d", border:"1px solid #1e3a5f", borderRadius:6, padding:"8px 14px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
+          <span style={{ fontSize:14 }}>⚙️</span>
+          <span style={{ color:"#93c5fd", fontSize:12 }}>Trazando blockchains en segundo plano… {queued} depósito{queued !== 1 ? "s" : ""} pendiente{queued !== 1 ? "s" : ""}.</span>
+        </div>
+      )}
+
+      {/* No groups */}
+      {!loading && groups.length === 0 && traced === 0 && (
+        <div style={{ background:"#0d1520", border:"1px dashed #1e2a3d", borderRadius:8, padding:24, textAlign:"center" }}>
+          <div style={{ color:"#64748b", fontSize:13, marginBottom:8 }}>No hay trazados completados aún.</div>
+          <div style={{ color:"#475569", fontSize:12 }}>Hacé clic en "▶ Iniciar trazado" para comenzar el análisis blockchain de los depósitos confirmados.</div>
+        </div>
+      )}
+      {!loading && groups.length === 0 && traced > 0 && (
+        <div style={{ background:"#0a1a0a", border:"1px solid #14532d", borderRadius:8, padding:16, color:"#86efac", fontSize:13, textAlign:"center" }}>
+          ✓ {traced} depósitos trazados — no se encontraron wallets raíz compartidas entre usuarios.
+        </div>
+      )}
+
+      {/* Root wallet groups */}
+      <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+        {groups.map(g => {
+          const isExp = expanded === g.rootWallet;
+          return (
+            <div key={g.rootWallet} style={{ background:"#1a0808", border:"1px solid #7f1d1d", borderRadius:10, overflow:"hidden" }}>
+              {/* Group header */}
+              <div onClick={() => setExpanded(isExp ? null : g.rootWallet)}
+                style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", cursor:"pointer", flexWrap:"wrap" }}>
+                <span style={{ fontSize:20 }}>🌳</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
+                    <code style={{ color:"#fca5a5", fontSize:12, background:"#2a0e0e", padding:"2px 8px", borderRadius:4 }}>
+                      {g.rootWallet.slice(0,16)}…{g.rootWallet.slice(-8)}
+                    </code>
+                    <span style={{ background:"#7f1d1d", color:"#fca5a5", borderRadius:4, padding:"2px 8px", fontSize:11, fontWeight:700 }}>
+                      {g.network}
+                    </span>
+                    {g.fanOut >= 3 && (
+                      <span style={{ background:"#4c1d95", color:"#c4b5fd", borderRadius:4, padding:"2px 8px", fontSize:10, fontWeight:700 }}>
+                        ⚡ fan-out ×{g.fanOut}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ display:"flex", gap:6, marginTop:6, flexWrap:"wrap" }}>
+                    {g.usernames.slice(0,6).map(u => (
+                      <span key={u} style={{ background:"#2a0e0e", color:"#f87171", borderRadius:4, padding:"1px 7px", fontSize:11, border:"1px solid #7f1d1d33" }}>{u}</span>
+                    ))}
+                    {g.usernames.length > 6 && <span style={{ color:"#64748b", fontSize:11 }}>+{g.usernames.length - 6}</span>}
+                  </div>
+                </div>
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4, flexShrink:0 }}>
+                  <div style={{ color:"#fca5a5", fontSize:13, fontWeight:700 }}>{g.usernames.length} usuarios</div>
+                  <div style={{ color:"#64748b", fontSize:10 }}>{g.traces.length} depósito{g.traces.length !== 1 ? "s" : ""}</div>
+                </div>
+                <span style={{ color:"#475569", fontSize:16 }}>{isExp ? "▲" : "▼"}</span>
+              </div>
+
+              {/* Expanded: tree + details */}
+              {isExp && (
+                <div style={{ borderTop:"1px solid #7f1d1d44", padding:16 }}>
+                  {/* Alert box */}
+                  <div style={{ background:"#2a0e0e", border:"1px solid #991b1b", borderRadius:6, padding:"8px 12px", marginBottom:14, display:"flex", gap:8, alignItems:"flex-start" }}>
+                    <span style={{ fontSize:16 }}>🚨</span>
+                    <span style={{ color:"#fca5a5", fontSize:12 }}>
+                      Una wallet fuente financió {g.usernames.length} cuentas distintas del casino.
+                      {g.fanOut >= 3 ? ` Patrón fan-out detectado: ${g.fanOut} wallets de depósito distintas originadas desde la misma raíz.` : ""}
+                    </span>
+                  </div>
+
+                  {/* Tree visualization */}
+                  <div style={{ background:"#0d1117", borderRadius:8, padding:"12px 8px", marginBottom:14, overflowX:"auto" }}>
+                    <div style={{ fontSize:11, color:"#64748b", marginBottom:8, textTransform:"uppercase" as const, letterSpacing:"0.05em" }}>Árbol de wallets</div>
+                    <RootWalletTree group={g} />
+                  </div>
+
+                  {/* Hop-by-hop traces */}
+                  <div style={{ fontSize:11, fontWeight:700, color:"#64748b", marginBottom:8, textTransform:"uppercase" as const, letterSpacing:"0.05em" }}>Rastro por usuario</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                    {g.traces.map(t => (
+                      <div key={t.casinoAddr} style={{ background:"#0d1520", borderRadius:6, padding:"8px 12px", fontSize:11 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", marginBottom:4 }}>
+                          <span style={{ fontWeight:700, color:"#e2e8f0" }}>{t.username}</span>
+                          <span style={{ color:"#64748b" }}>→</span>
+                          <code style={{ color:"#93c5fd", fontSize:10 }}>{t.casinoAddr.slice(0,14)}…</code>
+                          <span style={{ background:"#1e2a3d", color:"#64748b", borderRadius:3, padding:"1px 5px", fontSize:10 }}>{t.hops} hop{t.hops !== 1 ? "s" : ""}</span>
+                          {t.error && <span style={{ color:"#ef4444", fontSize:10 }}>⚠ {t.error}</span>}
+                        </div>
+                        {/* Ancestry chain */}
+                        <div style={{ display:"flex", alignItems:"center", gap:4, flexWrap:"wrap", fontFamily:"monospace" }}>
+                          <span style={{ color:"#ef4444", fontSize:9 }}>ROOT</span>
+                          {[...t.ancestors].reverse().map((a, i) => (
+                            <span key={i} style={{ display:"flex", alignItems:"center", gap:4 }}>
+                              <span style={{ color:"#475569" }}>→</span>
+                              <code style={{ color:"#f97316", fontSize:9 }}>{a.slice(0,10)}…</code>
+                            </span>
+                          ))}
+                          {t.depositorWallet && <>
+                            <span style={{ color:"#475569" }}>→</span>
+                            <code style={{ color:"#facc15", fontSize:9 }}>{t.depositorWallet.slice(0,10)}…</code>
+                          </>}
+                          <span style={{ color:"#475569" }}>→</span>
+                          <code style={{ color:"#86efac", fontSize:9 }}>casino</code>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -5586,6 +5896,13 @@ function WalletDetectionTab({ token }: { token: string }) {
           ✓ {q ? "Sin clusters que coincidan con la búsqueda." : "No se detectaron relaciones sospechosas entre wallets."}
         </div>
       )}
+
+      {/* ── Root Wallet Detection section ── */}
+      <RootWalletSection token={token} />
+
+      {/* ── divider ── */}
+      <div style={{ borderTop:"1px solid #1e2a3d", margin:"24px 0 20px", paddingTop:0 }} />
+      <h3 style={{ margin:"0 0 14px", fontSize:15, fontWeight:700, color:"#e2e8f0" }}>🔗 Clusters de Wallets (Patrones Locales)</h3>
 
       {/* Clusters list */}
       <div style={{ display:"flex", flexDirection:"column", gap:12 }}>

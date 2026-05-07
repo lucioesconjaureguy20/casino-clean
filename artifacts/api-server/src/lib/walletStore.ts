@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 import { getIpReport } from "./ipStore.js";
 import { getDeviceReport } from "./deviceStore.js";
+import { getAllTraces, getRootWalletGroups } from "./walletTracer.js";
 
 const DATA_DIR    = join(process.cwd(), "data");
 const WALLET_FILE = join(DATA_DIR, "wallet-alerts.json");
@@ -349,6 +350,69 @@ export async function analyzeWallets(force = false): Promise<WalletReport> {
         detectedAt: new Date().toISOString(), resolved: false,
       });
     }
+  }
+
+  // ── 3e. Root wallet clustering (shared blockchain ancestor) ─────────────────
+  const rootGroups = getRootWalletGroups();
+  const traces     = getAllTraces();
+
+  for (const group of rootGroups) {
+    if (group.usernames.length < 2) continue;
+    const groupDeposits = group.traces
+      .map(t => deposits.find(d => d.address === t.casinoAddr))
+      .filter((d): d is DepositNode => !!d);
+    if (groupDeposits.length < 2) continue;
+
+    const uniqueUsers = [...new Set(groupDeposits.map(d => d.userId))];
+    if (uniqueUsers.length < 2) continue;
+
+    const pairKey = uniqueUsers.sort().join("|") + ":root:" + group.rootWallet;
+    if (seenPairs.has(pairKey)) continue;
+    seenPairs.add(pairKey);
+
+    const factors: RiskFactor[] = [];
+    let score = 0;
+
+    // Shared root wallet
+    const hasParentOnly = group.traces.every(t => t.ancestors.length === 1);
+    if (hasParentOnly) {
+      factors.push({ label: `Wallet padre compartida: ${group.rootWallet.slice(0,12)}…`, score: 60 });
+      score += 60;
+    } else {
+      factors.push({ label: `Wallet raíz compartida: ${group.rootWallet.slice(0,12)}…`, score: 80 });
+      score += 80;
+    }
+
+    // Fan-out pattern: root funded 3+ different depositor wallets
+    if (group.fanOut >= 3) {
+      factors.push({ label: `Patrón fan-out: ${group.fanOut} wallets financiadas desde la misma raíz`, score: 50 });
+      score += 50;
+    }
+
+    // Additional signals
+    const allIps2  = uniqueUsers.flatMap(uid => { const u = groupDeposits.find(d => d.userId === uid); return u ? (userIpMap.get(u.username) ?? []) : []; });
+    const allDevs2 = uniqueUsers.flatMap(uid => { const u = groupDeposits.find(d => d.userId === uid); return u ? (userDevMap.get(u.username) ?? []) : []; });
+    if (new Set(allIps2).size < allIps2.length)   { factors.push({ label: "IP compartida",      score: 40 }); score += 40; }
+    if (new Set(allDevs2).size < allDevs2.length) { factors.push({ label: "Mismo dispositivo",  score: 40 }); score += 40; }
+
+    const cluster: WalletCluster = {
+      id: uid(), reason: "shared_root_wallet",
+      users:       uniqueUsers.map(uid => groupDeposits.find(d => d.userId === uid)?.username ?? uid),
+      deposits:    groupDeposits,
+      riskScore:   Math.min(score, 220),
+      riskFactors: factors,
+      totalUsd:    groupDeposits.reduce((s, d) => s + d.amountUsd, 0),
+      detectedAt:  new Date().toISOString(),
+    };
+    clusters.push(cluster);
+
+    alerts.push({
+      id: uid(),
+      severity: score >= 100 ? "high" : "medium",
+      message: `Una wallet raíz financió ${uniqueUsers.length} cuentas del casino (${group.rootWallet.slice(0,14)}…)`,
+      users:      cluster.users, clusterId: cluster.id,
+      detectedAt: new Date().toISOString(), resolved: false,
+    });
   }
 
   clusters.sort((a, b) => b.riskScore - a.riskScore);

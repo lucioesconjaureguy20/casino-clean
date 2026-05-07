@@ -9,6 +9,7 @@ import { recordDevice, getDeviceReport } from "../lib/deviceStore.js";
 import { pool } from "@workspace/db";
 import { getAuthUsers as getCachedAuthUsers, getCachedBetRows, fetchAllRows } from "../lib/supabaseCache";
 import { analyzeWallets } from "../lib/walletStore.js";
+import { getAncestryReport, queueMultiple, initWalletTracer, type DepositInfo } from "../lib/walletTracer.js";
 
 const SB_URL = process.env.SUPABASE_URL ?? "";
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY ?? "";
@@ -1651,6 +1652,57 @@ router.get("/wallet-report", async (req: Request, res: Response) => {
     const force = req.query.refresh === "1";
     const report = await analyzeWallets(force);
     return res.json(report);
+  } catch (err: unknown) {
+    return res.status(500).json({ error: String(err) });
+  }
+});
+
+// ── Wallet Ancestry / Blockchain Tracing ──────────────────────────────────────
+router.get("/wallet-ancestry", async (req: Request, res: Response) => {
+  try {
+    return res.json(getAncestryReport());
+  } catch (err: unknown) {
+    return res.status(500).json({ error: String(err) });
+  }
+});
+
+// Manually trigger tracing for recent confirmed deposits
+router.post("/wallet-ancestry/queue", async (req: Request, res: Response) => {
+  try {
+    const r = await sbAdminRaw(
+      "deposits?status=eq.confirmed&address=neq.pending&order=created_at.desc&limit=300&select=id,user_id,amount,currency,network,address,created_at"
+    );
+    if (!r.ok) return res.status(500).json({ error: "supabase_fetch_failed" });
+    const rows: any[] = await r.json();
+
+    // Fetch usernames
+    const userIds = [...new Set(rows.map((d: any) => d.user_id as string))];
+    const profileMap: Record<string, string> = {};
+    const CHUNK = 80;
+    for (let i = 0; i < userIds.length; i += CHUNK) {
+      const chunk = userIds.slice(i, i + CHUNK);
+      const pr = await sbAdminRaw(`profiles?id=in.(${chunk.join(",")})&select=id,username`);
+      if (pr.ok) {
+        const profiles: any[] = await pr.json();
+        for (const p of profiles) profileMap[p.id] = p.username ?? p.id;
+      }
+    }
+
+    const items: DepositInfo[] = rows
+      .map((d: any) => ({
+        depositId:  d.id,
+        casinoAddr: d.address ?? "",
+        network:    d.network ?? "",
+        currency:   d.currency ?? "",
+        amount:     parseFloat(d.amount ?? 0),
+        timestamp:  d.created_at ?? "",
+        userId:     d.user_id ?? "",
+        username:   profileMap[d.user_id] ?? d.user_id ?? "",
+      }))
+      .filter((d: DepositInfo) => d.casinoAddr.length > 5);
+
+    const queued = queueMultiple(items);
+    return res.json({ queued, total: items.length, message: `${queued} depósitos encolados para trazado blockchain` });
   } catch (err: unknown) {
     return res.status(500).json({ error: String(err) });
   }
