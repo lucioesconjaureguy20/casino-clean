@@ -16951,6 +16951,17 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
     <footer style={{ background:"#060c14", margin: isMobile ? "60px -12px 0" : "60px -20px -20px", width: isMobile ? "calc(100% + 24px)" : "calc(100% + 40px)", padding: isMobile ? "40px 16px 0" : "40px 24px 0", paddingBottom: isMobile ? "calc(80px + env(safe-area-inset-bottom, 0px))" : undefined, fontFamily:"'Inter',sans-serif", boxSizing:"border-box" as const }}>
       <div style={{ maxWidth:"1080px", margin:"0 auto", padding: isMobile ? "0" : "0 20px", boxSizing:"border-box" }}>
 
+        {/* Payment methods banner — top of footer, no background */}
+        <div style={{ width:"100%", paddingBottom:"28px", display:"flex", justifyContent:"center" }}>
+          <img
+            src={assetUrl("/payment-methods-banner-nobg.png")}
+            alt="Payment methods"
+            style={{ maxWidth: isMobile ? "100%" : "780px", height:"auto", objectFit:"contain" }}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
         {/* Top grid: responsive */}
         {isMobile ? (
           <>
@@ -17182,17 +17193,6 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
             </div>
           </div>
         )}
-
-        {/* Payment methods banner */}
-        <div style={{ width:"100%", borderTop:"1px solid #0d1624", paddingTop:"24px", paddingBottom:"16px", display:"flex", justifyContent:"center" }}>
-          <img
-            src={assetUrl("/payment-methods-banner.png")}
-            alt="Payment methods"
-            style={{ maxWidth:"100%", height:"auto", objectFit:"contain", opacity:0.85 }}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
 
         {/* Copyright */}
         <div style={{ fontSize: isMobile ? "13px" : "12px", color:"#253345", paddingBottom:"20px", borderTop:"1px solid #0d1624", paddingTop:"18px" }}>
