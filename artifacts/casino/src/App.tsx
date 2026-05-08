@@ -16952,25 +16952,23 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
       <div style={{ maxWidth:"1080px", margin:"0 auto", padding: isMobile ? "0" : "0 20px", boxSizing:"border-box" }}>
 
         {/* Payment methods — manually built with real coin icons */}
-        <div style={{ width:"100%", paddingBottom:"32px", textAlign:"center" }}>
-          <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2.5px", color:"#4a6080", textTransform:"uppercase", marginBottom:"16px" }}>
+        <div style={{ width:"100%", marginTop:"-16px", paddingBottom:"28px", textAlign:"center" }}>
+          <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2.5px", color:"#4a6080", textTransform:"uppercase", marginBottom:"14px" }}>
             {lang === "en" ? "Payment Methods" : lang === "pt" ? "Métodos de Pagamento" : lang === "de" ? "Zahlungsmethoden" : lang === "fr" ? "Moyens de paiement" : lang === "it" ? "Metodi di pagamento" : lang === "tr" ? "Ödeme Yöntemleri" : lang === "ru" ? "Способы оплаты" : lang === "ko" ? "결제 수단" : lang === "nl" ? "Betaalmethoden" : lang === "pl" ? "Metody płatności" : "Métodos de Pago"}
           </div>
-          <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap: isMobile ? "10px" : "14px" }}>
+          <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap: isMobile ? "12px" : "18px" }}>
             {([
-              { coin:"USDT", icon: usdtIcon, color:"#26a17b" },
-              { coin:"USDC", icon: usdcIcon, color:"#2775ca" },
-              { coin:"BTC",  icon: btcIcon,  color:"#f7931a" },
-              { coin:"ETH",  icon: ethIcon,  color:"#627eea" },
-              { coin:"BNB",  icon: bnbIcon,  color:"#f0b90b" },
-              { coin:"SOL",  icon: solIcon,  color:"#9945ff" },
-              { coin:"LTC",  icon: ltcIcon,  color:"#345d9d" },
-              { coin:"TRX",  icon: trxIcon,  color:"#cc0022" },
-            ] as { coin: string; icon: string; color: string }[]).map(({ coin, icon, color }) => (
-              <div key={coin} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"6px" }}>
-                <div style={{ width: isMobile ? "36px" : "40px", height: isMobile ? "36px" : "40px", borderRadius:"50%", background:`${color}18`, border:`1.5px solid ${color}44`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                  <img src={icon} width={isMobile ? 22 : 26} height={isMobile ? 22 : 26} alt={coin} style={{ borderRadius:"50%", objectFit:"contain" }} />
-                </div>
+              { coin:"USDT", icon: usdtIcon },
+              { coin:"USDC", icon: usdcIcon },
+              { coin:"BTC",  icon: btcIcon  },
+              { coin:"ETH",  icon: ethIcon  },
+              { coin:"BNB",  icon: bnbIcon  },
+              { coin:"SOL",  icon: solIcon  },
+              { coin:"LTC",  icon: ltcIcon  },
+              { coin:"TRX",  icon: trxIcon  },
+            ] as { coin: string; icon: string }[]).map(({ coin, icon }) => (
+              <div key={coin} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"5px" }}>
+                <img src={icon} width={isMobile ? 28 : 32} height={isMobile ? 28 : 32} alt={coin} style={{ objectFit:"contain" }} />
                 <span style={{ fontSize:"10px", fontWeight:600, color:"#3a5070", letterSpacing:"0.3px" }}>{coin}</span>
               </div>
             ))}
