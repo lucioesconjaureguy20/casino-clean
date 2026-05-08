@@ -1530,14 +1530,21 @@ function WithdrawalsTab({ token }: { token: string }) {
                       <td style={td}>
                         {w.status === "pending" && (
                           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                            <button onClick={() => action("/admin/withdraw/approve", w.id)} disabled={busy} style={{
-                              background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
-                              color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
-                              fontSize: 12, fontWeight: 600, padding: "6px 12px",
-                              fontFamily: "'Inter', sans-serif", transition: "all .15s",
-                            }}>
-                              {busy ? "..." : "Aprobar"}
-                            </button>
+                            {!w.is_streamer_withdrawal && (
+                              <button onClick={() => action("/admin/withdraw/approve", w.id)} disabled={busy} style={{
+                                background: "#0d2b1e", border: "1px solid #166534", borderRadius: 7,
+                                color: "#4ade80", cursor: busy ? "not-allowed" : "pointer",
+                                fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                                fontFamily: "'Inter', sans-serif", transition: "all .15s",
+                              }}>
+                                {busy ? "..." : "Aprobar"}
+                              </button>
+                            )}
+                            {w.is_streamer_withdrawal && (
+                              <div style={{ fontSize: 11, color: "#f87171", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 6, padding: "5px 8px", fontWeight: 600 }}>
+                                🚫 No se puede aprobar saldo demo
+                              </div>
+                            )}
                             <button onClick={() => action("/admin/withdraw/reject", w.id)} disabled={busy} style={{
                               background: "#1e0d0d", border: "1px solid #7f1d1d", borderRadius: 7,
                               color: "#f87171", cursor: busy ? "not-allowed" : "pointer",
@@ -1548,7 +1555,7 @@ function WithdrawalsTab({ token }: { token: string }) {
                             </button>
                           </div>
                         )}
-                        {w.status === "approved" && (
+                        {w.status === "approved" && !w.is_streamer_withdrawal && (
                           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                             <button onClick={() => action("/admin/withdraw/pay", w.id)} disabled={busy} style={{
                               background: "#0d2224", border: "1px solid #0891b2", borderRadius: 7,
