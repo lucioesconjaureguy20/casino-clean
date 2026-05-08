@@ -4064,5 +4064,19 @@
     "hops": 0,
     "pending": false,
     "error": "no_depositor_found"
+  },
+  {
+    "depositId": 976,
+    "casinoAddr": "0x476580d115bae9401a5805f2ac2e91e6bc314d4f",
+    "network": "BEP20",
+    "depositorWallet": null,
+    "ancestors": [],
+    "rootWallet": null,
+    "userId": "86b4f5ff-972f-47b2-aeb1-65c18af1d0ad",
+    "username": "86b4f5ff-972f-47b2-aeb1-65c18af1d0ad",
+    "tracedAt": "2026-05-08T02:58:21.085Z",
+    "hops": 0,
+    "pending": false,
+    "error": "no_depositor_found"
   }
 ]
