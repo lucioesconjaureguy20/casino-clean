@@ -2405,7 +2405,7 @@ function fmtCryptoNative(n: number): string {
 const fakeSlots = [
   { name:"Dice",       provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#0f5cd6,#101f43)", type:"dice" },
   { name:"Plinko",     provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#7e262a,#ff596d)", type:"plinko" },
-  { name:"Keno",       provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#A855F7,#7C3AED)", type:"keno" },
+  { name:"Keno",       provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#f4a91f,#c4780a)", type:"keno" },
   { name:"Blackjack",  provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#f3a428,#613210)", type:"blackjack" },
   { name:"Mines",      provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", type:"mines" },
   { name:"Hilo",       provider:"Originals", category:"Originals", bg:"linear-gradient(135deg,#004a2a,#00a85a)", type:"hilo" },
@@ -2418,7 +2418,7 @@ const fakeSlots = [
 const EXTERNAL_GAMES = [
   { name:"Sweet Candy",   image:"https://via.placeholder.com/300x200/c2185b/ffffff?text=Sweet+Candy",   url:"https://demoslot.pragmaticplay.net/gs2c/open.do?gameSymbol=vs20fruitsw&lang=en&jurisdiction=99&lobbyURL=about:blank&currency=USD&mode=demo",       tag:"HOT 🔥",  tagColor:"#ef4444", label:"Pragmatic Play", bg:"linear-gradient(135deg,#c2185b,#ff69b4,#ff9fcb)" },
   { name:"Fruit Blast",   image:"https://via.placeholder.com/300x200/16a34a/ffffff?text=Fruit+Blast",   url:"https://demoslot.pragmaticplay.net/gs2c/open.do?gameSymbol=vs20fruitparty&lang=en&jurisdiction=99&lobbyURL=about:blank&currency=USD&mode=demo",   tag:"NEW ✨",  tagColor:"#22c55e", label:"Pragmatic Play", bg:"linear-gradient(135deg,#15803d,#4ade80,#bbf7d0)" },
-  { name:"Gates of Fire", image:"https://via.placeholder.com/300x200/b45309/ffffff?text=Gates+of+Fire", url:"https://demoslot.pragmaticplay.net/gs2c/open.do?gameSymbol=vs20olympgate&lang=en&jurisdiction=99&lobbyURL=about:blank&currency=USD&mode=demo",    tag:"HOT 🔥",  tagColor:"#ef4444", label:"Pragmatic Play", bg:"linear-gradient(135deg,#92400e,#A855F7,#fde68a)" },
+  { name:"Gates of Fire", image:"https://via.placeholder.com/300x200/b45309/ffffff?text=Gates+of+Fire", url:"https://demoslot.pragmaticplay.net/gs2c/open.do?gameSymbol=vs20olympgate&lang=en&jurisdiction=99&lobbyURL=about:blank&currency=USD&mode=demo",    tag:"HOT 🔥",  tagColor:"#ef4444", label:"Pragmatic Play", bg:"linear-gradient(135deg,#92400e,#f59e0b,#fde68a)" },
   { name:"Sugar Rush X",  image:"https://via.placeholder.com/300x200/7c3aed/ffffff?text=Sugar+Rush+X",  url:"https://demoslot.pragmaticplay.net/gs2c/open.do?gameSymbol=vs20sugarrush&lang=en&jurisdiction=99&lobbyURL=about:blank&currency=USD&mode=demo",     tag:"RTP 96%", tagColor:"#1a9fff", label:"Pragmatic Play", bg:"linear-gradient(135deg,#4c1d95,#a855f7,#f0abfc)" },
 ];
 
@@ -10363,7 +10363,7 @@ export default function App() {
     return matchCat && matchQ;
   });
 
-  const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#A855F7" : s==="expired" ? "#6b7280" : "#ff5b5b";
+  const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
   const statusLabel = (s: string) => s==="completed"||s==="approved" ? t("completed") : s==="pending" ? t("pending") : s==="expired" ? t("expired") : t("rejected");
   const fmtDate = (s: string) => { const d = new Date(s); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`; };
 
@@ -10613,7 +10613,7 @@ export default function App() {
             backdropFilter:"blur(8px)",
           }}>
             <div style={{
-              background:"#0D0F1A", border:"1px solid #1e293b",
+              background:"#111827", border:"1px solid #1e293b",
               borderRadius:"20px", padding:"40px 36px 32px", maxWidth:"400px", width:"90%",
               textAlign:"center", boxShadow:"0 32px 96px rgba(0,0,0,0.8)",
             }}>
@@ -10654,7 +10654,7 @@ export default function App() {
         width: isMobile ? "82%" : (sidebarCollapsed ? "62px" : "220px"),
         maxWidth: isMobile ? "280px" : undefined,
         position:"fixed", left:0, top:0, bottom: "0",
-        background:"#0A0A12",
+        background:"#13192a",
         borderRight:"1px solid #1a2235",
         display:"flex", flexDirection:"column",
         zIndex: isMobile ? 1300 : 1201, overflow:"hidden",
@@ -10662,7 +10662,7 @@ export default function App() {
         transform: isMobile ? (mobileSidebarOpen ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
       }}>
         {/* Top: hamburger + Casino/Sports toggle */}
-        <div style={{ height:isMobile?"64px":"70px", padding: sidebarCollapsed?"0":isMobile?"0 14px":"0 12px", borderBottom:"1px solid #1a2235", flexShrink:0, display:"flex", alignItems:"center", background:"#0A0A12" }}>
+        <div style={{ height:isMobile?"64px":"70px", padding: sidebarCollapsed?"0":isMobile?"0 14px":"0 12px", borderBottom:"1px solid #1a2235", flexShrink:0, display:"flex", alignItems:"center", background:"#13192a" }}>
           {/* Hamburger row */}
           <div style={{ display:"flex",alignItems:"center",gap:"8px",justifyContent: sidebarCollapsed?"center":"flex-start", width:"100%" }}>
             <button onClick={()=>{ if(isMobile) setMobileSidebarOpen(v=>!v); else setSidebarCollapsed(v=>!v); }}
@@ -10762,9 +10762,9 @@ export default function App() {
                       fontWeight:500, cursor:"pointer",
                       ...(isOriginals && !sidebarCollapsed ? {
                         background: active ? "#1a2438" : "#161e30",
-                        border: "1px solid #1e1535",
+                        border: "1px solid #252f45",
                         borderRadius: (originalsMenuOpen || originalsMenuClosing) ? "6px 6px 0 0" : "6px",
-                        borderBottom: "1px solid #1e1535",
+                        borderBottom: "1px solid #252f45",
                         boxShadow: (originalsMenuOpen || originalsMenuClosing) ? "0 4px 10px rgba(0,0,0,0.45)" : undefined,
                         transition:"background 0.15s ease, border-color 0.15s ease, color 0.15s ease",
                       } : {
@@ -10845,9 +10845,9 @@ export default function App() {
 
         {/* ── Mobile: language selector fixed at bottom of sidebar ── */}
         {isMobile && (
-          <div ref={langMenuRef} style={{ flexShrink:0, position:"relative", borderTop:"1px solid #1e2840", background:"#0A0A12", paddingBottom:"env(safe-area-inset-bottom, 0px)" }}>
+          <div ref={langMenuRef} style={{ flexShrink:0, position:"relative", borderTop:"1px solid #1e2840", background:"#13192a", paddingBottom:"env(safe-area-inset-bottom, 0px)" }}>
             {(langMenuOpen || langMenuClosing) && (
-              <div style={{ position:"absolute", bottom:"calc(100% + 4px)", left:"10px", right:"10px", background:"#161e30", border:"1px solid #1e1535", borderRadius:"8px", overflow:"hidden", zIndex:1401, boxShadow:"0 -8px 24px rgba(0,0,0,.7)", transformOrigin:"bottom", animation: langMenuClosing ? "langMenuOut 0.22s cubic-bezier(0.4,0,0.2,1) forwards" : "langMenuIn 0.26s cubic-bezier(0.4,0,0.2,1)" }}>
+              <div style={{ position:"absolute", bottom:"calc(100% + 4px)", left:"10px", right:"10px", background:"#161e30", border:"1px solid #252f45", borderRadius:"8px", overflow:"hidden", zIndex:1401, boxShadow:"0 -8px 24px rgba(0,0,0,.7)", transformOrigin:"bottom", animation: langMenuClosing ? "langMenuOut 0.22s cubic-bezier(0.4,0,0.2,1) forwards" : "langMenuIn 0.26s cubic-bezier(0.4,0,0.2,1)" }}>
                 <div style={{ maxHeight:"220px",overflowY:"auto" }} onWheel={e => e.stopPropagation()}>
                 {(()=>{ const PRIO=["es","en","pt","pl"]; const all=Object.keys(LANGS).filter(l=>l!==lang); const sorted=[...PRIO.filter(l=>all.includes(l)),...all.filter(l=>!PRIO.includes(l))]; return sorted; })().map(l=>(
                   <button key={l} onClick={()=>{ setLang(l); closeLangMenu(); }}
@@ -10863,9 +10863,9 @@ export default function App() {
             )}
             <div style={{ padding:"10px 12px" }}>
               <button onClick={()=>setLangMenuOpen(v=>!v)}
-                style={{ width:"100%",display:"flex",alignItems:"center",gap:"12px",background:"#161e30",border:"1px solid #1e1535",borderRadius:"10px",padding:"12px 14px",cursor:"pointer",color:"#e0e8f4",transition:"background .15s, border-color .15s" }}
+                style={{ width:"100%",display:"flex",alignItems:"center",gap:"12px",background:"#161e30",border:"1px solid #252f45",borderRadius:"10px",padding:"12px 14px",cursor:"pointer",color:"#e0e8f4",transition:"background .15s, border-color .15s" }}
                 onMouseEnter={e=>{ e.currentTarget.style.background="#1d2742"; e.currentTarget.style.borderColor="#2e3f5c"; }}
-                onMouseLeave={e=>{ e.currentTarget.style.background="#161e30"; e.currentTarget.style.borderColor="#1e1535"; }}>
+                onMouseLeave={e=>{ e.currentTarget.style.background="#161e30"; e.currentTarget.style.borderColor="#252f45"; }}>
                 {flagImg(lang, 22)}
                 <span style={{ flex:1,textAlign:"left",fontSize:"15px",fontWeight:500,whiteSpace:"nowrap",overflow:"hidden" }}>{LANG_NAMES[lang]}</span>
                 <svg width="11" height="8" viewBox="0 0 12 8" fill="none" style={{ display:"block",flexShrink:0,transition:"transform .2s",transform:langMenuOpen?"rotate(180deg)":"none",opacity:0.7 }}><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -10886,9 +10886,9 @@ export default function App() {
                 display:"flex", alignItems:"center", gap:"10px",
                 justifyContent: sidebarCollapsed ? "center" : "flex-start",
                 padding: sidebarCollapsed ? "14px 0" : "13px 16px",
-                cursor:"pointer", color: section==="admin" ? "#A855F7" : "#9ca3af",
+                cursor:"pointer", color: section==="admin" ? "#f59e0b" : "#9ca3af",
                 background: section==="admin" ? "#131d30" : "transparent",
-                borderLeft: section==="admin" ? "3px solid #A855F7" : "3px solid transparent",
+                borderLeft: section==="admin" ? "3px solid #f59e0b" : "3px solid transparent",
                 transition:"all .15s",
               }}
             >
@@ -10907,7 +10907,7 @@ export default function App() {
         {!isMobile && (
           <div ref={langMenuRef} style={{ flexShrink:0, position:"relative", borderTop:(originalsMenuOpen||originalsMenuClosing)?"1px solid #2e3f5c":"1px solid transparent", boxShadow:(originalsMenuOpen||originalsMenuClosing)?"0 -8px 18px rgba(0,0,0,0.35)":"none", transition:"border-color 0.2s, box-shadow 0.2s" }}>
             {(langMenuOpen || langMenuClosing) && (
-              <div style={{ position:"fixed", bottom:"48px", left: sidebarCollapsed?"6px":"10px", width: sidebarCollapsed?"50px":"200px", background:"#161e30", border:"1px solid #1e1535", borderRadius:"8px", overflow:"hidden", zIndex:400, boxShadow:"0 -8px 24px rgba(0,0,0,.7)", transition:"width 0.22s cubic-bezier(.4,0,.2,1), left 0.22s cubic-bezier(.4,0,.2,1)", transformOrigin:"bottom", animation: langMenuClosing ? "langMenuOut 0.22s cubic-bezier(0.4,0,0.2,1) forwards" : "langMenuIn 0.26s cubic-bezier(0.4,0,0.2,1)" }}>
+              <div style={{ position:"fixed", bottom:"48px", left: sidebarCollapsed?"6px":"10px", width: sidebarCollapsed?"50px":"200px", background:"#161e30", border:"1px solid #252f45", borderRadius:"8px", overflow:"hidden", zIndex:400, boxShadow:"0 -8px 24px rgba(0,0,0,.7)", transition:"width 0.22s cubic-bezier(.4,0,.2,1), left 0.22s cubic-bezier(.4,0,.2,1)", transformOrigin:"bottom", animation: langMenuClosing ? "langMenuOut 0.22s cubic-bezier(0.4,0,0.2,1) forwards" : "langMenuIn 0.26s cubic-bezier(0.4,0,0.2,1)" }}>
                 <div style={{ maxHeight:"176px",overflowY:"auto" }} onWheel={e => e.stopPropagation()}>
                 {(()=>{ const PRIO=["es","en","pt","pl"]; const all=Object.keys(LANGS).filter(l=>l!==lang); const sorted=[...PRIO.filter(l=>all.includes(l)),...all.filter(l=>!PRIO.includes(l))]; return sorted; })().map(l=>(
                   <button key={l} onClick={()=>{ setLang(l); closeLangMenu(); }}
@@ -10923,9 +10923,9 @@ export default function App() {
             )}
             <div style={{ padding: sidebarCollapsed?"8px 6px":"8px 10px" }}>
               <button onClick={()=>setLangMenuOpen(v=>!v)}
-                style={{ width:"100%",display:"flex",alignItems:"center",gap:"10px",justifyContent: sidebarCollapsed?"center":"flex-start",background: sidebarCollapsed?"transparent":"#161e30",border: sidebarCollapsed?"none":"1px solid #1e1535",borderRadius:"8px",padding: sidebarCollapsed?"10px 0":"10px 12px",cursor:"pointer",color:"#e0e8f4",transition:"background .15s, border-color .15s" }}
+                style={{ width:"100%",display:"flex",alignItems:"center",gap:"10px",justifyContent: sidebarCollapsed?"center":"flex-start",background: sidebarCollapsed?"transparent":"#161e30",border: sidebarCollapsed?"none":"1px solid #252f45",borderRadius:"8px",padding: sidebarCollapsed?"10px 0":"10px 12px",cursor:"pointer",color:"#e0e8f4",transition:"background .15s, border-color .15s" }}
                 onMouseEnter={e=>{ if(!sidebarCollapsed){ e.currentTarget.style.background="#1d2742"; e.currentTarget.style.borderColor="#2e3f5c"; } else e.currentTarget.style.background="#1d2540"; }}
-                onMouseLeave={e=>{ if(!sidebarCollapsed){ e.currentTarget.style.background="#161e30"; e.currentTarget.style.borderColor="#1e1535"; } else e.currentTarget.style.background="transparent"; }}>
+                onMouseLeave={e=>{ if(!sidebarCollapsed){ e.currentTarget.style.background="#161e30"; e.currentTarget.style.borderColor="#252f45"; } else e.currentTarget.style.background="transparent"; }}>
                 {flagImg(lang, 20)}
                 {!sidebarCollapsed && <>
                   <span style={{ flex:1,textAlign:"left",fontSize:"13px",fontWeight:500,whiteSpace:"nowrap",overflow:"hidden" }}>{LANG_NAMES[lang]}</span>
@@ -10946,7 +10946,7 @@ export default function App() {
       {/* MAIN */}
       <main style={{ marginLeft: isMobile ? "0" : (sidebarCollapsed?"62px":"220px"), minHeight:"100vh", padding:"16px", transition:"margin-left 0.22s cubic-bezier(.4,0,.2,1)" }}>
         {/* NAVBAR */}
-        <nav className="casino-navbar" style={{ background:"#0A0A12",borderBottom:"1px solid #1a2235",height:"70px",position:"fixed",top:0,left: isMobile?"0":(sidebarCollapsed?"62px":"220px"),right:0,zIndex:150,boxShadow:"0 2px 16px rgba(0,0,0,.45)",transition:"left 0.22s cubic-bezier(.4,0,.2,1)" }}>
+        <nav className="casino-navbar" style={{ background:"#13192a",borderBottom:"1px solid #1a2235",height:"70px",position:"fixed",top:0,left: isMobile?"0":(sidebarCollapsed?"62px":"220px"),right:0,zIndex:150,boxShadow:"0 2px 16px rgba(0,0,0,.45)",transition:"left 0.22s cubic-bezier(.4,0,.2,1)" }}>
           <div style={{ maxWidth:"1080px",margin:"0 auto",height:"100%",padding: isMobile ? "0 10px" : "0 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap: isMobile ? "8px" : "14px",flexWrap:"nowrap" }}>
           {isMobile && (
             <button onClick={()=>setMobileSidebarOpen(v=>!v)} className="mobile-hamburger-btn" style={{ width:"44px",height:"44px",borderRadius:"6px",background:"#1e2538",border:"none",color:"#c8d4e8",fontSize:"22px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginLeft:"-4px" }}>☰</button>
@@ -11025,7 +11025,7 @@ export default function App() {
                             <div style={{ position:"absolute",top:"calc(100% + 6px)",right:0,width:"210px",background:"#1a2336",border:"1px solid #1e2a3e",borderRadius:"6px",boxShadow:"0 8px 32px rgba(0,0,0,.6)",zIndex:200 }}>
                               {/* Search */}
                               <div style={{ padding:"8px 10px",borderBottom:"1px solid #1e2a3e" }}>
-                                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0D0F1A",borderRadius:"6px",padding:"5px 10px",border:"1px solid #2a3550" }}>
+                                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#111827",borderRadius:"6px",padding:"5px 10px",border:"1px solid #2a3550" }}>
                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5a6a82" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                   <input autoFocus value={fiatCurrSearch} onChange={e=>{ e.stopPropagation(); setFiatCurrSearch(e.target.value); }}
                                     onClick={e=>e.stopPropagation()}
@@ -11066,7 +11066,7 @@ export default function App() {
 
             {/* Depositar button — hidden on mobile (bottom nav has it) */}
             {!isMobile && (
-            <button onClick={()=>openCashier("deposit")} className="deposit-nav-btn" style={{ minHeight:"44px",padding:"0 28px",borderRadius:"6px",fontWeight:700,fontSize:"14px",color:"#fff",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",cursor:"pointer",letterSpacing:"0.2px",transition:"opacity .12s",flexShrink:0 }}
+            <button onClick={()=>openCashier("deposit")} className="deposit-nav-btn" style={{ minHeight:"44px",padding:"0 28px",borderRadius:"6px",fontWeight:700,fontSize:"14px",color:"#fff",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",cursor:"pointer",letterSpacing:"0.2px",transition:"opacity .12s",flexShrink:0 }}
               onMouseEnter={e=>(e.currentTarget.style.opacity="0.85")}
               onMouseLeave={e=>(e.currentTarget.style.opacity="1")}>{t("deposit")}</button>
             )}
@@ -11082,16 +11082,16 @@ export default function App() {
               const rdMTimer = fmtCountdownLang(msUntilClaim("monthly", currentUser), _uD, _uH, _uM, _uS);
               const rdBadge = [rbInstant > 0, rdCanW && rbWeekly > 0, rdCanM && rbMonthly > 0].filter(Boolean).length;
               const rdRows: { key: string; label: string; amount: number; accum?: number; canClaim: boolean; timer: string; onClaim: ()=>void; accent: string; icon: React.ReactNode }[] = [
-                { key:"instant", label:t("rbInstant"), amount:rbInstant, accum: rbInstantAccum, canClaim:rbInstant > 0, timer:rdITimer, onClaim:doClaimInstant, accent:"#A855F7",
+                { key:"instant", label:t("rbInstant"), amount:rbInstant, accum: rbInstantAccum, canClaim:rbInstant > 0, timer:rdITimer, onClaim:doClaimInstant, accent:"#f4a91f",
                   icon:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     {/* coin bg */}
-                    <circle cx="12" cy="12" r="9.5" fill="#A855F7" fillOpacity=".13"/>
+                    <circle cx="12" cy="12" r="9.5" fill="#f4a91f" fillOpacity=".13"/>
                     {/* coin ring */}
-                    <circle cx="12" cy="12" r="9.5" stroke="#A855F7" strokeWidth="1.6" strokeOpacity=".55"/>
+                    <circle cx="12" cy="12" r="9.5" stroke="#f4a91f" strokeWidth="1.6" strokeOpacity=".55"/>
                     {/* inner ring detail */}
-                    <circle cx="12" cy="12" r="7" stroke="#A855F7" strokeWidth=".8" strokeOpacity=".25"/>
+                    <circle cx="12" cy="12" r="7" stroke="#f4a91f" strokeWidth=".8" strokeOpacity=".25"/>
                     {/* bold lightning bolt */}
-                    <path d="M13.8 4.5 L7.5 13.5 H12 L10.2 19.5 L16.5 10.5 H12 Z" fill="#A855F7"/>
+                    <path d="M13.8 4.5 L7.5 13.5 H12 L10.2 19.5 L16.5 10.5 H12 Z" fill="#f4a91f"/>
                   </svg> },
                 { key:"weekly",  label:t("rbWeekly"),          amount:rbWeekly,  canClaim:rdCanW, timer:rdWTimer, onClaim:doClaimWeekly,  accent:"#6c8ae4",
                   icon:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -11136,7 +11136,7 @@ export default function App() {
                     style={{ width:"40px",height:"40px",borderRadius:"6px",background:rewardsDropOpen?"#3d4a62":"#2f3648",border:"none",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",position:"relative",cursor:"pointer",transition:"background .15s, transform .12s" }}>
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                     {rdBadge > 0 && (
-                      <span style={{ position:"absolute",top:"-6px",right:"-4px",background:"#A855F7",color:"#111",borderRadius:"999px",minWidth:"20px",height:"20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",fontWeight:700,pointerEvents:"none" }}>{rdBadge}</span>
+                      <span style={{ position:"absolute",top:"-6px",right:"-4px",background:"#f4a91f",color:"#111",borderRadius:"999px",minWidth:"20px",height:"20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",fontWeight:700,pointerEvents:"none" }}>{rdBadge}</span>
                     )}
                   </button>
                   {rewardsDropOpen && (
@@ -11155,7 +11155,7 @@ export default function App() {
                                 <div style={{ flex:1, minWidth:0 }}>
                                   <div style={{ fontSize:"13px",fontWeight:700,color:"#c8d8ec",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{row.label}</div>
                                   <div style={{ fontSize:"11px",marginTop:"1px",fontWeight:600,
-                                    color: avail ? "#00d95f" : (row.key==="instant" && (row.accum??0)>0) ? "#A855F7" : "#4a5a70" }}>
+                                    color: avail ? "#00d95f" : (row.key==="instant" && (row.accum??0)>0) ? "#f4a91f" : "#4a5a70" }}>
                                     {(row.key === "weekly" || row.key === "monthly") && !avail
                                       ? <span style={{ letterSpacing:"2px" }}>••••</span>
                                       : row.key === "instant"
@@ -11169,11 +11169,11 @@ export default function App() {
                                 {/* Action */}
                                 {avail ? (
                                   <button onClick={()=>{ row.onClaim(); setRewardsDropOpen(false); }}
-                                    style={{ flexShrink:0,padding:"6px 12px",borderRadius:"6px",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",color:"#111",fontSize:"12px",fontWeight:800,cursor:"pointer",whiteSpace:"nowrap" }}>
+                                    style={{ flexShrink:0,padding:"6px 12px",borderRadius:"6px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#111",fontSize:"12px",fontWeight:800,cursor:"pointer",whiteSpace:"nowrap" }}>
                                     {t("claim")}
                                   </button>
                                 ) : (
-                                  <div style={{ flexShrink:0,padding:"5px 10px",borderRadius:"6px",background:"#0e1826",border:"1px solid #1e1535",color:"#4a5a70",fontSize:"12px",fontWeight:700,whiteSpace:"nowrap" }}>
+                                  <div style={{ flexShrink:0,padding:"5px 10px",borderRadius:"6px",background:"#0e1826",border:"1px solid #252f45",color:"#4a5a70",fontSize:"12px",fontWeight:700,whiteSpace:"nowrap" }}>
                                     {row.timer || "—"}
                                   </div>
                                 )}
@@ -11186,7 +11186,7 @@ export default function App() {
                         {/* Explorar Recompensas */}
                         <div style={{ padding:"10px" }}>
                           <button onClick={()=>{ setRewardsDropOpen(false); openSection("tips-bonuses"); }}
-                            style={{ width:"100%",padding:"11px",borderRadius:"6px",background:"#1a2438",border:"1px solid #1e1535",color:"#c8d8ec",fontSize:"13px",fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",transition:"background .15s" }}
+                            style={{ width:"100%",padding:"11px",borderRadius:"6px",background:"#1a2438",border:"1px solid #252f45",color:"#c8d8ec",fontSize:"13px",fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",transition:"background .15s" }}
                             onMouseEnter={e=>(e.currentTarget.style.background="#20304a")}
                             onMouseLeave={e=>(e.currentTarget.style.background="#1a2438")}>
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
@@ -11243,13 +11243,13 @@ export default function App() {
               {notifPanelOpen && (()=>{
                 const NTC: Record<string,{accent:string;bg:string;glow:string}> = {
                   deposit:      { accent:"#22c55e", bg:"rgba(7,18,11,0.55)",  glow:"rgba(34,197,94,0.08)"  },
-                  withdraw:     { accent:"#A855F7", bg:"rgba(18,12,2,0.55)",  glow:"rgba(245,158,11,0.08)" },
+                  withdraw:     { accent:"#f59e0b", bg:"rgba(18,12,2,0.55)",  glow:"rgba(245,158,11,0.08)" },
                   withdraw_paid:{ accent:"#22d3ee", bg:"rgba(6,18,24,0.55)",  glow:"rgba(34,211,238,0.08)" },
-                  bonus:        { accent:"#A855F7", bg:"rgba(18,12,2,0.55)",  glow:"rgba(168,85,247,0.08)" },
+                  bonus:        { accent:"#f4a91f", bg:"rgba(18,12,2,0.55)",  glow:"rgba(244,169,31,0.08)" },
                   info:         { accent:"#60a5fa", bg:"rgba(6,12,22,0.55)",  glow:"rgba(96,165,250,0.08)" },
                 };
                 const getRbIconColor = (id: string) => {
-                  if (id.startsWith("rb-instant-")) return "#A855F7";
+                  if (id.startsWith("rb-instant-")) return "#f4a91f";
                   if (id.startsWith("rb-weekly-"))  return "#6c8ae4";
                   if (id.startsWith("rb-monthly-")) return "#9b6cda";
                   return null;
@@ -11412,7 +11412,7 @@ export default function App() {
               </button>
               <button
                 onClick={()=>setAuthModal("register")}
-                style={{ minHeight:"40px",padding:"0 20px",borderRadius:"6px",fontWeight:700,fontSize:"14px",color:"#fff",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",cursor:"pointer",transition:"opacity .12s" }}
+                style={{ minHeight:"40px",padding:"0 20px",borderRadius:"6px",fontWeight:700,fontSize:"14px",color:"#fff",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",cursor:"pointer",transition:"opacity .12s" }}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
                 {t("register")}
@@ -11436,7 +11436,7 @@ export default function App() {
                   {(() => {
                     const slides = [
                       {
-                        bg: "linear-gradient(105deg,#7C3AED 0%,#A855F7 45%,#c084fc 100%)",
+                        bg: "linear-gradient(105deg,#c47b00 0%,#f4a91f 45%,#ffe066 100%)",
                         textColor: "#1a0e00",
                         badgeColor: "rgba(0,0,0,.22)",
                         circle: "rgba(255,200,0,.18)",
@@ -11560,14 +11560,14 @@ export default function App() {
                       <div style={{ display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 20px 26px",textAlign:"center",animation:"nlsfadeIn .35s ease" }}>
                         <p style={{ margin:"0 0 2px",fontSize:"11px",color:"#5a6a88",fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>{t("welcomeTo")}</p>
                         <h2 style={{ margin:"0 0 20px",fontSize:"26px",fontWeight:900,letterSpacing:"-0.5px",lineHeight:1 }}>
-                          <span style={{ color:"#A855F7" }}>MANDER</span>
+                          <span style={{ color:"#f6b531" }}>MANDER</span>
                           <span style={{ color:"#e2e8f0" }}>!</span>
                         </h2>
                         <button
                           onClick={()=>setAuthModal("register")}
                           onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-1px)"; }}
                           onMouseLeave={e=>{ e.currentTarget.style.transform=""; }}
-                          className="join-now-btn" style={{ width:"100%",padding:"14px 0",borderRadius:"6px",border:"none",background:"linear-gradient(180deg,#A855F7,#7C3AED)",color:"#fff",fontWeight:700,fontSize:"15px",cursor:"pointer",transition:"opacity .12s,transform .15s",fontFamily:"inherit" }}>
+                          className="join-now-btn" style={{ width:"100%",padding:"14px 0",borderRadius:"6px",border:"none",background:"linear-gradient(180deg,#f6b531,#ea9807)",color:"#fff",fontWeight:700,fontSize:"15px",cursor:"pointer",transition:"opacity .12s,transform .15s",fontFamily:"inherit" }}>
                           {t("joinNow")}
                         </button>
                       </div>
@@ -11609,7 +11609,7 @@ export default function App() {
                       const GAME_KEY: Record<string,string> = { dice:"gameDice",plinko:"gamePlinko",keno:"gameKeno",blackjack:"gameBlackjack",mines:"gameMines",hilo:"gameHilo",roulette:"gameRoulette",baccarat:"gameBaccarat",limbo:"gameLimbo" };
                       return recentWinBets.map((b, i) => {
                         const profitUsd = b.payout_usd - b.bet_usd;
-                        const info = GAME_INFO[b.game] ?? { bg:"linear-gradient(160deg,#130d26,#2a3a5c)", action:()=>showSlotOnly() };
+                        const info = GAME_INFO[b.game] ?? { bg:"linear-gradient(160deg,#1a2540,#2a3a5c)", action:()=>showSlotOnly() };
                         const winKey = `${b.created_at}_${b.username}_${i}`;
                         const displayAmt = displayInFiat
                           ? (Math.abs(profitUsd) * (liveRates[displayCurrency] || 1)).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})
@@ -11663,7 +11663,7 @@ export default function App() {
                         return [
                         { title:"Dice",      sub:"Originals", tag:"🎲 LIVE", bg:"linear-gradient(135deg,#0a1e3a,#11325d)", img:assetUrl("/dice-card.webp"),  imgFit:"cover" as const, imgPosition:"center 72%", action:showDiceOnly,      soon:false },
                         { title:"Plinko",    sub:"Originals", tag:"🎯 LIVE", bg:"linear-gradient(135deg,#7e262a,#ff596d)", img:assetUrl("/plinko-thumb.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showPlinkoOnly,    soon:false },
-                        { title:"Keno",      sub:"Originals", tag:"🔢 LIVE", bg:"linear-gradient(135deg,#A855F7,#7C3AED)", img:assetUrl("/keno-thumb.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showKenoOnly,      soon:false },
+                        { title:"Keno",      sub:"Originals", tag:"🔢 LIVE", bg:"linear-gradient(135deg,#f4a91f,#c4780a)", img:assetUrl("/keno-thumb.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showKenoOnly,      soon:false },
                         { title:"Blackjack", sub:"Originals", tag:"🃏 LIVE", bg:"linear-gradient(135deg,#f3a428,#613210)", img:assetUrl("/blackjack-thumb.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showBlackjackOnly, soon:false },
                         { title:"Mines",     sub:"Originals", tag:"LIVE", bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:assetUrl("/mines-card.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showMinesOnly, soon:false },
                         { title:"Hilo",      sub:"Originals", tag:"🃠 LIVE", bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:assetUrl("/hilo-card.webp"), imgFit:"cover" as const, imgPosition:"center 72%", action:showHiloOnly, soon:false },
@@ -12101,7 +12101,7 @@ export default function App() {
               {/* ── Roulette header bar ── */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
                 <button onClick={showHomeView}
-                  style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
                 </button>
                 <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="100 -5100 9900 10200" width="18" height="18" fill="currentColor"><path d="M4626.6,5016.8c-1264.1-130.4-2271.2-600.4-3111.5-1448.3C742.1,2785.8,285.6,1851.6,124.4,721.8c-32.6-226.4-32.6-982.2,0-1208.5c95.9-673.3,299.3-1283.3,602.4-1812.8c237.9-410.5,452.7-694.4,788.4-1034c780.7-788.4,1736-1262.2,2881.3-1425.3c222.5-32.6,980.3-30.7,1208.5,0c880.5,124.7,1674.6,447,2359.5,961.1c243.6,184.2,658,587,859.4,836.4c448.9,556.3,809.5,1296.8,961.1,1977.8C9878.9-565.4,9900-364,9900,117.5c0,500.7-34.5,794.2-142,1210.4c-128.5,504.5-381.7,1074.2-661.8,1494.3c-494.9,742.4-1143.3,1308.3-1937.5,1699.6c-483.4,235.9-932.3,376-1467.5,458.5C5497.6,5009.1,4791.6,5034.1,4626.6,5016.8z M5484.1,3848.6c1258.4-165,2336.5-938,2892.8-2071.7c915-1866.5,145.8-4120.5-1716.9-5035.5c-1761-863.2-3871.1-239.8-4891.6,1448.3C1202.5-874.2,1083.6,328.5,1451.9,1374c188,531.4,481.5,991.8,890.1,1402.3c594.7,592.7,1329.4,957.2,2160,1072.3C4753.3,3883.1,5223.2,3883.1,5484.1,3848.6z M4540.3,3522.5c-205.3-32.6-372.1-67.1-400.9-84.4c-15.4-11.5,0-97.8,59.5-320.4c78.6-283.9,86.3-305,126.6-299.3c23,3.8,42.2,1.9,42.2-3.8c0-15.4,157.3-594.7,165-608.1c3.8-5.8,51.8-3.8,107.4,3.8c55.6,7.7,142,21.1,193.7,26.9l90.2,11.5v326.1c0,310.8,1.9,324.2,38.4,324.2c36.5,0,38.4,13.4,38.4,326.1v326.1l-147.7-1.9C4770.5,3547.4,4630.5,3535.9,4540.3,3522.5z M5810.2,3133.1c-44.1-166.9-80.6-308.8-80.6-316.5s15.3-21.1,34.5-28.8c32.6-13.4,30.7-32.6-46-318.4c-46-168.8-78.7-312.7-72.9-322.3c5.8-7.7,21.1-15.3,32.6-15.3c13.4,0,90.2-28.8,170.7-65.2l149.6-65.2l157.3,278.1c140,243.6,163.1,274.3,199.5,266.6c36.5-9.6,61.4,21.1,197.6,257.1c86.3,145.8,155.4,274.3,155.4,283.9c0,26.9-431.6,226.4-629.2,291.6c-99.8,30.7-182.2,57.5-184.2,57.5C5892.7,3436.1,5854.3,3299.9,5810.2,3133.1z M3092,2971.9c-168.8-113.2-439.3-328-489.2-389.4c-23-26.9,1.9-59.5,203.3-260.9c201.4-203.3,230.2-224.4,255.1-199.5c26.8,26.9,55.6,3.8,262.8-203.3l232.1-232.1l155.4,120.9l157.3,118.9l-36.4,59.5c-21.1,32.6-94,159.2-163,280.1c-101.7,178.4-120.9,222.5-97.9,235.9c15.4,7.7,28.8,23,28.8,30.7c0,24.9-310.8,558.2-324.2,558.2C3270.4,3088.9,3187.9,3037.1,3092,2971.9z M5090.9,2885.6c-7.7-5.8-13.4-153.5-13.4-324.2v-312.7l92.1-11.5c49.9-5.8,138.1-19.2,195.7-26.9c57.5-9.6,107.4-15.4,107.4-13.4c7.7,5.8,161.1,590.8,161.1,606.2c0,24.9-113.2,51.8-316.5,74.8C5113.9,2902.9,5106.2,2902.9,5090.9,2885.6z M4041.6,2728.3c-159.2-59.5-345.3-149.6-345.3-166.9c0-7.7,71-134.3,155.4-285.8l155.4-272.4l147.7,63.3c80.6,36.4,155.4,65.2,168.8,65.2c11.5,0,28.8,7.7,34.5,19.2c11.5,19.2-145.8,633-163,633C4189.3,2782,4120.2,2757.1,4041.6,2728.3z M7202.9,2310.1c-191.8-195.7-220.6-230.2-201.4-259c19.2-28.8-9.6-65.2-205.3-262.8l-226.3-228.3l118.9-153.5l118.9-153.5l278.2,161.1c253.2,147.7,280.1,159.2,303.1,130.4c21.1-30.7,46-21.1,280.1,113.2c142,82.5,268.6,155.4,283.9,165c21.1,13.4-1.9,57.5-99.8,205.3c-126.6,188-385.6,506.4-412.4,506.4C7433.1,2534.6,7325.7,2432.9,7202.9,2310.1z M6380,2338.9c-44.1-76.7-115.1-197.6-155.4-268.6c-42.2-71-72.9-138.1-69.1-147.7c7.7-21.1,278.2-232.1,299.2-232.1c7.7,0,113.2,99.8,234,220.6l218.7,218.7l-46,51.8c-53.7,55.6-293.5,237.9-358.7,274.3C6462.4,2475.1,6454.8,2467.4,6380,2338.9z M2879.1,1913c-124.7-145.8-241.7-322.3-224.4-339.5c24.9-23,521.8-305,539-305c7.7,0,55.6,55.6,105.5,122.8c48,67.1,103.6,132.4,118.9,145.8c26.9,23,3.8,53.7-195.7,253.2c-124.7,124.7-232.1,226.4-239.8,226.4C2975,2016.6,2929,1970.6,2879.1,1913z M4876,1893.9c-118.9-53.7-201.4-180.3-201.4-310.8c0-78.7,61.4-209.1,115.1-241.7c34.5-21.1,38.4-46,38.4-222.5c0-170.7-3.8-197.6-32.6-207.2c-283.9-88.2-500.7-305-588.9-587c-9.6-30.7-36.4-34.5-207.2-34.5c-176.5,0-201.4,3.8-222.5,38.4c-11.5,21.1-57.5,55.6-99.8,76.7C3364.4,564.5,3047.9,177,3280-87.8c107.4-122.8,257.1-153.5,397.1-82.5c42.2,21.1,88.3,55.6,99.8,76.7c21.1,34.5,46,38.4,222.5,38.4c170.7,0,197.6-3.8,207.2-32.6c99.7-299.2,289.7-489.2,588.9-588.9c28.8-9.6,32.6-36.5,32.6-207.2c0-176.5-3.8-201.4-38.4-222.5c-53.7-32.6-115.1-163-115.1-243.6c0-145.8,122.8-301.2,259-328c201.4-36.4,393.2,122.8,393.2,328c0,80.6-61.4,211-115.1,243.6c-34.5,21.1-38.4,46.1-38.4,222.5c0,170.7,3.8,197.6,34.5,207.2c297.3,99.7,487.3,289.6,587,588.9c9.6,28.8,36.4,32.6,207.2,32.6c176.5,0,201.4-3.8,222.5-38.4c32.6-53.7,163.1-115.1,243.6-115.1c216.8,0,385.6,224.4,318.4,425.9c-42.2,126.6-184.2,226.4-320.3,226.4c-78.7,0-209.1-61.4-241.7-115.1c-21.1-34.5-46-38.4-222.5-38.4c-170.7,0-197.6,3.8-207.2,34.5c-99.7,297.3-289.7,487.2-587,587c-30.7,9.6-34.5,36.4-34.5,207.2c0,176.5,3.8,201.4,38.4,222.5c53.7,32.6,115.1,163.1,115.1,243.6C5326.8,1819,5083.2,1985.9,4876,1893.9z M1906.5,1600.4c-94-195.7-235.9-577.4-220.6-590.8c7.7-7.7,600.4-163.1,617.7-163.1c7.7,0,19.2,15.3,26.8,34.5c13.4,32.6,32.6,30.7,318.4-48c166.9-44.1,312.7-76.7,320.4-71c9.6,5.7,17.3,21.1,17.3,32.6c0,13.4,28.8,90.2,65.2,170.7l65.2,147.7l-276.2,159.2c-243.6,140-276.2,165-266.7,201.4c7.7,36.4-23,59.5-257,195.7c-147.7,86.3-276.2,155.4-285.8,155.4S1966,1723.1,1906.5,1600.4z M7168.4,1274.2c-153.5-88.2-276.2-166.9-274.3-174.6c13.4-42.2,136.2-333.8,143.9-341.5c7.7-7.7,527.5,126.6,606.2,155.4c26.9,9.6-49.9,237.9-141.9,414.4l-55.6,107.4L7168.4,1274.2z M7979.8,917.5c-272.4-72.9-291.6-82.5-282-118.9c9.6-38.4-11.5-48-306.9-124.7c-255.1-67.1-316.5-90.2-308.8-115.1c5.8-21.1,48-331.9,48-358.7c0-3.8,147.7-5.8,326.1-5.8c312.7,0,326.1-1.9,326.1-38.4s13.4-38.4,329.9-38.4h328l-11.5,207.2c-17.3,306.9-92.1,677.2-134.3,673.3C8281,998,8140.9,961.6,7979.8,917.5z M2278.7,679.6c-17.3-71-59.5-383.7-59.5-450.8c0-30.7,28.8-34.5,324.2-34.5h326.1l11.5,92.1c5.8,49.9,19.2,138.1,26.9,195.7c9.6,57.5,15.3,107.4,13.4,107.4c-5.8,7.7-590.8,161.1-606.2,161.1C2305.5,750.6,2288.3,717.9,2278.7,679.6z M1572.7-87.8c17.3-274.3,88.3-677.1,122.8-677.1c5.8,0,147.7,36.5,314.6,80.6c285.8,74.8,303.1,80.6,293.5,120.8c-9.6,38.4,7.7,46.1,308.8,124.7c259,67.1,316.5,88.3,308.8,113.2c-7.7,23-49.9,331.9-49.9,360.6c0,3.8-145.8,5.7-326.1,5.7c-312.7,0-326.1,1.9-326.1,38.4c0,36.5-13.4,38.4-329.9,38.4h-328L1572.7-87.8z M7120.4-49.4c-5.8-51.8-19.2-140-26.9-197.6c-9.6-57.6-15.3-105.5-13.4-107.4c0,0,138.1-38.4,306.9-82.5c226.3-61.4,308.8-76.7,318.4-59.5c15.3,24.9,49.9,228.3,69.1,418.2L7788,40.8h-328h-328L7120.4-49.4z M2662.3-592.2c-151.6-42.2-287.7-78.7-303.1-84.4c-19.2-7.7-13.4-42.2,28.8-159.2c30.7-82.5,80.6-197.6,111.3-259l55.6-107.4l278.1,161.2c153.5,90.1,276.2,168.8,274.3,176.5c-24.9,76.7-141.9,339.5-153.5,343.4C2946.2-519.4,2813.9-552,2662.3-592.2z M7022.6-546.2c-7.7-21.1-40.3-101.7-74.8-182.2l-61.4-147.7l276.2-159.2c245.5-140,276.2-163,266.6-201.4c-9.6-36.5,19.2-59.5,259-197.6c147.7-84.4,276.2-155.4,283.9-155.4c38.4,0,370.2,790.3,343.4,815.3c-3.8,3.8-141.9,42.2-310.8,88.3c-291.6,78.6-305,80.5-329.9,46c-26.9-34.5-94-21.1-606.2,118.9C7047.5-515.5,7030.2-525.1,7022.6-546.2z M6779-1039.2c-5.7-13.4-53.7-84.4-109.3-155.4l-99.8-130.5l226.3-228.3l226.4-228.3l53.7,51.8c88.2,84.4,285.8,376,268.6,393.2c-15.3,15.4-539.1,322.3-550.5,322.3C6790.5-1014.3,6784.7-1025.8,6779-1039.2z M2904-1188.8c-245.5-143.9-268.6-151.5-289.7-120.8c-23,30.7-46,21.1-301.2-126.6c-151.6-86.3-280.1-161.1-282-165c-24.9-19.2,418.2-612,516-692.5c24.9-19.2,67.1,15.4,257,205.3c199.5,199.5,224.4,232.1,201.4,259c-23,26.9,1.9,59.5,205.3,264.7l232.1,234L3328-1186.9c-63.3,78.7-126.6,145.8-138.1,147.7C3178.3-1035.4,3049.8-1104.4,2904-1188.8z M3326.1-1681.8l-228.3-228.3l94-82.5c99.8-88.2,347.2-260.9,356.8-247.4c3.8,3.8,76.7,130.4,161.1,280.1l155.4,270.5l-151.5,117c-82.5,65.2-151.6,117-155.4,117C3554.3-1455.5,3450.8-1557.1,3326.1-1681.8z M6295.5-1562.9c-72.9-57.5-136.2-113.2-140-122.8s63.3-140,149.6-289.6c143.9-247.5,153.5-272.4,122.8-293.5c-30.7-23-21.1-48,128.5-305l161.1-280.1l86.3,49.9c207.2,118.9,613.8,447,613.8,491.1c0,13.4-97.8,122.8-218.7,241.7c-193.7,193.7-224.4,216.8-251.3,193.7s-57.5,1.9-255.1,197.6c-124.7,122.8-234,224.5-243.6,222.5C6437.5-1457.4,6370.4-1505.4,6295.5-1562.9z M3849.7-2044.4c-140-245.5-163.1-276.2-199.5-266.6c-38.4,9.6-61.4-21.1-199.5-262.8c-86.3-149.6-157.3-278.1-157.3-283.9c0-38.4,790.3-364.5,817.2-337.6c3.8,3.8,42.2,142,88.2,308.8c76.7,291.6,78.6,305,44.1,329.9c-32.6,24.9-30.7,38.4,46,324.2c78.6,287.8,82.5,335.7,34.5,335.7c-13.4,0-88.2,28.8-168.8,65.2l-147.7,63.3L3849.7-2044.4z M5959.9-1781.6c-15.3-11.5-88.2-42.2-163.1-71c-72.9-26.9-140-55.6-147.7-63.3c-11.5-7.7,107.4-494.9,147.7-610c9.6-26.9,235.9,49.9,414.3,142l109.3,55.6l-157.3,272.4c-84.4,149.6-161.1,276.3-165,282C5992.5-1768.1,5975.2-1772,5959.9-1781.6z M4532.7-1971.5c-3.8-5.8-42.2-143.9-86.3-306.9c-57.5-212.9-72.9-299.3-57.5-310.8c24.9-13.4,230.2-47.9,416.3-67.1l118.9-13.4v328v328l-90.2,11.5c-51.8,5.8-138.1,19.2-193.7,26.9C4584.4-1967.7,4536.5-1965.7,4532.7-1971.5z M5355.6-1975.3c-51.8-7.7-136.2-21.1-186.1-26.9l-92.1-11.5v-326.1c0-310.8-1.9-324.2-38.4-324.2c-36.4,0-38.4-13.4-38.4-330v-328l207.2,11.5c203.3,11.5,606.2,78.7,654.2,109.3c21.1,11.5,9.6,78.7-55.6,324.2c-76.7,287.7-86.3,306.9-122.8,297.3c-38.4-9.6-46,11.5-124.7,306.9c-46,176.5-90.2,316.5-95.9,316.5C5457.3-1958.1,5409.3-1965.7,5355.6-1975.3z"/></svg>{t("gameRoulette").toUpperCase()}</div>
@@ -12145,7 +12145,7 @@ export default function App() {
               <>
               <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", boxSizing:"border-box" }}><div className="game-outer-wrap" style={{ height:"760px", width:"100%", borderRadius:"6px", overflow:"hidden", border:"1px solid #153650", display:"flex", flexDirection:"column", background:"#0e1320" }}>
                 <div style={{ padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", display:"flex", alignItems:"center", gap:"10px" }}>
-                  <button onClick={showHomeView} style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+                  <button onClick={showHomeView} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
                   <span style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><g transform="rotate(-10 8 10.75)"><rect x="2" y="2.5" width="12" height="16.5" rx="1.5" fill="currentColor"/><text x="3.2" y="5.8" fontSize="3.5" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>K</text><path transform="translate(3.2,4.8) scale(0.25)" d="M6,1 L11,7 C9,9.5 7.2,8.5 7.2,8.5 L7.8,11 L4.2,11 L4.8,8.5 C4.8,8.5 3,9.5 1,7 Z" fill="var(--color-sidebar)"/><path transform="translate(4.5,6) scale(0.583)" d="M6,1 L11,7 C9,9.5 7.2,8.5 7.2,8.5 L7.8,11 L4.2,11 L4.8,8.5 C4.8,8.5 3,9.5 1,7 Z" fill="var(--color-sidebar)"/><g transform="rotate(180 8 10.75)"><text x="3.2" y="5.8" fontSize="3.5" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>K</text><path transform="translate(3.2,4.8) scale(0.25)" d="M6,1 L11,7 C9,9.5 7.2,8.5 7.2,8.5 L7.8,11 L4.2,11 L4.8,8.5 C4.8,8.5 3,9.5 1,7 Z" fill="var(--color-sidebar)"/></g></g><g transform="rotate(10 16 10.75)"><rect x="10" y="2.5" width="12" height="16.5" rx="1.5" fill="currentColor"/><text x="11.2" y="5.8" fontSize="3.5" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>A</text><path transform="translate(11.2,4.8) scale(0.25)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/><path transform="translate(12.5,6) scale(0.583)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/><g transform="rotate(180 16 10.75)"><text x="11.2" y="5.8" fontSize="3.5" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>A</text><path transform="translate(11.2,4.8) scale(0.25)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/></g></g></svg>{t("gameBaccarat").toUpperCase()}</span>
                   <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{gt(lang,"manderOriginals")}</div>
                 </div>
@@ -12188,7 +12188,7 @@ export default function App() {
               <>
               <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", boxSizing:"border-box" }}><div className="game-outer-wrap" style={{ width:"100%", borderRadius:"6px", overflow:"hidden", border:"1px solid #153650", display:"flex", flexDirection:"column", background:"#0e1320" }}>
                 <div style={{ padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", display:"flex", alignItems:"center", gap:"10px" }}>
-                  <button onClick={showHomeView} style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <button onClick={showHomeView} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
                   </button>
                   <span style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}>
@@ -12228,7 +12228,7 @@ export default function App() {
               <><div style={{ maxWidth:"1080px", margin:"0 auto", width:"100%", padding:"0 20px 40px", boxSizing:"border-box", minHeight:"calc(107vh - 70px)" }}>
                 {/* Header */}
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"28px" }}>
-                  <div style={{ width:"3px", height:"22px", background:"linear-gradient(180deg,#A855F7,#7C3AED)", borderRadius:"2px", flexShrink:0 }} />
+                  <div style={{ width:"3px", height:"22px", background:"linear-gradient(180deg,#f4a91f,#e08000)", borderRadius:"2px", flexShrink:0 }} />
                   <span style={{ fontWeight:800, fontSize:"17px", letterSpacing:"0.03em", color:"#fff", textTransform:"uppercase" }}>{t("moreFromMander")}</span>
                 </div>
                 {/* Grid */}
@@ -12237,7 +12237,7 @@ export default function App() {
                   {([
                     { key:"dice",      label:t("gameDice"),      img:assetUrl("/dice-card.webp"),       accentBg:"#1a5cd6", action:showDiceOnly },
                     { key:"plinko",    label:t("gamePlinko"),    img:assetUrl("/plinko-thumb.webp"),    accentBg:"#e6293e", action:showPlinkoOnly },
-                    { key:"keno",      label:t("gameKeno"),      img:assetUrl("/keno-thumb.webp"),      accentBg:"#A855F7", action:showKenoOnly },
+                    { key:"keno",      label:t("gameKeno"),      img:assetUrl("/keno-thumb.webp"),      accentBg:"#f4a91f", action:showKenoOnly },
                     { key:"blackjack", label:t("gameBlackjack"), img:assetUrl("/blackjack-thumb.webp"), accentBg:"#d67a10", action:showBlackjackOnly },
                     { key:"mines",     label:t("gameMines"),     img:assetUrl("/mines-card.webp"),      accentBg:"#1a4d8a", action:showMinesOnly },
                     { key:"hilo",      label:t("gameHilo"),      img:assetUrl("/hilo-card.webp"),       accentBg:"#00d47a", action:showHiloOnly },
@@ -12282,14 +12282,14 @@ export default function App() {
                   return (
                     <button key={tab.key} onClick={() => { window.scrollTo({ top:0, behavior:"instant" }); openSection(tab.key); }}
                       style={{ display:"flex", alignItems:"center", gap:"7px", padding:"9px 18px", borderRadius:"6px",
-                        border: active ? "1px solid transparent" : "1px solid #1e1535",
-                        background: active ? "linear-gradient(160deg,#A855F7,#7C3AED)" : "transparent",
+                        border: active ? "1px solid transparent" : "1px solid #253045",
+                        background: active ? "linear-gradient(160deg,#f6b531,#d4870a)" : "transparent",
                         color: active ? "#fff" : "#5a7090", fontWeight: active ? 700 : 500,
                         fontSize:"13px", cursor:"pointer", whiteSpace:"nowrap", fontFamily:"'Inter',sans-serif",
                         transition:"all .15s",
-                        boxShadow: active ? "0 2px 12px rgba(168,85,247,.4)" : "none" }}
+                        boxShadow: active ? "0 2px 12px rgba(244,169,31,.4)" : "none" }}
                       onMouseEnter={e => { if (!active) { e.currentTarget.style.borderColor="#3a4f6a"; e.currentTarget.style.color="#8aa8cc"; }}}
-                      onMouseLeave={e => { if (!active) { e.currentTarget.style.borderColor="#1e1535"; e.currentTarget.style.color="#5a7090"; }}}>
+                      onMouseLeave={e => { if (!active) { e.currentTarget.style.borderColor="#253045"; e.currentTarget.style.color="#5a7090"; }}}>
                       {tab.icon}
                       {tab.label}
                     </button>
@@ -12344,7 +12344,7 @@ export default function App() {
             <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", width:"100%", boxSizing:"border-box" as const, minHeight:"calc(100vh - 70px)" }}>
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"16px" }}>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
                 <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("betHistory")}</span>
               </div>
               {!currentUser ? (
@@ -12360,13 +12360,13 @@ export default function App() {
                   blackjack: { label:t("gameBlackjack"), color:"#d67a10" },
                   mines:     { label:t("gameMines"),     color:"#ef4444" },
                   hilo:      { label:t("gameHilo"),      color:"#00d47a" },
-                  roulette:  { label:t("gameRoulette"),  color:"#A855F7" },
+                  roulette:  { label:t("gameRoulette"),  color:"#f4a91f" },
                   baccarat:  { label:t("gameBaccarat"),  color:"#1a64e0" },
                 };
                 type UBet = { game:string; label:string; color:string; amount:number; multiplier:number; payout:number; win:boolean; createdAt:string };
                 if (!serverBetsLoaded) return (
                   <div style={{ display:"flex", justifyContent:"center", alignItems:"center", padding:"60px 16px", color:"#4a5e7a", fontSize:"13px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight:"8px", animation:"spin 1s linear infinite" }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4a91f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight:"8px", animation:"spin 1s linear infinite" }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                     {t("loading") || "Loading…"}
                   </div>
                 );
@@ -12402,8 +12402,8 @@ export default function App() {
                         const active = bhFilter===g.key;
                         return (
                           <button key={g.key} onClick={()=>{ setBhFilter(g.key); setBhPage(0); }}
-                            style={{ padding:"6px 14px", borderRadius:"6px", border:`1px solid ${active?"#A855F7":"#1e1535"}`,
-                              background: active ? "linear-gradient(160deg,#A855F7,#7C3AED)" : "transparent",
+                            style={{ padding:"6px 14px", borderRadius:"6px", border:`1px solid ${active?"#f4a91f":"#253045"}`,
+                              background: active ? "linear-gradient(160deg,#f6b531,#d4870a)" : "transparent",
                               color: active?"#fff":"#5a7090", fontWeight: active?700:500,
                               fontSize:"12px", cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"all .15s", whiteSpace:"nowrap" as const }}>
                             {g.label}
@@ -12415,7 +12415,7 @@ export default function App() {
                     <div style={{ overflowX:"auto", marginTop:"10px" }}>
                       {bhHistoryLoading ? (
                         <div style={{ display:"flex", justifyContent:"center", alignItems:"center", padding:"40px 16px", color:"#4a5e7a", fontSize:"13px" }}>
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight:"8px", animation:"spin 1s linear infinite" }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4a91f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight:"8px", animation:"spin 1s linear infinite" }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                           {t("loading") || "Loading…"}
                         </div>
                       ) : pageData.length === 0 ? (
@@ -12475,13 +12475,13 @@ export default function App() {
                           <span style={{ color:"#64748b", fontSize:13 }}>{t("affPage")} {page+1} {t("affOf")} {totalPages}</span>
                           <div style={{ display:"flex", gap:6, alignItems:"center", flexWrap:"wrap" }}>
                             <button onClick={()=>setBhPage(p=>Math.max(0,p-1))} disabled={!hasPrev || bhHistoryLoading}
-                              style={{ background:(!hasPrev||bhHistoryLoading)?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:(!hasPrev||bhHistoryLoading)?"#1e1535":"#e2e8f0", padding:"7px 14px", fontSize:13, fontWeight:600, cursor:(!hasPrev||bhHistoryLoading)?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                              style={{ background:(!hasPrev||bhHistoryLoading)?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:(!hasPrev||bhHistoryLoading)?"#253045":"#e2e8f0", padding:"7px 14px", fontSize:13, fontWeight:600, cursor:(!hasPrev||bhHistoryLoading)?"not-allowed":"pointer", fontFamily:"inherit" }}>
                               {t("prevPage")}
                             </button>
                             {rangeStart > 0 && (
                               <>
                                 <button onClick={()=>{ if (!bhHistoryLoading) setBhPage(0); }}
-                                  style={{ background:"#13102a", border:"1px solid #1e1535", borderRadius:7, color:"#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"inherit", minWidth:36 }}>
+                                  style={{ background:"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:"#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"inherit", minWidth:36 }}>
                                   1
                                 </button>
                                 {rangeStart > 1 && <span style={{ color:"#3a4e68", fontSize:13, padding:"0 2px" }}>…</span>}
@@ -12492,7 +12492,7 @@ export default function App() {
                               return (
                                 <button key={pn} onClick={()=>{ if (!bhHistoryLoading && !isActive) setBhPage(pn); }}
                                   disabled={isActive || bhHistoryLoading}
-                                  style={{ background: isActive ? "linear-gradient(160deg,#A855F7,#7C3AED)" : "#13102a", border:`1px solid ${isActive?"#A855F7":"#1e1535"}`, borderRadius:7, color: isActive ? "#fff" : "#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight: isActive ? 700 : 600, cursor: isActive || bhHistoryLoading ? "default" : "pointer", fontFamily:"inherit", minWidth:36 }}>
+                                  style={{ background: isActive ? "linear-gradient(160deg,#f6b531,#d4870a)" : "#1e2a3d", border:`1px solid ${isActive?"#f4a91f":"#253045"}`, borderRadius:7, color: isActive ? "#fff" : "#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight: isActive ? 700 : 600, cursor: isActive || bhHistoryLoading ? "default" : "pointer", fontFamily:"inherit", minWidth:36 }}>
                                   {pn + 1}
                                 </button>
                               );
@@ -12501,13 +12501,13 @@ export default function App() {
                               <>
                                 {rangeEnd < totalPages - 2 && <span style={{ color:"#3a4e68", fontSize:13, padding:"0 2px" }}>…</span>}
                                 <button onClick={()=>{ if (!bhHistoryLoading) setBhPage(totalPages - 1); }}
-                                  style={{ background:"#13102a", border:"1px solid #1e1535", borderRadius:7, color:"#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"inherit", minWidth:36 }}>
+                                  style={{ background:"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:"#e2e8f0", padding:"7px 12px", fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"inherit", minWidth:36 }}>
                                   {totalPages}
                                 </button>
                               </>
                             )}
                             <button onClick={()=>setBhPage(p=>p+1)} disabled={!hasNext || bhHistoryLoading}
-                              style={{ background:(!hasNext||bhHistoryLoading)?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:(!hasNext||bhHistoryLoading)?"#1e1535":"#e2e8f0", padding:"7px 14px", fontSize:13, fontWeight:600, cursor:(!hasNext||bhHistoryLoading)?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                              style={{ background:(!hasNext||bhHistoryLoading)?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:(!hasNext||bhHistoryLoading)?"#253045":"#e2e8f0", padding:"7px 14px", fontSize:13, fontWeight:600, cursor:(!hasNext||bhHistoryLoading)?"not-allowed":"pointer", fontFamily:"inherit" }}>
                               {bhHistoryLoading ? "..." : t("nextPage")}
                             </button>
                           </div>
@@ -12528,7 +12528,7 @@ export default function App() {
             <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", width:"100%", boxSizing:"border-box" as const, minHeight:"calc(100vh - 70px)" }}>
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"16px" }}>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
                 <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("transactions")}</span>
               </div>
               {/* Card */}
@@ -12539,8 +12539,8 @@ export default function App() {
                     const active = txFilter === val;
                     return (
                       <button key={val} onClick={()=>{ setTxFilter(val); setTxPage(0); }}
-                        style={{ padding:"7px 18px", borderRadius:"6px", border:`1px solid ${active?"#A855F7":"#1e1535"}`,
-                          background: active ? "linear-gradient(160deg,#A855F7,#7C3AED)" : "transparent",
+                        style={{ padding:"7px 18px", borderRadius:"6px", border:`1px solid ${active?"#f4a91f":"#253045"}`,
+                          background: active ? "linear-gradient(160deg,#f6b531,#d4870a)" : "transparent",
                           color: active ? "#fff" : "#5a7090", fontWeight: active ? 700 : 500,
                           fontSize:"13px", cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"all .15s" }}>
                         {label}
@@ -12573,7 +12573,7 @@ export default function App() {
                       const d = new Date(s);
                       return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`;
                     };
-                    const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#A855F7" : s==="expired" ? "#6b7280" : "#ff5b5b";
+                    const statusColor = (s: string) => s==="completed"||s==="approved" ? "#22c55e" : s==="pending" ? "#f4a91f" : s==="expired" ? "#6b7280" : "#ff5b5b";
                     const statusLabel = (s: string) => s==="completed"||s==="approved" ? t("completed") : s==="pending" ? t("pending") : s==="expired" ? t("expired") : t("rejected");
                     return (
                       <>
@@ -12620,7 +12620,7 @@ export default function App() {
                                       </td>
                                       <td style={{ padding:"13px 16px", fontSize:"13px", color:"#7a8faa", whiteSpace:"nowrap" as const }}>{fmtDate(tx.createdAt)}</td>
                                       <td style={{ padding:"13px 16px" }}>
-                                        <span style={{ color: isDepositLikeTx(tx) ? "#22c55e" : "#A855F7", fontWeight:600, fontSize:"13px" }}>
+                                        <span style={{ color: isDepositLikeTx(tx) ? "#22c55e" : "#f4a91f", fontWeight:600, fontSize:"13px" }}>
                                           {isDepositLikeTx(tx) ? t("deposit") : t("withdraw")}
                                         </span>
                                       </td>
@@ -12631,7 +12631,7 @@ export default function App() {
                                             const amt = rd?.amount ?? tx.coinAmount ?? 0;
                                             const coin = rd?.currency ?? tx.coin ?? "";
                                             if (amt > 0) {
-                                              return <span style={{ color:"#A855F7", fontWeight:700, fontSize:"13px" }}>{(amt).toFixed(8)} {coin}</span>;
+                                              return <span style={{ color:"#f4a91f", fontWeight:700, fontSize:"13px" }}>{(amt).toFixed(8)} {coin}</span>;
                                             }
                                             return <span style={{ color:"#5a6a82", fontWeight:500, fontSize:"13px" }}>—</span>;
                                           }
@@ -12639,17 +12639,17 @@ export default function App() {
                                           if (isWithdrawLikeTx(tx)) {
                                               const ca = tx.coinAmount ?? tx.usdAmount;
                                               return ca > 0
-                                                ? <span style={{ color:"#A855F7", fontWeight:700, fontSize:"13px" }}>-{(ca).toFixed(8)} {tx.coin}</span>
+                                                ? <span style={{ color:"#f4a91f", fontWeight:700, fontSize:"13px" }}>-{(ca).toFixed(8)} {tx.coin}</span>
                                                 : <span style={{ color:"#5a6a82", fontWeight:500, fontSize:"13px" }}>—</span>;
                                             }
                                             return tx.usdAmount > 0
-                                              ? <span style={{ color:"#A855F7", fontWeight:700, fontSize:"13px" }}>-{fmtMoney(tx.usdAmount)}</span>
+                                              ? <span style={{ color:"#f4a91f", fontWeight:700, fontSize:"13px" }}>-{fmtMoney(tx.usdAmount)}</span>
                                               : <span style={{ color:"#5a6a82", fontWeight:500, fontSize:"13px" }}>—</span>;
                                           }
                                           if (isWithdrawLikeTx(tx)) {
                                             const ca = tx.coinAmount ?? tx.usdAmount;
                                             return (
-                                              <span style={{ color:"#A855F7", fontWeight:700, fontSize:"13px" }}>
+                                              <span style={{ color:"#f4a91f", fontWeight:700, fontSize:"13px" }}>
                                                 -{(ca).toFixed(8)} {tx.coin}
                                               </span>
                                             );
@@ -12665,7 +12665,7 @@ export default function App() {
                                             }
                                           }
                                           return (
-                                            <span style={{ color: isDepositLikeTx(tx) ? "#22c55e" : "#A855F7", fontWeight:700, fontSize:"13px" }}>
+                                            <span style={{ color: isDepositLikeTx(tx) ? "#22c55e" : "#f4a91f", fontWeight:700, fontSize:"13px" }}>
                                               {isDepositLikeTx(tx) ? "+" : "-"}{fmtMoney(tx.usdAmount)}
                                             </span>
                                           );
@@ -12706,11 +12706,11 @@ export default function App() {
                                 </span>
                                 <div style={{ display:"flex", gap:8 }}>
                                   <button onClick={()=>setTxPage(p=>Math.max(0,p-1))} disabled={page===0}
-                                    style={{ background:page===0?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:page===0?"#1e1535":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                                    style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
                                     {t("prevPage")}
                                   </button>
                                   <button onClick={()=>setTxPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
-                                    style={{ background:page===totalPages-1?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:page===totalPages-1?"#1e1535":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                                    style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
                                     {t("nextPage")}
                                   </button>
                                 </div>
@@ -12734,7 +12734,7 @@ export default function App() {
             <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", width:"100%", boxSizing:"border-box" as const, minHeight:"calc(100vh - 70px)" }}>
               {/* Title */}
               <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"18px" }}>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                 <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec", fontFamily:"'Inter', sans-serif" }}>{t("rewards")}</span>
               </div>
               {/* Table card */}
@@ -12796,11 +12796,11 @@ export default function App() {
                           <span style={{ color:"#64748b", fontSize:13 }}>{t("affPage")} {page+1} {t("affOf")} {totalPages}</span>
                           <div style={{ display:"flex", gap:8 }}>
                             <button onClick={()=>setRwPage(p=>Math.max(0,p-1))} disabled={page===0}
-                              style={{ background:page===0?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:page===0?"#1e1535":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                              style={{ background:page===0?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===0?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===0?"not-allowed":"pointer", fontFamily:"inherit" }}>
                               {t("prevPage")}
                             </button>
                             <button onClick={()=>setRwPage(p=>Math.min(totalPages-1,p+1))} disabled={page===totalPages-1}
-                              style={{ background:page===totalPages-1?"transparent":"#13102a", border:"1px solid #1e1535", borderRadius:7, color:page===totalPages-1?"#1e1535":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
+                              style={{ background:page===totalPages-1?"transparent":"#1e2a3d", border:"1px solid #253045", borderRadius:7, color:page===totalPages-1?"#253045":"#e2e8f0", padding:"7px 16px", fontSize:13, fontWeight:600, cursor:page===totalPages-1?"not-allowed":"pointer", fontFamily:"inherit" }}>
                               {t("nextPage")}
                             </button>
                           </div>
@@ -12840,7 +12840,7 @@ export default function App() {
                 <>
                   {/* ── Page Header ─────────────────────────────────────── */}
                   <div style={{ display:"flex", alignItems:"center", gap:"14px", marginBottom:"22px" }}>
-                    <div style={{ width:"42px", height:"42px", borderRadius:"6px", background:"linear-gradient(135deg,#A855F7,#7C3AED)", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 4px 16px #A855F744", flexShrink:0 }}>
+                    <div style={{ width:"42px", height:"42px", borderRadius:"6px", background:"linear-gradient(135deg,#f4a91f,#c07800)", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 4px 16px #f4a91f44", flexShrink:0 }}>
                       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                     </div>
                     <div>
@@ -12917,7 +12917,7 @@ export default function App() {
                         <div style={{ width:"44px", height:"44px", borderRadius:"6px", background:`${vRank.color}18`, border:`1px solid ${vRank.color}30`, overflow:"hidden", flexShrink:0 }}>
                           <img src={`/ranks/${vRank.tier.toLowerCase()}-badge.svg`} alt={vRank.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
                         </div>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A855F7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><line x1="12" y1="15" x2="12" y2="17"/><circle cx="12" cy="15" r="1" fill="#A855F7" stroke="none"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f4a91f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><line x1="12" y1="15" x2="12" y2="17"/><circle cx="12" cy="15" r="1" fill="#f4a91f" stroke="none"/></svg>
                         <span style={{ fontSize:"13px", color:"#7a8faa" }}>{t("loginForVip")}</span>
                       </div>
                     )}
@@ -12928,8 +12928,8 @@ export default function App() {
                     <>
                       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"10px" }}>
                         <div style={{ display:"flex", alignItems:"center", gap:"7px" }}>
-                          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#A855F7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                          <span style={{ fontSize:"11px", color:"#A855F7", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const }}>{t("rbPools")}</span>
+                          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f4a91f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                          <span style={{ fontSize:"11px", color:"#f4a91f", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const }}>{t("rbPools")}</span>
                         </div>
                         <span style={{ fontSize:"11px", color:"#4a5568", fontStyle:"italic" as const }}>{t("keepBettingMore")}</span>
                       </div>
@@ -12938,7 +12938,7 @@ export default function App() {
                           {
                             label:t("rbInstant"), pct:"40%", freq:t("rbFreqInstant"), isInstant:true,
                             amount:rbInstant > 0 ? rbInstant : rbInstantAccum, accum:rbInstantAccum, canClaim:rbInstant > 0, timer:iTimer, onClaim:doClaimInstant,
-                            accent:"#A855F7", accentDim:"#A855F718", locked:rbInstant <= 0,
+                            accent:"#f4a91f", accentDim:"#f4a91f18", locked:rbInstant <= 0,
                             tip:t("rbTipInstant"),
                             icon:(<svg viewBox="0 0 24 24" width="18" height="18" fill="none" strokeLinecap="round" strokeLinejoin="round">
                               <circle cx="12" cy="12" r="9.5" fill="currentColor" fillOpacity=".13"/>
@@ -13017,7 +13017,7 @@ export default function App() {
                                         }
                                       }}
                                       className="aff-info-btn"
-                                      style={{ background:"none", border:"none", padding:"0 2px", cursor:"pointer", color: rbActiveTip === c.label ? "#A855F7" : "#556070", lineHeight:1, display:"flex", alignItems:"center", transition:"color 0.15s ease" }}
+                                      style={{ background:"none", border:"none", padding:"0 2px", cursor:"pointer", color: rbActiveTip === c.label ? "#f6b531" : "#556070", lineHeight:1, display:"flex", alignItems:"center", transition:"color 0.15s ease" }}
                                     >
                                       <svg viewBox="0 0 16 16" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
@@ -13033,7 +13033,7 @@ export default function App() {
                               {!isMobile && rbActiveTip === c.label && (
                                 <div
                                   onClick={e => e.stopPropagation()}
-                                  style={{ position:"absolute", top:"18px", right:"-67px", width:"220px", background:"#0D0F1A", border:"1px solid #2d1f52", borderRadius:"8px", padding:"10px 12px", color:"#c4bfb5", fontSize:"11px", lineHeight:1.6, animation:"tooltipIn 0.15s ease forwards", zIndex:20, boxShadow:"0 8px 24px rgba(0,0,0,.55)" }}
+                                  style={{ position:"absolute", top:"18px", right:"-67px", width:"220px", background:"#0e1623", border:"1px solid #2a3a54", borderRadius:"8px", padding:"10px 12px", color:"#c4bfb5", fontSize:"11px", lineHeight:1.6, animation:"tooltipIn 0.15s ease forwards", zIndex:20, boxShadow:"0 8px 24px rgba(0,0,0,.55)" }}
                                 >
                                   {c.tip}
                                 </div>
@@ -13135,8 +13135,8 @@ export default function App() {
                       {/* ── Pending Claims ──────────────────────────────────── */}
                       {(()=>{
                         const pendingItems = [
-                          { key:"instant", label:t("rbInstant"), amount:rbInstantPending, canClaim:rbInstantPending > 0, onClaim:doClaimInstantPending, accent:"#A855F7", expiry:null, timer:iTimer,
-                            icon:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9.5" fill="#A855F7" fillOpacity=".13"/><circle cx="12" cy="12" r="9.5" stroke="#A855F7" strokeWidth="1.6" strokeOpacity=".55"/><circle cx="12" cy="12" r="7" stroke="#A855F7" strokeWidth=".8" strokeOpacity=".25"/><path d="M13.8 4.5 L7.5 13.5 H12 L10.2 19.5 L16.5 10.5 H12 Z" fill="#A855F7"/></svg> },
+                          { key:"instant", label:t("rbInstant"), amount:rbInstantPending, canClaim:rbInstantPending > 0, onClaim:doClaimInstantPending, accent:"#f4a91f", expiry:null, timer:iTimer,
+                            icon:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9.5" fill="#f4a91f" fillOpacity=".13"/><circle cx="12" cy="12" r="9.5" stroke="#f4a91f" strokeWidth="1.6" strokeOpacity=".55"/><circle cx="12" cy="12" r="7" stroke="#f4a91f" strokeWidth=".8" strokeOpacity=".25"/><path d="M13.8 4.5 L7.5 13.5 H12 L10.2 19.5 L16.5 10.5 H12 Z" fill="#f4a91f"/></svg> },
                         ];
                         const _tPC = ({"es":"Reclamos Pendientes","en":"Pending Claims","pt":"Resgates Pendentes","de":"Ausstehende Prämien","fr":"Réclamations en attente","id":"Klaim Tertunda","it":"Premi in sospeso","ko":"대기 중인 클레임","nl":"Openstaande claims","pl":"Oczekujące nagrody","ru":"Ожидающие вознаграждения","tr":"Bekleyen Ödüller"} as Record<string,string>)[lang ?? "es"] ?? "Pending Claims";
                         const _tPCTip = ({"es":"Rakeback instantáneo de horas anteriores que aún no fue reclamado. El servidor guarda estos fondos indefinidamente hasta que los reclames.","en":"Instant rakeback from past hours that has not been claimed yet. The server holds these funds indefinitely until you claim them.","pt":"Rakeback instantâneo de horas anteriores ainda não resgatado. O servidor mantém esses fundos indefinidamente até que você os resgate.","de":"Sofortiger Rakeback aus vergangenen Stunden, der noch nicht beansprucht wurde. Der Server hält diese Gelder unbegrenzt, bis du sie einlöst.","fr":"Rakeback instantané des heures passées non encore réclamé. Le serveur conserve ces fonds indéfiniment jusqu'à ce que vous les réclamiez.","id":"Rakeback instan dari jam-jam sebelumnya yang belum diklaim. Server menyimpan dana ini tanpa batas waktu hingga Anda mengklaimnya.","it":"Rakeback istantaneo delle ore precedenti non ancora riscosso. Il server mantiene questi fondi a tempo indeterminato finché non vengono riscossi.","ko":"아직 청구되지 않은 이전 시간의 즉시 레이크백입니다. 서버는 청구할 때까지 이 자금을 무기한 보관합니다.","nl":"Directe rakeback van afgelopen uren die nog niet is geclaimd. De server bewaart deze fondsen voor onbepaalde tijd totdat u ze claimt.","pl":"Natychmiastowy rakeback z poprzednich godzin, który nie został jeszcze odebrany. Serwer przechowuje te środki bezterminowo, dopóki ich nie odbierzesz.","ru":"Мгновенный рейкбэк за прошедшие часы, который ещё не был получен. Сервер хранит эти средства до тех пор, пока вы их не заберёте.","tr":"Henüz talep edilmemiş geçmiş saatlerden anlık rakeback. Sunucu, siz talep edene kadar bu fonları süresiz olarak saklar."} as Record<string,string>)[lang ?? "es"] ?? "Instant rakeback from past hours not yet claimed.";
@@ -13148,17 +13148,17 @@ export default function App() {
                         };
                         const availCount = pendingItems.filter(c => c.canClaim && c.amount > 0).length;
                         const pendingTotal = pendingItems.filter(c => c.canClaim && c.amount > 0).reduce((s,c) => s + c.amount, 0);
-                        const hdrAccent = availCount > 0 ? "#A855F7" : "#2a3a58";
-                        const hdrBg     = availCount > 0 ? "#A855F70d" : "transparent";
+                        const hdrAccent = availCount > 0 ? "#f4a91f" : "#2a3a58";
+                        const hdrBg     = availCount > 0 ? "#f4a91f0d" : "transparent";
                         return (
-                          <div style={{ background:"#0d1322", border:`1px solid ${availCount > 0 ? "#A855F735" : "#1a2538"}`, borderRadius:"8px", marginBottom:"14px", overflow:"hidden", position:"relative" }}>
+                          <div style={{ background:"#0d1322", border:`1px solid ${availCount > 0 ? "#f4a91f35" : "#1a2538"}`, borderRadius:"8px", marginBottom:"14px", overflow:"hidden", position:"relative" }}>
                             {/* Header */}
-                            <div style={{ display:"flex", alignItems:"center", gap:"9px", padding:"11px 16px", background:hdrBg, borderBottom:`1px solid ${availCount > 0 ? "#A855F720" : "#1a2538"}` }}>
+                            <div style={{ display:"flex", alignItems:"center", gap:"9px", padding:"11px 16px", background:hdrBg, borderBottom:`1px solid ${availCount > 0 ? "#f4a91f20" : "#1a2538"}` }}>
                               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke={hdrAccent} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                               <div style={{ flex:1, minWidth:0 }}>
                                 <span style={{ fontSize:"11px", fontWeight:800, color:hdrAccent, letterSpacing:"0.8px", textTransform:"uppercase" as const }}>{_tPC}</span>
                                 {availCount > 0 && (
-                                  <div style={{ fontSize:"10px", color:"#A855F7aa", fontWeight:600, marginTop:"2px" }}>
+                                  <div style={{ fontSize:"10px", color:"#f4a91faa", fontWeight:600, marginTop:"2px" }}>
                                     {_tPCSub(pendingTotal)}
                                   </div>
                                 )}
@@ -13178,7 +13178,7 @@ export default function App() {
                                   }
                                 }}
                                 className="aff-info-btn"
-                                style={{ background:"none", border:"none", padding:"4px", cursor:"pointer", color: rbActiveTip === "pc-card-info" ? "#A855F7" : "#556070", lineHeight:1, display:"flex", alignItems:"center", flexShrink:0, transition:"color 0.15s ease" }}>
+                                style={{ background:"none", border:"none", padding:"4px", cursor:"pointer", color: rbActiveTip === "pc-card-info" ? "#f6b531" : "#556070", lineHeight:1, display:"flex", alignItems:"center", flexShrink:0, transition:"color 0.15s ease" }}>
                                 <svg viewBox="0 0 16 16" width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                                   <circle cx="8" cy="5.8" r="0.75" fill="currentColor"/>
@@ -13188,7 +13188,7 @@ export default function App() {
                             </div>
                             {/* ── Desktop: tooltip floating near info button ── */}
                             {!isMobile && rbActiveTip === "pc-card-info" && (
-                              <div onClick={e => e.stopPropagation()} style={{ position:"absolute", top:"6px", right:"-81px", width:"260px", background:"#0D0F1A", border:"1px solid #1e2d45", borderRadius:"6px", padding:"10px 14px", color:"#c4bfb5", fontSize:"11.5px", lineHeight:1.6, animation:"tooltipIn 0.15s ease forwards", zIndex:20, boxShadow:"0 8px 24px rgba(0,0,0,.55)" }}>
+                              <div onClick={e => e.stopPropagation()} style={{ position:"absolute", top:"6px", right:"-81px", width:"260px", background:"#0e1623", border:"1px solid #1e2d45", borderRadius:"6px", padding:"10px 14px", color:"#c4bfb5", fontSize:"11.5px", lineHeight:1.6, animation:"tooltipIn 0.15s ease forwards", zIndex:20, boxShadow:"0 8px 24px rgba(0,0,0,.55)" }}>
                                 {_tPCTip}
                               </div>
                             )}
@@ -13250,8 +13250,8 @@ export default function App() {
                   {/* ── Level-Up Rewards ─────────────────────────────────── */}
                   <div style={{ background:bg, border:`1px solid ${border}`, borderRadius:"8px", padding:"22px", marginBottom:"14px" }}>
                     <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"18px" }}>
-                      <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#A855F720", border:"1px solid #A855F735", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                      <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#f4a91f20", border:"1px solid #f4a91f35", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
                       </div>
                       <div>
                         <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>{t("rankUpRewards")}</div>
@@ -13261,7 +13261,7 @@ export default function App() {
                     <div className="rb-rewards-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"10px" }}>
                       {[
                         { tier:"Silver",   gradient:"linear-gradient(135deg,#c0c0c0,#808090)", image:"/ranks/silver-badge.svg",   range:"$20 – $75",   color:"#c0c0c0" },
-                        { tier:"Gold",     gradient:"linear-gradient(135deg,#A855F7,#7C3AED)", image:"/ranks/gold-badge.svg",     range:"$75 – $400",  color:"#A855F7" },
+                        { tier:"Gold",     gradient:"linear-gradient(135deg,#f4a91f,#c07800)", image:"/ranks/gold-badge.svg",     range:"$75 – $400",  color:"#f4a91f" },
                         { tier:"Platinum", gradient:"linear-gradient(135deg,#b8c8e8,#7080a0)", image:"/ranks/platinum-badge.svg", range:"$400 – $2K",  color:"#b8c8e8" },
                         { tier:"Emerald",  gradient:"linear-gradient(135deg,#4dd890,#1a8850)", image:"/ranks/emerald-badge.svg",  range:"$1K – $7K",   color:"#4dd890" },
                       ].map(card => (
@@ -13282,8 +13282,8 @@ export default function App() {
                   <div style={{ background:bg, border:`1px solid ${border}`, borderRadius:"8px", padding:"22px" }}>
                     {/* Section header */}
                     <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"22px" }}>
-                      <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#A855F720", border:"1px solid #A855F735", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
+                      <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#f4a91f20", border:"1px solid #f4a91f35", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
                       </div>
                       <div>
                         <div style={{ fontSize:"14px", fontWeight:800, color:"#c8d8ec" }}>{t("allRanks")}</div>
@@ -13473,7 +13473,7 @@ export default function App() {
             <div style={{ minHeight:"calc(100vh - 70px)" }}>
               <div style={{ maxWidth:"1080px", margin:"0 auto", padding:"0 20px", boxSizing:"border-box" as const }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"18px" }}>
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                   <span style={{ fontSize:"14px", fontWeight:800, letterSpacing:"1.4px", textTransform:"uppercase" as const, color:"#c8d8ec" }}>{t("referrals")}</span>
                 </div>
               </div>
@@ -13496,7 +13496,7 @@ export default function App() {
                   </h2>
                   {sec.body && sec.body.map((item,i) =>
                     Array.isArray(item)
-                      ? <ul key={i} style={{ margin:"8px 0 8px 0",padding:0,listStyle:"none" }}>{item.map((li,j)=><li key={j} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}><span style={{ position:"absolute",left:0,color:"#A855F7" }}>·</span>{li}</li>)}</ul>
+                      ? <ul key={i} style={{ margin:"8px 0 8px 0",padding:0,listStyle:"none" }}>{item.map((li,j)=><li key={j} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}><span style={{ position:"absolute",left:0,color:"#f6b531" }}>·</span>{li}</li>)}</ul>
                       : <p key={i} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,margin:"0 0 10px" }}>{item}</p>
                   )}
                   {sec.subSections && sec.subSections.map(sub => (
@@ -13504,7 +13504,7 @@ export default function App() {
                       <h3 style={{ color:"#c8d8ec",fontSize:"12px",fontWeight:700,letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"8px",marginTop:"16px" }}>{sub.title}</h3>
                       {sub.body.map((item,i) =>
                         Array.isArray(item)
-                          ? <ul key={i} style={{ margin:"8px 0 8px 0",padding:0,listStyle:"none" }}>{item.map((li,j)=><li key={j} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}><span style={{ position:"absolute",left:0,color:"#A855F7" }}>·</span>{li}</li>)}</ul>
+                          ? <ul key={i} style={{ margin:"8px 0 8px 0",padding:0,listStyle:"none" }}>{item.map((li,j)=><li key={j} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}><span style={{ position:"absolute",left:0,color:"#f6b531" }}>·</span>{li}</li>)}</ul>
                           : <p key={i} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,margin:"0 0 10px" }}>{item}</p>
                       )}
                     </div>
@@ -13537,7 +13537,7 @@ export default function App() {
               {/* Header */}
               <div style={{ marginBottom:"28px",paddingBottom:"20px",borderBottom:"1px solid #20283a" }}>
                 <div style={{ display:"flex",alignItems:"center",gap:"12px",marginBottom:"10px" }}>
-                  <div style={{ width:"38px",height:"38px",borderRadius:"6px",background:"linear-gradient(135deg,#A855F7,#7C3AED)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
+                  <div style={{ width:"38px",height:"38px",borderRadius:"6px",background:"linear-gradient(135deg,#f6b531,#e9970d)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
                   </div>
                   <h1 style={{ margin:0,color:"#e2e8f0",fontSize:"22px",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase" }}>{t("fairnessTitle")}</h1>
@@ -13558,7 +13558,7 @@ export default function App() {
               </div>
 
               {/* Game detail panel */}
-              <div key={activeGame.key} style={{ background:"#0D0F1A",border:`1px solid #13102a`,borderRadius:"6px",overflow:"hidden",animation:"nlsfadeIn 0.2s ease" }}>
+              <div key={activeGame.key} style={{ background:"#111827",border:`1px solid #1e2a3d`,borderRadius:"6px",overflow:"hidden",animation:"nlsfadeIn 0.2s ease" }}>
                 {/* Panel header */}
                 <div style={{ padding:"20px 24px",borderBottom:"1px solid #20283a",display:"flex",alignItems:"center",gap:"14px" }}>
                   <div style={{ width:"48px",height:"48px",borderRadius:"6px",background:`${activeGame.color}18`,border:`1px solid ${activeGame.color}40`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>{fIcons[activeGame.key]?.(26, activeGame.color)}</div>
@@ -13570,7 +13570,7 @@ export default function App() {
                 </div>
 
                 {/* Overview */}
-                <div style={{ padding:"20px 24px",borderBottom:"1px solid #13102a" }}>
+                <div style={{ padding:"20px 24px",borderBottom:"1px solid #1e2a3d" }}>
                   <p style={{ color:"#c8d8ec",fontSize:"14px",lineHeight:1.8,margin:0 }}>{activeGame.how}</p>
                 </div>
 
@@ -13595,7 +13595,7 @@ export default function App() {
               {/* Bottom info */}
               <div style={{ marginTop:"24px",background:"#161d2b",border:"1px solid #20283a",borderRadius:"6px",padding:"20px 22px",display:"flex",gap:"16px",alignItems:"flex-start" }}>
                 <div style={{ flexShrink:0,marginTop:"1px" }}>
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f6b531" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
                 <div>
                   <div style={{ color:"#e2e8f0",fontWeight:700,fontSize:"13px",marginBottom:"6px" }}>{t("fairWhatTitle")}</div>
@@ -13633,7 +13633,7 @@ export default function App() {
                     <ul style={{ margin:"0 0 8px 0",padding:0,listStyle:"none" }}>
                       {sec.items.map((li,i) => (
                         <li key={i} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}>
-                          <span style={{ position:"absolute",left:0,color:"#A855F7" }}>·</span>{li}
+                          <span style={{ position:"absolute",left:0,color:"#f6b531" }}>·</span>{li}
                         </li>
                       ))}
                     </ul>
@@ -13661,7 +13661,7 @@ export default function App() {
                     <ul style={{ margin:"0 0 8px 0",padding:0,listStyle:"none" }}>
                       {sec.items.map((li,i) => (
                         <li key={i} style={{ color:"#94a3b8",fontSize:"14px",lineHeight:1.8,paddingLeft:"14px",position:"relative" }}>
-                          <span style={{ position:"absolute",left:0,color:"#A855F7" }}>·</span>{li}
+                          <span style={{ position:"absolute",left:0,color:"#f6b531" }}>·</span>{li}
                         </li>
                       ))}
                     </ul>
@@ -13957,7 +13957,7 @@ export default function App() {
               {/* Header */}
               <div style={{ marginBottom: isMobile ? "20px" : "28px", paddingBottom: isMobile ? "16px" : "20px", borderBottom:"1px solid #20283a", paddingTop: isMobile ? "4px" : "28px" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
-                  <div style={{ width: isMobile ? "32px" : "38px", height: isMobile ? "32px" : "38px", borderRadius:"6px", background:"linear-gradient(135deg,#A855F7,#7C3AED)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <div style={{ width: isMobile ? "32px" : "38px", height: isMobile ? "32px" : "38px", borderRadius:"6px", background:"linear-gradient(135deg,#f6b531,#e9970d)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                     <svg viewBox="0 0 24 24" width={isMobile?16:20} height={isMobile?16:20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
                   </div>
                   <h1 style={{ margin:0, color:"#e2e8f0", fontSize: isMobile ? "16px" : "22px", fontWeight:700, letterSpacing: isMobile ? "1px" : "2px", textTransform:"uppercase" as const }}>
@@ -13972,12 +13972,12 @@ export default function App() {
               {/* Feature cards — 2 cols on mobile, 4 on desktop */}
               <div style={{ display:"grid", gridTemplateColumns: isMobile ? "repeat(2,1fr)" : "repeat(auto-fit,minmax(220px,1fr))", gap: isMobile ? "8px" : "10px", marginBottom: isMobile ? "14px" : "20px" }}>
                 {([
-                  { color:"#A855F7", icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>, title:aT.c1t, body:aT.c1b },
+                  { color:"#f6b531", icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>, title:aT.c1t, body:aT.c1b },
                   { color:"#22d3ee", icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>, title:aT.c2t, body:aT.c2b },
                   { color:"#a78bfa", icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>, title:aT.c3t, body:aT.c3b },
                   { color:"#34d399", icon:<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>, title:aT.c4t, body:aT.c4b },
                 ] as {color:string;icon:React.ReactNode;title:string;body:string}[]).map((card,i)=>(
-                  <div key={i} style={{ background:"#0D0F1A", border:"1px solid #13102a", borderLeft:`3px solid ${card.color}`, borderRadius:"6px", padding: isMobile ? "14px" : "18px 20px" }}>
+                  <div key={i} style={{ background:"#111827", border:"1px solid #1e2a3d", borderLeft:`3px solid ${card.color}`, borderRadius:"6px", padding: isMobile ? "14px" : "18px 20px" }}>
                     <div style={{ width:"30px", height:"30px", borderRadius:"6px", background:`${card.color}18`, border:`1px solid ${card.color}30`, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:"10px", color:card.color }}>
                       {card.icon}
                     </div>
@@ -13988,10 +13988,10 @@ export default function App() {
               </div>
 
               {/* No KYC / 100% Anonymous banner */}
-              <div style={{ background:"#0D0F1A", border:"1px solid #13102a", borderLeft:"3px solid #A855F7", borderRadius:"6px", padding: isMobile ? "16px" : "22px 24px", marginBottom: isMobile ? "14px" : "20px", position:"relative" as const, overflow:"hidden" as const }}>
+              <div style={{ background:"#111827", border:"1px solid #1e2a3d", borderLeft:"3px solid #f6b531", borderRadius:"6px", padding: isMobile ? "16px" : "22px 24px", marginBottom: isMobile ? "14px" : "20px", position:"relative" as const, overflow:"hidden" as const }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"12px" }}>
-                  <div style={{ width:"34px", height:"34px", borderRadius:"6px", background:"#A855F718", border:"1px solid #A855F730", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="#A855F7" stroke="none"/></svg>
+                  <div style={{ width:"34px", height:"34px", borderRadius:"6px", background:"#f6b53118", border:"1px solid #f6b53130", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f6b531" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="#f6b531" stroke="none"/></svg>
                   </div>
                   <div>
                     <div style={{ color:"#e2e8f0", fontWeight:700, fontSize: isMobile ? "12px" : "13px", letterSpacing:"0.8px", textTransform:"uppercase" as const }}>{aT.kycTitle}</div>
@@ -14005,7 +14005,7 @@ export default function App() {
                   ] as [string,string][]).map(([title,desc],i)=>(
                     <div key={i} style={{ background:"#0d1117", border:"1px solid #20283a", borderRadius:"6px", padding:"10px 12px" }}>
                       <div style={{ display:"flex", alignItems:"center", gap:"5px", marginBottom:"4px" }}>
-                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#A855F7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#f6b531" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                         <span style={{ color:"#e2e8f0", fontWeight:700, fontSize:"11px" }}>{title}</span>
                       </div>
                       <p style={{ color:"#64748b", fontSize:"11px", lineHeight:1.6, margin:0 }}>{desc}</p>
@@ -14049,10 +14049,10 @@ export default function App() {
               </div>
 
               {/* Vision */}
-              <div style={{ background:"linear-gradient(135deg,#131d2e,#0f1525)", border:"1px solid #13102a", borderLeft:"3px solid #A855F7", borderRadius:"6px", padding: isMobile ? "14px" : "20px 24px", marginBottom: isMobile ? "14px" : "20px" }}>
+              <div style={{ background:"linear-gradient(135deg,#131d2e,#0f1525)", border:"1px solid #1e2a3d", borderLeft:"3px solid #f6b531", borderRadius:"6px", padding: isMobile ? "14px" : "20px 24px", marginBottom: isMobile ? "14px" : "20px" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"8px" }}>
-                  <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#A855F718", border:"1px solid #A855F730", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#f6b53118", border:"1px solid #f6b53130", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f6b531" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                   </div>
                   <div style={{ color:"#e2e8f0", fontWeight:700, fontSize:"11px", letterSpacing:"0.8px", textTransform:"uppercase" as const }}>{aT.visionTitle}</div>
                 </div>
@@ -14078,17 +14078,17 @@ export default function App() {
                 };
                 const [gamesSub, gamesPlay, gamesSoon] = _gs[lang] ?? _gs["en"];
                 return (
-                <div style={{ background:"#0D0F1A", border:"1px solid #13102a", borderRadius:"6px", padding: isMobile ? "14px" : "18px 20px" }}>
+                <div style={{ background:"#111827", border:"1px solid #1e2a3d", borderRadius:"6px", padding: isMobile ? "14px" : "18px 20px" }}>
                   {/* Header row */}
                   <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"6px" }}>
                     <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-                      <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#A855F718", border:"1px solid #A855F730", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+                      <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#f6b53118", border:"1px solid #f6b53130", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f6b531" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
                       </div>
                       <span style={{ color:"#e2e8f0", fontWeight:700, fontSize:"11px", letterSpacing:"1px", textTransform:"uppercase" as const }}>{aT.gamesTitle}</span>
                     </div>
                     <button onClick={showHomeView}
-                      style={{ display:"flex", alignItems:"center", gap:"5px", padding:"6px 12px", borderRadius:"6px", background:"linear-gradient(135deg,#A855F7,#7C3AED)", border:"none", color:"#fff", fontWeight:700, fontSize:"11px", cursor:"pointer", letterSpacing:"0.5px", fontFamily:"'Inter',sans-serif", flexShrink:0 }}>
+                      style={{ display:"flex", alignItems:"center", gap:"5px", padding:"6px 12px", borderRadius:"6px", background:"linear-gradient(135deg,#f6b531,#e9970d)", border:"none", color:"#fff", fontWeight:700, fontSize:"11px", cursor:"pointer", letterSpacing:"0.5px", fontFamily:"'Inter',sans-serif", flexShrink:0 }}>
                       {gamesPlay}
                       <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </button>
@@ -14098,7 +14098,7 @@ export default function App() {
                   {/* Buttons */}
                   <div style={{ display:"flex", flexWrap:"wrap" as const, gap:"6px", marginBottom:"10px" }}>
                     {[
-                      { label:t("gameDice"),      color:"#A855F7", icon:<svg viewBox="0 0 423.757 423.757" width="13" height="13" fill="currentColor"><path d="M189.294,385.219l112.522,38.538l98.514-98.509l-113.3-37.765L189.294,385.219z M239.962,379.203 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821c5.96-5.96,15.672-8.54,21.699-5.76 C245.875,366.162,245.921,373.243,239.962,379.203z M276.298,391.931c-5.96,5.96-15.672,8.54-21.699,5.76 c-6.021-2.78-6.077-9.861-0.113-15.821c5.965-5.96,15.672-8.54,21.699-5.76C282.207,378.89,282.258,385.971,276.298,391.931z M349.56,334.94c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.118,15.821s-15.672,8.54-21.699,5.76 S343.601,340.9,349.56,334.94z M313.331,323.031c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76C307.423,336.072,307.372,328.991,313.331,323.031z M312.415,388.019 c6.021,2.78,6.077,9.861,0.113,15.821c-5.96,5.96-15.672,8.54-21.699,5.76s-6.077-9.861-0.118-15.821 C296.676,387.825,306.388,385.244,312.415,388.019z M298.693,304.538c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821C282.954,304.338,292.667,301.763,298.693,304.538z M402.158,311.634l-37.202-111.611l-111.611-37.207l37.202,111.606L402.158,311.634z M319.281,224.118 c4.168-4.168,12.544-2.555,18.708,3.61s7.782,14.541,3.61,18.708c-4.168,4.168-12.544,2.555-18.708-3.61 C316.726,236.662,315.108,228.285,319.281,224.118z M135.171,0L29.939,52.613l105.231,52.613l105.226-52.613L135.171,0z M135.171,63.288c-8.714,0-15.785-4.782-15.785-10.675 c0-5.898,7.066-10.675,15.785-10.675s15.785,4.782,15.785,10.675C150.95,58.511,143.885,63.288,135.171,63.288z M162.22,201.728c5.028-1.853,9.231,1.08,10.685,6.702l63.022-63.022l12.805,4.27V63.529l-106.819,53.412v122.481 l10.798-10.798c-1.101-1.951-1.761-4.48-1.761-7.475C150.95,212.716,155.999,204.022,162.22,201.728z M230.956,86.866 c6.226-2.294,11.269,2.678,11.269,11.105c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105 C219.686,97.853,224.73,89.16,230.956,86.866z M198.843,142.003c6.226-2.294,11.269,2.678,11.269,11.105 c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105C187.574,152.991,192.622,144.297,198.843,142.003z M150.95,140.175c0-8.427,5.043-17.121,11.269-19.415c6.226-2.294,11.269,2.678,11.269,11.105c0,8.428-5.043,17.121-11.269,19.415 C155.994,153.574,150.95,148.603,150.95,140.175z M21.599,202.839l105.313,51.579l1.51-1.51V116.941L21.599,63.529V202.839z M107.855,201.728 c6.226,2.294,11.269,10.988,11.269,19.415s-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415 C96.586,204.406,101.635,199.434,107.855,201.728z M75.011,140.298c6.226,2.294,11.269,10.987,11.269,19.415 c0,8.427-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415C63.741,142.976,68.79,138.004,75.011,140.298z M41.208,86.866c6.226,2.294,11.269,10.987,11.269,19.415c0,8.427-5.043,13.399-11.269,11.105 c-6.226-2.294-11.269-10.987-11.269-19.415C29.939,89.544,34.982,84.572,41.208,86.866z M239.726,164.639l-98.514,98.504l38.543,112.533l97.736-97.746L239.726,164.639z M197.655,338.565 c-5.96,5.96-13.046,5.909-15.821-0.118c-2.775-6.026-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.909,15.821,0.113 C206.19,322.883,203.615,332.605,197.655,338.565z M230.525,221.773c-5.96,5.96-13.046,5.908-15.821-0.113 c-2.78-6.021-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.908,15.821,0.113C239.066,206.1,236.485,215.813,230.525,221.773z"/></svg>, action:showDiceOnly },
+                      { label:t("gameDice"),      color:"#f6b531", icon:<svg viewBox="0 0 423.757 423.757" width="13" height="13" fill="currentColor"><path d="M189.294,385.219l112.522,38.538l98.514-98.509l-113.3-37.765L189.294,385.219z M239.962,379.203 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821c5.96-5.96,15.672-8.54,21.699-5.76 C245.875,366.162,245.921,373.243,239.962,379.203z M276.298,391.931c-5.96,5.96-15.672,8.54-21.699,5.76 c-6.021-2.78-6.077-9.861-0.113-15.821c5.965-5.96,15.672-8.54,21.699-5.76C282.207,378.89,282.258,385.971,276.298,391.931z M349.56,334.94c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.118,15.821s-15.672,8.54-21.699,5.76 S343.601,340.9,349.56,334.94z M313.331,323.031c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76C307.423,336.072,307.372,328.991,313.331,323.031z M312.415,388.019 c6.021,2.78,6.077,9.861,0.113,15.821c-5.96,5.96-15.672,8.54-21.699,5.76s-6.077-9.861-0.118-15.821 C296.676,387.825,306.388,385.244,312.415,388.019z M298.693,304.538c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821C282.954,304.338,292.667,301.763,298.693,304.538z M402.158,311.634l-37.202-111.611l-111.611-37.207l37.202,111.606L402.158,311.634z M319.281,224.118 c4.168-4.168,12.544-2.555,18.708,3.61s7.782,14.541,3.61,18.708c-4.168,4.168-12.544,2.555-18.708-3.61 C316.726,236.662,315.108,228.285,319.281,224.118z M135.171,0L29.939,52.613l105.231,52.613l105.226-52.613L135.171,0z M135.171,63.288c-8.714,0-15.785-4.782-15.785-10.675 c0-5.898,7.066-10.675,15.785-10.675s15.785,4.782,15.785,10.675C150.95,58.511,143.885,63.288,135.171,63.288z M162.22,201.728c5.028-1.853,9.231,1.08,10.685,6.702l63.022-63.022l12.805,4.27V63.529l-106.819,53.412v122.481 l10.798-10.798c-1.101-1.951-1.761-4.48-1.761-7.475C150.95,212.716,155.999,204.022,162.22,201.728z M230.956,86.866 c6.226-2.294,11.269,2.678,11.269,11.105c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105 C219.686,97.853,224.73,89.16,230.956,86.866z M198.843,142.003c6.226-2.294,11.269,2.678,11.269,11.105 c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105C187.574,152.991,192.622,144.297,198.843,142.003z M150.95,140.175c0-8.427,5.043-17.121,11.269-19.415c6.226-2.294,11.269,2.678,11.269,11.105c0,8.428-5.043,17.121-11.269,19.415 C155.994,153.574,150.95,148.603,150.95,140.175z M21.599,202.839l105.313,51.579l1.51-1.51V116.941L21.599,63.529V202.839z M107.855,201.728 c6.226,2.294,11.269,10.988,11.269,19.415s-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415 C96.586,204.406,101.635,199.434,107.855,201.728z M75.011,140.298c6.226,2.294,11.269,10.987,11.269,19.415 c0,8.427-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415C63.741,142.976,68.79,138.004,75.011,140.298z M41.208,86.866c6.226,2.294,11.269,10.987,11.269,19.415c0,8.427-5.043,13.399-11.269,11.105 c-6.226-2.294-11.269-10.987-11.269-19.415C29.939,89.544,34.982,84.572,41.208,86.866z M239.726,164.639l-98.514,98.504l38.543,112.533l97.736-97.746L239.726,164.639z M197.655,338.565 c-5.96,5.96-13.046,5.909-15.821-0.118c-2.775-6.026-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.909,15.821,0.113 C206.19,322.883,203.615,332.605,197.655,338.565z M230.525,221.773c-5.96,5.96-13.046,5.908-15.821-0.113 c-2.78-6.021-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.908,15.821,0.113C239.066,206.1,236.485,215.813,230.525,221.773z"/></svg>, action:showDiceOnly },
                       { label:t("gamePlinko"),    color:"#22d3ee", icon:<svg viewBox="0 0 15 13" width="13" height="11" fill="currentColor"><path d="M9 1.5C9 2.32843 8.32837 3 7.5 3C6.67163 3 6 2.32843 6 1.5C6 0.67157 6.67163 0 7.5 0C8.32837 0 9 0.67157 9 1.5ZM1.5 13C2.32837 13 3 12.3284 3 11.5C3 10.6716 2.32837 10 1.5 10C0.671631 10 0 10.6716 0 11.5C0 12.3284 0.671631 13 1.5 13ZM7.5 13C8.32837 13 9 12.3284 9 11.5C9 10.6716 8.32837 10 7.5 10C6.67163 10 6 10.6716 6 11.5C6 12.3284 6.67163 13 7.5 13ZM4.5 8C5.32837 8 6 7.32843 6 6.5C6 5.67157 5.32837 5 4.5 5C3.67163 5 3 5.67157 3 6.5C3 7.32843 3.67163 8 4.5 8ZM15 11.5C15 12.3284 14.3284 13 13.5 13C12.6716 13 12 12.3284 12 11.5C12 10.6716 12.6716 10 13.5 10C14.3284 10 15 10.6716 15 11.5ZM10.5 8C11.3284 8 12 7.32843 12 6.5C12 5.67157 11.3284 5 10.5 5C9.67163 5 9 5.67157 9 6.5C9 7.32843 9.67163 8 10.5 8Z"/></svg>, action:showPlinkoOnly },
                       { label:t("gameKeno"),      color:"#a78bfa", icon:<svg viewBox="0 0 24 24" width="13" height="13" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="12" cy="7.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="7.5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="16.5" cy="12" r="1.5" fill="currentColor"/><circle cx="7.5" cy="16.5" r="1.5" fill="currentColor"/><circle cx="12" cy="16.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="16.5" r="1.5" fill="currentColor"/></svg>, action:showKenoOnly },
                       { label:t("gameMines"),     color:"#f87171", icon:<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2a9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9 9 9 0 0 0-9-9zM9.5 11.5a1.5 1.5 0 1 1 3.001.001A1.5 1.5 0 0 1 9.5 11.5zm4.5 3a1 1 0 1 1 2 .001A1 1 0 0 1 14 14.5zm-7 0a1 1 0 1 1 2 .001A1 1 0 0 1 7 14.5zm7-6a1 1 0 1 1 2 .001A1 1 0 0 1 14 8.5zM7 8.5a1 1 0 1 1 2 .001A1 1 0 0 1 7 8.5zM21 2h-1c-1.3 0-2.4 1-2.7 1.3l-1.5 1.5.7.7.7.7 1.4-1.4.6-.8H21V2z"/></svg>, action:showMinesOnly },
@@ -14109,9 +14109,9 @@ export default function App() {
                       { label:t("gameLimbo"),     color:"#a78bfa", icon:<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12C21 16.9706 16.9706 21 12 21 7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3 16.9706 3 21 7.02944 21 12ZM17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7M14.7579 9.35162L18.7169 9.67421L20.8629 6.76292L18.2876 5.9045L17.4292 3.32921L14.4247 5.47528L14.7579 9.35162ZM14.7579 9.35162L12 12" fill="none"/></svg>, action:showLimboOnly },
                     ].map((g,i)=>(
                       <button key={i} onClick={g.action}
-                        style={{ padding: isMobile ? "7px 12px" : "8px 14px", borderRadius:"6px", border:"1px solid #13102a", background:"#0d1117", color:"#94a3b8", fontWeight:500, fontSize: isMobile ? "12px" : "13px", cursor:"pointer", display:"flex", alignItems:"center", gap:"6px", transition:"all 0.15s", fontFamily:"'Inter',sans-serif" }}
+                        style={{ padding: isMobile ? "7px 12px" : "8px 14px", borderRadius:"6px", border:"1px solid #1e2a3d", background:"#0d1117", color:"#94a3b8", fontWeight:500, fontSize: isMobile ? "12px" : "13px", cursor:"pointer", display:"flex", alignItems:"center", gap:"6px", transition:"all 0.15s", fontFamily:"'Inter',sans-serif" }}
                         onMouseEnter={e=>{ const b=e.currentTarget as HTMLButtonElement; b.style.borderColor=g.color; b.style.color=g.color; b.style.background=`${g.color}10`; }}
-                        onMouseLeave={e=>{ const b=e.currentTarget as HTMLButtonElement; b.style.borderColor="#13102a"; b.style.color="#94a3b8"; b.style.background="#0d1117"; }}>
+                        onMouseLeave={e=>{ const b=e.currentTarget as HTMLButtonElement; b.style.borderColor="#1e2a3d"; b.style.color="#94a3b8"; b.style.background="#0d1117"; }}>
                         <span style={{ color:"inherit", display:"flex", alignItems:"center" }}>{g.icon}</span>
                         {g.label}
                       </button>
@@ -14119,11 +14119,11 @@ export default function App() {
                   </div>
                   {/* Coming soon toggle */}
                   <button onClick={()=>setAboutGamesExpanded(v=>!v)}
-                    style={{ marginTop:"10px", width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#0d1117", border:"1px solid #13102a", borderRadius:"6px", cursor:"pointer", padding:"8px 12px", boxSizing:"border-box" as const }}>
+                    style={{ marginTop:"10px", width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#0d1117", border:"1px solid #1e2a3d", borderRadius:"6px", cursor:"pointer", padding:"8px 12px", boxSizing:"border-box" as const }}>
                     <span style={{ color:"#64748b", fontSize:"12px" }}>
                       {({es:"Más originales por venir",en:"More originals coming soon",pt:"Mais originais em breve",de:"Mehr Originale kommen bald",fr:"D'autres originaux arrivent bientôt",id:"Lebih banyak orisinal segera hadir",it:"Altri originali in arrivo",ko:"더 많은 오리지널 출시 예정",nl:"Meer originelen komen binnenkort",pl:"Więcej oryginałów wkrótce",ru:"Больше оригиналов скоро",tr:"Daha fazla orijinal çok yakında"}[lang] ?? "More originals coming soon")}
                     </span>
-                    <div style={{ width:"22px", height:"22px", borderRadius:"5px", border:"1px solid #2a3a52", background:"#0D0F1A", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <div style={{ width:"22px", height:"22px", borderRadius:"5px", border:"1px solid #2a3a52", background:"#111827", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                       <svg key={String(aboutGamesExpanded)} viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                         style={{ transform: aboutGamesExpanded ? "rotate(180deg)" : "rotate(0deg)", transition:"transform 0.3s ease", animation:"abtArrowPop 0.35s ease" }}>
                         <polyline points="6 9 12 15 18 9"/>
@@ -14135,8 +14135,8 @@ export default function App() {
                     <div style={{ marginTop:"10px", animation:"abtFadeIn 0.2s ease" }}>
                     <div style={{ marginBottom:"10px" }}>
                       <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"4px" }}>
-                        <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#A855F718", border:"1px solid #A855F730", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <div style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#f6b53118", border:"1px solid #f6b53130", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f6b531" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         </div>
                         <span style={{ color:"#e2e8f0", fontWeight:700, fontSize:"11px", letterSpacing:"1px", textTransform:"uppercase" as const }}>
                           {({es:"Próximamente",en:"Coming Soon",pt:"Em Breve",de:"Demnächst",fr:"Bientôt",id:"Segera",it:"Prossimamente",ko:"출시 예정",nl:"Binnenkort",pl:"Wkrótce",ru:"Скоро",tr:"Yakında"}[lang] ?? "Coming Soon")}
@@ -14165,7 +14165,7 @@ export default function App() {
                       return (
                     <div style={{ display:"flex", flexWrap:"wrap" as const, gap:"6px" }}>
                       {[...names, "+"].map((name,i)=>(
-                        <div key={i} style={{ padding: isMobile ? "6px 10px" : "8px 14px", borderRadius:"6px", border: name==="+" ? "1px solid #A855F740" : "1px solid #13102a", background: name==="+" ? "#A855F710" : "#0d1117", color: name==="+" ? "#A855F7" : "#94a3b8", fontWeight: name==="+" ? 300 : 500, fontSize: isMobile ? "11px" : "13px", display:"flex", alignItems:"center", fontFamily:"'Inter',sans-serif", whiteSpace:"nowrap" as const }}>
+                        <div key={i} style={{ padding: isMobile ? "6px 10px" : "8px 14px", borderRadius:"6px", border: name==="+" ? "1px solid #f6b53140" : "1px solid #1e2a3d", background: name==="+" ? "#f6b53110" : "#0d1117", color: name==="+" ? "#f6b531" : "#94a3b8", fontWeight: name==="+" ? 300 : 500, fontSize: isMobile ? "11px" : "13px", display:"flex", alignItems:"center", fontFamily:"'Inter',sans-serif", whiteSpace:"nowrap" as const }}>
                           {name}
                         </div>
                       ))}
@@ -14306,7 +14306,7 @@ export default function App() {
                         <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color:"#14b88a", fontWeight:600, fontSize:"13px", textDecoration:"none", wordBreak:"break-all" as const, display:"block" }}>{SUPPORT_EMAIL}</a>
                         <div style={{ marginTop:"6px", color:"#3d5068", fontSize:"11px", display:"flex", alignItems:"center", gap:"4px" }}><ClockIcon />{tx("avgTime")}</div>
                       </div>
-                      <button className="contact-copy-btn" onClick={() => copyEmail(SUPPORT_EMAIL)} style={{ ...copyBtnBase, background: copiedEmail===SUPPORT_EMAIL ? "#14b88a18" : "transparent", border:"1px solid "+(copiedEmail===SUPPORT_EMAIL ? "#14b88a55" : "#13102a"), color: copiedEmail===SUPPORT_EMAIL ? "#14b88a" : "#64748b" }}>
+                      <button className="contact-copy-btn" onClick={() => copyEmail(SUPPORT_EMAIL)} style={{ ...copyBtnBase, background: copiedEmail===SUPPORT_EMAIL ? "#14b88a18" : "transparent", border:"1px solid "+(copiedEmail===SUPPORT_EMAIL ? "#14b88a55" : "#1e2a3d"), color: copiedEmail===SUPPORT_EMAIL ? "#14b88a" : "#64748b" }}>
                         {copiedEmail===SUPPORT_EMAIL ? <><CheckIcon /> {tx("copied")}</> : <><CopyIcon /> {tx("copy")}</>}
                       </button>
                     </div>
@@ -14324,7 +14324,7 @@ export default function App() {
                         <a href={`mailto:${MARKETING_EMAIL}`} style={{ color:"#818cf8", fontWeight:600, fontSize:"13px", textDecoration:"none", wordBreak:"break-all" as const, display:"block" }}>{MARKETING_EMAIL}</a>
                         <div style={{ marginTop:"6px", color:"#3d5068", fontSize:"11px", display:"flex", alignItems:"center", gap:"4px" }}><ClockIcon />{tx("avgTime")}</div>
                       </div>
-                      <button className="contact-copy-btn contact-copy-btn-purple" onClick={() => copyEmail(MARKETING_EMAIL)} style={{ ...copyBtnBase, background: copiedEmail===MARKETING_EMAIL ? "#6366f118" : "transparent", border:"1px solid "+(copiedEmail===MARKETING_EMAIL ? "#6366f155" : "#13102a"), color: copiedEmail===MARKETING_EMAIL ? "#818cf8" : "#64748b" }}>
+                      <button className="contact-copy-btn contact-copy-btn-purple" onClick={() => copyEmail(MARKETING_EMAIL)} style={{ ...copyBtnBase, background: copiedEmail===MARKETING_EMAIL ? "#6366f118" : "transparent", border:"1px solid "+(copiedEmail===MARKETING_EMAIL ? "#6366f155" : "#1e2a3d"), color: copiedEmail===MARKETING_EMAIL ? "#818cf8" : "#64748b" }}>
                         {copiedEmail===MARKETING_EMAIL ? <><CheckIcon /> {tx("copied")}</> : <><CopyIcon /> {tx("copy")}</>}
                       </button>
                     </div>
@@ -14416,8 +14416,8 @@ export default function App() {
       {selectedTxDetail && (()=>{
         const tx = selectedTxDetail;
         const isDeposit = tx.type === "deposit";
-        const accentColor = isDeposit ? "#22c55e" : "#A855F7";
-        const accentBg    = isDeposit ? "rgba(34,197,94,.12)" : "rgba(168,85,247,.12)";
+        const accentColor = isDeposit ? "#22c55e" : "#f4a91f";
+        const accentBg    = isDeposit ? "rgba(34,197,94,.12)" : "rgba(244,169,31,.12)";
         const amountSign  = isDeposit ? "+" : "-";
         const walletLabel = isDeposit ? t("walletDepositLabel") : t("walletWithdrawLabel");
         const getExplorerUrl = (network: string | undefined, hash: string): string | null => {
@@ -14462,8 +14462,8 @@ export default function App() {
                 {/* Status badge */}
                 <div style={{ display:"flex",justifyContent:"center",marginBottom:"20px" }}>
                   <span style={{ display:"inline-flex",alignItems:"center",gap:"6px",padding:"6px 16px",borderRadius:"20px",
-                    background: tx.status==="completed"||tx.status==="approved" ? "rgba(34,197,94,.12)" : tx.status==="rejected" ? "rgba(239,68,68,.12)" : "rgba(168,85,247,.12)",
-                    color:      tx.status==="completed"||tx.status==="approved" ? "#22c55e"  : tx.status==="rejected" ? "#ef4444" : "#A855F7",
+                    background: tx.status==="completed"||tx.status==="approved" ? "rgba(34,197,94,.12)" : tx.status==="rejected" ? "rgba(239,68,68,.12)" : "rgba(244,169,31,.12)",
+                    color:      tx.status==="completed"||tx.status==="approved" ? "#22c55e"  : tx.status==="rejected" ? "#ef4444" : "#f4a91f",
                     fontWeight:700,fontSize:"13px" }}>
                     {(tx.status==="completed"||tx.status==="approved") && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                     {tx.status==="rejected"  && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>}
@@ -14507,7 +14507,7 @@ export default function App() {
                   {tx.address && (
                     <div style={{ display:"flex",flexDirection:"column",gap:"6px" }}>
                       <span style={{ fontSize:"13px",color:"#4a5e7a" }}>{walletLabel}</span>
-                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0D0F1A",border:"1px solid #1e2e44",borderRadius:"6px",padding:"10px 12px" }}>
+                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1e2e44",borderRadius:"6px",padding:"10px 12px" }}>
                         <span style={{ fontSize:"12px",color:"#8aa0c0",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>{tx.address}</span>
                         <button onClick={()=>navigator.clipboard.writeText(tx.address!)}
                           title={t("copyWallet")}
@@ -14522,7 +14522,7 @@ export default function App() {
                   {tx.tx_hash ? (
                     <div style={{ display:"flex",flexDirection:"column",gap:"8px" }}>
                       <span style={{ fontSize:"13px",color:"#4a5e7a" }}>TX Hash</span>
-                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0D0F1A",border:"1px solid #1a3020",borderRadius:"6px",padding:"10px 12px" }}>
+                      <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1623",border:"1px solid #1a3020",borderRadius:"6px",padding:"10px 12px" }}>
                         <span style={{ fontSize:"11px",color:"#22c55e",fontFamily:"monospace",wordBreak:"break-all" as const,flex:1 }}>
                           {tx.tx_hash.length > 20 ? `${tx.tx_hash.slice(0,10)}...${tx.tx_hash.slice(-10)}` : tx.tx_hash}
                         </span>
@@ -14580,7 +14580,7 @@ export default function App() {
               <div style={{ display:"flex",borderBottom:"1px solid #2a3650",padding:"0 20px",gap:"24px" }}>
                 {(["deposit","withdraw"] as const).map(tab=>(
                   <button key={tab} onClick={()=>setCashierTab(tab)} className="cashier-tab"
-                    style={{ background:"transparent",border:"none",borderBottom:cashierTab===tab?"2px solid #A855F7":"2px solid transparent",color:cashierTab===tab?"#A855F7":"#7c8caa",fontWeight:600,fontSize:"14px",padding:"10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:"6px",marginBottom:"-1px",transition:"color .15s" }}>
+                    style={{ background:"transparent",border:"none",borderBottom:cashierTab===tab?"2px solid #f6b531":"2px solid transparent",color:cashierTab===tab?"#f6b531":"#7c8caa",fontWeight:600,fontSize:"14px",padding:"10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:"6px",marginBottom:"-1px",transition:"color .15s" }}>
                     {tab==="deposit" ? "↓" : "↑"} {tab==="deposit" ? t("deposit") : t("withdraw")}
                   </button>
                 ))}
@@ -14698,7 +14698,7 @@ export default function App() {
                           <p style={{ color:"#e05a5a",fontSize:"13px",marginBottom:"14px",maxWidth:"260px",lineHeight:1.5 }}>{depositError}</p>
                           <button
                             onClick={() => { setDepositError(""); autoGenKeySet.current.delete(`${currentUser}:${depositCoin}:${depositNetwork}`); generateDeposit(true); }}
-                            style={{ background:"#A855F7",border:"none",borderRadius:"6px",color:"#16202e",fontWeight:700,fontSize:"13px",padding:"9px 22px",cursor:"pointer" }}>
+                            style={{ background:"#f6b531",border:"none",borderRadius:"6px",color:"#16202e",fontWeight:700,fontSize:"13px",padding:"9px 22px",cursor:"pointer" }}>
                             Reintentar
                           </button>
                         </>
@@ -14708,21 +14708,21 @@ export default function App() {
                             <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <defs>
                                 <radialGradient id="dgGlow" cx="50%" cy="50%" r="50%">
-                                  <stop offset="0%" stopColor="#A855F7" stopOpacity="0.18"/>
-                                  <stop offset="100%" stopColor="#A855F7" stopOpacity="0"/>
+                                  <stop offset="0%" stopColor="#f6b531" stopOpacity="0.18"/>
+                                  <stop offset="100%" stopColor="#f6b531" stopOpacity="0"/>
                                 </radialGradient>
                                 <linearGradient id="dgRing" x1="0" y1="0" x2="72" y2="72" gradientUnits="userSpaceOnUse">
-                                  <stop offset="0%" stopColor="#A855F7"/>
-                                  <stop offset="60%" stopColor="#7C3AED"/>
-                                  <stop offset="100%" stopColor="#A855F7" stopOpacity="0.3"/>
+                                  <stop offset="0%" stopColor="#f6b531"/>
+                                  <stop offset="60%" stopColor="#d4870a"/>
+                                  <stop offset="100%" stopColor="#f6b531" stopOpacity="0.3"/>
                                 </linearGradient>
                                 <linearGradient id="dgWallet" x1="18" y1="26" x2="54" y2="50" gradientUnits="userSpaceOnUse">
-                                  <stop offset="0%" stopColor="#A855F7"/>
+                                  <stop offset="0%" stopColor="#f6b531"/>
                                   <stop offset="100%" stopColor="#c97a0a"/>
                                 </linearGradient>
                                 <linearGradient id="dgPlus" x1="0" y1="0" x2="1" y2="1">
-                                  <stop offset="0%" stopColor="#A855F7"/>
-                                  <stop offset="100%" stopColor="#7C3AED"/>
+                                  <stop offset="0%" stopColor="#f6b531"/>
+                                  <stop offset="100%" stopColor="#d4870a"/>
                                 </linearGradient>
                                 <filter id="dgBlur">
                                   <feGaussianBlur stdDeviation="3"/>
@@ -14746,10 +14746,10 @@ export default function App() {
                               <line x1="36" y1="17.5" x2="36" y2="24.5" stroke="url(#dgPlus)" strokeWidth="2" strokeLinecap="round"/>
                               <line x1="32.5" y1="21" x2="39.5" y2="21" stroke="url(#dgPlus)" strokeWidth="2" strokeLinecap="round"/>
                               {/* Corner sparkle dots */}
-                              <circle cx="18" cy="22" r="1.4" fill="#A855F7" opacity="0.5"/>
-                              <circle cx="54" cy="22" r="1" fill="#A855F7" opacity="0.35"/>
-                              <circle cx="56" cy="52" r="1.4" fill="#A855F7" opacity="0.4"/>
-                              <circle cx="16" cy="50" r="1" fill="#A855F7" opacity="0.3"/>
+                              <circle cx="18" cy="22" r="1.4" fill="#f6b531" opacity="0.5"/>
+                              <circle cx="54" cy="22" r="1" fill="#f6b531" opacity="0.35"/>
+                              <circle cx="56" cy="52" r="1.4" fill="#f6b531" opacity="0.4"/>
+                              <circle cx="16" cy="50" r="1" fill="#f6b531" opacity="0.3"/>
                             </svg>
                           </div>
                           <p style={{ color:"#6a7a96",fontSize:"13px",marginBottom:"12px",lineHeight:1.5 }}>{t("generateAddress")} <strong style={{ color:"#94a3b8" }}>{depositCoin}</strong></p>
@@ -14760,7 +14760,7 @@ export default function App() {
                             const isHighMin = realMin != null && realMin > 10;
                             return (
                               <div style={{ marginBottom:"12px", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px" }}>
-                                <span style={{ fontSize:"12px", color: isHighMin ? "#A855F7" : "#4ade80", background: isHighMin ? "#1a120510" : "#05200510", border:`1px solid ${isHighMin ? "#A855F744" : "#4ade8044"}`, borderRadius:"6px", padding:"4px 10px", fontWeight:600 }}>
+                                <span style={{ fontSize:"12px", color: isHighMin ? "#f59e0b" : "#4ade80", background: isHighMin ? "#1a120510" : "#05200510", border:`1px solid ${isHighMin ? "#f59e0b44" : "#4ade8044"}`, borderRadius:"6px", padding:"4px 10px", fontWeight:600 }}>
                                   {t("minDeposit")} {fmtCryptoNative(displayMin / getPriceUsd(depositCoin))} {depositCoin}
                                 </span>
                               </div>
@@ -14773,7 +14773,7 @@ export default function App() {
                   {!depositError && (
                     <button
                       onClick={() => generateDeposit(true)}
-                      style={{ width:"100%",background:"linear-gradient(135deg,#A855F7,#7C3AED)",border:"none",borderRadius:"8px",color:"#16202e",fontWeight:700,fontSize:"15px",padding:"14px 28px",cursor:"pointer",letterSpacing:"0.3px",boxShadow:"0 4px 18px rgba(246,181,49,0.25)",marginTop:"4px",marginBottom:"16px" }}>
+                      style={{ width:"100%",background:"linear-gradient(135deg,#f6b531,#d4870a)",border:"none",borderRadius:"8px",color:"#16202e",fontWeight:700,fontSize:"15px",padding:"14px 28px",cursor:"pointer",letterSpacing:"0.3px",boxShadow:"0 4px 18px rgba(246,181,49,0.25)",marginTop:"4px",marginBottom:"16px" }}>
                       {t("generateBtn")}
                     </button>
                   )}
@@ -15000,7 +15000,7 @@ export default function App() {
                   autoFocus placeholder={t("searchGames")}
                   style={{ width:"100%",background:"#0a1220",border:"1px solid #1e3050",borderRadius:"8px",padding:"11px 14px 11px 42px",color:"#e2e8f0",fontSize:"14px",fontWeight:500,boxSizing:"border-box" as const }} />
               </div>
-              <button onClick={()=>setSearchOpen(false)} style={{ width:"38px",height:"38px",borderRadius:"8px",background:"#111e33",color:"#64748b",border:"1px solid #13102a",fontSize:"20px",cursor:"pointer",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
+              <button onClick={()=>setSearchOpen(false)} style={{ width:"38px",height:"38px",borderRadius:"8px",background:"#111e33",color:"#64748b",border:"1px solid #1e2a3d",fontSize:"20px",cursor:"pointer",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1 }}>×</button>
             </div>
             <div style={{ display:"flex",gap:"6px",flexWrap:"wrap" as const,marginBottom:"16px" }}>
               {searchCategories.map(cat=>{
@@ -15012,7 +15012,7 @@ export default function App() {
                     style={{
                       background: isActive ? "#111e33" : "transparent",
                       color: isActive ? "#94a3b8" : "#64748b",
-                      border: "1px solid #13102a",
+                      border: "1px solid #1e2a3d",
                       padding:"6px 12px",
                       borderRadius:"6px",
                       fontWeight:500,
@@ -15088,7 +15088,7 @@ export default function App() {
         <div onClick={()=>setWalletConfigOpen(false)}
           style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.7)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:"20px" }}>
           <div onClick={e=>e.stopPropagation()}
-            style={{ width:"100%",maxWidth:"620px",height:"88vh",display:"flex",flexDirection:"column",background:"#0D0F1A",borderRadius:"6px",overflow:"hidden",boxShadow:"0 25px 80px rgba(0,0,0,.7)" }}>
+            style={{ width:"100%",maxWidth:"620px",height:"88vh",display:"flex",flexDirection:"column",background:"#111827",borderRadius:"6px",overflow:"hidden",boxShadow:"0 25px 80px rgba(0,0,0,.7)" }}>
 
             {/* Header */}
             <div style={{ padding:"20px 24px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid #1f2a3c",flexShrink:0 }}>
@@ -15223,7 +15223,7 @@ export default function App() {
           animation:"chatSlideUp .28s cubic-bezier(.22,.61,.36,1)",
         }}>
           {/* Header */}
-          <div style={{ background:"#0D0F1A", padding:"14px 16px", display:"flex", alignItems:"center", gap:"11px", borderBottom:"1px solid #1a2640", flexShrink:0 }}>
+          <div style={{ background:"#111827", padding:"14px 16px", display:"flex", alignItems:"center", gap:"11px", borderBottom:"1px solid #1a2640", flexShrink:0 }}>
             {chatScreen === "chat" && (
               <button onClick={()=>goLobby()}
                 style={{ background:"transparent", border:"none", color:"#8a9bb4", cursor:"pointer", padding:"4px 6px", lineHeight:1, marginLeft:"-4px", display:"flex", alignItems:"center" }}>
@@ -15307,22 +15307,22 @@ export default function App() {
                         onMouseEnter={e=>(e.currentTarget.style.background="#0f2040")}
                         onMouseLeave={e=>(e.currentTarget.style.background="#0d1a2d")}
                       >
-                        <div style={{ width:"46px", height:"46px", borderRadius:"50%", background:"#13102a", border:"2px solid #A855F7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <div style={{ width:"46px", height:"46px", borderRadius:"50%", background:"#1a2030", border:"2px solid #f4a91f", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" stroke="#A855F7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="#f4a91f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" stroke="#f4a91f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </div>
                         <div style={{ flex:1, minWidth:0 }}>
                           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"4px" }}>
-                            <span style={{ fontWeight:600, fontSize:"14px", color:"#A855F7" }}>{t("ticketOpen")}</span>
+                            <span style={{ fontWeight:600, fontSize:"14px", color:"#f4a91f" }}>{t("ticketOpen")}</span>
                             <span style={{ fontSize:"11px", color:"#4a5e7a", flexShrink:0, marginLeft:"8px" }}>{t("ticketInProgress")}</span>
                           </div>
                           <div style={{ fontSize:"12.5px", color:"#8a9bb4" }}>
                             #{ticketNum} &bull; {t("ticketTapToContinue")}
                           </div>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </button>
                     );
                   })()}
@@ -15392,7 +15392,7 @@ export default function App() {
                         onMouseEnter={e=>(e.currentTarget.style.background="#0f1928")}
                         onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
                       >
-                        <div style={{ width:"46px", height:"46px", borderRadius:"50%", background:"#13102a", border:"1px solid #252f42", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <div style={{ width:"46px", height:"46px", borderRadius:"50%", background:"#1a2030", border:"1px solid #252f42", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                             <path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="#8a9bb4" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                             <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" stroke="#8a9bb4" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -15417,7 +15417,7 @@ export default function App() {
                 {chatHasOpenTicket ? (
                   /* User already has an open ticket — show a notice instead */
                   <div style={{ textAlign:"center", fontSize:"13px", color:"#8a9bb4", lineHeight:1.6, padding:"8px 0" }}>
-                    <span style={{ display:"block", color:"#A855F7", fontWeight:500, marginBottom:"4px" }}>{t("ticketAlreadyOpen")}</span>
+                    <span style={{ display:"block", color:"#f4a91f", fontWeight:500, marginBottom:"4px" }}>{t("ticketAlreadyOpen")}</span>
                     {t("ticketOneAtTime")}
                   </div>
                 ) : (
@@ -15461,7 +15461,7 @@ export default function App() {
                   style={{
                     display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
                     padding:"14px 28px", borderRadius:"8px",
-                    background:"#1a2640", border:"1px solid #2d1f52",
+                    background:"#1a2640", border:"1px solid #2a3a54",
                     color:"#d9e5f5", fontWeight:500, fontSize:"15px",
                     cursor:"pointer", fontFamily:"inherit", width:"100%",
                     transition:"background .2s",
@@ -15470,7 +15470,7 @@ export default function App() {
                   onMouseLeave={e=>(e.currentTarget.style.background="#1a2640")}
                 >
                   {chatSessions.length > 0 ? t("chatNewConv") : t("chatSendUsMsg")}
-                  <span style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#2d1f52", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <span style={{ width:"28px", height:"28px", borderRadius:"6px", background:"#2a3a54", display:"flex", alignItems:"center", justifyContent:"center" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#d9e5f5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
                   </span>
                 </button>
@@ -15492,7 +15492,7 @@ export default function App() {
                   <p style={{ margin:0, fontSize:"14px", color:"#8a9bb4", lineHeight:1.6, textAlign:"center" }}>{t("mustLogin")}</p>
                   <button
                     onClick={()=>{ setChatOpen(false); setTimeout(()=>setAuthModal("login"),150); }}
-                    style={{ padding:"14px", borderRadius:"6px", background:"linear-gradient(135deg,#A855F7,#7C3AED)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
+                    style={{ padding:"14px", borderRadius:"6px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
                   >{t("login")}</button>
                 </div>
               ) : (
@@ -15508,7 +15508,7 @@ export default function App() {
                   {chatAuthError && <div style={{ color:"#ff5a6a", fontSize:"13px", textAlign:"center" }}>{chatAuthError}</div>}
                   <button
                     onClick={verifyChatUser}
-                    style={{ padding:"14px", borderRadius:"6px", background:"linear-gradient(135deg,#A855F7,#7C3AED)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
+                    style={{ padding:"14px", borderRadius:"6px", background:"linear-gradient(135deg,#f6b531,#ea9807)", border:"none", color:"#fff", fontWeight:500, fontSize:"15px", cursor:"pointer", fontFamily:"inherit" }}
                   >{t("startChat")}</button>
                 </>
               )}
@@ -15522,11 +15522,11 @@ export default function App() {
 
                 {/* Support Request card — always shown at top */}
                 <div style={{ display:"flex", justifyContent:"center", marginBottom:"4px" }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:"9px", background:"#141e2e", border:"1px solid #2d1f52", borderRadius:"6px", padding:"10px 20px", fontSize:"13.5px", color:"#d9e5f5", fontWeight:500, cursor:"default" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"9px", background:"#141e2e", border:"1px solid #2a3a54", borderRadius:"6px", padding:"10px 20px", fontSize:"13.5px", color:"#d9e5f5", fontWeight:500, cursor:"default" }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 2h12a2 2 0 0 1 2 2v18l-3-2-2 2-2-2-2 2-2-2-3 2V4a2 2 0 0 1 2-2z" stroke="#A855F7" strokeWidth="1.8" strokeLinejoin="round"/>
-                      <line x1="9" y1="8" x2="15" y2="8" stroke="#A855F7" strokeWidth="1.5" strokeLinecap="round"/>
-                      <line x1="9" y1="12" x2="13" y2="12" stroke="#A855F7" strokeWidth="1.5" strokeLinecap="round"/>
+                      <path d="M6 2h12a2 2 0 0 1 2 2v18l-3-2-2 2-2-2-2 2-2-2-3 2V4a2 2 0 0 1 2-2z" stroke="#f4a91f" strokeWidth="1.8" strokeLinejoin="round"/>
+                      <line x1="9" y1="8" x2="15" y2="8" stroke="#f4a91f" strokeWidth="1.5" strokeLinecap="round"/>
+                      <line x1="9" y1="12" x2="13" y2="12" stroke="#f4a91f" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
                     Support Request
                   </div>
@@ -15576,7 +15576,7 @@ export default function App() {
                     // Generic system pill
                     return (
                       <div key={i} style={{ display:"flex", justifyContent:"center", padding:"2px 0" }}>
-                        <div style={{ background:"rgba(168,85,247,.12)", border:"1px solid rgba(168,85,247,.3)", borderRadius:"8px", padding:"6px 14px", fontSize:"12px", color:"#f4c96a", display:"flex", alignItems:"center", gap:"6px", fontStyle:"italic" }}>
+                        <div style={{ background:"rgba(244,169,31,.12)", border:"1px solid rgba(244,169,31,.3)", borderRadius:"8px", padding:"6px 14px", fontSize:"12px", color:"#f4c96a", display:"flex", alignItems:"center", gap:"6px", fontStyle:"italic" }}>
                           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                           {m.content?.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{27FF}\uFE0F\u20E3]+ ?/u,"").trim()}
                         </div>
@@ -15615,9 +15615,9 @@ export default function App() {
                           );
                           return content || (m.role==="assistant" && chatLoading && i===chatMessages.length-1 ? (
                             <span style={{ display:"flex", gap:"5px", alignItems:"center", padding:"2px 0" }}>
-                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .0s" }}></span>
-                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .2s" }}></span>
-                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .4s" }}></span>
+                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .0s" }}></span>
+                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .2s" }}></span>
+                              <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .4s" }}></span>
                             </span>
                           ) : "");
                         })()}
@@ -15632,17 +15632,17 @@ export default function App() {
                 {chatLoading && chatMessages[chatMessages.length-1]?.role !== "assistant" && (
                   <div style={{ display:"flex", alignItems:"flex-end" }}>
                     <div style={{ padding:"12px 16px", borderRadius:"4px 10px 10px 10px", background:"#1a2d47", display:"flex", gap:"5px", alignItems:"center" }}>
-                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .0s" }}></span>
-                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .2s" }}></span>
-                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#A855F7",display:"inline-block",animation:"chatDot 1s infinite .4s" }}></span>
+                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .0s" }}></span>
+                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .2s" }}></span>
+                      <span style={{ width:"7px",height:"7px",borderRadius:"50%",background:"#f4a91f",display:"inline-block",animation:"chatDot 1s infinite .4s" }}></span>
                     </div>
                   </div>
                 )}
 
                 {/* "Esperando" indicator — only shown AFTER bot explicitly escalates (🔴 message) */}
                 {!chatIsClosed && !chatMessages.some(m => m.isOp) && !chatMessages.some(m => m.system && m.content?.startsWith("🔵")) && !chatLoading && chatMessages.some(m => m.system && (m.content?.startsWith("🔴") || m.content?.includes("escalated"))) && (
-                  <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"7px", padding:"6px 0 2px", fontSize:"12.5px", color:"#A855F7" }}>
-                    <span style={{ width:"8px", height:"8px", borderRadius:"50%", background:"#A855F7", display:"inline-block", animation:"chatDot .8s infinite" }}></span>
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"7px", padding:"6px 0 2px", fontSize:"12.5px", color:"#f59e0b" }}>
+                    <span style={{ width:"8px", height:"8px", borderRadius:"50%", background:"#f59e0b", display:"inline-block", animation:"chatDot .8s infinite" }}></span>
                     {t("chatWaitingAgent")}
                   </div>
                 )}
@@ -15653,7 +15653,7 @@ export default function App() {
               {/* Closed ticket banner — shown instead of input when ticket is closed */}
               {chatIsClosed && (
                 <div style={{ borderTop:"1px solid #1a2640", flexShrink:0, padding:"14px 18px", display:"flex", alignItems:"center", gap:"10px", background:"#0c1422" }}>
-                  <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#13102a", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <div style={{ width:"32px", height:"32px", borderRadius:"6px", background:"#1a2030", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" stroke="#475569" strokeWidth="1.6"/><circle cx="12" cy="12" r="2" fill="#475569"/></svg>
                   </div>
                   <div style={{ flex:1 }}>
@@ -15670,7 +15670,7 @@ export default function App() {
                 {chatEmojiOpen && (
                   <div style={{
                     position:"absolute", bottom:"100%", left:"12px", marginBottom:"8px",
-                    background:"#0D0F1A", border:"1px solid #1e2d45", borderRadius:"6px",
+                    background:"#111827", border:"1px solid #1e2d45", borderRadius:"6px",
                     padding:"12px", zIndex:10, boxShadow:"0 8px 32px rgba(0,0,0,.6)",
                     display:"grid", gridTemplateColumns:"repeat(8,1fr)", gap:"4px", width:"272px",
                     animation:"chatScreenIn .18s ease-out",
@@ -15699,7 +15699,7 @@ export default function App() {
                             width: 72, height: 72,
                             objectFit: "cover",
                             borderRadius: 6,
-                            border: "2px solid #2d1f52",
+                            border: "2px solid #2a3a54",
                             display: "block",
                             opacity: chatFileUploading ? 0.5 : 1,
                           }}
@@ -15710,7 +15710,7 @@ export default function App() {
                           style={{
                             position:"absolute", top:-7, right:-7,
                             width:20, height:20, borderRadius:"4px",
-                            background:"#0f1a2b", border:"1.5px solid #2d1f52",
+                            background:"#0f1a2b", border:"1.5px solid #2a3a54",
                             color:"#94a3b8", fontSize:11, fontWeight:700,
                             cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                             lineHeight:1, padding:0,
@@ -15725,8 +15725,8 @@ export default function App() {
                       </div>
                     ) : (
                       /* Non-image file chip */
-                      <div style={{ background:"#1a2d47", border:"1px solid #2d1f52", borderRadius:"6px", padding:"6px 12px", display:"inline-flex", alignItems:"center", gap:"8px", fontSize:"12.5px", color:"#a0b4cc" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <div style={{ background:"#1a2d47", border:"1px solid #2a3a54", borderRadius:"6px", padding:"6px 12px", display:"inline-flex", alignItems:"center", gap:"8px", fontSize:"12.5px", color:"#a0b4cc" }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         <span style={{ fontWeight:600, color:"#d9e5f5" }}>{chatPendingFile.name}</span>
                         <span style={{ color:"#5a6e88" }}>{chatPendingFile.size}</span>
                         <button onClick={()=>setChatPendingFile(null)} style={{ background:"transparent", border:"none", color:"#5a6e88", fontSize:"15px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>✕</button>
@@ -15736,7 +15736,7 @@ export default function App() {
                 )}
 
                 <div style={{ padding:"12px 14px 8px", display:"flex", gap:"10px", alignItems:"flex-end" }}>
-                  <div style={{ flex:1, background:"#141e2e", border:"1px solid #2d1f52", borderRadius:"8px", padding:"10px 16px", display:"flex", alignItems:"center" }}>
+                  <div style={{ flex:1, background:"#141e2e", border:"1px solid #2a3a54", borderRadius:"8px", padding:"10px 16px", display:"flex", alignItems:"center" }}>
                     <input
                       value={chatInput}
                       onChange={e=>setChatInput(e.target.value)}
@@ -15749,7 +15749,7 @@ export default function App() {
                   <button
                     onClick={() => { if (chatPendingFile) { sendFileMessage(); } else { sendChatMessage(); } }}
                     disabled={(chatLoading || chatFileUploading) || (!chatInput.trim() && !chatPendingFile)}
-                    style={{ width:"44px", height:"44px", borderRadius:"8px", background: (chatInput.trim() || chatPendingFile) ? "linear-gradient(135deg,#A855F7,#7C3AED)" : "#1a2d47", border:"none", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"background .2s, opacity .2s", opacity: (chatLoading || chatFileUploading) ? .5 : 1 }}
+                    style={{ width:"44px", height:"44px", borderRadius:"8px", background: (chatInput.trim() || chatPendingFile) ? "linear-gradient(135deg,#f6b531,#ea9807)" : "#1a2d47", border:"none", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"background .2s, opacity .2s", opacity: (chatLoading || chatFileUploading) ? .5 : 1 }}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="white" stroke="white" strokeWidth="1.4"/></svg>
                   </button>
@@ -15831,9 +15831,9 @@ export default function App() {
               <button
                 onClick={()=>setWithdrawBlocked(false)}
                 onMouseEnter={e=>{ e.currentTarget.style.background="#1a2438"; e.currentTarget.style.borderColor="#334155"; e.currentTarget.style.color="#94a3b8"; }}
-                onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#13102a"; e.currentTarget.style.color="#64748b"; }}
+                onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#1e2a3d"; e.currentTarget.style.color="#64748b"; }}
                 style={{
-                  flex:1, padding:"12px", borderRadius:"6px", border:"1px solid #13102a",
+                  flex:1, padding:"12px", borderRadius:"6px", border:"1px solid #1e2a3d",
                   background:"transparent", color:"#64748b", fontWeight:600, fontSize:"14px", cursor:"pointer",
                   transition:"background 0.15s, border-color 0.15s, color 0.15s",
                 }}>{t("understood")}</button>
@@ -15858,7 +15858,7 @@ export default function App() {
           background:"rgba(0,0,0,.72)", display:"flex", alignItems:"center", justifyContent:"center",
         }} onClick={()=>setWagerAlert(null)}>
           <div onClick={e=>e.stopPropagation()} style={{
-            background:"#0f1828", border:"1px solid #A855F7", borderRadius:"18px",
+            background:"#0f1828", border:"1px solid #f59e0b", borderRadius:"18px",
             padding:"28px 32px", maxWidth:"400px", width:"90%",
             boxShadow:"0 20px 60px rgba(0,0,0,.9)",
             animation:"notifSlideIn 0.3s cubic-bezier(0.22,1,0.36,1)",
@@ -15866,7 +15866,7 @@ export default function App() {
             <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px" }}>
               <div style={{ fontSize:"30px" }}>🔒</div>
               <div>
-                <div style={{ fontWeight:800, fontSize:"16px", color:"#A855F7" }}>Requisito de Wagering</div>
+                <div style={{ fontWeight:800, fontSize:"16px", color:"#f59e0b" }}>Requisito de Wagering</div>
                 <div style={{ fontSize:"12px", color:"#5a7090", marginTop:"2px" }}>1× del total depositado</div>
               </div>
             </div>
@@ -15883,17 +15883,17 @@ export default function App() {
                 <div style={{
                   height:"100%", borderRadius:"999px",
                   width:`${Math.min(100, (wagerAlert.wagered / wagerAlert.required) * 100).toFixed(1)}%`,
-                  background:"linear-gradient(90deg,#A855F7,#A855F7)",
+                  background:"linear-gradient(90deg,#f59e0b,#f6b531)",
                   transition:"width .3s",
                 }}/>
               </div>
-              <div style={{ fontSize:"12px", color:"#A855F7", marginTop:"8px", textAlign:"center", fontWeight:600 }}>
+              <div style={{ fontSize:"12px", color:"#f59e0b", marginTop:"8px", textAlign:"center", fontWeight:600 }}>
                 Te faltan {fmtMoney(wagerAlert.remaining)} por apostar
               </div>
             </div>
             <button onClick={()=>setWagerAlert(null)} style={{
               width:"100%", padding:"12px", borderRadius:"6px", border:"none",
-              background:"linear-gradient(180deg,#A855F7,#7C3AED)", color:"#fff",
+              background:"linear-gradient(180deg,#f6b531,#ea9807)", color:"#fff",
               fontWeight:700, fontSize:"14px", cursor:"pointer",
             }}>{t("keepPlaying")}</button>
           </div>
@@ -15906,9 +15906,9 @@ export default function App() {
           confirm:         { accent:"#22c55e", bg:"rgba(7,18,11,0.97)",  glow:"rgba(34,197,94,0.15)"  },
           deposit:         { accent:"#22c55e", bg:"rgba(7,18,11,0.97)",  glow:"rgba(34,197,94,0.15)"  },
           withdraw_paid:   { accent:"#22d3ee", bg:"rgba(6,18,24,0.97)",  glow:"rgba(34,211,238,0.12)" },
-          withdraw:        { accent:"#A855F7", bg:"rgba(18,12,2,0.97)",  glow:"rgba(245,158,11,0.12)" },
+          withdraw:        { accent:"#f59e0b", bg:"rgba(18,12,2,0.97)",  glow:"rgba(245,158,11,0.12)" },
           pending_deposit: { accent:"#22c55e", bg:"rgba(7,18,11,0.97)",  glow:"rgba(34,197,94,0.15)"  },
-          bonus:           { accent:"#A855F7", bg:"rgba(18,12,2,0.97)",  glow:"rgba(168,85,247,0.12)" },
+          bonus:           { accent:"#f4a91f", bg:"rgba(18,12,2,0.97)",  glow:"rgba(244,169,31,0.12)" },
           win:             { accent:"#a78bfa", bg:"rgba(11,7,24,0.97)",  glow:"rgba(167,139,250,0.12)"},
           info:            { accent:"#60a5fa", bg:"rgba(6,12,22,0.97)",  glow:"rgba(96,165,250,0.12)" },
         };
@@ -16081,7 +16081,7 @@ export default function App() {
             </div>
 
             {/* RIGHT PANEL */}
-            <div style={{ flex:1,background:"#0D0F1A",display:"flex",flexDirection:"column",padding:"0",overflowY:"auto" }}>
+            <div style={{ flex:1,background:"#111827",display:"flex",flexDirection:"column",padding:"0",overflowY:"auto" }}>
               {/* Tabs — hidden on forgot and reset screens */}
               {authModal !== "forgot" && authModal !== "reset" && (
                 <div style={{ display:"flex",borderBottom:"1px solid #1e2a40",flexShrink:0,justifyContent:"center",paddingLeft:"32px",paddingRight:"32px" }}>
@@ -16090,7 +16090,7 @@ export default function App() {
                     const active = authModal===tab;
                     return (
                       <button key={tab} onClick={()=>{ setLoginError(""); setRegError(""); setAuthModal(tab); }}
-                        style={{ padding:"14px 28px",background:"none",border:"none",borderBottom:`2px solid ${active?"#A855F7":"transparent"}`,color:active?"#A855F7":"#6a7a99",fontWeight:active?700:500,fontSize:"14px",cursor:"pointer",transition:"color .15s,border-color .15s",letterSpacing:"0.2px",whiteSpace:"nowrap" }}>
+                        style={{ padding:"14px 28px",background:"none",border:"none",borderBottom:`2px solid ${active?"#f4a91f":"transparent"}`,color:active?"#f4a91f":"#6a7a99",fontWeight:active?700:500,fontSize:"14px",cursor:"pointer",transition:"color .15s,border-color .15s",letterSpacing:"0.2px",whiteSpace:"nowrap" }}>
                         {label}
                       </button>
                     );
@@ -16109,10 +16109,10 @@ export default function App() {
                         <p style={{ color:"#6a7a99",fontSize:"13px" }}>{t("redirectingLogin")}</p>
                       </div>
                     ) : (<>
-                      <h2 style={{ color:"#A855F7",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 8px" }}>{t("setNewPass")}</h2>
+                      <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 8px" }}>{t("setNewPass")}</h2>
                       <p style={{ color:"#6a7a99",fontSize:"13px",textAlign:"center",margin:"0 0 28px",lineHeight:1.5 }}>{t("setNewPassSubtitle")}</p>
 
-                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("newPassLabel")} <span style={{ color:"#A855F7" }}>*</span></label>
+                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("newPassLabel")} <span style={{ color:"#f4a91f" }}>*</span></label>
                       <div style={{ position:"relative",marginBottom:"10px" }}>
                         <input value={resetNewPass} onChange={e=>setResetNewPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doResetPassword()}
                           type={showResetNew?"text":"password"} placeholder={t("password")}
@@ -16138,7 +16138,7 @@ export default function App() {
                           </span>
                         );
                         return (
-                          <div style={{ display:"flex",flexWrap:"wrap",gap:"6px 16px",marginBottom:"16px",padding:"10px 14px",borderRadius:"6px",background:"#111c2e",border:"1px solid #13102a" }}>
+                          <div style={{ display:"flex",flexWrap:"wrap",gap:"6px 16px",marginBottom:"16px",padding:"10px 14px",borderRadius:"6px",background:"#111c2e",border:"1px solid #1e2a3d" }}>
                             {req(has8,     "8 caracteres")}
                             {req(hasUpper, "1 mayúscula")}
                             {req(hasNum,   "1 número")}
@@ -16147,7 +16147,7 @@ export default function App() {
                         );
                       })()}
 
-                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("confirmPassPH")} <span style={{ color:"#A855F7" }}>*</span></label>
+                      <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("confirmPassPH")} <span style={{ color:"#f4a91f" }}>*</span></label>
                       <div style={{ position:"relative",marginBottom:"20px" }}>
                         <input value={resetConfirmPass} onChange={e=>setResetConfirmPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doResetPassword()}
                           type={showResetConfirm?"text":"password"} placeholder={t("confirmPassPH")}
@@ -16161,7 +16161,7 @@ export default function App() {
                       {resetError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 14px",textAlign:"center",lineHeight:1.5 }}>{resetError}</p>}
 
                       <button onClick={doResetPassword} disabled={authLoading}
-                        style={{ width:"100%",padding:"13px 0",borderRadius:"6px",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",color:"#0d1421",fontWeight:800,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px" }}
+                        style={{ width:"100%",padding:"13px 0",borderRadius:"6px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#0d1421",fontWeight:800,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px" }}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                         onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
                         {authLoading ? t("affSaving") : t("setNewPass")}
@@ -16170,7 +16170,7 @@ export default function App() {
                   </div>
                 </>) : authModal === "forgot" ? (<>
                   <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-start",paddingTop:"30px" }}>
-                    <h2 style={{ color:"#A855F7",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 28px" }}>{t("resetPassTitle")}</h2>
+                    <h2 style={{ color:"#f4a91f",fontWeight:900,fontSize:"20px",letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center",margin:"0 0 28px" }}>{t("resetPassTitle")}</h2>
                     <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"6px" }}>{t("email")} <span style={{ color:"#e53e3e" }}>*</span></label>
                     <input value={forgotEmail} onChange={e=>setForgotEmail(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"){if(!forgotEmail.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail.trim())){setForgotError(t("emailValidErr"));}else{setForgotError("");setForgotMsg(t("recoveryMsg"));}}}}
                       type="email" placeholder={t("email")}
@@ -16187,7 +16187,7 @@ export default function App() {
                       else setForgotMsg(r.message || t("recoveryMsg"));
                     }}
                       disabled={authLoading}
-                      style={{ width:"100%",padding:"11px 0",borderRadius:"6px",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",color:"#fff",fontWeight:700,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px",marginBottom:"20px" }}
+                      style={{ width:"100%",padding:"11px 0",borderRadius:"6px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"15px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px",marginBottom:"20px" }}
                       onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                       onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
                       {authLoading ? t("sending") : t("sendRecovery")}
@@ -16202,11 +16202,11 @@ export default function App() {
                 </>) : authModal === "login" ? (<>
                   {/* Fields — scrollable on mobile when keyboard is open */}
                   <div style={{ flex:1, overflowY:"auto", minHeight:0 }}>
-                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("username")} <span style={{ color:"#A855F7" }}>*</span></label>
+                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("username")} <span style={{ color:"#f4a91f" }}>*</span></label>
                     <input value={loginUser} onChange={e=>setLoginUser(e.target.value)} onKeyDown={e=>{ if(e.key==="Enter" && !authLoading && !loginSubmitting) doLogin(); }} disabled={authLoading || loginSubmitting}
                       placeholder={t("username")} autoCapitalize="none" autoCorrect="off" autoComplete="username" spellCheck={false}
                       style={{ width:"100%",padding:"10px 18px",borderRadius:"6px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"16px" }}/>
-                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("password")} <span style={{ color:"#A855F7" }}>*</span></label>
+                    <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("password")} <span style={{ color:"#f4a91f" }}>*</span></label>
                     <div style={{ position:"relative",marginBottom:"8px" }}>
                       <input value={loginPass} onChange={e=>setLoginPass(e.target.value)} onKeyDown={e=>{ if(e.key==="Enter" && !authLoading && !loginSubmitting) doLogin(); }} disabled={authLoading || loginSubmitting}
                         type={showLoginPass?"text":"password"} placeholder={t("password")} autoCapitalize="none" autoCorrect="off" autoComplete="current-password"
@@ -16217,25 +16217,25 @@ export default function App() {
                       </button>
                     </div>
                     <div style={{ textAlign:"right",marginBottom:"16px" }}>
-                      <span onClick={()=>{ setForgotEmail(""); setForgotMsg(""); setForgotError(""); setAuthModal("forgot"); }} style={{ color:"#A855F7",fontSize:"12px",cursor:"pointer",fontWeight:500 }}>{t("forgotPass")}</span>
+                      <span onClick={()=>{ setForgotEmail(""); setForgotMsg(""); setForgotError(""); setAuthModal("forgot"); }} style={{ color:"#f4a91f",fontSize:"12px",cursor:"pointer",fontWeight:500 }}>{t("forgotPass")}</span>
                     </div>
                     {loginError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 8px",textAlign:"center" }}>{loginError}</p>}
                   </div>
                   {/* Button — always pinned at bottom, never hidden by keyboard */}
                   <div style={{ flexShrink:0, paddingTop:"12px", paddingBottom: isMobile ? "env(safe-area-inset-bottom, 8px)" : "0" }}>
                     <button type="button" onClick={()=>doLogin()} disabled={authLoading || loginSubmitting}
-                      style={{ width:"100%",padding:"13px 0",borderRadius:"6px",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:(authLoading || loginSubmitting)?"not-allowed":"pointer",opacity:(authLoading || loginSubmitting)?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px",touchAction:"manipulation",WebkitTapHighlightColor:"transparent" }}
+                      style={{ width:"100%",padding:"13px 0",borderRadius:"6px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:(authLoading || loginSubmitting)?"not-allowed":"pointer",opacity:(authLoading || loginSubmitting)?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px",touchAction:"manipulation",WebkitTapHighlightColor:"transparent" }}
                       onMouseEnter={e=>{ if(!(authLoading || loginSubmitting)) e.currentTarget.style.opacity="0.85"; }}
                       onMouseLeave={e=>e.currentTarget.style.opacity=(authLoading || loginSubmitting)?"0.7":"1"}>
                       {(authLoading || loginSubmitting) ? "..." : t("enter")}
                     </button>
                   </div>
                 </>) : (<>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("displayName")} <span style={{ color:"#A855F7" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("displayName")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <input value={regUser} onChange={e=>setRegUser(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doRegister()} maxLength={20}
                     placeholder={t("displayName")}
                     style={{ width:"100%",padding:"10px 18px",borderRadius:"6px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"12px" }}/>
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("email")} <span style={{ color:"#A855F7" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"5px" }}>{t("email")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   {(() => {
                     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail.trim());
                     const emailInvalid = regEmail.length > 0 && !emailValid;
@@ -16255,7 +16255,7 @@ export default function App() {
                       )}
                     </>);
                   })()}
-                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("password")} <span style={{ color:"#A855F7" }}>*</span></label>
+                  <label style={{ display:"block",color:"#b8c8e0",fontSize:"13px",fontWeight:600,marginBottom:"7px" }}>{t("password")} <span style={{ color:"#f4a91f" }}>*</span></label>
                   <div style={{ position:"relative",marginBottom:(regPassFocused||regPass)?"10px":"16px" }}>
                     <input value={regPass} onChange={e=>setRegPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doRegister()}
                       onFocus={()=>setRegPassFocused(true)} onBlur={()=>setRegPassFocused(false)}
@@ -16280,7 +16280,7 @@ export default function App() {
                       </span>
                     );
                     return (
-                      <div style={{ display:"flex",flexWrap:"wrap",gap:"6px 16px",marginBottom:"16px",padding:"10px 14px",borderRadius:"6px",background:"#111c2e",border:"1px solid #13102a",animation:"pwdReqIn 0.22s ease",transformOrigin:"top center" }}>
+                      <div style={{ display:"flex",flexWrap:"wrap",gap:"6px 16px",marginBottom:"16px",padding:"10px 14px",borderRadius:"6px",background:"#111c2e",border:"1px solid #1e2a3d",animation:"pwdReqIn 0.22s ease",transformOrigin:"top center" }}>
                         {req(has8, t("pwdMin8"))}
                         {req(hasUpper, t("pwdUpper"))}
                         {req(hasNum, t("pwdNum"))}
@@ -16294,18 +16294,18 @@ export default function App() {
                     style={{ width:"100%",padding:"10px 18px",borderRadius:"6px",border:"1px solid #253048",background:"#192236",color:"#e6edf3",fontSize:"14px",outline:"none",boxSizing:"border-box",marginBottom:"14px" }}/>
                   <label style={{ display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer",marginBottom:"20px",userSelect:"none" }}>
                     <input type="checkbox" checked={regTerms} onChange={e=>setRegTerms(e.target.checked)}
-                      style={{ marginTop:"2px",accentColor:"#A855F7",width:"16px",height:"16px",flexShrink:0,cursor:"pointer" }}/>
+                      style={{ marginTop:"2px",accentColor:"#f6b531",width:"16px",height:"16px",flexShrink:0,cursor:"pointer" }}/>
                     <span style={{ fontSize:"13px",color:"#8a9ab8",lineHeight:1.55 }}>
                       {t("termsAcceptPre")}{" "}
                       <a href="/terms" style={{ color:"#8a9ab8",cursor:"pointer",textDecoration:"underline" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("terms");window.scrollTo({top:0,behavior:"instant"});}}>{t("termsAndCond")}</a>
                       {" "}{t("termsAcceptAnd")}{" "}
-                      <a href="/privacy" style={{ color:"#A855F7",cursor:"pointer",textDecoration:"underline" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("privacy");window.scrollTo({top:0,behavior:"instant"});}}>{t("privacyTitle")}</a>
+                      <a href="/privacy" style={{ color:"#f4a91f",cursor:"pointer",textDecoration:"underline" }} onClick={e=>{e.preventDefault();setAuthModal("");setSection("privacy");window.scrollTo({top:0,behavior:"instant"});}}>{t("privacyTitle")}</a>
                     </span>
                   </label>
                   {regError && <p style={{ color:"#ff5b5b",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{regError}</p>}
                   {regSuccess && <p style={{ color:"#29c46d",fontSize:"13px",margin:"0 0 14px",textAlign:"center" }}>{t("regSuccess")}</p>}
                   <button onClick={()=>doRegister()} disabled={authLoading}
-                    style={{ width:"100%",padding:"11px 0",borderRadius:"6px",background:"linear-gradient(180deg,#A855F7,#7C3AED)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px" }}
+                    style={{ width:"100%",padding:"11px 0",borderRadius:"6px",background:"linear-gradient(180deg,#f6b531,#ea9807)",border:"none",color:"#fff",fontWeight:700,fontSize:"16px",cursor:authLoading?"not-allowed":"pointer",opacity:authLoading?0.7:1,transition:"opacity .12s",letterSpacing:"0.3px" }}
                     onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                     onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
                     {authLoading ? "..." : t("createAccountBtn")}
@@ -16327,7 +16327,7 @@ export default function App() {
         const navBtn = (active: boolean): React.CSSProperties => ({
           flex: 1, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center",
           gap: "3px", background: "transparent", border: "none", cursor: "pointer",
-          padding: "4px 0", color: active ? "#A855F7" : "#4a5e7a", transition: "color .15s",
+          padding: "4px 0", color: active ? "#f4a91f" : "#4a5e7a", transition: "color .15s",
         });
         return (
           <nav style={{
@@ -16340,14 +16340,14 @@ export default function App() {
           }}>
             {/* Home */}
             <button onClick={() => { showHomeView(); closeMobileSidebar(); }} style={navBtn(isHome)}>
-              <svg width="21" height="21" viewBox="0 0 24 24" fill={isHome ? "#A855F7" : "#4a5e7a"} fillRule="evenodd" clipRule="evenodd">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill={isHome ? "#f4a91f" : "#4a5e7a"} fillRule="evenodd" clipRule="evenodd">
                 <path d="M12 3L2 12h3v8h5v-5h4v5h5v-8h3L12 3z"/>
               </svg>
               <span style={{ fontSize: "10px", fontWeight: 600 }}>{t("home") ?? "Home"}</span>
             </button>
             {/* Games */}
             <button onClick={() => { openSection("home"); setHomeView("originals"); closeMobileSidebar(); }} style={navBtn(isGames)}>
-              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={isGames ? "#A855F7" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={isGames ? "#f4a91f" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/>
                 <line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/>
                 <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>
@@ -16355,17 +16355,17 @@ export default function App() {
               <span style={{ fontSize: "10px", fontWeight: 600 }}>{t("games") ?? "Games"}</span>
             </button>
             {/* Deposit (central CTA) */}
-            <button onClick={() => openCashier("deposit")} style={{ ...navBtn(false), color: "#A855F7" }}>
-              <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(180deg,#A855F7,#7C3AED)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(168,85,247,.45)", marginBottom: "0" }}>
+            <button onClick={() => openCashier("deposit")} style={{ ...navBtn(false), color: "#f4a91f" }}>
+              <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(180deg,#f6b531,#ea9807)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(244,169,31,.45)", marginBottom: "0" }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
               </div>
-              <span style={{ fontSize: "9px", fontWeight: 700, color: "#A855F7", marginTop: "1px" }}>{t("deposit") ?? "Deposit"}</span>
+              <span style={{ fontSize: "9px", fontWeight: 700, color: "#f4a91f", marginTop: "1px" }}>{t("deposit") ?? "Deposit"}</span>
             </button>
             {/* Rewards */}
             <button onClick={() => { openSection("tips-bonuses"); closeMobileSidebar(); }} style={navBtn(isRewards)}>
-              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={isRewards ? "#A855F7" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={isRewards ? "#f4a91f" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/>
                 <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
               </svg>
@@ -16373,7 +16373,7 @@ export default function App() {
             </button>
             {/* Profile */}
             <button onClick={() => { currentUser ? openSection("profile") : setAuthModal("login"); closeMobileSidebar(); }} style={navBtn(isProfile)}>
-              <svg width="21" height="21" viewBox="0 0 24 24" fill={isProfile ? "#A855F7" : "none"} stroke={isProfile ? "#A855F7" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill={isProfile ? "#f4a91f" : "none"} stroke={isProfile ? "#f4a91f" : "#4a5e7a"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
               </svg>
               <span style={{ fontSize: "10px", fontWeight: 600 }}>{t("profile") ?? "Profile"}</span>
@@ -16398,8 +16398,8 @@ export default function App() {
             top:`${rbTipPos.y - 10}px`,
             transform:"translateY(-100%)",
             width:"220px",
-            background:"#0D0F1A",
-            border:"1px solid #13102a",
+            background:"#0e1623",
+            border:"1px solid #1e2a3d",
             borderRadius:"8px",
             padding:"12px 14px",
             color:"#c4bfb5",
@@ -16423,7 +16423,7 @@ export default function App() {
 // ─── Shared button styles ──────────────────────────────────────────────────
 const primaryBtnStyle: React.CSSProperties = {
   width:"100%",padding:"12px 14px",marginTop:"10px",
-  background:"linear-gradient(180deg,#A855F7,#7C3AED)",color:"#fff",
+  background:"linear-gradient(180deg,#f6b531,#ea9807)",color:"#fff",
   borderRadius:"6px",fontWeight:500,border:"none",cursor:"pointer",fontSize:"16px",
 };
 const secondaryBtnStyle: React.CSSProperties = {
@@ -16792,7 +16792,7 @@ function ApuestasSection({ records: _records, gameLabel: _gameLabel, gameIcon: _
         ))}
         {isBigOrLucky && (
           <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:"5px", flexShrink:0, paddingLeft:"6px" }}>
-            <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", border:"1px solid #1e2e44", borderRadius:"999px", padding:"3px 10px" }}>
+            <div style={{ display:"flex", alignItems:"center", background:"#111827", border:"1px solid #1e2e44", borderRadius:"999px", padding:"3px 10px" }}>
               <span style={{ fontSize:"11px", color:"#7aaad0", fontWeight:600, letterSpacing:"0.2px" }}>{lt("last7Days")}</span>
             </div>
             {!isMobileTable && (
@@ -16860,8 +16860,8 @@ function GameInfoPanel({ game, lang, onFairness }: { game: string; lang: string;
             <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:"8px", marginBottom:"8px" }}>
               <span style={{ fontWeight:800, fontSize:"17px", color:"#e8f2ff", letterSpacing:"0.3px" }}>{m.title.toUpperCase()}</span>
               {!m.sub && (
-                <span style={{ background:"rgba(168,85,247,.12)", border:"1px solid rgba(168,85,247,.35)", borderRadius:"999px", padding:"3px 10px 3px 8px", fontSize:"11px", color:"#A855F7", fontWeight:600, letterSpacing:"0.5px", display:"inline-flex", alignItems:"center", gap:"5px" }}>
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>
+                <span style={{ background:"rgba(244,169,31,.12)", border:"1px solid rgba(244,169,31,.35)", borderRadius:"999px", padding:"3px 10px 3px 8px", fontSize:"11px", color:"#f4a91f", fontWeight:600, letterSpacing:"0.5px", display:"inline-flex", alignItems:"center", gap:"5px" }}>
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>
                   Provably Fair
                 </span>
               )}
@@ -16948,7 +16948,7 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
     return () => document.removeEventListener("mousedown", handler);
   }, [footerLangOpen, footerCoinOpen]);
   return (
-    <footer style={{ background:"#0A0A12", margin: isMobile ? "60px -12px 0" : "60px -20px -20px", width: isMobile ? "calc(100% + 24px)" : "calc(100% + 40px)", padding: isMobile ? "40px 16px 0" : "40px 24px 0", paddingBottom: isMobile ? "calc(80px + env(safe-area-inset-bottom, 0px))" : undefined, fontFamily:"'Inter',sans-serif", boxSizing:"border-box" as const }}>
+    <footer style={{ background:"#060c14", margin: isMobile ? "60px -12px 0" : "60px -20px -20px", width: isMobile ? "calc(100% + 24px)" : "calc(100% + 40px)", padding: isMobile ? "40px 16px 0" : "40px 24px 0", paddingBottom: isMobile ? "calc(80px + env(safe-area-inset-bottom, 0px))" : undefined, fontFamily:"'Inter',sans-serif", boxSizing:"border-box" as const }}>
       <div style={{ maxWidth:"1080px", margin:"0 auto", padding: isMobile ? "0" : "0 20px", boxSizing:"border-box" }}>
 
         {/* Payment methods — manually built with real coin icons */}
@@ -17236,7 +17236,7 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
               <div style={{ width:"32px", height:"32px", borderRadius:"50%", background:"#1a1a0a", border:"2px solid #e07b20", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                   <path d="M12 2L3 6V12C3 16.418 7.03 20.657 12 22C16.97 20.657 21 16.418 21 12V6L12 2Z" fill="#e07b20" fillOpacity="0.18" stroke="#e07b20" strokeWidth="1.8" strokeLinejoin="round"/>
-                  <path d="M9 12L11 14L15 10" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M9 12L11 14L15 10" stroke="#f4a91f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
               <span style={{ fontSize:"13px", fontWeight:600, color:"#9ab0cc", whiteSpace:"nowrap" }}>{tl(lang, "badgeLicensed")}</span>
@@ -17245,14 +17245,14 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
         ) : (
           <div style={{ paddingBottom:"28px", display:"flex", gap:"10px", flexWrap:"wrap" }}>
             {/* 18+ */}
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"7px 14px" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
               <div style={{ width:"22px", height:"22px", borderRadius:"50%", border:"2px solid #e53e3e", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                 <span style={{ fontSize:"8px", fontWeight:900, color:"#e53e3e", letterSpacing:"-0.5px", lineHeight:1 }}>18+</span>
               </div>
               <span style={{ fontSize:"12px", fontWeight:600, color:"#607090" }}>{tl(lang, "badge18")}</span>
             </div>
             {/* Provably Fair */}
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"7px 14px" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="#2f9f5a" strokeWidth="1.8"/>
                 <path d="M8 12.5L10.5 15L16 9.5" stroke="#2f9f5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -17260,7 +17260,7 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
               <span style={{ fontSize:"12px", fontWeight:600, color:"#607090" }}>{tl(lang, "badgeFair")}</span>
             </div>
             {/* Licensed */}
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"7px 14px" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2L3 6V12C3 16.418 7.03 20.657 12 22C16.97 20.657 21 16.418 21 12V6L12 2Z" stroke="#e07b20" strokeWidth="1.8" strokeLinejoin="round"/>
                 <path d="M9 12L11 14L15 10" stroke="#e07b20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -17288,7 +17288,7 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
   const ALL = [
     { key:"dice"      as const, label:t("gameDice"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#0f2a6e,#1a5cd6)", img:assetUrl("/dice-card.webp"),       accentBg:"#1a5cd6" },
     { key:"plinko"    as const, label:t("gamePlinko"),    sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#6e0a14,#d6293e)", img:assetUrl("/plinko-thumb.webp"),    accentBg:"#d6293e" },
-    { key:"keno"      as const, label:t("gameKeno"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#7a4200,#A855F7)", img:assetUrl("/keno-thumb.webp"),      accentBg:"#A855F7" },
+    { key:"keno"      as const, label:t("gameKeno"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#7a4200,#f4a91f)", img:assetUrl("/keno-thumb.webp"),      accentBg:"#f4a91f" },
     { key:"blackjack" as const, label:t("gameBlackjack"), sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#5c2800,#d67a10)", img:assetUrl("/blackjack-thumb.webp"), accentBg:"#d67a10" },
     { key:"mines"     as const, label:t("gameMines"),     sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#0a1e3a,#1a4d8a)", img:assetUrl("/mines-card.webp"),      accentBg:"#1a4d8a" },
     { key:"hilo"      as const, label:t("gameHilo"),      sub:gt(lang,"manderOriginals"), bg:"linear-gradient(135deg,#004a2a,#00a85a)", img:assetUrl("/hilo-card.webp"),       accentBg:"#00d47a" },
@@ -17308,14 +17308,14 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
       {/* ── Section header ── */}
       <div style={{ display:"flex", alignItems:"center", gap:"14px", marginBottom:"16px" }}>
         <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
-          <div style={{ width:"3px", height:"20px", borderRadius:"2px", background:"linear-gradient(180deg,#A855F7,#7C3AED)", flexShrink:0 }}/>
+          <div style={{ width:"3px", height:"20px", borderRadius:"2px", background:"linear-gradient(180deg,#f4a91f,#e08000)", flexShrink:0 }}/>
           <span style={{ fontWeight:800, fontSize:"15px", color:"#fff", letterSpacing:"0.03em", textTransform:"uppercase" }}>{t("moreFromMander")}</span>
         </div>
         <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:"8px" }}>
           <button
             onClick={() => onVerTodo?.()}
             style={{ background:"none", border:"none", cursor:"pointer", color:"#6a8fb0", fontSize:"14px", fontWeight:600, letterSpacing:"0.3px", padding:"4px 0", transition:"color .15s" }}
-            onMouseEnter={e=>(e.currentTarget.style.color="#A855F7")}
+            onMouseEnter={e=>(e.currentTarget.style.color="#f4a91f")}
             onMouseLeave={e=>(e.currentTarget.style.color="#6a8fb0")}>
             {tl(lang, "viewAll")}
           </button>
@@ -17323,7 +17323,7 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
           {(["left","right"] as const).map(dir=>(
             <button key={dir} onClick={() => scroll(dir)} className="lockly-nav-btn"
               style={{ background:"#0f1824", border:"1px solid #1e2e44", borderRadius:"6px", color:"#5a7090", padding:"7px 12px", lineHeight:1, cursor:"pointer", transition:"all .18s", display:"flex", alignItems:"center", justifyContent:"center" }}
-              onMouseEnter={e=>{ e.currentTarget.style.background="#1c2d48"; e.currentTarget.style.borderColor="#A855F744"; e.currentTarget.style.color="#A855F7"; }}
+              onMouseEnter={e=>{ e.currentTarget.style.background="#1c2d48"; e.currentTarget.style.borderColor="#f4a91f44"; e.currentTarget.style.color="#f4a91f"; }}
               onMouseLeave={e=>{ e.currentTarget.style.background="#0f1824"; e.currentTarget.style.borderColor="#1e2e44"; e.currentTarget.style.color="#5a7090"; }}>
               {dir === "left"
                 ? <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17352,18 +17352,18 @@ function MoreFromLockly({ currentGame, onGames, onVerTodo, lang = "en" }: MoreFr
               <div
                 className={isCurrent ? undefined : "lockly-thumb"}
                 style={{ width:"162px", height:"148px", borderRadius:"13px", background:g.bg, position:"relative", overflow:"hidden",
-                  boxShadow: isCurrent ? `0 0 0 2.5px #A855F7, 0 6px 20px rgba(0,0,0,.5)` : `0 4px 18px rgba(0,0,0,.5)` }}
+                  boxShadow: isCurrent ? `0 0 0 2.5px #f4a91f, 0 6px 20px rgba(0,0,0,.5)` : `0 4px 18px rgba(0,0,0,.5)` }}
               >
                 <div className="card-img-placeholder" />
                 <img loading="lazy" decoding="async" src={g.img} alt={g.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 70%", zIndex:1 }} />
                 {isCurrent && (
-                  <div style={{ position:"absolute", top:"10px", left:"10px", zIndex:3, background:"rgba(168,85,247,0.9)", borderRadius:"6px", padding:"2px 8px", fontSize:"9px", fontWeight:700, color:"#0e1320", letterSpacing:"0.8px", textTransform:"uppercase" }}>
+                  <div style={{ position:"absolute", top:"10px", left:"10px", zIndex:3, background:"rgba(244,169,31,0.9)", borderRadius:"6px", padding:"2px 8px", fontSize:"9px", fontWeight:700, color:"#0e1320", letterSpacing:"0.8px", textTransform:"uppercase" }}>
                     {t("playing")}
                   </div>
                 )}
               </div>
               <div style={{ marginTop:"9px", paddingLeft:"2px" }}>
-                <div className="lockly-card-label-name" style={{ fontSize:"13px", fontWeight:700, color: isCurrent ? "#A855F7" : "#c8d8f0", letterSpacing:"0.2px" }}>{g.label}</div>
+                <div className="lockly-card-label-name" style={{ fontSize:"13px", fontWeight:700, color: isCurrent ? "#f4a91f" : "#c8d8f0", letterSpacing:"0.2px" }}>{g.label}</div>
                 <div style={{ display:"flex", alignItems:"center", gap:"5px", marginTop:"3px" }}>
                   <span style={{ fontSize:"10px", color:"#3a5070", fontWeight:500 }}>{g.sub}</span>
                 </div>
@@ -17536,7 +17536,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
 
         {/* ── Bordered header bar ── */}
         <div style={{ gridColumn:"1/-1", display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
-          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
           <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 423.757 423.757" width="18" height="18" fill="currentColor"><path d="M189.294,385.219l112.522,38.538l98.514-98.509l-113.3-37.765L189.294,385.219z M239.962,379.203 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821c5.96-5.96,15.672-8.54,21.699-5.76 C245.875,366.162,245.921,373.243,239.962,379.203z M276.298,391.931c-5.96,5.96-15.672,8.54-21.699,5.76 c-6.021-2.78-6.077-9.861-0.113-15.821c5.965-5.96,15.672-8.54,21.699-5.76C282.207,378.89,282.258,385.971,276.298,391.931z M349.56,334.94c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.118,15.821s-15.672,8.54-21.699,5.76 S343.601,340.9,349.56,334.94z M313.331,323.031c5.96-5.96,15.672-8.54,21.699-5.76c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76C307.423,336.072,307.372,328.991,313.331,323.031z M312.415,388.019 c6.021,2.78,6.077,9.861,0.113,15.821c-5.96,5.96-15.672,8.54-21.699,5.76s-6.077-9.861-0.118-15.821 C296.676,387.825,306.388,385.244,312.415,388.019z M298.693,304.538c6.021,2.78,6.077,9.861,0.113,15.821 c-5.96,5.96-15.672,8.54-21.699,5.76c-6.021-2.78-6.077-9.861-0.113-15.821C282.954,304.338,292.667,301.763,298.693,304.538z M402.158,311.634l-37.202-111.611l-111.611-37.207l37.202,111.606L402.158,311.634z M319.281,224.118 c4.168-4.168,12.544-2.555,18.708,3.61s7.782,14.541,3.61,18.708c-4.168,4.168-12.544,2.555-18.708-3.61 C316.726,236.662,315.108,228.285,319.281,224.118z M135.171,0L29.939,52.613l105.231,52.613l105.226-52.613L135.171,0z M135.171,63.288c-8.714,0-15.785-4.782-15.785-10.675 c0-5.898,7.066-10.675,15.785-10.675s15.785,4.782,15.785,10.675C150.95,58.511,143.885,63.288,135.171,63.288z M162.22,201.728c5.028-1.853,9.231,1.08,10.685,6.702l63.022-63.022l12.805,4.27V63.529l-106.819,53.412v122.481 l10.798-10.798c-1.101-1.951-1.761-4.48-1.761-7.475C150.95,212.716,155.999,204.022,162.22,201.728z M230.956,86.866 c6.226-2.294,11.269,2.678,11.269,11.105c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105 C219.686,97.853,224.73,89.16,230.956,86.866z M198.843,142.003c6.226-2.294,11.269,2.678,11.269,11.105 c0,8.427-5.043,17.121-11.269,19.415c-6.226,2.294-11.269-2.678-11.269-11.105C187.574,152.991,192.622,144.297,198.843,142.003z M150.95,140.175c0-8.427,5.043-17.121,11.269-19.415c6.226-2.294,11.269,2.678,11.269,11.105c0,8.428-5.043,17.121-11.269,19.415 C155.994,153.574,150.95,148.603,150.95,140.175z M21.599,202.839l105.313,51.579l1.51-1.51V116.941L21.599,63.529V202.839z M107.855,201.728 c6.226,2.294,11.269,10.988,11.269,19.415s-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415 C96.586,204.406,101.635,199.434,107.855,201.728z M75.011,140.298c6.226,2.294,11.269,10.987,11.269,19.415 c0,8.427-5.043,13.399-11.269,11.105c-6.226-2.294-11.269-10.988-11.269-19.415C63.741,142.976,68.79,138.004,75.011,140.298z M41.208,86.866c6.226,2.294,11.269,10.987,11.269,19.415c0,8.427-5.043,13.399-11.269,11.105 c-6.226-2.294-11.269-10.987-11.269-19.415C29.939,89.544,34.982,84.572,41.208,86.866z M239.726,164.639l-98.514,98.504l38.543,112.533l97.736-97.746L239.726,164.639z M197.655,338.565 c-5.96,5.96-13.046,5.909-15.821-0.118c-2.775-6.026-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.909,15.821,0.113 C206.19,322.883,203.615,332.605,197.655,338.565z M230.525,221.773c-5.96,5.96-13.046,5.908-15.821-0.113 c-2.78-6.021-0.2-15.739,5.76-21.699c5.96-5.96,13.046-5.908,15.821,0.113C239.066,206.1,236.485,215.813,230.525,221.773z"/></svg>{t("gameDice").toUpperCase()}</div>
           <div style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{gt(lang,"manderOriginals")}</div>
         </div>
@@ -17558,7 +17558,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("betAmount")}</div>
 
             {/* Input row */}
-            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${diceBetUsd < 0.0099 || (!!currentUser && (balanceDemo > 0 ? balanceDemo : balance) < diceBetUsd - 0.0001) ? "#c0392b" : "#1e1535"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
+            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${diceBetUsd < 0.0099 || (!!currentUser && (balanceDemo > 0 ? balanceDemo : balance) < diceBetUsd - 0.0001) ? "#c0392b" : "#252f45"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
               <span style={{ fontSize:"13px",color:"#5a6a88",fontWeight:500,whiteSpace:"nowrap",...dMStyle }}>{currLabel}</span>
               <input
                 value={(()=>{
@@ -17582,7 +17582,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
                 style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }} />
               <button onClick={()=>setDiceBet("0.00")}
-                style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight:"-8px" }}>
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight:"-8px" }}>
                 {t("clear")}
               </button>
             </div>
@@ -17600,7 +17600,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 { label:t("btnMax"), action:()=>setDiceBet((Math.floor(convertUsd(balanceDemo>0?balanceDemo:balance)*100)/100).toFixed(2)) },
               ].map(b=>(
                 <button key={b.label} onClick={b.action} disabled={diceRolling || diceAutoRunning}
-                  style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #1e1535",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(diceRolling||diceAutoRunning)?"not-allowed":"pointer",opacity:(diceRolling||diceAutoRunning)?0.45:1 }}>
+                  style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(diceRolling||diceAutoRunning)?"not-allowed":"pointer",opacity:(diceRolling||diceAutoRunning)?0.45:1 }}>
                   {b.label}
                 </button>
               ))}
@@ -17620,7 +17620,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
 
             <div className="dice-ctrl-towin-wrap">
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"12px",paddingLeft:"4px" }}>Ganancias</div>
-            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"8px 14px",marginBottom:"14px" }}>
+            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 14px",marginBottom:"14px" }}>
               <span style={{ fontSize:"16px",color:"#5a6a88",fontWeight:500,whiteSpace:"nowrap",...dMStyle }}>{currLabel}</span>
               <input readOnly
                 value={diceBetNum > 0 ? (()=>{ const p = diceBetNum * Math.max(1.01, parseFloat(diceMultiplier)||2); return displayInFiat ? p.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) : p.toFixed(2); })() : "—"}
@@ -17635,7 +17635,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("betAmount")}</div>
 
             {/* Input row */}
-            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${diceBetUsd < 0.0099 || (!!currentUser && (balanceDemo > 0 ? balanceDemo : balance) < diceBetUsd - 0.0001) ? "#c0392b" : "#1e1535"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
+            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${diceBetUsd < 0.0099 || (!!currentUser && (balanceDemo > 0 ? balanceDemo : balance) < diceBetUsd - 0.0001) ? "#c0392b" : "#252f45"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
               <span style={{ fontSize:"13px",color:"#5a6a88",fontWeight:500,whiteSpace:"nowrap",...dMStyle }}>{currLabel}</span>
               <input
                 value={(()=>{
@@ -17659,7 +17659,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
                 style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }} />
               <button onClick={()=>setDiceBet("0.00")}
-                style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight:"-8px" }}>
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",letterSpacing:"0.04em",whiteSpace:"nowrap",textTransform:"uppercase",marginRight:"-8px" }}>
                 {t("clear")}
               </button>
             </div>
@@ -17677,7 +17677,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 { label:t("btnMax"), action:()=>setDiceBet((Math.floor(convertUsd(balanceDemo>0?balanceDemo:balance)*100)/100).toFixed(2)) },
               ].map(b=>(
                 <button key={b.label} onClick={b.action} disabled={diceAutoRunning || diceRolling}
-                  style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #1e1535",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(diceAutoRunning||diceRolling)?"not-allowed":"pointer",opacity:(diceAutoRunning||diceRolling)?0.45:1 }}>
+                  style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(diceAutoRunning||diceRolling)?"not-allowed":"pointer",opacity:(diceAutoRunning||diceRolling)?0.45:1 }}>
                   {b.label}
                 </button>
               ))}
@@ -17740,7 +17740,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 ))}
               </div>
               {autoOnWin==="increase" && (
-                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"6px 10px" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"6px 10px" }}>
                   <input value={autoOnWinPct} onChange={e=>setAutoOnWinPct(e.target.value.replace(/[^\d.]/g,""))}
                     type="text" inputMode="decimal" placeholder="0"
                     style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"16px",fontWeight:500,minWidth:0 }}/>
@@ -17762,7 +17762,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                 ))}
               </div>
               {autoOnLose==="increase" && (
-                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"6px 10px" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"6px 10px" }}>
                   <input value={autoOnLosePct} onChange={e=>setAutoOnLosePct(e.target.value.replace(/[^\d.]/g,""))}
                     type="text" inputMode="decimal" placeholder="0"
                     style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"16px",fontWeight:500,minWidth:0 }}/>
@@ -17774,7 +17774,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             {/* ── Stop on Profit ── */}
             <div style={{ marginBottom:"12px" }}>
               <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("stopOnWin")}</div>
-              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"6px 10px" }}>
+              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopProfit} onChange={e=>setAutoStopProfit(e.target.value.replace(/[^\d.]/g,""))}
                   type="text" inputMode="decimal" placeholder={t("zeroOff")}
@@ -17785,7 +17785,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             {/* ── Stop on Loss ── */}
             <div style={{ marginBottom:"12px" }}>
               <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{t("stopOnLoss")}</div>
-              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"6px 10px" }}>
+              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"6px 10px" }}>
                 <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopLoss} onChange={e=>setAutoStopLoss(e.target.value.replace(/[^\d.]/g,""))}
                   type="text" inputMode="decimal" placeholder={t("zeroOff")}
@@ -17801,7 +17801,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
               const countInvalid = !autoInfinite && (diceAutoCount==="" || (parseInt(diceAutoCount)||0) <= 0);
               return (
                 <div>
-                  <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#1e1535"}`,borderRadius:"6px",padding:"6px 10px",marginBottom: countInvalid ? "4px" : "14px" }}>
+                  <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#252f45"}`,borderRadius:"6px",padding:"6px 10px",marginBottom: countInvalid ? "4px" : "14px" }}>
                     <input
                       value={diceAutoRunning ? (autoInfinite ? `${999999-diceAutoRemaining}/∞` : `${(parseInt(diceAutoCount)||0)-diceAutoRemaining}/${diceAutoCount}`) : (autoInfinite?"∞":diceAutoCount)}
                       onChange={e=>{ setAutoInfinite(false); setDiceAutoCount(e.target.value); }}
@@ -17823,7 +17823,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
 
             <div className="dice-ctrl-towin-wrap">
             <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"12px",paddingLeft:"4px" }}>Ganancias</div>
-            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",padding:"8px 14px",marginBottom:"14px" }}>
+            <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 14px",marginBottom:"14px" }}>
               <span style={{ fontSize:"16px",color:"#5a6a88",fontWeight:500,whiteSpace:"nowrap",...dMStyle }}>{currLabel}</span>
               <input readOnly
                 value={diceBetNum > 0 ? (()=>{ const p = diceBetNum * Math.max(1.01, parseFloat(diceMultiplier)||2); return displayInFiat ? p.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) : p.toFixed(2); })() : "—"}
@@ -17890,7 +17890,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
             <div style={{ position:"relative",paddingTop:"50px",marginBottom:isMobile?"0":"90px" }}>
 
               {/* Framed track box — no horizontal padding so % coords match diamond coords */}
-              <div style={{ background:"#090f1c",border:"1px solid #1e1535",borderRadius:"6px",padding:"10px 0" }}>
+              <div style={{ background:"#090f1c",border:"1px solid #252f45",borderRadius:"6px",padding:"10px 0" }}>
                 <div ref={trackRef} style={{ position:"relative",height:"24px" }}>
 
                   {/* 3-D square marker — lives INSIDE trackRef so % aligns with track */}
@@ -17972,7 +17972,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
               <label style={{ display:"block",color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize: isMobile ? "11px" : "13px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{t("multiplierLabel")}</label>
               <input value={diceMultiplier} onChange={e=>setDiceMultiplier(e.target.value)} onBlur={()=>syncDiceFields("multiplier")} type="text" inputMode="decimal"
                 disabled={diceAutoRunning}
-                style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 4px 8px 4px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 4px 8px 4px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
             </div>
 
             {/* Roll Over/Under — flip icon inside input */}
@@ -17983,7 +17983,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
               <div style={{ position:"relative" }}>
                 <input value={diceTarget} onChange={e=>setDiceTarget(e.target.value)} onBlur={()=>syncDiceFields("target")} type="text" inputMode="decimal"
                   disabled={diceAutoRunning}
-                  style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 24px 8px 4px" : "10px 38px 10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
+                  style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 24px 8px 4px" : "10px 38px 10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
                 <button
                   disabled={diceAutoRunning}
                   onClick={()=>{
@@ -17995,7 +17995,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
                     setDiceTarget((newMode==="over" ? Math.min(98,Math.max(4,invT)) : Math.min(96,Math.max(2,invT))).toFixed(2));
                   }}
                   title={t("invertDir")}
-                  style={{ position:"absolute",right: isMobile ? "4px" : "8px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",outline:"none",color:diceAutoRunning?"#1e1535":"#6db3f2",cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"17px",lineHeight:1,padding:"2px",display:"flex",alignItems:"center",opacity:diceAutoRunning?0.35:1,transition:"opacity .2s,color .2s" }}>
+                  style={{ position:"absolute",right: isMobile ? "4px" : "8px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",outline:"none",color:diceAutoRunning?"#252f45":"#6db3f2",cursor:diceAutoRunning?"not-allowed":"pointer",fontSize:"17px",lineHeight:1,padding:"2px",display:"flex",alignItems:"center",opacity:diceAutoRunning?0.35:1,transition:"opacity .2s,color .2s" }}>
                   ↺
                 </button>
               </div>
@@ -18006,7 +18006,7 @@ function DiceGame({ balance, balanceDemo, currentUser, diceBet, setDiceBet, dice
               <label style={{ display:"block",color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize: isMobile ? "11px" : "13px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{t("chance")+" %"}</label>
               <input value={diceChance} onChange={e=>setDiceChance(e.target.value)} onBlur={()=>syncDiceFields("chance")} type="text" inputMode="decimal"
                 disabled={diceAutoRunning}
-                style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 4px 8px 4px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
+                style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:diceAutoRunning?"#4a6070":"white",padding: isMobile ? "8px 4px 8px 4px" : "10px 12px",width:"100%",boxSizing:"border-box",cursor:diceAutoRunning?"not-allowed":"text",opacity:diceAutoRunning?0.55:1,fontSize:"12px",textAlign:"left" }} />
             </div>
 
           </div>
@@ -18657,7 +18657,7 @@ function PlinkoGame({
       // Lit pegs — only the small set tracked by collisionStart events
       litPegsMapRef.current.forEach((_expiry, peg) => {
         ctx.beginPath(); ctx.arc(peg.position.x, peg.position.y, g.PEG_R * 1.4, 0, Math.PI*2);
-        ctx.shadowColor = '#A855F7'; ctx.shadowBlur = 14; ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#f4a91f'; ctx.shadowBlur = 14; ctx.fillStyle = '#ffffff';
         ctx.fill(); ctx.shadowBlur = 0;
       });
 
@@ -18667,7 +18667,7 @@ function PlinkoGame({
         const bs = document.createElement('canvas'); bs.width = bs.height = S;
         const bsc = bs.getContext('2d')!;
         const cx = S / 2, cy = S / 2;
-        bsc.shadowColor = '#A855F7'; bsc.shadowBlur = 10;
+        bsc.shadowColor = '#f4a91f'; bsc.shadowBlur = 10;
         const grad = bsc.createRadialGradient(cx - g.BALL_R*0.3, cy - g.BALL_R*0.3, 0, cx, cy, g.BALL_R);
         grad.addColorStop(0, '#fff8c0'); grad.addColorStop(0.55, '#f0d550'); grad.addColorStop(1, '#c8960c');
         bsc.beginPath(); bsc.arc(cx, cy, g.BALL_R, 0, Math.PI*2);
@@ -18728,7 +18728,7 @@ function PlinkoGame({
 
         {/* ── Bordered header bar ── */}
         <div style={{ gridColumn:"1/-1", display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
-          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
           <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 15 13" width="18" height="16" fill="currentColor"><path d="M9 1.5C9 2.32843 8.32837 3 7.5 3C6.67163 3 6 2.32843 6 1.5C6 0.67157 6.67163 0 7.5 0C8.32837 0 9 0.67157 9 1.5ZM1.5 13C2.32837 13 3 12.3284 3 11.5C3 10.6716 2.32837 10 1.5 10C0.671631 10 0 10.6716 0 11.5C0 12.3284 0.671631 13 1.5 13ZM7.5 13C8.32837 13 9 12.3284 9 11.5C9 10.6716 8.32837 10 7.5 10C6.67163 10 6 10.6716 6 11.5C6 12.3284 6.67163 13 7.5 13ZM4.5 8C5.32837 8 6 7.32843 6 6.5C6 5.67157 5.32837 5 4.5 5C3.67163 5 3 5.67157 3 6.5C3 7.32843 3.67163 8 4.5 8ZM15 11.5C15 12.3284 14.3284 13 13.5 13C12.6716 13 12 12.3284 12 11.5C12 10.6716 12.6716 10 13.5 10C14.3284 10 15 10.6716 15 11.5ZM10.5 8C11.3284 8 12 7.32843 12 6.5C12 5.67157 11.3284 5 10.5 5C9.67163 5 9 5.67157 9 6.5C9 7.32843 9.67163 8 10.5 8Z"/></svg>{t("gamePlinko").toUpperCase()}</div>
           <div style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{gt(lang,"manderOriginals")}</div>
         </div>
@@ -18743,7 +18743,7 @@ function PlinkoGame({
 
           {/* Bet amount */}
           <div className="plinko-ctrl-amount"><div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("betAmount")}</div>
-          <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${betInvalid||betTooHigh?"#c0392b":"#1e1535"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
+          <div style={{ display:"flex",alignItems:"center",gap:"8px",background:"#0e1826",border:`1px solid ${betInvalid||betTooHigh?"#c0392b":"#252f45"}`,borderRadius:"6px",padding:"8px 14px",marginBottom:"8px",transition:"border .15s" }}>
             <span style={{ fontSize:"13px",color:"#5a6a88",fontWeight:500,...dMStyle }}>{displayCurrency}</span>
             <input
               value={(()=>{ if(!plinkoBet) return ""; if(!displayInFiat) return plinkoBet; const [int,dec]=plinkoBet.split("."); const fmtInt=(parseInt(int||"0")||0).toLocaleString("de-DE"); return dec!==undefined?`${fmtInt},${dec}`:fmtInt; })()}
@@ -18757,7 +18757,7 @@ function PlinkoGame({
               type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
               disabled={plinkoAutoRunning}
               style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"17px",fontWeight:600,padding:"0",minWidth:0,...dMStyle }}/>
-            <button onClick={()=>setPlinkoBet("0.00")} style={{ background:"#0e1826",border:"1px solid #1e1535",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",textTransform:"uppercase" }}>{t("clear")}</button>
+            <button onClick={()=>setPlinkoBet("0.00")} style={{ background:"#0e1826",border:"1px solid #252f45",borderRadius:"6px",color:"#6db3f2",fontSize:"11px",fontWeight:500,padding:"4px 8px",cursor:"pointer",textTransform:"uppercase" }}>{t("clear")}</button>
           </div>
 
           {(betInvalid||betTooHigh) ? (<div style={{ fontSize:"11.5px",color:"#e74c3c",fontWeight:600,marginBottom:"8px",paddingLeft:"2px" }}>{(balance<0.001||betTooHigh)&&<div>{t("insufficientBalance")}</div>}{betInvalid&&<div>{t("minBet")} {fmtMoney(0.01)}</div>}</div>) : <div style={{ marginBottom:"6px" }}/>}</div>
@@ -18771,7 +18771,7 @@ function PlinkoGame({
               { label:t("btnMax"), action:()=>setPlinkoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2)) },
             ].map(b=>(
               <button key={b.label} onClick={b.action} disabled={plinkoAutoRunning || pendingBalls.length > 0}
-                style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #1e1535",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(plinkoAutoRunning||pendingBalls.length>0)?"not-allowed":"pointer",opacity:(plinkoAutoRunning||pendingBalls.length>0)?0.45:1 }}>
+                style={{ background:"#1a2438",color:"#d0dcea",border:"1px solid #252f45",borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:(plinkoAutoRunning||pendingBalls.length>0)?"not-allowed":"pointer",opacity:(plinkoAutoRunning||pendingBalls.length>0)?0.45:1 }}>
                 {b.label}
               </button>
             ))}
@@ -18785,7 +18785,7 @@ function PlinkoGame({
               return (
                 <button key={r} onClick={()=>{ if(!locked) setPlinkoRows(r); }}
                   title={pendingBalls.length>0?t("waitBalls"):undefined}
-                  style={{ background:plinkoRows===r?"#1f6fd0":"#1a2438",color:plinkoRows===r?"#fff":"#d0dcea",border:`1px solid ${plinkoRows===r?"#3a8aff":"#1e1535"}`,borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRows!==r?0.45:1,boxShadow:plinkoRows===r?"0 2px 14px #3a8aff66":"none",transition:"all .15s" }}>
+                  style={{ background:plinkoRows===r?"#1f6fd0":"#1a2438",color:plinkoRows===r?"#fff":"#d0dcea",border:`1px solid ${plinkoRows===r?"#3a8aff":"#252f45"}`,borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRows!==r?0.45:1,boxShadow:plinkoRows===r?"0 2px 14px #3a8aff66":"none",transition:"all .15s" }}>
                   {r}
                 </button>
               );
@@ -18800,12 +18800,12 @@ function PlinkoGame({
           {/* Risk */}
           <div className="plinko-ctrl-risk"><div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px",paddingLeft:"4px" }}>{t("risk")}</div>
           <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"4px",marginBottom:"16px" }}>
-            {([["low","#1f6fd0","#3a8aff"],["medium","#b07800","#A855F7"],["high","#8b1a1a","#ff5a6a"]] as [string,string,string][]).map(([r,bg,bd])=>{
+            {([["low","#1f6fd0","#3a8aff"],["medium","#b07800","#f4a91f"],["high","#8b1a1a","#ff5a6a"]] as [string,string,string][]).map(([r,bg,bd])=>{
               const locked = plinkoAutoRunning || pendingBalls.length > 0;
               return (
                 <button key={r} onClick={()=>{ if(!locked) setPlinkoRisk(r as "low"|"medium"|"high"); }}
                   title={pendingBalls.length>0?t("waitBalls"):undefined}
-                  style={{ background:plinkoRisk===r?bg:"#1a2438",color:"#fff",border:`1px solid ${plinkoRisk===r?bd:"#1e1535"}`,borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRisk!==r?0.45:1,boxShadow:plinkoRisk===r?`0 2px 14px ${bd}66`:"none",transition:"all .15s" }}>
+                  style={{ background:plinkoRisk===r?bg:"#1a2438",color:"#fff",border:`1px solid ${plinkoRisk===r?bd:"#252f45"}`,borderRadius:"6px",padding:"8px 0",fontWeight:500,fontSize:"13px",cursor:locked?"not-allowed":"pointer",opacity:locked&&plinkoRisk!==r?0.45:1,boxShadow:plinkoRisk===r?`0 2px 14px ${bd}66`:"none",transition:"all .15s" }}>
                   {t(r)}
                 </button>
               );
@@ -18817,7 +18817,7 @@ function PlinkoGame({
             <div className="plinko-ctrl-num-bets">
               <div style={{ color:"#5a6a88",fontWeight:500,marginBottom:"6px",fontSize:"13px" }}>{t("numberOfBets")}</div>
               <div>
-                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#1e1535"}`,borderRadius:"6px",padding:"6px 10px",marginBottom:countInvalid?"4px":"14px" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:`1px solid ${countInvalid?"#c0392b":"#252f45"}`,borderRadius:"6px",padding:"6px 10px",marginBottom:countInvalid?"4px":"14px" }}>
                   <input value={plinkoAutoRunning ? (autoInfinite ? `${999999-plinkoAutoRemaining}/∞` : `${(parseInt(plinkoAutoCount)||0)-plinkoAutoRemaining}/${plinkoAutoCount}`) : (autoInfinite?"∞":plinkoAutoCount)} onChange={e=>{setAutoInfinite(false);setPlinkoAutoCount(e.target.value);}} onBlur={()=>{if(!autoInfinite&&(plinkoAutoCount===""||parseInt(plinkoAutoCount)<=0)) setPlinkoAutoCount("1");}} type={(autoInfinite||plinkoAutoRunning)?"text":"number"} min="1" readOnly={autoInfinite || plinkoAutoRunning} style={{ flex:1,background:"transparent",border:"none",color:"white",fontSize:"20px",padding:"4px",minWidth:0 }}/>
                   <button onClick={()=>{ if(!plinkoAutoRunning) setAutoInfinite(v=>!v); }} disabled={plinkoAutoRunning} style={{ padding:"4px 10px",borderRadius:"6px",background:autoInfinite?"#1f6fd0":"#2a4155",color:"#d0dcea",border:"none",fontWeight:500,cursor:plinkoAutoRunning?"not-allowed":"pointer",fontSize:"16px",opacity:plinkoAutoRunning?0.5:1 }}>∞</button>
                 </div>
@@ -19659,8 +19659,8 @@ function KenoGame({
     if (state === "hit") return "2px solid #22ee66";
     if (state === "drawn") return "1px solid #3a1010";
     if (state === "picked") return "1px solid #9940ff";
-    if (state === "miss") return "1px solid #13102a";
-    return "1px solid #1e1535";
+    if (state === "miss") return "1px solid #1a2030";
+    return "1px solid #252f45";
   };
   const cellShadow = (state: string, isHit: boolean) => {
     if (isHit || state === "hit") return "0 0 22px rgba(34,238,102,.5)";
@@ -19690,7 +19690,7 @@ function KenoGame({
 
         {/* ── Bordered header bar ── */}
         <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
-          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #1e1535", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"6px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
           <div style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="12" cy="7.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="7.5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="16.5" cy="12" r="1.5" fill="currentColor"/><circle cx="7.5" cy="16.5" r="1.5" fill="currentColor"/><circle cx="12" cy="16.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="16.5" r="1.5" fill="currentColor"/></svg>{t("gameKeno").toUpperCase()}</div>
           <div style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{gt(lang,"manderOriginals")}</div>
         </div>
@@ -19721,7 +19721,7 @@ function KenoGame({
           {/* ── Bet amount + quick buttons ── */}
           <div className="keno-ctrl-amount">
             <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{t("betAmount")}</div>
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0e1826", border:`1px solid ${(betUsd < 0.0099 && betDisplay > 0) || (!!currentUser && balance < betUsd - 0.0001) ? "#c0392b" : "#1e1535"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"6px", transition:"border .15s" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0e1826", border:`1px solid ${(betUsd < 0.0099 && betDisplay > 0) || (!!currentUser && balance < betUsd - 0.0001) ? "#c0392b" : "#252f45"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"6px", transition:"border .15s" }}>
               <span style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, flexShrink:0, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
               <input type="text" inputMode="decimal" value={(()=>{ if(!kenoBet) return ""; if(!displayInFiat) return kenoBet; const [int,dec]=kenoBet.split("."); const fmtInt=(parseInt(int||"0")||0).toLocaleString("de-DE"); return dec!==undefined?`${fmtInt},${dec}`:fmtInt; })()} placeholder={displayInFiat ? "0,00" : "0.00"}
                 onChange={e=>{ const raw=displayInFiat?e.target.value.replace(/\./g,"").replace(",","."):e.target.value; if(/^\d*\.?\d*$/.test(raw)) setKenoBet(raw); }}
@@ -19735,7 +19735,7 @@ function KenoGame({
                 style={{ flex:1, background:"transparent", border:"none", outline:"none", color:"#fff", fontSize:"17px", fontWeight:600, padding:"0", fontFamily:"inherit", minWidth:0, opacity:currencyFade, transition:"opacity .18s" }}
               />
               <button onClick={()=>setKenoBet("0.00")} disabled={disabled}
-                style={{ background:"#0e1826", border:"1px solid #1e1535", borderRadius:"6px", color:"#6db3f2", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase" }}>
+                style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", color:"#6db3f2", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase" }}>
                 {t("clear")}
               </button>
             </div>
@@ -19748,7 +19748,7 @@ function KenoGame({
                 [t("btnMax"), ()=>setKenoBet((Math.floor(convertUsd(balance)*100)/100).toFixed(2))],
               ] as [string, () => void][]).map(([label, action]) => (
                 <button key={label} onClick={action} disabled={disabled}
-                  style={{ padding:"8px 0", borderRadius:"6px", fontWeight:500, fontSize:"13px", border:"1px solid #1e1535", background:"#1a2438", color:disabled?"#3a4a60":"#d0dcea", cursor:disabled?"not-allowed":"pointer" }}>
+                  style={{ padding:"8px 0", borderRadius:"6px", fontWeight:500, fontSize:"13px", border:"1px solid #252f45", background:"#1a2438", color:disabled?"#3a4a60":"#d0dcea", cursor:disabled?"not-allowed":"pointer" }}>
                   {label}
                 </button>
               ))}
@@ -19762,12 +19762,12 @@ function KenoGame({
               {([
                 ["classic","#4a1a8c","#9a5fff"],
                 ["low",    "#1f6fd0","#3a8aff"],
-                ["medium", "#b07800","#A855F7"],
+                ["medium", "#b07800","#f4a91f"],
                 ["high",   "#8b1a1a","#ff5a6a"],
               ] as [string,string,string][]).map(([r,bg,bd])=>(
                 <button key={r} onClick={()=>{ if(!disabled) setKenoRisk(r as "low"|"medium"|"high"|"classic"); }}
                   disabled={disabled}
-                  style={{ padding:"8px 0", background:kenoRisk===r?bg:"#1a2438", border:`1px solid ${kenoRisk===r?bd:"#1e1535"}`, borderRadius:"6px", color:"#fff", fontWeight:500, fontSize:"13px", cursor:disabled?"not-allowed":"pointer", transition:"all .15s", boxShadow:kenoRisk===r?`0 2px 14px ${bd}66`:"none" }}>
+                  style={{ padding:"8px 0", background:kenoRisk===r?bg:"#1a2438", border:`1px solid ${kenoRisk===r?bd:"#252f45"}`, borderRadius:"6px", color:"#fff", fontWeight:500, fontSize:"13px", cursor:disabled?"not-allowed":"pointer", transition:"all .15s", boxShadow:kenoRisk===r?`0 2px 14px ${bd}66`:"none" }}>
                   {t(r)}
                 </button>
               ))}
@@ -19779,7 +19779,7 @@ function KenoGame({
                 { label:t("clearBoard"), action:clearPicks },
               ] as { label:React.ReactNode; action:()=>void }[]).map((b,i)=>(
                 <button key={i} onClick={b.action} disabled={disabled}
-                  style={{ padding:"10px 6px", background:"#1a2438", border:"1px solid #1e1535", borderRadius:"6px", color:disabled?"#3a4a60":"#d0dcea", fontWeight:500, fontSize:"12px", cursor:disabled?"not-allowed":"pointer", lineHeight:1.4 }}>
+                  style={{ padding:"10px 6px", background:"#1a2438", border:"1px solid #252f45", borderRadius:"6px", color:disabled?"#3a4a60":"#d0dcea", fontWeight:500, fontSize:"12px", cursor:disabled?"not-allowed":"pointer", lineHeight:1.4 }}>
                   {b.label}
                 </button>
               ))}
@@ -19794,7 +19794,7 @@ function KenoGame({
           {/* ── Auto rounds (auto mode only) ── */}
           <div className="keno-ctrl-rounds" style={{ display: autoTab === "auto" ? undefined : "none" }}>
             <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{t("numberOfBets")}</div>
-            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 10px" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
               <input
                 value={kenoAutoRunning ? (kenoInfinite ? `${999999-kenoAutoRemaining}/∞` : `${(parseInt(kenoAutoCount)||0)-kenoAutoRemaining}/${kenoAutoCount}`) : (kenoInfinite ? "∞" : kenoAutoCount)}
                 onChange={e=>{ setKenoInfinite(false); setKenoAutoCount(e.target.value); }}
@@ -19861,7 +19861,7 @@ function KenoGame({
             <button
               onClick={toggleKenoTurbo}
               title={kenoTurbo ? t("turboOn") : t("turboOff")}
-              style={{ width:"38px",height:"38px",borderRadius:"6px", background:kenoTurbo?"linear-gradient(135deg,#A855F7,#7C3AED)":"#0e1826", border:kenoTurbo?"1px solid #A855F7":"1px solid #203a50", color:kenoTurbo?"#fff":"#7a9db8", cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center", transition:"background .2s,border .2s,color .2s,box-shadow .2s", boxShadow:kenoTurbo?"0 0 14px rgba(168,85,247,.45)":"none" }}>
+              style={{ width:"38px",height:"38px",borderRadius:"6px", background:kenoTurbo?"linear-gradient(135deg,#f4a91f,#c4780a)":"#0e1826", border:kenoTurbo?"1px solid #f4a91f":"1px solid #203a50", color:kenoTurbo?"#fff":"#7a9db8", cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center", transition:"background .2s,border .2s,color .2s,box-shadow .2s", boxShadow:kenoTurbo?"0 0 14px rgba(244,169,31,.45)":"none" }}>
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </button>
           </div>
@@ -19886,7 +19886,7 @@ function KenoGame({
             <button
               onClick={toggleKenoTurbo}
               title={kenoTurbo ? t("turboOn") : t("turboOff")}
-              style={{ width:"38px",height:"38px",borderRadius:"6px", background:kenoTurbo?"linear-gradient(135deg,#A855F7,#7C3AED)":"#0e1826", border:kenoTurbo?"1px solid #A855F7":"1px solid #203a50", color:kenoTurbo?"#fff":"#7a9db8", cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center", transition:"background .2s,border .2s,color .2s,box-shadow .2s", boxShadow:kenoTurbo?"0 0 14px rgba(168,85,247,.45)":"none" }}>
+              style={{ width:"38px",height:"38px",borderRadius:"6px", background:kenoTurbo?"linear-gradient(135deg,#f4a91f,#c4780a)":"#0e1826", border:kenoTurbo?"1px solid #f4a91f":"1px solid #203a50", color:kenoTurbo?"#fff":"#7a9db8", cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center", transition:"background .2s,border .2s,color .2s,box-shadow .2s", boxShadow:kenoTurbo?"0 0 14px rgba(244,169,31,.45)":"none" }}>
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </button>
         </div>
@@ -20249,9 +20249,9 @@ function KenoGame({
 
   {/* ── Rakeback pool tooltip (fixed overlay, never clipped) ── */}
   {rbTipInfo && (
-    <div style={{ position:"fixed", left:`${rbTipInfo.x}px`, top:`${rbTipInfo.y - 8}px`, transform:"translate(-50%,-100%)", background:"#1a2640", border:"1px solid #2d1f52", borderRadius:"9px", padding:"10px 13px", fontSize:"12px", color:"#c8d8ec", lineHeight:1.55, width:"220px", zIndex:99999, pointerEvents:"none", boxShadow:"0 8px 24px rgba(0,0,0,.5)" }}>
+    <div style={{ position:"fixed", left:`${rbTipInfo.x}px`, top:`${rbTipInfo.y - 8}px`, transform:"translate(-50%,-100%)", background:"#1a2640", border:"1px solid #2a3a54", borderRadius:"9px", padding:"10px 13px", fontSize:"12px", color:"#c8d8ec", lineHeight:1.55, width:"220px", zIndex:99999, pointerEvents:"none", boxShadow:"0 8px 24px rgba(0,0,0,.5)" }}>
       {rbTipInfo.text}
-      <div style={{ position:"absolute", bottom:"-5px", left:"50%", transform:"translateX(-50%)", width:"9px", height:"9px", background:"#1a2640", border:"1px solid #2d1f52", borderTop:"none", borderLeft:"none", rotate:"45deg" }} />
+      <div style={{ position:"absolute", bottom:"-5px", left:"50%", transform:"translateX(-50%)", width:"9px", height:"9px", background:"#1a2640", border:"1px solid #2a3a54", borderTop:"none", borderLeft:"none", rotate:"45deg" }} />
     </div>
   )}
   </div>

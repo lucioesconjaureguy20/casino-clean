@@ -67,50 +67,50 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* NEON VIOLET CASINO THEME */
+/* DARK CASINO THEME */
 :root {
-  --button-outline: rgba(168,85,247, .15);
-  --badge-outline: rgba(168,85,247, .08);
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
 
   --opaque-button-border-intensity: 9;
 
-  --elevate-1: rgba(168,85,247, .06);
-  --elevate-2: rgba(168,85,247, .12);
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
 
-  --background: 240 44% 6%;
+  --background: 222 47% 11%;
   --foreground: 213 31% 91%;
-  --border: 234 25% 15%;
-  --card: 234 34% 11%;
+  --border: 222 30% 20%;
+  --card: 222 40% 16%;
   --card-foreground: 213 31% 91%;
-  --card-border: 234 25% 16%;
-  --sidebar: 240 40% 7%;
+  --card-border: 222 30% 22%;
+  --sidebar: 222 40% 14%;
   --sidebar-foreground: 213 31% 91%;
-  --sidebar-border: 234 25% 14%;
-  --sidebar-primary: 271 91% 65%;
-  --sidebar-primary-foreground: 240 44% 6%;
-  --sidebar-accent: 234 28% 14%;
+  --sidebar-border: 222 30% 20%;
+  --sidebar-primary: 38 92% 50%;
+  --sidebar-primary-foreground: 222 47% 11%;
+  --sidebar-accent: 222 30% 22%;
   --sidebar-accent-foreground: 213 31% 91%;
-  --sidebar-ring: 271 91% 65%;
-  --popover: 234 34% 11%;
+  --sidebar-ring: 38 92% 50%;
+  --popover: 222 40% 16%;
   --popover-foreground: 213 31% 91%;
-  --popover-border: 234 25% 16%;
-  --primary: 271 91% 65%;
-  --primary-foreground: 240 44% 6%;
-  --secondary: 234 28% 14%;
+  --popover-border: 222 30% 22%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 30% 22%;
   --secondary-foreground: 213 31% 91%;
-  --muted: 234 28% 12%;
-  --muted-foreground: 215 20% 55%;
-  --accent: 234 28% 16%;
+  --muted: 222 30% 18%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 222 30% 24%;
   --accent-foreground: 213 31% 91%;
-  --destructive: 350 100% 61%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 234 28% 16%;
-  --ring: 271 91% 65%;
-  --chart-1: 271 91% 65%;
+  --input: 222 30% 24%;
+  --ring: 38 92% 50%;
+  --chart-1: 38 92% 50%;
   --chart-2: 145 63% 49%;
   --chart-3: 217 91% 60%;
-  --chart-4: 190 95% 53%;
-  --chart-5: 350 100% 61%;
+  --chart-4: 271 76% 53%;
+  --chart-5: 0 72% 51%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: Georgia, serif;
@@ -179,46 +179,46 @@ html, body, * {
 }
 
 .dark {
-  --button-outline: rgba(168,85,247, .15);
-  --badge-outline: rgba(168,85,247, .08);
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(168,85,247, .06);
-  --elevate-2: rgba(168,85,247, .12);
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
 
-  --background: 240 44% 6%;
+  --background: 222 47% 11%;
   --foreground: 213 31% 91%;
-  --border: 234 25% 15%;
-  --card: 234 34% 11%;
+  --border: 222 30% 20%;
+  --card: 222 40% 16%;
   --card-foreground: 213 31% 91%;
-  --card-border: 234 25% 16%;
-  --sidebar: 240 40% 7%;
+  --card-border: 222 30% 22%;
+  --sidebar: 222 40% 14%;
   --sidebar-foreground: 213 31% 91%;
-  --sidebar-border: 234 25% 14%;
-  --sidebar-primary: 271 91% 65%;
-  --sidebar-primary-foreground: 240 44% 6%;
-  --sidebar-accent: 234 28% 14%;
+  --sidebar-border: 222 30% 20%;
+  --sidebar-primary: 38 92% 50%;
+  --sidebar-primary-foreground: 222 47% 11%;
+  --sidebar-accent: 222 30% 22%;
   --sidebar-accent-foreground: 213 31% 91%;
-  --sidebar-ring: 271 91% 65%;
-  --popover: 234 34% 11%;
+  --sidebar-ring: 38 92% 50%;
+  --popover: 222 40% 16%;
   --popover-foreground: 213 31% 91%;
-  --popover-border: 234 25% 16%;
-  --primary: 271 91% 65%;
-  --primary-foreground: 240 44% 6%;
-  --secondary: 234 28% 14%;
+  --popover-border: 222 30% 22%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 30% 22%;
   --secondary-foreground: 213 31% 91%;
-  --muted: 234 28% 12%;
-  --muted-foreground: 215 20% 55%;
-  --accent: 234 28% 16%;
+  --muted: 222 30% 18%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 222 30% 24%;
   --accent-foreground: 213 31% 91%;
-  --destructive: 350 100% 61%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 234 28% 16%;
-  --ring: 271 91% 65%;
-  --chart-1: 271 91% 65%;
+  --input: 222 30% 28%;
+  --ring: 38 92% 50%;
+  --chart-1: 38 92% 50%;
   --chart-2: 145 63% 49%;
   --chart-3: 217 91% 60%;
-  --chart-4: 190 95% 53%;
-  --chart-5: 350 100% 61%;
+  --chart-4: 271 76% 53%;
+  --chart-5: 0 72% 51%;
 
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
@@ -304,7 +304,7 @@ html, body, * {
 
   body {
     @apply antialiased text-foreground;
-    background-color: #0A0A12;
+    background-color: #13192a;
     font-family: 'Inter', sans-serif;
     zoom: 0.9;
     /* Compensate for zoom so body fills 100% of the viewport visually */
@@ -346,7 +346,7 @@ html, body, * {
   transition: color 0.15s ease;
 }
 .lockly-game-card:hover .lockly-card-label-name {
-  color: #A855F7 !important;
+  color: #f4a91f !important;
 }
 
 /* ── Originals section header links ── */
@@ -355,7 +355,7 @@ html, body, * {
   cursor: pointer;
 }
 .lockly-link:hover {
-  color: #A855F7 !important;
+  color: #f4a91f !important;
   opacity: 1;
 }
 .lockly-nav-btn {
@@ -364,10 +364,10 @@ html, body, * {
   cursor: pointer;
 }
 .lockly-nav-btn:hover {
-  background: #1a1035 !important;
-  border-color: rgba(168,85,247,0.45) !important;
-  color: #A855F7 !important;
-  box-shadow: 0 0 8px rgba(168,85,247,0.15);
+  background: #1e2d48 !important;
+  border-color: rgba(244,169,31,0.45) !important;
+  color: #f4a91f !important;
+  box-shadow: 0 0 8px rgba(244,169,31,0.15);
 }
 
 /* ══ GameInfoPanel ═════════════════════════════════════════════════════════════ */
@@ -375,7 +375,7 @@ html, body, * {
   transition: border-color 0.2s ease;
 }
 .gip-panel:hover {
-  border-color: #2d1f52 !important;
+  border-color: #2a4060 !important;
 }
 
 /* Header row — clicking it toggles the panel */
@@ -414,13 +414,13 @@ html, body, * {
   top: 1px;
   bottom: 1px;
   width: 3px;
-  background: linear-gradient(to bottom, #A855F7, rgba(168,85,247,0.35));
+  background: linear-gradient(to bottom, #f4a91f, rgba(244,169,31,0.35));
   border-radius: 2px;
 }
 
 /* Provably Fair link */
 .gip-pf-link {
-  color: #A855F7;
+  color: #f4a91f;
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -429,7 +429,7 @@ html, body, * {
   font-weight: 500;
 }
 .gip-pf-link:hover {
-  color: #c084fc;
+  color: #ffc840;
   /* text-shadow removed — color change alone is sufficient and compositor-safe */
 }
 
@@ -440,20 +440,20 @@ html, body, * {
   gap: 5px;
   background: none;
   border: none;
-  color: #A855F7;
+  color: #f4a91f;
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.2px;
   cursor: pointer;
   padding: 10px 0 2px;
   margin-top: 14px;
-  border-top: 1px solid #1e1535;
+  border-top: 1px solid #1a2a3e;
   width: 100%;
   text-align: left;
   transition: color 0.15s ease;
 }
 .gip-toggle-btn:hover {
-  color: #A855F7;
+  color: #f4a91f;
 }
 .gip-toggle-btn .gip-arrow {
   display: inline-flex;
@@ -482,7 +482,7 @@ html, body, * {
 .gip-bullet::before {
   content: '◆';
   font-size: 6px;
-  color: #A855F7;
+  color: #f4a91f;
   flex-shrink: 0;
   margin-top: 3px;
   opacity: 0.75;
@@ -523,7 +523,7 @@ html, body, * {
 
 .casino-submenu-wrap {
   overflow: hidden;
-  border: 1px solid #1e1535;
+  border: 1px solid #252f45;
   border-top: none;
   border-radius: 0 0 8px 8px;
   margin-bottom: 8px;
@@ -534,7 +534,7 @@ html, body, * {
   animation: submenuClose 0.22s cubic-bezier(0.4,0,0.2,1) forwards;
 }
 .casino-submenu {
-  background: #0D0F1A;
+  background: #111827;
 }
 @keyframes submenuOpen {
   from { max-height: 0; opacity: 0; transform: scaleY(0.92); }
@@ -1097,7 +1097,7 @@ input.aff-date-input::-webkit-calendar-picker-indicator {
   left: 50%;
   transform: translateX(-50%) translateY(4px);
   background: #1a2640;
-  border: 1px solid #2d1f52;
+  border: 1px solid #2a3a54;
   border-radius: 8px;
   padding: 10px 13px;
   font-size: 12px;
@@ -1169,8 +1169,8 @@ input.aff-date-input::-webkit-calendar-picker-indicator {
 
 /* ── Current rank card pulse glow ───────────────────────────── */
 @keyframes rank-glow-pulse {
-  0%, 100% { box-shadow: 0 0 18px var(--rank-glow, #A855F730); }
-  50%       { box-shadow: 0 0 30px var(--rank-glow, #A855F755); }
+  0%, 100% { box-shadow: 0 0 18px var(--rank-glow, #f4a91f30); }
+  50%       { box-shadow: 0 0 30px var(--rank-glow, #f4a91f55); }
 }
 .rank-card-current { animation: rank-glow-pulse 2.5s ease-in-out infinite; }
 
@@ -1292,7 +1292,7 @@ html {
 }
 body {
   overflow-x: hidden;
-  background-color: #0A0A12;
+  background-color: #060c14;
 }
 
 html.modal-open,
@@ -2018,12 +2018,12 @@ html.modal-open body {
   /* Push main content above the bottom nav bar (60px + safe area) */
   main {
     padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
-    background-color: #0A0A12 !important;
+    background-color: #060c14 !important;
   }
 
   /* Active tab icon glow */
-  nav.mobile-bottom-nav button[style*="#A855F7"] {
-    filter: drop-shadow(0 0 6px rgba(168,85,247,.35));
+  nav.mobile-bottom-nav button[style*="#f4a91f"] {
+    filter: drop-shadow(0 0 6px rgba(244,169,31,.35));
   }
 
   /* Prevent horizontal overflow on all main section wrappers */
@@ -2393,139 +2393,8 @@ html.modal-open body {
 }
 .aff-flip-back {
   transform: rotateY(180deg);
-  background: #0D0F1A;
-  border: 1px solid #2d1f52;
+  background: #0e1623;
+  border: 1px solid #2a3a54;
   justify-content: center;
   gap: 6px;
 }
-
-/* ══════════════════════════════════════════════════════════════════════════════
-   NEON VIOLET THEME — Global glow, glassmorphism & hover effects
-   ══════════════════════════════════════════════════════════════════════════════ */
-
-/* ── Global transitions ── */
-*, *::before, *::after {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-a, button, [role="button"], input, select, textarea {
-  transition: color 0.15s ease, background 0.2s ease, border-color 0.2s ease,
-              box-shadow 0.2s ease, opacity 0.15s ease, transform 0.15s ease;
-}
-
-/* ── Primary buttons — violet neon glow ── */
-button[class*="bg-primary"],
-.btn-primary,
-.join-now-btn,
-.deposit-nav-btn {
-  box-shadow: 0 0 18px rgba(168,85,247,0.35), 0 2px 8px rgba(168,85,247,0.2) !important;
-}
-button[class*="bg-primary"]:hover,
-.join-now-btn:hover,
-.deposit-nav-btn:hover {
-  box-shadow: 0 0 28px rgba(168,85,247,0.55), 0 4px 16px rgba(168,85,247,0.3) !important;
-  filter: brightness(1.1);
-}
-
-/* ── Cards — glassmorphism + violet border glow ── */
-[class*="rounded"][class*="border"],
-.card,
-[class*="bg-card"] {
-  backdrop-filter: blur(2px);
-}
-
-/* Subtle violet border glow on interactive cards */
-.lockly-game-card:hover .lockly-thumb {
-  box-shadow: 0 8px 24px rgba(168,85,247,0.3), 0 0 0 1px rgba(168,85,247,0.2) !important;
-}
-
-/* ── Sidebar active item glow ── */
-.casino-sidebar [aria-current="page"],
-.casino-sidebar [data-active="true"],
-.casino-sidebar .bg-sidebar-primary {
-  box-shadow: 0 0 12px rgba(168,85,247,0.25) inset,
-              0 0 1px rgba(168,85,247,0.4);
-}
-
-/* ── Inputs — focus violet glow ── */
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: none;
-  border-color: #A855F7 !important;
-  box-shadow: 0 0 0 3px rgba(168,85,247,0.18), 0 0 12px rgba(168,85,247,0.15) !important;
-}
-
-/* Dice & game inputs focus override */
-.dice-root input[type="text"]:focus,
-.dice-root input[type="number"]:focus {
-  box-shadow: 0 0 0 2px rgba(168,85,247,0.5) !important;
-}
-
-/* ── Nav buttons — violet hover glow ── */
-.lockly-nav-btn:hover {
-  background: #1a1035 !important;
-  border-color: rgba(168,85,247,0.45) !important;
-  color: #A855F7 !important;
-  box-shadow: 0 0 10px rgba(168,85,247,0.2);
-}
-
-/* ── GIP section accent bar — violet ── */
-.gip-section-heading::before {
-  background: linear-gradient(to bottom, #A855F7, rgba(168,85,247,0.3)) !important;
-}
-
-/* ── GIP panel hover border ── */
-.gip-panel:hover {
-  border-color: rgba(168,85,247,0.35) !important;
-  box-shadow: 0 0 16px rgba(168,85,247,0.08);
-}
-
-/* ── Scrollbar — violet tint ── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0A0A12;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(168,85,247,0.35);
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(168,85,247,0.6);
-}
-
-/* ── Recent win amounts ── success green stays ── */
-/* ── Rank glow override ── */
-[style*="--rank-glow"] {
-  animation: rankGlowPulse 2.5s ease-in-out infinite !important;
-}
-@keyframes rankGlowPulse {
-  0%, 100% { box-shadow: 0 0 18px rgba(168,85,247,0.2); }
-  50%       { box-shadow: 0 0 32px rgba(168,85,247,0.4); }
-}
-
-/* ── General violet neon glow for gold-accented SVG icons ── */
-svg[stroke="#A855F7"],
-svg[fill="#A855F7"] {
-  filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));
-}
-
-/* ── Mobile bottom nav active indicator ── */
-nav.mobile-bottom-nav button[style*="#A855F7"] {
-  filter: drop-shadow(0 0 6px rgba(168,85,247,.4));
-}
-
-/* ── Badge/notification pill — violet glow ── */
-[style*="background:#A855F7"],
-[style*='background: "#A855F7"'] {
-  box-shadow: 0 0 8px rgba(168,85,247,0.5);
-}
-
-/* ── Aff flip back panel ── */
-.aff-flip-back {
-  background: #0D0F1A !important;
-  border: 1px solid #2d1f52 !important;
-}
-
