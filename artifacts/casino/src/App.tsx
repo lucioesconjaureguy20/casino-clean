@@ -17243,29 +17243,29 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
             </div>
           </div>
         ) : (
-          <div style={{ paddingBottom:"28px", display:"flex", gap:"10px" }}>
+          <div style={{ paddingBottom:"28px", display:"flex", gap:"10px", flexWrap:"wrap" }}>
             {/* 18+ */}
-            <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", background:"#0b1120", border:"1px solid #1a2740", borderRadius:"8px", padding:"11px 18px" }}>
-              <div style={{ width:"26px", height:"26px", borderRadius:"50%", border:"2px solid #e53e3e", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                <span style={{ fontSize:"9px", fontWeight:900, color:"#e53e3e", letterSpacing:"-0.5px", lineHeight:1 }}>18+</span>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
+              <div style={{ width:"22px", height:"22px", borderRadius:"50%", border:"2px solid #e53e3e", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                <span style={{ fontSize:"8px", fontWeight:900, color:"#e53e3e", letterSpacing:"-0.5px", lineHeight:1 }}>18+</span>
               </div>
-              <span style={{ fontSize:"13px", fontWeight:600, color:"#7a90b0", whiteSpace:"nowrap" }}>{tl(lang, "badge18")}</span>
+              <span style={{ fontSize:"12px", fontWeight:600, color:"#607090" }}>{tl(lang, "badge18")}</span>
             </div>
             {/* Provably Fair */}
-            <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", background:"#0b1120", border:"1px solid #1a2740", borderRadius:"8px", padding:"11px 18px" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink:0 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="#2f9f5a" strokeWidth="1.8"/>
                 <path d="M8 12.5L10.5 15L16 9.5" stroke="#2f9f5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <span style={{ fontSize:"13px", fontWeight:600, color:"#7a90b0", whiteSpace:"nowrap" }}>{tl(lang, "badgeFair")}</span>
+              <span style={{ fontSize:"12px", fontWeight:600, color:"#607090" }}>{tl(lang, "badgeFair")}</span>
             </div>
             {/* Licensed */}
-            <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", background:"#0b1120", border:"1px solid #1a2740", borderRadius:"8px", padding:"11px 18px" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink:0 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0b1120", border:"1px solid #141f30", borderRadius:"6px", padding:"7px 14px" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2L3 6V12C3 16.418 7.03 20.657 12 22C16.97 20.657 21 16.418 21 12V6L12 2Z" stroke="#e07b20" strokeWidth="1.8" strokeLinejoin="round"/>
                 <path d="M9 12L11 14L15 10" stroke="#e07b20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <span style={{ fontSize:"13px", fontWeight:600, color:"#7a90b0", whiteSpace:"nowrap" }}>{tl(lang, "badgeLicensed")}</span>
+              <span style={{ fontSize:"12px", fontWeight:600, color:"#607090" }}>{tl(lang, "badgeLicensed")}</span>
             </div>
           </div>
         )}
