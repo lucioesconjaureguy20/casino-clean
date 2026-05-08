@@ -5432,7 +5432,8 @@ const RISK_REASON: Record<string,string> = {
   same_tx:            "TX hash duplicado",
   timing_amount:      "Timing + monto similar",
   affiliate_ip_device:"Afiliado + IP/Dispositivo",
-  shared_root_wallet: "Wallet raíz compartida",
+  shared_root_wallet:      "Wallet raíz compartida",
+  shared_withdrawal_wallet:"Wallet retiro compartida",
 };
 
 function riskColor(score: number): string {

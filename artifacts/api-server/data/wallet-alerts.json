@@ -1,4 +1,94 @@
 {
-  "alerts": [],
-  "analyzedAt": "2026-05-08T02:42:29.824Z"
+  "alerts": [
+    {
+      "id": "6z4wr15e",
+      "severity": "medium",
+      "message": "Patrón timing+monto: pepegrillo y pajin123 en 8min (BEP20)",
+      "users": [
+        "pepegrillo",
+        "pajin123"
+      ],
+      "clusterId": "506ui5tx",
+      "detectedAt": "2026-05-08T02:57:04.823Z",
+      "resolved": false
+    },
+    {
+      "id": "tdc1x49d",
+      "severity": "medium",
+      "message": "Patrón timing+monto: pepegrillo y toji321 en 57min (BEP20)",
+      "users": [
+        "pepegrillo",
+        "toji321"
+      ],
+      "clusterId": "1g59ucgb",
+      "detectedAt": "2026-05-08T02:57:04.823Z",
+      "resolved": false
+    },
+    {
+      "id": "l27qv00m",
+      "severity": "high",
+      "message": "Wallet de retiro 0x841507f14dc4… usada por 4 cuentas (anuel11, koala1, elratongomez, tomaskastelic12@outl…)",
+      "users": [
+        "anuel11",
+        "koala1",
+        "elratongomez",
+        "tomaskastelic12@outl"
+      ],
+      "clusterId": "jvhuj1nr",
+      "detectedAt": "2026-05-08T02:57:05.064Z",
+      "resolved": false
+    },
+    {
+      "id": "fsotl6lp",
+      "severity": "high",
+      "message": "Wallet de retiro 0x030ee1eabeee… usada por 4 cuentas (emofishy, claudia, mogulprime, claudioinglese…)",
+      "users": [
+        "emofishy",
+        "claudia",
+        "mogulprime",
+        "claudioinglese"
+      ],
+      "clusterId": "hnmlslj0",
+      "detectedAt": "2026-05-08T02:57:05.064Z",
+      "resolved": false
+    },
+    {
+      "id": "7rjuk6pd",
+      "severity": "high",
+      "message": "Wallet de retiro 0xfd8fa4f33153… usada por 3 cuentas (striker, portalneves091, marin…)",
+      "users": [
+        "striker",
+        "portalneves091",
+        "marin"
+      ],
+      "clusterId": "xl9ezm6a",
+      "detectedAt": "2026-05-08T02:57:05.064Z",
+      "resolved": false
+    },
+    {
+      "id": "cw632vku",
+      "severity": "high",
+      "message": "Wallet de retiro 0xffd72cade5e6… usada por 2 cuentas (palman100iq, fazerfanberlin…)",
+      "users": [
+        "palman100iq",
+        "fazerfanberlin"
+      ],
+      "clusterId": "lhc9v5gg",
+      "detectedAt": "2026-05-08T02:57:05.064Z",
+      "resolved": false
+    },
+    {
+      "id": "vsblnvtz",
+      "severity": "high",
+      "message": "Wallet de retiro 0xab0398fd1341… usada por 2 cuentas (mantecas123, chupeteenorto…)",
+      "users": [
+        "mantecas123",
+        "chupeteenorto"
+      ],
+      "clusterId": "clv55cds",
+      "detectedAt": "2026-05-08T02:57:05.065Z",
+      "resolved": false
+    }
+  ],
+  "analyzedAt": "2026-05-08T02:57:05.065Z"
 }

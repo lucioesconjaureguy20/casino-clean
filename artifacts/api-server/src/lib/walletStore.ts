@@ -106,7 +106,7 @@ export async function analyzeWallets(force = false): Promise<WalletReport> {
       for (let i = 0; i < userIds.length; i += CHUNK) {
         const chunk = userIds.slice(i, i + CHUNK);
         const pr = await sbAdmin(
-          `profiles?id=in.(${chunk.join(",")})&select=id,username,ref_code_used`,
+          `profiles?id=in.(${chunk.join(",")})&select=id,username`,
         );
         if (pr.ok) {
           const profiles: any[] = await pr.json();
@@ -350,6 +350,138 @@ export async function analyzeWallets(force = false): Promise<WalletReport> {
         detectedAt: new Date().toISOString(), resolved: false,
       });
     }
+  }
+
+  // ── 3f. Cluster by shared withdrawal destination wallet ──────────────────────
+  try {
+    const wdR = await sbAdmin(
+      "withdrawals?status=in.(paid,pending,approved)&wallet=neq.&order=created_at.desc&limit=2000&select=id,user_id,amount,currency,wallet,status,created_at",
+    );
+    if (wdR.ok) {
+      const wdRows: any[] = await wdR.json();
+
+      // Build userId → username map from deposits (already fetched) + extra lookup
+      const knownUserMap: Record<string, string> = {};
+      for (const d of deposits) knownUserMap[d.userId] = d.username;
+
+      // Fetch usernames for any user_ids not already in deposits
+      const missingIds = [...new Set(wdRows.map((w: any) => w.user_id as string))].filter(id => !knownUserMap[id]);
+      for (let i = 0; i < missingIds.length; i += 80) {
+        const chunk = missingIds.slice(i, i + 80);
+        const pr = await sbAdmin(`profiles?id=in.(${chunk.join(",")})&select=id,username`);
+        if (pr.ok) {
+          const rows: any[] = await pr.json();
+          for (const p of rows) knownUserMap[p.id] = p.username ?? p.id;
+        }
+      }
+
+      // Fetch referrer info for all involved users
+      const wdUsernames = [...new Set(wdRows.map((w: any) => knownUserMap[w.user_id] ?? w.user_id))].filter(Boolean);
+      const referrerMap: Record<string, string> = {};
+      for (let i = 0; i < wdUsernames.length; i += 80) {
+        const chunk = wdUsernames.slice(i, i + 80);
+        const param = `(${chunk.map(u => `"${encodeURIComponent(u)}"`).join(",")})`;
+        const rr = await sbAdmin(`affiliate_referrals?referred_username=in.${param}&select=referred_username,referrer_username`);
+        if (rr.ok) {
+          const rows: any[] = await rr.json();
+          for (const r of rows) referrerMap[r.referred_username] = r.referrer_username;
+        }
+      }
+
+      // Group by withdrawal wallet (case-insensitive)
+      const byWallet = new Map<string, { userId: string; username: string; amount: number; currency: string; status: string; createdAt: string }[]>();
+      for (const w of wdRows) {
+        if (!w.wallet || w.wallet.length < 10) continue;
+        const key = (w.wallet as string).toLowerCase();
+        if (!byWallet.has(key)) byWallet.set(key, []);
+        byWallet.get(key)!.push({
+          userId:    w.user_id,
+          username:  knownUserMap[w.user_id] ?? w.user_id,
+          amount:    parseFloat(w.amount ?? 0),
+          currency:  w.currency ?? "",
+          status:    w.status ?? "",
+          createdAt: w.created_at ?? "",
+        });
+      }
+
+      for (const [wallet, entries] of byWallet) {
+        const uniqueUserIds = [...new Set(entries.map(e => e.userId))];
+        if (uniqueUserIds.length < 2) continue;
+
+        const pairKey = uniqueUserIds.sort().join("|") + ":wd:" + wallet;
+        if (seenPairs.has(pairKey)) continue;
+        seenPairs.add(pairKey);
+
+        const usernames = uniqueUserIds.map(uid => entries.find(e => e.userId === uid)?.username ?? uid);
+        const totalUsd  = entries.reduce((s, e) => s + toUsd(e.amount, e.currency), 0);
+
+        const factors: RiskFactor[] = [
+          { label: `Wallet de retiro ${wallet.slice(0, 14)}… compartida por ${uniqueUserIds.length} cuentas`, score: 90 },
+        ];
+        let score = 90;
+
+        // Same referrer amplifies score
+        const referrers = new Set(usernames.map(u => referrerMap[u]).filter(Boolean));
+        if (referrers.size === 1) {
+          const ref = [...referrers][0];
+          factors.push({ label: `Todos referidos por el mismo afiliado: ${ref}`, score: 50 });
+          score += 50;
+        } else if (referrers.size > 0 && referrers.size < uniqueUserIds.length) {
+          factors.push({ label: `Referidos por afiliados comunes`, score: 25 });
+          score += 25;
+        }
+
+        // IP overlap
+        const allIpsWd = usernames.flatMap(u => userIpMap.get(u) ?? []);
+        if (new Set(allIpsWd).size < allIpsWd.length) { factors.push({ label: "IP compartida", score: 40 }); score += 40; }
+
+        // Device overlap
+        const allDevsWd = usernames.flatMap(u => userDevMap.get(u) ?? []);
+        if (new Set(allDevsWd).size < allDevsWd.length) { factors.push({ label: "Mismo dispositivo", score: 40 }); score += 40; }
+
+        // Count of affected accounts
+        if (uniqueUserIds.length >= 4) { factors.push({ label: `${uniqueUserIds.length} cuentas distintas`, score: 30 }); score += 30; }
+        else if (uniqueUserIds.length === 3) { factors.push({ label: "3 cuentas distintas", score: 15 }); score += 15; }
+
+        // Synthesize fake DepositNode entries so the cluster renders correctly
+        const fakeDeposits: DepositNode[] = entries.map(e => ({
+          depositId: 0,
+          userId:    e.userId,
+          username:  e.username,
+          address:   wallet,
+          txHash:    "",
+          network:   "withdrawal",
+          currency:  e.currency,
+          amount:    e.amount,
+          amountUsd: toUsd(e.amount, e.currency),
+          createdAt: e.createdAt,
+          refCode:   referrerMap[e.username] ?? "",
+        }));
+
+        const cluster: WalletCluster = {
+          id: uid(), reason: "shared_withdrawal_wallet",
+          users:       usernames,
+          deposits:    fakeDeposits,
+          riskScore:   Math.min(score, 220),
+          riskFactors: factors,
+          totalUsd,
+          detectedAt: new Date().toISOString(),
+        };
+        clusters.push(cluster);
+
+        alerts.push({
+          id: uid(),
+          severity: score >= 130 ? "high" : "medium",
+          message: `Wallet de retiro ${wallet.slice(0, 14)}… usada por ${uniqueUserIds.length} cuentas (${usernames.join(", ").slice(0, 60)}…)`,
+          users:      usernames,
+          clusterId:  cluster.id,
+          detectedAt: new Date().toISOString(),
+          resolved:   false,
+        });
+      }
+    }
+  } catch (err) {
+    console.error("[wallet-store] withdrawal wallet analysis error:", err);
   }
 
   // ── 3e. Root wallet clustering (shared blockchain ancestor) ─────────────────
