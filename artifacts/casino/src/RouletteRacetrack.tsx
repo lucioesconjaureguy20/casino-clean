@@ -12,12 +12,12 @@ const ORPHELINS = new Set([1,20,14,31,9,17,34,6]);
 
 // ── Chip helpers (mirrors RouletteGame's CHIP_META / getBetChipMeta / fmtBetChipLabel) ──
 const RT_CHIP: Record<string, { bg: string; border: string; txt: string }> = {
-  "0.01": { bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
-  "0.1":  { bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
+  "0.01": { bg:"#ddd0f8", border:"#9ca3af", txt:"#0D0F1A" },
+  "0.1":  { bg:"#A855F7", border:"#A855F7", txt:"#0D0F1A" },
   "1":    { bg:"#15803d", border:"#22c55e", txt:"#fff"    },
-  "5":    { bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
-  "10":   { bg:"#111827", border:"#f4a91f", txt:"#f4a91f" },
-  "100":  { bg:"#6d28d9", border:"#a78bfa", txt:"#fff"    },
+  "5":    { bg:"#22D3EE", border:"#22D3EE", txt:"#fff"    },
+  "10":   { bg:"#0D0F1A", border:"#A855F7", txt:"#A855F7" },
+  "100":  { bg:"#7C3AED", border:"#a78bfa", txt:"#fff"    },
   "500":  { bg:"#0f766e", border:"#2dd4bf", txt:"#fff"    },
   "1000": { bg:"#b91c1c", border:"#f87171", txt:"#fff"    },
 };
@@ -47,8 +47,8 @@ function getNeighbors(num: number, n: number): number[] {
 function numBg(n: number, active: boolean, win: boolean): string {
   if (win)     return "#22ee66";
   if (n === 0) return active ? "#22c55e" : "#16a34a";
-  if (RED_SET.has(n)) return active ? "#ef4444" : "#c41c1c";
-  return active ? "#4b5563" : "#141420";
+  if (RED_SET.has(n)) return active ? "#ef4444" : "#FF3B5C";
+  return active ? "#6b5f8c" : "#0A0A12";
 }
 
 // ── Stadium geometry ──────────────────────────────────────────────────────────
@@ -257,7 +257,7 @@ export function RouletteRacetrack({
       {/* ── Neighbor count control ─────────────────────────────────────── */}
       <div style={{
         display: "flex", alignItems: "center",
-        background: "#0e1320",
+        background: "#0A0A12",
         border: "1px solid rgba(255,255,255,0.13)",
         borderRadius: 6, overflow: "hidden",
       }}>
@@ -266,7 +266,7 @@ export function RouletteRacetrack({
           disabled={isSpinning || neighborN <= 1}
           style={{
             padding: "5px 15px", background: "none", border: "none",
-            color: neighborN > 1 ? "#e2e8f0" : "#2a3040",
+            color: neighborN > 1 ? "#e2d4f8" : "#1e1535",
             fontSize: 17, fontWeight: 700, lineHeight: 1,
             cursor: neighborN > 1 && !isSpinning ? "pointer" : "default",
             fontFamily: "'Inter', Arial, sans-serif",
@@ -274,7 +274,7 @@ export function RouletteRacetrack({
         >−</button>
 
         <span style={{
-          padding: "5px 14px", fontSize: 13, fontWeight: 700, color: "#f59e0b",
+          padding: "5px 14px", fontSize: 13, fontWeight: 700, color: "#A855F7",
           borderLeft: "1px solid rgba(255,255,255,0.08)",
           borderRight: "1px solid rgba(255,255,255,0.08)",
           minWidth: 24, textAlign: "center",
@@ -288,7 +288,7 @@ export function RouletteRacetrack({
           disabled={isSpinning || neighborN >= 8}
           style={{
             padding: "5px 15px", background: "none", border: "none",
-            color: neighborN < 8 ? "#e2e8f0" : "#2a3040",
+            color: neighborN < 8 ? "#e2d4f8" : "#1e1535",
             fontSize: 17, fontWeight: 700, lineHeight: 1,
             cursor: neighborN < 8 && !isSpinning ? "pointer" : "default",
             fontFamily: "'Inter', Arial, sans-serif",
@@ -313,7 +313,7 @@ export function RouletteRacetrack({
           <path
             d={`${OUTER_PATH} ${INNER_PATH}`}
             fillRule="evenodd"
-            fill="#0e1320"
+            fill="#0A0A12"
           />
 
           {/* ── Arc-segment cells ── */}
@@ -411,8 +411,8 @@ export function RouletteRacetrack({
           />
 
           {/* ── Ring border on top of cells ── */}
-          <path d={OUTER_PATH} fill="none" stroke="#1e1e28" strokeWidth={1} />
-          <path d={INNER_PATH} fill="none" stroke="#1e1e28" strokeWidth={1} />
+          <path d={OUTER_PATH} fill="none" stroke="#130d26" strokeWidth={1} />
+          <path d={INNER_PATH} fill="none" stroke="#130d26" strokeWidth={1} />
 
           {/* ── Interior sections — SVG-native shapes with exact ring geometry ── */}
           {sections.map(({ id, label, path, lx, nums }) => {
@@ -429,7 +429,7 @@ export function RouletteRacetrack({
                 {/* Section fill */}
                 <path
                   d={path}
-                  fill={active ? "rgba(59,82,120,0.45)" : "#0e1320"}
+                  fill={active ? "rgba(59,82,120,0.45)" : "#0A0A12"}
                   shapeRendering="geometricPrecision"
                 />
                 {/* Label */}
@@ -454,11 +454,11 @@ export function RouletteRacetrack({
           {/* J0 | VECINOS: small arc (same J0_R) */}
           <path
             d={`M ${F(X1)} ${F(CY-IRI)} A ${F(J0_R)} ${F(J0_R)} 0 0 1 ${F(X1)} ${F(CY+IRI)}`}
-            fill="none" stroke="#1e2d48" strokeWidth={0.5}
+            fill="none" stroke="#1a1035" strokeWidth={0.5}
             shapeRendering="geometricPrecision"
           />
-          <line x1={X2} y1={CY-IRI} x2={X2} y2={CY+IRI} stroke="#1e2d48" strokeWidth={0.5} />
-          <line x1={X3T} y1={CY-IRI} x2={X3B} y2={CY+IRI} stroke="#1e2d48" strokeWidth={0.5} />
+          <line x1={X2} y1={CY-IRI} x2={X2} y2={CY+IRI} stroke="#1a1035" strokeWidth={0.5} />
+          <line x1={X3T} y1={CY-IRI} x2={X3B} y2={CY+IRI} stroke="#1a1035" strokeWidth={0.5} />
         </svg>
       </div>
 

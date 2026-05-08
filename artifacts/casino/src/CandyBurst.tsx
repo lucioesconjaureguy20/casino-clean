@@ -19,7 +19,7 @@ const SYMBOL_STYLE: Record<string,{bg:string;shadow:string;name:string;tier:stri
   "🍒": {bg:"linear-gradient(145deg,#e53935,#b71c1c)",shadow:"#e53935",name:"Cereza",   tier:"bajo"},
   [SCATTER]: {bg:"linear-gradient(145deg,#ffd700,#ff8c00)",shadow:"#ffd700",name:"Scatter",tier:"especial"},
 };
-const TIER_COLOR:Record<string,string>={premium:"#f4a91f",medio:"#22ee66",bajo:"#1a9fff",especial:"#ff69b4"};
+const TIER_COLOR:Record<string,string>={premium:"#A855F7",medio:"#22ee66",bajo:"#1a9fff",especial:"#ff69b4"};
 
 // ─── Weights — scatter weight 6 → ~1.5 per spin → bonus ~every 12-18 spins ──
 const BASE_WEIGHTS:Record<string,number>={
@@ -48,7 +48,7 @@ function getPayout(sym:string,size:number):number {
 // ─── Multipliers ──────────────────────────────────────────────────────────────
 const MULT_VALUES=[2,5,10,20,50] as const;
 const MULT_WEIGHTS=[40,25,15,12,8];
-const MULT_COLOR:Record<number,string>={2:"#00e5ff",5:"#22ee66",10:"#f4a91f",20:"#ff69b4",50:"#ff1493"};
+const MULT_COLOR:Record<number,string>={2:"#00e5ff",5:"#22ee66",10:"#A855F7",20:"#ff69b4",50:"#ff1493"};
 function randomMult():number{
   let r=Math.random()*100;
   for(let i=0;i<MULT_VALUES.length;i++){r-=MULT_WEIGHTS[i];if(r<=0)return MULT_VALUES[i];}
@@ -129,7 +129,7 @@ function InfoPanel({bet,onClose,lang}:{bet:number;onClose:()=>void;lang?:string}
           <div style={{flex:1}}><div style={{fontWeight:900,fontSize:"14px",color:"#fff"}}>Candy Burst</div><div style={{fontSize:"9px",color:"#64748b"}}>{T("cbSubtitle")}</div></div>
           <button onClick={onClose} style={{background:"#2a3448",color:"#94a3b8",border:"none",borderRadius:"6px",padding:"5px 10px",cursor:"pointer",fontWeight:700}}>✕</button>
         </div>
-        <div style={{display:"flex",padding:"6px 10px",gap:"3px",background:"#0a1018",borderBottom:"1px solid #1a2438"}}>
+        <div style={{display:"flex",padding:"6px 10px",gap:"3px",background:"#0a1018",borderBottom:"1px solid #1a1035"}}>
           <TB id="payouts" label={<><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.6" style={{verticalAlign:"middle",marginRight:3}}><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2.5 2.5"/></svg>{T("cbPaytable")}</>}/><TB id="bonus" label={<><img loading="lazy" decoding="async" src={assetUrl(`${import.meta.env.BASE_URL}emoji-freespins.webp`)} style={{width:13,height:13,objectFit:"contain",verticalAlign:"middle",marginRight:3}}/>{T("cbBonus")}</>}/><TB id="howto" label={<><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.6" style={{verticalAlign:"middle",marginRight:3}}><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.5v.5"/></svg>{T("cbHowToPlay")}</>}/>
         </div>
         <div style={{padding:"12px 12px 18px"}}>
@@ -137,22 +137,22 @@ function InfoPanel({bet,onClose,lang}:{bet:number;onClose:()=>void;lang?:string}
             <div style={{fontSize:"9px",color:"#364058",fontWeight:700,letterSpacing:".6px",marginBottom:"8px"}}>{T("cbSymbols")}</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"5px",marginBottom:"12px"}}>
               {[...syms,SCATTER].map(sym=>{const i=SYMBOL_STYLE[sym];return(
-                <div key={sym} style={{display:"flex",alignItems:"center",gap:"7px",background:"#0d1420",borderRadius:"9px",padding:"5px 8px",border:"1px solid #1a2438"}}>
+                <div key={sym} style={{display:"flex",alignItems:"center",gap:"7px",background:"#0d1420",borderRadius:"9px",padding:"5px 8px",border:"1px solid #1a1035"}}>
                   <div style={{width:"30px",height:"30px",borderRadius:"6px",background:i.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"16px",flexShrink:0,boxShadow:`0 0 7px ${i.shadow}44`}}>{sym}</div>
                   <div><div style={{fontSize:"10px",fontWeight:700,color:"#d9e0ea"}}>{i.name}</div><div style={{fontSize:"8px",fontWeight:700,color:TIER_COLOR[i.tier],textTransform:"uppercase"}}>{i.tier}</div></div>
                 </div>
               );})}
             </div>
             <div style={{fontSize:"9px",color:"#364058",fontWeight:700,letterSpacing:".6px",marginBottom:"6px"}}>{T("cbMinCluster")}</div>
-            <div style={{background:"#0a1018",borderRadius:"9px",overflow:"hidden",border:"1px solid #1a2438"}}>
-              <div style={{display:"grid",gridTemplateColumns:"auto repeat(7,1fr)",borderBottom:"1px solid #1a2438"}}>
+            <div style={{background:"#0a1018",borderRadius:"9px",overflow:"hidden",border:"1px solid #1a1035"}}>
+              <div style={{display:"grid",gridTemplateColumns:"auto repeat(7,1fr)",borderBottom:"1px solid #1a1035"}}>
                 <div style={{padding:"5px 6px",fontSize:"8px",color:"#364058",fontWeight:700}}>{T("cbSym")}</div>
                 {sizes.map(s=><div key={s} style={{padding:"5px 3px",fontSize:"9px",color:"#94a3b8",fontWeight:700,textAlign:"center"}}>{s}+</div>)}
               </div>
               {syms.map(sym=>{const i=SYMBOL_STYLE[sym];return(
                 <div key={sym} style={{display:"grid",gridTemplateColumns:"auto repeat(7,1fr)",borderBottom:"1px solid #0d1520",alignItems:"center"}}>
                   <div style={{padding:"5px 6px"}}><div style={{width:"22px",height:"22px",borderRadius:"5px",background:i.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"12px"}}>{sym}</div></div>
-                  {sizes.map(s=>{const m=getPayout(sym,s);const col=m>=5?"#f4a91f":m>=1?"#22ee66":m>0?"#1a9fff":"#2a3a52";return(
+                  {sizes.map(s=>{const m=getPayout(sym,s);const col=m>=5?"#A855F7":m>=1?"#22ee66":m>0?"#1a9fff":"#2a3a52";return(
                     <div key={s} style={{padding:"4px 2px",textAlign:"center"}}>
                       {m>0?<><div style={{fontSize:"9px",fontWeight:800,color:col}}>×{m}</div><div style={{fontSize:"7px",color:"#364058"}}>${(bet*m).toFixed(m<1?2:0)}</div></>:<span style={{color:"#2a3a52",fontSize:"9px"}}>—</span>}
                     </div>
@@ -161,20 +161,20 @@ function InfoPanel({bet,onClose,lang}:{bet:number;onClose:()=>void;lang?:string}
               );})}
               <div style={{display:"grid",gridTemplateColumns:"auto 1fr",alignItems:"center",padding:"6px"}}>
                 <div style={{width:"22px",height:"22px",borderRadius:"5px",background:SYMBOL_STYLE[SCATTER].bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"12px",marginRight:"8px"}}>{SCATTER}</div>
-                <div style={{fontSize:"10px",fontWeight:700,color:"#f4a91f"}}>{T("cbScatter")}</div>
+                <div style={{fontSize:"10px",fontWeight:700,color:"#A855F7"}}>{T("cbScatter")}</div>
               </div>
             </div>
           </>}
           {tab==="bonus"&&<>
-            <div style={{background:"linear-gradient(135deg,#1a100a,#2a1a08)",border:"1px solid #f4a91f44",borderRadius:"10px",padding:"12px",marginBottom:"10px"}}>
-              <div style={{fontSize:"11px",fontWeight:700,color:"#f4a91f",marginBottom:"8px"}}>{T("cbScatterTitle")}</div>
+            <div style={{background:"linear-gradient(135deg,#1a100a,#2a1a08)",border:"1px solid #A855F744",borderRadius:"10px",padding:"12px",marginBottom:"10px"}}>
+              <div style={{fontSize:"11px",fontWeight:700,color:"#A855F7",marginBottom:"8px"}}>{T("cbScatterTitle")}</div>
               <div style={{display:"flex",gap:"5px",marginBottom:"8px",justifyContent:"center"}}>
                 {[1,2,3,4].map(n=><div key={n} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px"}}>
                   <div style={{width:"34px",height:"34px",borderRadius:"9px",background:n<4?"linear-gradient(145deg,#ffd700,#ff8c00)":"linear-gradient(145deg,#ffd700,#ff4400)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",border:n===4?"2px solid #fff":"2px solid transparent",boxShadow:n===4?"0 0 12px #ffd700":undefined}}>💎</div>
                   <div style={{fontSize:"9px",fontWeight:700,color:n<4?"#64748b":"#ffd700"}}>{n===4?"⭐":n}</div>
                 </div>)}
               </div>
-              <div style={{fontSize:"11px",color:"#94a3b8",textAlign:"center"}}>{T("cbFourPlus")} <strong style={{color:"#f4a91f"}}>{T("cbFreeSpinsLbl")}</strong></div>
+              <div style={{fontSize:"11px",color:"#94a3b8",textAlign:"center"}}>{T("cbFourPlus")} <strong style={{color:"#A855F7"}}>{T("cbFreeSpinsLbl")}</strong></div>
             </div>
             <div style={{background:"linear-gradient(135deg,#0e0a1a,#1a1030)",border:"1px solid #7c3aed44",borderRadius:"10px",padding:"12px",marginBottom:"10px"}}>
               <div style={{fontSize:"11px",fontWeight:700,color:"#a78bfa",marginBottom:"8px"}}>{T("cbMultTitle")}</div>
@@ -191,7 +191,7 @@ function InfoPanel({bet,onClose,lang}:{bet:number;onClose:()=>void;lang?:string}
                   <span style={{color:"#364058"}}>×</span>
                   <span style={{background:MULT_COLOR[20]+"22",border:`1px solid ${MULT_COLOR[20]}`,borderRadius:"5px",padding:"1px 6px",color:MULT_COLOR[20],fontWeight:700,fontSize:"11px"}}>×20</span>
                   <span style={{color:"#364058"}}>=</span>
-                  <span style={{color:"#f4a91f",fontWeight:900,fontSize:"13px"}}>×200</span>
+                  <span style={{color:"#A855F7",fontWeight:900,fontSize:"13px"}}>×200</span>
                   <span style={{color:"#64748b",fontSize:"9px"}}>{T("cbOnWinnings")}</span>
                 </div>
               </div>
@@ -199,23 +199,23 @@ function InfoPanel({bet,onClose,lang}:{bet:number;onClose:()=>void;lang?:string}
             <div style={{background:"linear-gradient(135deg,#0a1a10,#0d2018)",border:"1px solid #22ee6644",borderRadius:"10px",padding:"12px"}}>
               <div style={{fontSize:"11px",fontWeight:700,color:"#22ee66",marginBottom:"6px"}}>{T("cbBuyBonusTitle")}</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",fontSize:"10px",color:"#94a3b8"}}>
-                <div><strong style={{color:"#f4a91f"}}>{T("cbFreeSpinsName")}</strong><br/>{T("cbBetX75")}<br/>{T("cbFreeNormal")}</div>
+                <div><strong style={{color:"#A855F7"}}>{T("cbFreeSpinsName")}</strong><br/>{T("cbBetX75")}<br/>{T("cbFreeNormal")}</div>
                 <div><strong style={{color:"#ff69b4"}}>{T("cbSuperName")}</strong><br/>{T("cbBetX250")}<br/>{T("cbFSMultGuarnt")}</div>
               </div>
             </div>
           </>}
           {tab==="howto"&&<>
-            <div style={{background:"#0d1420",borderRadius:"10px",padding:"10px",marginBottom:"8px",border:"1px solid #1a2438"}}>
+            <div style={{background:"#0d1420",borderRadius:"10px",padding:"10px",marginBottom:"8px",border:"1px solid #1a1035"}}>
               <div style={{fontSize:"10px",fontWeight:700,color:"#1a9fff",marginBottom:"6px"}}>{T("cbClusterPays")}</div>
               <div style={{fontSize:"10px",color:"#94a3b8",lineHeight:1.6}}>{T("cbPaidWhen")} <strong style={{color:"#fff"}}>{T("cbClusterDesc")}</strong> {T("cbNoPaylines")}</div>
             </div>
-            <div style={{background:"#0d1420",borderRadius:"10px",padding:"10px",marginBottom:"8px",border:"1px solid #1a2438"}}>
+            <div style={{background:"#0d1420",borderRadius:"10px",padding:"10px",marginBottom:"8px",border:"1px solid #1a1035"}}>
               <div style={{fontSize:"10px",fontWeight:700,color:"#22ee66",marginBottom:"6px"}}>{T("cbTumbleTitle")}</div>
               <div style={{fontSize:"10px",color:"#94a3b8",lineHeight:1.6}}>{T("cbTumbleDesc")}</div>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"8px"}}>
-              {[{label:"RTP",val:"96.5%",color:"#f4a91f"},{label:T("cbVolatility"),val:T("cbVolatilityHigh"),color:"#ff5b5b"},{label:"Grid",val:"6 × 5",color:"#1a9fff"},{label:T("cbClusterMin"),val:"5",color:"#22ee66"}].map(({label,val,color})=>(
-                <div key={label} style={{background:"#0a1018",borderRadius:"8px",padding:"8px",border:"1px solid #1a2438",textAlign:"center"}}>
+              {[{label:"RTP",val:"96.5%",color:"#A855F7"},{label:T("cbVolatility"),val:T("cbVolatilityHigh"),color:"#ff5b5b"},{label:"Grid",val:"6 × 5",color:"#1a9fff"},{label:T("cbClusterMin"),val:"5",color:"#22ee66"}].map(({label,val,color})=>(
+                <div key={label} style={{background:"#0a1018",borderRadius:"8px",padding:"8px",border:"1px solid #1a1035",textAlign:"center"}}>
                   <div style={{fontSize:"9px",color:"#64748b",fontWeight:700}}>{label}</div>
                   <div style={{fontSize:"14px",fontWeight:900,color,margin:"3px 0"}}>{val}</div>
                 </div>
@@ -503,8 +503,8 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
           100% { transform:scale(1) translateY(0); opacity:1; }
         }
         @keyframes cbBanner {
-          0%,100% { text-shadow:0 0 20px #f4a91f, 0 0 40px #ff8c00; }
-          50%     { text-shadow:0 0 40px #f4a91f, 0 0 80px #ff8c00, 0 0 120px #ff4400; }
+          0%,100% { text-shadow:0 0 20px #A855F7, 0 0 40px #ff8c00; }
+          50%     { text-shadow:0 0 40px #A855F7, 0 0 80px #ff8c00, 0 0 120px #ff4400; }
         }
         @keyframes cbFSGlow {
           0%,100% { box-shadow:0 0 30px rgba(124,58,237,.4), inset 0 0 40px rgba(124,58,237,.05); }
@@ -537,8 +537,8 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
       }}>
 
         {/* ── Header bar ── */}
-        <div style={{display:"flex",alignItems:"center",gap:"12px",padding:"10px 20px",background:"#0e1826",borderBottom:"1px solid #1a2438",flexShrink:0}}>
-          <button onClick={onBack} style={{background:"#131a28",border:"1px solid #252f45",color:"#8090b0",cursor:"pointer",borderRadius:"8px",width:"36px",height:"36px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+        <div style={{display:"flex",alignItems:"center",gap:"12px",padding:"10px 20px",background:"#0D0F1A",borderBottom:"1px solid #1a1035",flexShrink:0}}>
+          <button onClick={onBack} style={{background:"#131a28",border:"1px solid #1e1535",color:"#9b8bc4",cursor:"pointer",borderRadius:"8px",width:"36px",height:"36px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
           <div style={{fontWeight:900,fontSize:"15px",letterSpacing:"1.5px",color:"#fff"}}>🍭 CANDY BURST</div>
           {inFS&&(
             <div style={{display:"flex",alignItems:"center",gap:"4px",background:"linear-gradient(135deg,#4c1d95,#7c3aed)",borderRadius:"8px",padding:"3px 8px",animation:"cbPulse 1s ease infinite"}}>
@@ -549,15 +549,15 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
               </div>
             </div>
           )}
-          <div style={{marginLeft:"auto",fontSize:"12px",color:"#5a6a88",fontWeight:700}}>{T("manderOriginals")}</div>
+          <div style={{marginLeft:"auto",fontSize:"12px",color:"#7c6d9e",fontWeight:700}}>{T("manderOriginals")}</div>
         </div>
 
         {/* ── TOP BAR: banner ── */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"3px 6px",flexShrink:0,background:"linear-gradient(180deg,#0c1020,transparent)"}}>
-          <div style={{fontSize:"clamp(10px,2.8vw,13px)",fontWeight:900,color:"#f4a91f",animation:"cbBanner 2s ease-in-out infinite",letterSpacing:".3px"}}>
+          <div style={{fontSize:"clamp(10px,2.8vw,13px)",fontWeight:900,color:"#A855F7",animation:"cbBanner 2s ease-in-out infinite",letterSpacing:".3px"}}>
             {T("cbGaneHasta")} <span style={{color:"#fff"}}>200×</span> {T("cbApuesta")}
           </div>
-          {!inFS&&<div style={{fontSize:"11px",fontWeight:800,color:"#f4a91f"}}>${balance.toFixed(2)}</div>}
+          {!inFS&&<div style={{fontSize:"11px",fontWeight:800,color:"#A855F7"}}>${balance.toFixed(2)}</div>}
         </div>
 
         {/* ── MIDDLE: left panel + grid ── */}
@@ -568,7 +568,7 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
 
             {/* Buy Free Spins */}
             <button onClick={()=>!spinning&&buyBonus(false)} disabled={spinning||balance<bet*75} style={{
-              background:spinning||balance<bet*75?"#1a2438":"linear-gradient(160deg,#9d1448,#e91e8c)",
+              background:spinning||balance<bet*75?"#1a1035":"linear-gradient(160deg,#9d1448,#e91e8c)",
               border:spinning||balance<bet*75?"1px solid #2a3448":"1px solid #f472b6",
               borderRadius:"8px",padding:"5px 4px",cursor:spinning||balance<bet*75?"not-allowed":"pointer",
               opacity:spinning||balance<bet*75?.5:1,textAlign:"center",
@@ -583,7 +583,7 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
 
             {/* Buy Super Free Spins */}
             <button onClick={()=>!spinning&&buyBonus(true)} disabled={spinning||balance<bet*250} style={{
-              background:spinning||balance<bet*250?"#1a2438":"linear-gradient(160deg,#3b0764,#7c3aed)",
+              background:spinning||balance<bet*250?"#1a1035":"linear-gradient(160deg,#3b0764,#7c3aed)",
               border:spinning||balance<bet*250?"1px solid #2a3448":"1px solid #a78bfa",
               borderRadius:"8px",padding:"5px 4px",cursor:spinning||balance<bet*250?"not-allowed":"pointer",
               opacity:spinning||balance<bet*250?.5:1,textAlign:"center",
@@ -599,15 +599,15 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
             {/* Bet selector */}
             <div style={{background:"#0d1420",border:"1px solid #1e2a3e",borderRadius:"8px",padding:"5px 4px",textAlign:"center",flexShrink:0}}>
               <div style={{fontSize:"7px",color:"#4a5a78",fontWeight:700}}>{T("cbApuesta")}</div>
-              <div style={{fontSize:"15px",fontWeight:900,color:"#f4a91f",lineHeight:1.1}}>${bet<1?bet:Math.round(bet)}</div>
+              <div style={{fontSize:"15px",fontWeight:900,color:"#A855F7",lineHeight:1.1}}>${bet<1?bet:Math.round(bet)}</div>
               <div style={{display:"flex",gap:"2px",justifyContent:"center",marginTop:"3px"}}>
-                <button onClick={()=>!spinning&&betIdx>0&&setBet(BET_OPTS[betIdx-1])} disabled={spinning||betIdx===0} style={{flex:1,height:"20px",background:"#1a2438",color:"#64748b",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"12px",fontWeight:700,opacity:spinning||betIdx===0?.4:1,transition:"filter .12s,transform .12s"}}
+                <button onClick={()=>!spinning&&betIdx>0&&setBet(BET_OPTS[betIdx-1])} disabled={spinning||betIdx===0} style={{flex:1,height:"20px",background:"#1a1035",color:"#64748b",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"12px",fontWeight:700,opacity:spinning||betIdx===0?.4:1,transition:"filter .12s,transform .12s"}}
                   onMouseEnter={e=>{ if(!spinning&&betIdx>0){e.currentTarget.style.filter="brightness(1.5)";e.currentTarget.style.transform="scale(1.1)";}}}
                   onMouseLeave={e=>{ e.currentTarget.style.filter="";e.currentTarget.style.transform=""; }}>−</button>
-                <button onClick={()=>!spinning&&setShowBetMenu(true)} disabled={spinning} style={{flex:1,height:"20px",background:"#1a2438",color:"#4a5a78",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"7px",fontWeight:700,transition:"filter .12s"}}
+                <button onClick={()=>!spinning&&setShowBetMenu(true)} disabled={spinning} style={{flex:1,height:"20px",background:"#1a1035",color:"#4a5a78",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"7px",fontWeight:700,transition:"filter .12s"}}
                   onMouseEnter={e=>{ if(!spinning)e.currentTarget.style.filter="brightness(1.5)"; }}
                   onMouseLeave={e=>{ e.currentTarget.style.filter=""; }}>{T("cbSee")}</button>
-                <button onClick={()=>!spinning&&betIdx<BET_OPTS.length-1&&setBet(BET_OPTS[betIdx+1])} disabled={spinning||betIdx===BET_OPTS.length-1} style={{flex:1,height:"20px",background:"#1a2438",color:"#64748b",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"12px",fontWeight:700,opacity:spinning||betIdx===BET_OPTS.length-1?.4:1,transition:"filter .12s,transform .12s"}}
+                <button onClick={()=>!spinning&&betIdx<BET_OPTS.length-1&&setBet(BET_OPTS[betIdx+1])} disabled={spinning||betIdx===BET_OPTS.length-1} style={{flex:1,height:"20px",background:"#1a1035",color:"#64748b",border:"none",borderRadius:"4px",cursor:"pointer",fontSize:"12px",fontWeight:700,opacity:spinning||betIdx===BET_OPTS.length-1?.4:1,transition:"filter .12s,transform .12s"}}
                   onMouseEnter={e=>{ if(!spinning&&betIdx<BET_OPTS.length-1){e.currentTarget.style.filter="brightness(1.5)";e.currentTarget.style.transform="scale(1.1)";}}}
                   onMouseLeave={e=>{ e.currentTarget.style.filter="";e.currentTarget.style.transform=""; }}>+</button>
               </div>
@@ -623,8 +623,8 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
 
             {/* Win message */}
             {winMsg&&!spinning&&(
-              <div style={{background:"linear-gradient(135deg,#1a1005,#2a1a08)",border:"1px solid #f4a91f44",borderRadius:"8px",padding:"5px 4px",textAlign:"center",animation:"cbWinCount .4s ease",flexShrink:0}}>
-                <div style={{fontSize:"11px",fontWeight:900,color:"#f4a91f",lineHeight:1.2,textShadow:winMsg.includes("MEGA")?"0 0 20px #f4a91f":"none",display:"flex",alignItems:"center",justifyContent:"center",gap:"4px"}}>
+              <div style={{background:"linear-gradient(135deg,#1a1005,#2a1a08)",border:"1px solid #A855F744",borderRadius:"8px",padding:"5px 4px",textAlign:"center",animation:"cbWinCount .4s ease",flexShrink:0}}>
+                <div style={{fontSize:"11px",fontWeight:900,color:"#A855F7",lineHeight:1.2,textShadow:winMsg.includes("MEGA")?"0 0 20px #A855F7":"none",display:"flex",alignItems:"center",justifyContent:"center",gap:"4px"}}>
                   {(()=>{
                     const emojiMap:[string,string,number][]=[
                       ["🏆",assetUrl(`${import.meta.env.BASE_URL}emoji-megawin.webp`),18],
@@ -642,14 +642,14 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
 
             {/* Scatter hint */}
             {scatterHit>0&&scatterHit<4&&phase==="idle"&&(
-              <div style={{background:"#10100a",border:"1px solid #f4a91f33",borderRadius:"6px",padding:"4px",textAlign:"center",flexShrink:0}}>
-                <div style={{fontSize:"8px",color:"#f4a91f",fontWeight:700}}>💎 {scatterHit}/4</div>
+              <div style={{background:"#10100a",border:"1px solid #A855F733",borderRadius:"6px",padding:"4px",textAlign:"center",flexShrink:0}}>
+                <div style={{fontSize:"8px",color:"#A855F7",fontWeight:700}}>💎 {scatterHit}/4</div>
               </div>
             )}
 
             {/* Spacer + session */}
             <div style={{flex:1}}/>
-            <div style={{background:"#0a1018",border:"1px solid #1a2438",borderRadius:"6px",padding:"4px",textAlign:"center",flexShrink:0}}>
+            <div style={{background:"#0a1018",border:"1px solid #1a1035",borderRadius:"6px",padding:"4px",textAlign:"center",flexShrink:0}}>
               <div style={{fontSize:"7px",color:"#2a3a52",fontWeight:700}}>{T("cbSession")}</div>
               <div style={{fontSize:"11px",fontWeight:800,color:"#22ee66"}}>${sessionWin.toFixed(2)}</div>
             </div>
@@ -680,7 +680,7 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
                 {/* FS intro overlay */}
                 {phase==="freespins_intro"&&(
                   <div style={{position:"absolute",inset:0,background:"rgba(3,1,14,.96)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,borderRadius:"10px",gap:"5px"}}>
-                    <div style={{fontSize:"clamp(18px,5vw,32px)",fontWeight:900,color:superMode?"#ff69b4":"#f4a91f",animation:"cbFSBanner .7s cubic-bezier(.34,1.56,.64,1)",textShadow:`0 0 40px ${superMode?"#ff69b4":"#f4a91f"}`}}>
+                    <div style={{fontSize:"clamp(18px,5vw,32px)",fontWeight:900,color:superMode?"#ff69b4":"#A855F7",animation:"cbFSBanner .7s cubic-bezier(.34,1.56,.64,1)",textShadow:`0 0 40px ${superMode?"#ff69b4":"#A855F7"}`}}>
                       {superMode?"⭐ SUPER FREE SPINS ⭐":"⭐ FREE SPINS ⭐"}
                     </div>
                     <div style={{fontSize:"clamp(11px,3vw,16px)",fontWeight:700,color:"#fff"}}>10 giros gratis</div>
@@ -751,17 +751,17 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
           background:"linear-gradient(180deg,transparent,#060a12)",
         }}>
           {/* Left controls */}
-          <button onClick={onBack} style={{width:"28px",height:"28px",background:"#1a2438",color:"#64748b",border:"1px solid #2a3550",borderRadius:"6px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
-          <button onClick={()=>setShowInfo(true)} style={{width:"28px",height:"28px",background:"#1a2438",color:"#94a3b8",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontWeight:700,fontSize:"12px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>i</button>
+          <button onClick={onBack} style={{width:"28px",height:"28px",background:"#1a1035",color:"#64748b",border:"1px solid #2a3550",borderRadius:"6px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+          <button onClick={()=>setShowInfo(true)} style={{width:"28px",height:"28px",background:"#1a1035",color:"#94a3b8",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontWeight:700,fontSize:"12px",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>i</button>
 
           {/* Credit info */}
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:"8px",color:"#4a5a78",fontWeight:700}}>{T("cbCredit")}</div>
-            <div style={{fontSize:"13px",fontWeight:800,color:"#f4a91f",lineHeight:1}}>${balance.toFixed(2)}</div>
+            <div style={{fontSize:"13px",fontWeight:800,color:"#A855F7",lineHeight:1}}>${balance.toFixed(2)}</div>
           </div>
 
           {/* Auto count − */}
-          <button onClick={()=>!spinning&&setAutoCount(c=>Math.max(5,c-5))} disabled={spinning} style={{width:"26px",height:"26px",background:"#1a2438",color:"#64748b",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontSize:"13px",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:spinning?.4:1,transition:"filter .15s,transform .12s"}}
+          <button onClick={()=>!spinning&&setAutoCount(c=>Math.max(5,c-5))} disabled={spinning} style={{width:"26px",height:"26px",background:"#1a1035",color:"#64748b",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontSize:"13px",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:spinning?.4:1,transition:"filter .15s,transform .12s"}}
             onMouseEnter={e=>{ if(!spinning){e.currentTarget.style.filter="brightness(1.4)";e.currentTarget.style.transform="scale(1.15)";}}}
             onMouseLeave={e=>{ e.currentTarget.style.filter="";e.currentTarget.style.transform=""; }}>−</button>
 
@@ -770,13 +770,13 @@ export function CandyBurst({balance,currentUser,onBack,onBalanceChange,addBet,la
             ?<button onClick={stopAuto} style={{height:"38px",padding:"0 8px",background:"linear-gradient(180deg,#7c3aed,#4c1d95)",color:"#fff",border:"1px solid #a855f7",borderRadius:"8px",cursor:"pointer",fontSize:"9px",fontWeight:900,textAlign:"center",minWidth:"60px",flexShrink:0}}>
                 <div>{T("cbStop")}</div><div style={{fontSize:"7px",color:"#c4b5fd"}}>{autoLeft}</div>
               </button>
-            :<button onClick={startAuto} disabled={spinning} style={{height:"38px",padding:"0 8px",background:spinning?"#111820":"linear-gradient(180deg,#0f2a45,#1a9fff)",color:spinning?"#2a3a52":"#fff",border:spinning?"1px solid #1a2438":"1px solid #38bdf8",borderRadius:"8px",cursor:spinning?"not-allowed":"pointer",fontSize:"9px",fontWeight:900,textAlign:"center",minWidth:"60px",flexShrink:0,opacity:spinning?.5:1}}>
+            :<button onClick={startAuto} disabled={spinning} style={{height:"38px",padding:"0 8px",background:spinning?"#111820":"linear-gradient(180deg,#0f2a45,#1a9fff)",color:spinning?"#2a3a52":"#fff",border:spinning?"1px solid #1a1035":"1px solid #38bdf8",borderRadius:"8px",cursor:spinning?"not-allowed":"pointer",fontSize:"9px",fontWeight:900,textAlign:"center",minWidth:"60px",flexShrink:0,opacity:spinning?.5:1}}>
                 <div>{T("cbAutoSpin")}</div><div style={{fontSize:"7px",color:spinning?"#2a3a52":"#7dd3fc"}}>{autoCount}</div>
               </button>
           }
 
           {/* Auto count + */}
-          <button onClick={()=>!spinning&&setAutoCount(c=>Math.min(100,c+5))} disabled={spinning} style={{width:"26px",height:"26px",background:"#1a2438",color:"#64748b",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontSize:"13px",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:spinning?.4:1,transition:"filter .15s,transform .12s"}}
+          <button onClick={()=>!spinning&&setAutoCount(c=>Math.min(100,c+5))} disabled={spinning} style={{width:"26px",height:"26px",background:"#1a1035",color:"#64748b",border:"1px solid #2a3550",borderRadius:"50%",cursor:"pointer",fontSize:"13px",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:spinning?.4:1,transition:"filter .15s,transform .12s"}}
             onMouseEnter={e=>{ if(!spinning){e.currentTarget.style.filter="brightness(1.4)";e.currentTarget.style.transform="scale(1.15)";}}}
             onMouseLeave={e=>{ e.currentTarget.style.filter="";e.currentTarget.style.transform=""; }}>+</button>
 

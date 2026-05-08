@@ -73,9 +73,9 @@ export default function RegisteredUsers({ referrer, referrals, t, lang = "es", t
 
   const btnStyle = (active: boolean, disabled?: boolean): React.CSSProperties => ({
     width: "32px", height: "32px", borderRadius: "7px",
-    border: active ? "none" : "1px solid #253045",
+    border: active ? "none" : "1px solid #1e1535",
     background: active ? "linear-gradient(160deg,#f6b531,#d4870a)" : "transparent",
-    color: disabled ? "#253045" : active ? "#fff" : "#8aa0c0",
+    color: disabled ? "#1e1535" : active ? "#fff" : "#8aa0c0",
     fontWeight: active ? 700 : 400, fontSize: "13px",
     cursor: disabled ? "default" : "pointer",
     display: "flex", alignItems: "center", justifyContent: "center",
@@ -98,10 +98,10 @@ export default function RegisteredUsers({ referrer, referrals, t, lang = "es", t
 
   return (
     <div style={{ width:"100%", boxSizing:"border-box" as const, marginTop:"16px" }}>
-    <div style={{ background:"#161d2b",border:"1px solid #20283a",borderRadius:"6px",overflow:"hidden",marginBottom:"14px" }}>
+    <div style={{ background:"#161d2b",border:"1px solid #130d26",borderRadius:"6px",overflow:"hidden",marginBottom:"14px" }}>
 
       {/* Header — stays outside scroll so search bar is always accessible */}
-      <div style={{ display:"flex",alignItems:"center",gap:"12px",padding:"16px 20px",borderBottom:"1px solid #20283a",flexWrap:"wrap" as const }}>
+      <div style={{ display:"flex",alignItems:"center",gap:"12px",padding:"16px 20px",borderBottom:"1px solid #130d26",flexWrap:"wrap" as const }}>
         <span style={{ fontWeight:700,fontSize:"16px",color:"#e2e8f0",flexShrink:0 }}>{t("affReferredPlayers")}</span>
         <span style={{ background:"#1a2234",color:"#64748b",fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:6 }}>
           {displayTotal.toLocaleString("es-ES")}
@@ -240,7 +240,7 @@ export default function RegisteredUsers({ referrer, referrals, t, lang = "es", t
             return (
               <div style={{
                 display:"grid",gridTemplateColumns:COLS,padding:"11px 20px",
-                borderTop:"2px solid #253045",background:"#111827",
+                borderTop:"2px solid #1e1535",background:"#111827",
               }}>
                 <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
                   <span style={{ fontSize:"11px",fontWeight:700,color:"#64748b",letterSpacing:"0.8px",textTransform:"uppercase" as const,whiteSpace:"nowrap" as const }}>

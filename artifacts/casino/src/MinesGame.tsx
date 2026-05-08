@@ -764,27 +764,27 @@ export default function MinesGame({
     const isHidden = cell.state === "hidden";
     const isAutoSelected = autoMode && autoSelectedCells.has(idx) && isHidden;
 
-    let bg = "#1c2436";
-    let border = "1px solid #252f45";
+    let bg = "#130d26";
+    let border = "1px solid #1e1535";
     let boxShadow = "none";
 
     if (isAutoSelected) {
-      bg = "linear-gradient(145deg,#2a1c00 0%,#3d2a00 100%)";
-      border = "1px solid #f4a91faa";
-      boxShadow = "0 0 10px rgba(244,169,31,0.3)";
+      bg = "linear-gradient(145deg,#130d26 0%,#1a1035 100%)";
+      border = "1px solid #A855F7aa";
+      boxShadow = "0 0 10px rgba(168,85,247,0.3)";
     } else if (isGem) {
-      bg = "linear-gradient(145deg,#031828 0%,#05284a 60%,#073d6e 100%)";
-      border = "1px solid #1a9fff66";
+      bg = "linear-gradient(145deg,#0A0A12 0%,#1e1535 60%,#1e1535 100%)";
+      border = "1px solid #A855F766";
       boxShadow = "0 0 18px rgba(26,159,255,0.5), inset 0 0 8px rgba(100,200,255,0.08)";
     } else if (isMine) {
-      bg = "linear-gradient(145deg,#1a0606 0%,#2e0a0a 100%)";
+      bg = "linear-gradient(145deg,#130d26 0%,#2e0a0a 100%)";
       border = "1px solid #ef444455";
       boxShadow = isExploding
         ? "0 0 32px rgba(239,68,68,0.9), 0 0 64px rgba(239,68,68,0.5)"
         : "0 0 12px rgba(239,68,68,0.35)";
     } else if (isSafe) {
-      bg = "linear-gradient(145deg,#030c16 0%,#050f1e 100%)";
-      border = "1px solid #0d2030";
+      bg = "linear-gradient(145deg,#0A0A12 0%,#0A0A12 100%)";
+      border = "1px solid #0D0F1A";
       boxShadow = "none";
     }
 
@@ -809,16 +809,16 @@ export default function MinesGame({
   function cellHover(e: React.MouseEvent, cell: Cell) {
     if (cell.state !== "hidden" || phase !== "playing") return;
     const el = e.currentTarget as HTMLDivElement;
-    el.style.background = "#242e42";
-    el.style.border = "1px solid #3a4a60";
+    el.style.background = "#1a1035";
+    el.style.border = "1px solid #2d1f52";
     el.style.transform = "scale(1.03)";
   }
   function cellLeave(e: React.MouseEvent, cell: Cell) {
     const el = e.currentTarget as HTMLDivElement;
     el.style.transform = ""; // always clear, even if cell was clicked mid-hover
     if (cell.state !== "hidden" || phase !== "playing") return;
-    el.style.background = "#1c2436";
-    el.style.border = "1px solid #252f45";
+    el.style.background = "#130d26";
+    el.style.border = "1px solid #1e1535";
   }
 
   const presets = MINE_PRESETS[gridSize];
@@ -841,13 +841,13 @@ export default function MinesGame({
   }, []);
 
   return (
-    <div className="mines-root" style={{ display:"flex", flexDirection:"column", width:"100%", height:"100%", background:"#0e1320", overflow: isMobile ? "visible" : "hidden", position:"relative", userSelect:"none", WebkitUserSelect:"none" }}>
+    <div className="mines-root" style={{ display:"flex", flexDirection:"column", width:"100%", height:"100%", background:"#0A0A12", overflow: isMobile ? "visible" : "hidden", position:"relative", userSelect:"none", WebkitUserSelect:"none" }}>
 
       <style>{`
         .mines-slider { -webkit-appearance:none; appearance:none; width:100%; height:12px; border-radius:6px; outline:none; cursor:pointer; }
         .mines-slider:disabled { opacity:0.45; cursor:not-allowed; }
-        .mines-slider::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:26px; border-radius:5px; background:#4a5a72; cursor:pointer; border:none; box-shadow:0 2px 8px rgba(0,0,0,.6); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='26'%3E%3Cline x1='7' y1='7' x2='7' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='11' y1='7' x2='11' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='15' y1='7' x2='15' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); }
-        .mines-slider::-moz-range-thumb { width:22px; height:26px; border-radius:5px; background:#4a5a72; cursor:pointer; border:none; box-shadow:0 2px 8px rgba(0,0,0,.6); }
+        .mines-slider::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:26px; border-radius:5px; background:#6b5f8c; cursor:pointer; border:none; box-shadow:0 2px 8px rgba(0,0,0,.6); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='26'%3E%3Cline x1='7' y1='7' x2='7' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='11' y1='7' x2='11' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='15' y1='7' x2='15' y2='19' stroke='%23c8d4e4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); }
+        .mines-slider::-moz-range-thumb { width:22px; height:26px; border-radius:5px; background:#6b5f8c; cursor:pointer; border:none; box-shadow:0 2px 8px rgba(0,0,0,.6); }
         @keyframes minesGemEmerge {
           0%   { transform: scale(0.35) translateY(12px); opacity: 0; filter: brightness(2.5) blur(3px); }
           40%  { filter: brightness(1.6) blur(0px); }
@@ -882,7 +882,7 @@ export default function MinesGame({
         }
         @keyframes bombExplode {
           0%   { transform: scale(1);    filter: brightness(1) drop-shadow(0 0 0px transparent); }
-          12%  { transform: scale(1.55); filter: brightness(4) drop-shadow(0 0 24px #ff6600) drop-shadow(0 0 48px #ffaa00); }
+          12%  { transform: scale(1.55); filter: brightness(4) drop-shadow(0 0 24px #ff6600) drop-shadow(0 0 48px #A855F7); }
           28%  { transform: scale(0.80); filter: brightness(2) drop-shadow(0 0 12px #ff3300); }
           45%  { transform: scale(1.25); filter: brightness(3) drop-shadow(0 0 20px #ff5500); }
           65%  { transform: scale(0.95); filter: brightness(1.5); }
@@ -916,14 +916,14 @@ export default function MinesGame({
       `}</style>
 
       {/* ── HEADER (Blackjack-style) ───────────────────────────────────── */}
-      <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0D0F1A", borderBottom:"1px solid #1a1035", flexShrink:0 }}>
         <button onClick={handleBack}
-          style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+          style={{ background:"#0D0F1A", border:"1px solid #1e1535", color:"#9b8bc4", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
         </button>
         <div className="game-title-label" style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2a9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9 9 9 0 0 0-9-9zM9.5 11.5a1.5 1.5 0 1 1 3.001.001A1.5 1.5 0 0 1 9.5 11.5zm4.5 3a1 1 0 1 1 2 .001A1 1 0 0 1 14 14.5zm-7 0a1 1 0 1 1 2 .001A1 1 0 0 1 7 14.5zm7-6a1 1 0 1 1 2 .001A1 1 0 0 1 14 8.5zM7 8.5a1 1 0 1 1 2 .001A1 1 0 0 1 7 8.5zM21 2h-1c-1.3 0-2.4 1-2.7 1.3l-1.5 1.5.7.7.7.7 1.4-1.4.6-.8H21V2z"/></svg>{T("gameMines").toUpperCase()}</div>
         <div style={{ marginLeft:"auto" }}>
-          <div className="game-originals-badge" style={{ fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
+          <div className="game-originals-badge" style={{ fontSize:"12px", color:"#7c6d9e", fontWeight:500 }}>{T("manderOriginals")}</div>
         </div>
       </div>
 
@@ -931,7 +931,7 @@ export default function MinesGame({
       <div className="game-ctrl-flex" style={{ display:"flex", flex:1, overflow:"visible", minHeight:0 }}>
 
       {/* ── LEFT PANEL ────────────────────────────────────────────────── */}
-      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#131a28", borderRight:"1px solid #1a2438", display:"flex", flexDirection:"column", padding:0, gap:0, overflow:"hidden" }}>
+      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#0D0F1A", borderRight:"1px solid #1a1035", display:"flex", flexDirection:"column", padding:0, gap:0, overflow:"hidden" }}>
 
         {/* Scrollable controls area */}
         <div className="mines-ctrl-inner" style={{ flex:1, overflowY:"auto", minHeight:0, padding:"16px 16px 0 16px", display:"flex", flexDirection:"column", overscrollBehavior:"contain" }} onWheel={e => { if (autoMode) e.stopPropagation(); }}>
@@ -944,8 +944,8 @@ export default function MinesGame({
                 style={{
                   width:"100%", border:"none", borderRadius:"6px", padding:"14px",
                   fontWeight:500, fontSize:"15px", transition:"all .2s",
-                  background: (!betInvalid&&(!currentUser||!balInsuff)) ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
-                  color: (!betInvalid&&(!currentUser||!balInsuff)) ? "#fff" : "#3a4a60",
+                  background: (!betInvalid&&(!currentUser||!balInsuff)) ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
+                  color: (!betInvalid&&(!currentUser||!balInsuff)) ? "#fff" : "#2d1f52",
                   boxShadow: (!betInvalid&&(!currentUser||!balInsuff)) ? "0 4px 22px rgba(26,159,255,.35)" : "none",
                   cursor: (!betInvalid&&(!currentUser||!balInsuff)) ? "pointer" : "not-allowed",
                   marginBottom: isMobile ? 0 : "12px",
@@ -955,12 +955,12 @@ export default function MinesGame({
             )}
             {phase === "playing" && revealedSafe > 0 && (
               <button onClick={()=>cashout()}
-                style={{ width:"100%", padding:"14px 10px", borderRadius:"6px", border:"none", background:"linear-gradient(180deg,#f4a91f,#d4890f)", color:"#000", fontWeight:700, fontSize:"15px", cursor:"pointer", boxShadow:"0 4px 20px rgba(244,169,31,0.4)", animation:"minesPulse 2s ease infinite", marginBottom: isMobile ? 0 : "12px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                style={{ width:"100%", padding:"14px 10px", borderRadius:"6px", border:"none", background:"linear-gradient(180deg,#A855F7,#A855F7)", color:"#000", fontWeight:700, fontSize:"15px", cursor:"pointer", boxShadow:"0 4px 20px rgba(168,85,247,0.4)", animation:"minesPulse 2s ease infinite", marginBottom: isMobile ? 0 : "12px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                 {T("minesCobrar")} {fmtMoney(cashoutAmount)}
               </button>
             )}
             {phase === "playing" && revealedSafe === 0 && (
-              <div style={{ width:"100%", padding:"12px", borderRadius:"6px", background:"#0e1826", border:"1px solid #1a2438", color:"#5a6a88", fontWeight:600, fontSize:"13px", textAlign:"center", marginBottom: isMobile ? 0 : "12px" }}>
+              <div style={{ width:"100%", padding:"12px", borderRadius:"6px", background:"#0D0F1A", border:"1px solid #1a1035", color:"#7c6d9e", fontWeight:600, fontSize:"13px", textAlign:"center", marginBottom: isMobile ? 0 : "12px" }}>
                 {T("minesClickCell")}
               </div>
             )}
@@ -968,31 +968,31 @@ export default function MinesGame({
               <button
                 onClick={pickRandomCell}
                 style={{
-                  width:"100%", padding:"11px", borderRadius:"6px", border:"1px solid #2a3a54",
-                  background:"#111e33", color:"#7ab3e0", fontWeight:600, fontSize:"13px",
+                  width:"100%", padding:"11px", borderRadius:"6px", border:"1px solid #2d1f52",
+                  background:"#0D0F1A", color:"#818cf8", fontWeight:600, fontSize:"13px",
                   cursor:"pointer", marginBottom: isMobile ? 0 : "8px", marginTop: revealedSafe > 0 ? "8px" : "0",
                   display:"flex", alignItems:"center", justifyContent:"center", gap:"7px",
                   transition:"background .15s, border-color .15s",
                 }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background="#182840"; (e.currentTarget as HTMLButtonElement).style.borderColor="#3a5070"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background="#111e33"; (e.currentTarget as HTMLButtonElement).style.borderColor="#2a3a54"; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background="#1a1035"; (e.currentTarget as HTMLButtonElement).style.borderColor="#2d1f52"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background="#0D0F1A"; (e.currentTarget as HTMLButtonElement).style.borderColor="#2d1f52"; }}
               >
                 {T("minesPickRandom")}
               </button>
             )}
             {phase === "playing" && !isMobile && (
-              <div style={{ background:"#0a1420", border:"1px solid #1a2a40", borderRadius:"6px", padding:"10px 14px", animation:"minesFadeIn 0.25s ease", marginTop:"12px" }}>
+              <div style={{ background:"#0A0A12", border:"1px solid #1a1035", borderRadius:"6px", padding:"10px 14px", animation:"minesFadeIn 0.25s ease", marginTop:"12px" }}>
                 <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-                  <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesMultiplier")}</span>
+                  <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesMultiplier")}</span>
                   <span style={{ color:"#22c55e", fontWeight:700, fontSize:"14px" }}>{formatMult(currentMult)}</span>
                 </div>
                 <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-                  <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesNext")}</span>
-                  <span style={{ color:"#f4a91f", fontWeight:600, fontSize:"13px" }}>{formatMult(nextMult)}</span>
+                  <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesNext")}</span>
+                  <span style={{ color:"#A855F7", fontWeight:600, fontSize:"13px" }}>{formatMult(nextMult)}</span>
                 </div>
                 <div style={{ display:"flex", justifyContent:"space-between" }}>
-                  <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesRevealed")}</span>
-                  <span style={{ color:"#dce3ee", fontWeight:600, fontSize:"13px" }}>{revealedSafe}/{totalSafe}</span>
+                  <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesRevealed")}</span>
+                  <span style={{ color:"#ddd0f8", fontWeight:600, fontSize:"13px" }}>{revealedSafe}/{totalSafe}</span>
                 </div>
               </div>
             )}
@@ -1001,7 +1001,7 @@ export default function MinesGame({
 
         {/* Manual / Auto tabs — mobile order 10 (last), desktop order 0 (first) */}
         <div style={{ order: isMobile ? 10 : 0, marginBottom:"16px", marginTop: isMobile ? "4px" : 0 }}>
-          <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+          <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", borderRadius:"6px", padding:"5px", gap:"4px" }}>
             {(["Manual","Auto"] as const).map(tab=>{
               const active = (tab==="Auto") === autoMode;
               const tabLabel = tab==="Auto" ? T("minesTabAuto") : T("minesTabManual");
@@ -1026,7 +1026,7 @@ export default function MinesGame({
                   localStorage.removeItem(SAVE_KEY + "_" + currentUser);
                   setAutoMode(goingAuto);
                 }}
-                  style={{ flex:1, background:active?"#1e2c44":"transparent", border:active?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", color:active?"#eef3f8":"#5a6a88", fontWeight:500, fontSize:"14px", cursor:(autoRunning||phase==="playing")?"not-allowed":"pointer", opacity:(autoRunning||phase==="playing")&&!active?0.45:1, transition:"opacity .2s" }}>
+                  style={{ flex:1, background:active?"#1a1035":"transparent", border:active?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px", color:active?"#ead4fc":"#7c6d9e", fontWeight:500, fontSize:"14px", cursor:(autoRunning||phase==="playing")?"not-allowed":"pointer", opacity:(autoRunning||phase==="playing")&&!active?0.45:1, transition:"opacity .2s" }}>
                   {tabLabel}
                 </button>
               );
@@ -1036,9 +1036,9 @@ export default function MinesGame({
 
         {/* Bet amount — mobile order 2 */}
         <div style={{ order: isMobile ? 2 : 1 }}>
-          <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"5px", fontSize:"13px", paddingLeft:"4px" }}>{T("betAmount")}</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0e1826", border:`1px solid ${betInvalid||balInsuff?"#e74c3c":"#252f45"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"6px", transition:"border .15s" }}>
-            <span style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
+          <div style={{ color:"#7c6d9e", fontWeight:500, marginBottom:"5px", fontSize:"13px", paddingLeft:"4px" }}>{T("betAmount")}</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0D0F1A", border:`1px solid ${betInvalid||balInsuff?"#e74c3c":"#1e1535"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"6px", transition:"border .15s" }}>
+            <span style={{ fontSize:"13px", color:"#7c6d9e", fontWeight:500, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
             <input
               type="text" inputMode="decimal"
               value={(()=>{ if(!betDisplay) return ""; if(!displayInFiat) return betDisplay; const [int,dec]=betDisplay.split("."); const fmtInt=(parseInt(int||"0")||0).toLocaleString("de-DE"); return dec!==undefined?`${fmtInt},${dec}`:fmtInt; })()}
@@ -1053,7 +1053,7 @@ export default function MinesGame({
               style={{ flex:1, background:"transparent", border:"none", color:"#fff", fontSize:"17px", fontWeight:600, padding:0, minWidth:0, outline:"none", fontFamily:"inherit", opacity:currencyFade, transition:"opacity .18s" }}
             />
             <button onClick={()=>!disabled&&setBetDisplay("0")} disabled={disabled}
-              style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", color:"#6db3f2", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase", opacity:disabled?0.5:1 }}>
+              style={{ background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", color:"#818cf8", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase", opacity:disabled?0.5:1 }}>
               {T("hiloClear")}
             </button>
           </div>
@@ -1075,7 +1075,7 @@ export default function MinesGame({
               { label:T("btnMax"), action:()=>setBetDisplay(maxBetDisplay.toFixed(2)) },
             ].map(b=>(
               <button key={b.label} onClick={()=>!disabled&&b.action()} disabled={disabled}
-                style={{ background:"#1a2438", color:disabled?"#3a4a66":"#d0dcea", border:"1px solid #252f45", borderRadius:"8px", padding:"7px 0", fontWeight:500, fontSize:"12px", cursor:disabled?"not-allowed":"pointer", opacity:disabled?0.5:1 }}>
+                style={{ background:"#1a1035", color:disabled?"#2d1f52":"#ddd0f8", border:"1px solid #1e1535", borderRadius:"8px", padding:"7px 0", fontWeight:500, fontSize:"12px", cursor:disabled?"not-allowed":"pointer", opacity:disabled?0.5:1 }}>
                 {b.label}
               </button>
             ))}
@@ -1088,15 +1088,15 @@ export default function MinesGame({
           const totalCells = gridSize * gridSize;
           const safeCount = totalCells - mineCount; // slider value
           const pct = ((safeCount - 1) / Math.max(maxMines - 1, 1)) * 100;
-          const sliderBg = `linear-gradient(to right,#2b5bb8 0%,#3b7dd8 ${pct}%,#9b2020 ${pct}%,#c0392b 100%)`;
+          const sliderBg = `linear-gradient(to right,#7C3AED 0%,#818cf8 ${pct}%,#9b2020 ${pct}%,#c0392b 100%)`;
           return (
             <div style={{ order: isMobile ? 4 : 3, marginBottom: isMobile ? "10px" : "14px" }}>
-              <div style={{ color:"#5a6a88", fontWeight:500, fontSize:"13px", marginBottom:"8px", paddingLeft:"4px" }}>{T("minesMines")}</div>
+              <div style={{ color:"#7c6d9e", fontWeight:500, fontSize:"13px", marginBottom:"8px", paddingLeft:"4px" }}>{T("minesMines")}</div>
               <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
                 {/* Left badge — gems */}
-                <div style={{ display:"flex", alignItems:"center", gap:"5px", background:"#0d1e35", border:"1px solid #1a3258", borderRadius:"6px", padding:"5px 8px", width:"58px", justifyContent:"center", flexShrink:0, flexGrow:0 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"5px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"5px 8px", width:"58px", justifyContent:"center", flexShrink:0, flexGrow:0 }}>
                   <img src={assetUrl("/diamond.webp")} width={16} height={16} style={{ objectFit:"contain", filter:"drop-shadow(0 0 4px rgba(80,180,255,0.5))" }} alt="gem"/>
-                  <span style={{ color:"#4a9fe8", fontWeight:700, fontSize:"14px", lineHeight:1 }}>{safeCount}</span>
+                  <span style={{ color:"#818cf8", fontWeight:700, fontSize:"14px", lineHeight:1 }}>{safeCount}</span>
                 </div>
                 {/* Slider */}
                 <div style={{ flex:"1 1 0", minWidth:0 }}>
@@ -1128,19 +1128,19 @@ export default function MinesGame({
               <button
                 onClick={()=>{ if(!disabled&&!autoSelecting){ setBoardDropdownOpen(v=>!v); setMineDropdownOpen(false); } }}
                 disabled={disabled||autoSelecting}
-                style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#1a2438", border:"1px solid #252f45", borderRadius:"8px", padding:"11px 14px", color:(disabled||autoSelecting)?"#3a4a66":"#d0dcea", fontWeight:600, fontSize:"14px", cursor:(disabled||autoSelecting)?"not-allowed":"pointer" }}>
-                <span style={{ color:"#5a6a88", fontSize:"12px", fontWeight:500 }}>{T("minesBoardSize")}</span>
+                style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#1a1035", border:"1px solid #1e1535", borderRadius:"8px", padding:"11px 14px", color:(disabled||autoSelecting)?"#2d1f52":"#ddd0f8", fontWeight:600, fontSize:"14px", cursor:(disabled||autoSelecting)?"not-allowed":"pointer" }}>
+                <span style={{ color:"#7c6d9e", fontSize:"12px", fontWeight:500 }}>{T("minesBoardSize")}</span>
                 <span style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-                  <span style={{ color:"#1a9fff", fontWeight:700 }}>{gridSize}×{gridSize}</span>
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ color:"#5a6a88", transform: boardDropdownOpen ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}><polyline points="6 9 12 15 18 9"/></svg>
+                  <span style={{ color:"#A855F7", fontWeight:700 }}>{gridSize}×{gridSize}</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ color:"#7c6d9e", transform: boardDropdownOpen ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}><polyline points="6 9 12 15 18 9"/></svg>
                 </span>
               </button>
               {boardDropdownOpen && (
-                <div style={{ position:"absolute", top:"calc(100% + 4px)", left:0, right:0, background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", zIndex:100, boxShadow:"0 8px 24px rgba(0,0,0,.5)", overflow:"hidden" }}>
+                <div style={{ position:"absolute", top:"calc(100% + 4px)", left:0, right:0, background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"8px", zIndex:100, boxShadow:"0 8px 24px rgba(0,0,0,.5)", overflow:"hidden" }}>
                   {GRID_SIZES.map(gs=>(
                     <button key={gs}
                       onClick={()=>{ if(!disabled&&!autoSelecting){ resetAutoIfNeeded(); setGridSize(gs); setBoardDropdownOpen(false); } }}
-                      style={{ width:"100%", textAlign:"left", padding:"11px 16px", background: gridSize===gs ? "linear-gradient(90deg,#1a9fff18,transparent)" : "transparent", border:"none", borderBottom:"1px solid #1a2438", color: gridSize===gs ? "#1a9fff" : "#aab4c5", fontWeight: gridSize===gs ? 700 : 500, fontSize:"14px", cursor:(disabled||autoSelecting)?"not-allowed":"pointer" }}>
+                      style={{ width:"100%", textAlign:"left", padding:"11px 16px", background: gridSize===gs ? "linear-gradient(90deg,#A855F718,transparent)" : "transparent", border:"none", borderBottom:"1px solid #1a1035", color: gridSize===gs ? "#A855F7" : "#a090c8", fontWeight: gridSize===gs ? 700 : 500, fontSize:"14px", cursor:(disabled||autoSelecting)?"not-allowed":"pointer" }}>
                       {gs}×{gs}
                     </button>
                   ))}
@@ -1149,15 +1149,15 @@ export default function MinesGame({
             </div>
           ) : (
             <>
-              <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>{T("minesBoardSize")}</div>
+              <div style={{ color:"#7c6d9e", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>{T("minesBoardSize")}</div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"5px" }}>
                 {GRID_SIZES.map(gs=>(
                   <button key={gs} onClick={()=>{ if(!disabled && !autoSelecting){ resetAutoIfNeeded(); setGridSize(gs); } }} disabled={disabled || autoSelecting}
                     style={{
-                      background: gridSize===gs ? "linear-gradient(180deg,#1a9fff22,#0d6fd422)" : "#1a2438",
-                      border: `1px solid ${gridSize===gs ? "#1a9fff" : "#252f45"}`,
+                      background: gridSize===gs ? "linear-gradient(180deg,#A855F722,#7C3AED22)" : "#1a1035",
+                      border: `1px solid ${gridSize===gs ? "#A855F7" : "#1e1535"}`,
                       borderRadius:"8px", padding:"7px 0",
-                      color: gridSize===gs ? "#1a9fff" : (disabled||autoSelecting)?"#3a4a66":"#aab4c5",
+                      color: gridSize===gs ? "#A855F7" : (disabled||autoSelecting)?"#2d1f52":"#a090c8",
                       fontWeight: gridSize===gs ? 700 : 500, fontSize:"12px",
                       cursor: (disabled||autoSelecting)?"not-allowed":"pointer", opacity:(disabled||autoSelecting)?0.5:1,
                     }}>
@@ -1171,18 +1171,18 @@ export default function MinesGame({
 
         {/* ── AUTO MODE CONTROLS ── */}
         {!autoMode && isMobile && phase === "playing" && (
-          <div style={{ order: 1, background:"#0a1420", border:"1px solid #1a2a40", borderRadius:"6px", padding:"10px 14px", animation:"minesFadeIn 0.25s ease", marginBottom:"10px" }}>
+          <div style={{ order: 1, background:"#0A0A12", border:"1px solid #1a1035", borderRadius:"6px", padding:"10px 14px", animation:"minesFadeIn 0.25s ease", marginBottom:"10px" }}>
             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-              <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesMultiplier")}</span>
+              <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesMultiplier")}</span>
               <span style={{ color:"#22c55e", fontWeight:700, fontSize:"14px" }}>{formatMult(currentMult)}</span>
             </div>
             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"5px" }}>
-              <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesNext")}</span>
-              <span style={{ color:"#f4a91f", fontWeight:600, fontSize:"13px" }}>{formatMult(nextMult)}</span>
+              <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesNext")}</span>
+              <span style={{ color:"#A855F7", fontWeight:600, fontSize:"13px" }}>{formatMult(nextMult)}</span>
             </div>
             <div style={{ display:"flex", justifyContent:"space-between" }}>
-              <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesRevealed")}</span>
-              <span style={{ color:"#dce3ee", fontWeight:600, fontSize:"13px" }}>{revealedSafe}/{totalSafe}</span>
+              <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesRevealed")}</span>
+              <span style={{ color:"#ddd0f8", fontWeight:600, fontSize:"13px" }}>{revealedSafe}/{totalSafe}</span>
             </div>
           </div>
         )}
@@ -1194,8 +1194,8 @@ export default function MinesGame({
               style={{
                 width:"100%", border:"none", borderRadius:"6px", padding:"14px",
                 fontWeight:700, fontSize:"15px", transition:"all .2s",
-                background:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
-                color:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"#fff":"#3a4a60",
+                background:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
+                color:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"#fff":"#2d1f52",
                 boxShadow:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"0 4px 22px rgba(26,159,255,0.35)":"none",
                 cursor:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"pointer":"not-allowed",
               }}>
@@ -1214,21 +1214,21 @@ export default function MinesGame({
           {/* Auto-selection buttons */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"6px", marginBottom:"12px" }}>
             <button onClick={autoSelectAll} disabled={autoRunning}
-              style={{ padding:"10px 4px", borderRadius:"9px", border:"1px solid #2a3a55", background:"#1a2438", color:autoRunning?"#3a4a66":"#d0dcea", fontWeight:600, fontSize:"12px", cursor:autoRunning?"not-allowed":"pointer", lineHeight:1.3, whiteSpace:"pre-line" }}>
+              style={{ padding:"10px 4px", borderRadius:"9px", border:"1px solid #2d1f52", background:"#1a1035", color:autoRunning?"#2d1f52":"#ddd0f8", fontWeight:600, fontSize:"12px", cursor:autoRunning?"not-allowed":"pointer", lineHeight:1.3, whiteSpace:"pre-line" }}>
               {T("autoQuickPick")}
             </button>
             {(()=>{ const clearDis = autoRunning || (autoSelectedCells.size === 0 && !autoSelecting); return (
             <button onClick={clearAutoSelection} disabled={clearDis}
-              style={{ padding:"10px 4px", borderRadius:"9px", border:"1px solid #2a3a55", background:"#1a2438", color:clearDis?"#3a4a66":"#d0dcea", fontWeight:600, fontSize:"12px", cursor:clearDis?"not-allowed":"pointer", opacity:clearDis?0.45:1 }}>
+              style={{ padding:"10px 4px", borderRadius:"9px", border:"1px solid #2d1f52", background:"#1a1035", color:clearDis?"#2d1f52":"#ddd0f8", fontWeight:600, fontSize:"12px", cursor:clearDis?"not-allowed":"pointer", opacity:clearDis?0.45:1 }}>
               {T("clearBoard")}
             </button>
             ); })()}
           </div>
 
           {/* Casillas seleccionadas */}
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", background:"#0e1826", borderRadius:"9px", padding:"10px 14px", marginBottom:"12px" }}>
-            <span style={{ color:"#5a6a88", fontSize:"12px" }}>{T("minesSelected")}</span>
-            <span style={{ color:"#dce3ee", fontWeight:700, fontSize:"13px" }}>{autoSelectedCells.size} / {totalSafe}</span>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", background:"#0D0F1A", borderRadius:"9px", padding:"10px 14px", marginBottom:"12px" }}>
+            <span style={{ color:"#7c6d9e", fontSize:"12px" }}>{T("minesSelected")}</span>
+            <span style={{ color:"#ddd0f8", fontWeight:700, fontSize:"13px" }}>{autoSelectedCells.size} / {totalSafe}</span>
           </div>
         </></div>)}
 
@@ -1236,8 +1236,8 @@ export default function MinesGame({
         {autoMode && (<div style={{ order: isMobile ? 7 : 50 }}><>
           {/* Pago en Victoria */}
           <div style={{ marginBottom:"12px" }}>
-            <div style={{ color:"#5a6a88", fontSize:"13px", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{T("minesCashout")}</div>
-            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"0 10px", height:"40px", overflow:"hidden" }}>
+            <div style={{ color:"#7c6d9e", fontSize:"13px", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{T("minesCashout")}</div>
+            <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"0 10px", height:"40px", overflow:"hidden" }}>
               {(()=>{ const val = autoSelectedCells.size > 0 ? fmtMoney((parseFloat(betDisplay)||0)/rate * calcMultiplier(totalCells,mineCount,autoSelectedCells.size)) : "—"; const fs = val.length > 14 ? "12px" : val.length > 10 ? "14px" : "17px"; return (
               <div style={{ color:"#22c55e", fontWeight:700, fontSize:fs, lineHeight:"40px", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", opacity:currencyFade }}>
                 {val}
@@ -1247,8 +1247,8 @@ export default function MinesGame({
 
           {/* Nro Apuestas — estilo Keno */}
           <div style={{ marginBottom:"12px" }}>
-            <div style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{T("minesNumBets")}</div>
-            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
+            <div style={{ fontSize:"13px", color:"#7c6d9e", fontWeight:500, marginBottom:"6px", paddingLeft:"4px" }}>{T("minesNumBets")}</div>
+            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 10px" }}>
               <input
                 value={autoRunning ? (autoInfinite ? `${autoRoundsPlayed}/∞` : `${autoRoundsPlayed}/${autoNumBetsRef.current}`) : (autoInfinite ? "∞" : autoNumBetsInput)}
                 readOnly={autoInfinite || autoRunning}
@@ -1261,17 +1261,17 @@ export default function MinesGame({
                 style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
               />
               <button onClick={()=>{ if(!autoRunning) setAutoInfinite(v=>!v); }} disabled={autoRunning}
-                style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit", transition:"all .15s" }}>
+                style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#7C3AED":"#1e1535", color:"#ddd0f8", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit", transition:"all .15s" }}>
                 ∞
               </button>
             </div>
           </div>
 
           {/* Configuración avanzada */}
-          <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",padding:"8px 12px",background:"#152334",borderRadius:"6px",border:"1px solid #1e3548" }}>
-            <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px" }}>{T("minesAdvanced")}</span>
+          <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",padding:"8px 12px",background:"#0D0F1A",borderRadius:"6px",border:"1px solid #1a1035" }}>
+            <span style={{ color:"#7c6d9e",fontWeight:500,fontSize:"13px" }}>{T("minesAdvanced")}</span>
             <div onClick={()=>setAutoAdvOpen(v=>!v)}
-              style={{ width:"42px",height:"24px",borderRadius:"6px",background:autoAdvOpen?"#1f6fd0":"#2a3f54",cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0 }}>
+              style={{ width:"42px",height:"24px",borderRadius:"6px",background:autoAdvOpen?"#7C3AED":"#2d1f52",cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0 }}>
               <div style={{ position:"absolute",top:"3px",left:autoAdvOpen?"21px":"3px",width:"18px",height:"18px",borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px #0005" }}/>
             </div>
           </div>
@@ -1279,53 +1279,53 @@ export default function MinesGame({
           {autoAdvOpen && <div style={{ marginBottom:"10px" }}>
             {/* Al ganar */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnWin")}</div>
+              <div style={{ color:"#7c6d9e",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnWin")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnWin(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
-                      background:autoOnWin===mode?"#1f6fd0":"#1a2438",color:autoOnWin===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
+                      background:autoOnWin===mode?"#7C3AED":"#1a1035",color:autoOnWin===mode?"#fff":"#a78bfa",transition:"background .15s" }}>
                     {mode==="reset"?T("minesReset"):T("minesIncrease")}
                   </button>
                 ))}
               </div>
               {autoOnWin==="increase" && (
-                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0D0F1A",border:"1px solid #1e1535",borderRadius:"8px",padding:"6px 10px" }}>
                   <input value={autoOnWinPct} onChange={e=>setAutoOnWinPct(e.target.value.replace(/[^\d.]/g,""))}
                     type="text" inputMode="decimal" placeholder="0"
                     style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"16px",fontWeight:500,minWidth:0,outline:"none" }}/>
-                  <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"14px" }}>%</span>
+                  <span style={{ color:"#7c6d9e",fontWeight:500,fontSize:"14px" }}>%</span>
                 </div>
               )}
             </div>
 
             {/* Al perder */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnLoss")}</div>
+              <div style={{ color:"#7c6d9e",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesOnLoss")}</div>
               <div style={{ display:"flex",gap:"6px",marginBottom:"6px" }}>
                 {(["reset","increase"] as const).map(mode=>(
                   <button key={mode} onClick={()=>setAutoOnLose(mode)}
                     style={{ flex:1,padding:"7px 0",borderRadius:"8px",fontSize:"12px",fontWeight:500,cursor:"pointer",border:"none",
-                      background:autoOnLose===mode?"#1f6fd0":"#1a2438",color:autoOnLose===mode?"#fff":"#7a9db8",transition:"background .15s" }}>
+                      background:autoOnLose===mode?"#7C3AED":"#1a1035",color:autoOnLose===mode?"#fff":"#a78bfa",transition:"background .15s" }}>
                     {mode==="reset"?T("minesReset"):T("minesIncrease")}
                   </button>
                 ))}
               </div>
               {autoOnLose==="increase" && (
-                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
+                <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0D0F1A",border:"1px solid #1e1535",borderRadius:"8px",padding:"6px 10px" }}>
                   <input value={autoOnLosePct} onChange={e=>setAutoOnLosePct(e.target.value.replace(/[^\d.]/g,""))}
                     type="text" inputMode="decimal" placeholder="0"
                     style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"16px",fontWeight:500,minWidth:0,outline:"none" }}/>
-                  <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"14px" }}>%</span>
+                  <span style={{ color:"#7c6d9e",fontWeight:500,fontSize:"14px" }}>%</span>
                 </div>
               )}
             </div>
 
             {/* Parar al ganar */}
             <div style={{ marginBottom:"12px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopWin")}</div>
-              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
-                <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
+              <div style={{ color:"#7c6d9e",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopWin")}</div>
+              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0D0F1A",border:"1px solid #1e1535",borderRadius:"8px",padding:"6px 10px" }}>
+                <span style={{ color:"#7c6d9e",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopProfit} onChange={e=>setAutoStopProfit(e.target.value.replace(/[^\d.]/g,""))}
                   type="text" inputMode="decimal" placeholder={T("minesDisabled")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0,outline:"none" }}/>
@@ -1334,9 +1334,9 @@ export default function MinesGame({
 
             {/* Parar al perder */}
             <div style={{ marginBottom:"4px" }}>
-              <div style={{ color:"#5a6a88",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopLoss")}</div>
-              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0e1826",border:"1px solid #252f45",borderRadius:"8px",padding:"6px 10px" }}>
-                <span style={{ color:"#5a6a88",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
+              <div style={{ color:"#7c6d9e",fontWeight:500,fontSize:"12px",marginBottom:"5px" }}>{T("minesStopLoss")}</div>
+              <div style={{ display:"flex",alignItems:"center",gap:"6px",background:"#0D0F1A",border:"1px solid #1e1535",borderRadius:"8px",padding:"6px 10px" }}>
+                <span style={{ color:"#7c6d9e",fontWeight:500,fontSize:"13px",whiteSpace:"nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopLoss} onChange={e=>setAutoStopLoss(e.target.value.replace(/[^\d.]/g,""))}
                   type="text" inputMode="decimal" placeholder={T("minesDisabled")}
                   style={{ flex:1,background:"transparent",border:"none",color:"#fff",fontSize:"15px",fontWeight:500,minWidth:0,outline:"none" }}/>
@@ -1350,8 +1350,8 @@ export default function MinesGame({
               style={{
                 width:"100%", border:"none", borderRadius:"6px", padding:"14px",
                 fontWeight:700, fontSize:"15px", transition:"all .2s",
-                background:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
-                color:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"#fff":"#3a4a60",
+                background:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
+                color:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"#fff":"#2d1f52",
                 boxShadow:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"0 4px 22px rgba(26,159,255,0.35)":"none",
                 cursor:(autoSelectedCells.size>0&&!betInvalid&&(!currentUser||!balInsuff))?"pointer":"not-allowed",
               }}>
@@ -1368,14 +1368,14 @@ export default function MinesGame({
         </div>{/* end scrollable controls area */}
 
         {/* Icon buttons — fixed bottom of left panel */}
-        <div style={{ flexShrink:0, padding:"8px 16px 16px 16px", display:"flex", gap:"8px", position:"relative", zIndex:1, borderTop: autoMode ? "1px solid #1e2840" : "none" }}>
+        <div style={{ flexShrink:0, padding:"8px 16px 16px 16px", display:"flex", gap:"8px", position:"relative", zIndex:1, borderTop: autoMode ? "1px solid #1a1035" : "none" }}>
           <div role="button" tabIndex={0} onClick={() => setShowMinesStats(v=>!v)}
             onKeyDown={e => e.key==="Enter" && setShowMinesStats(v=>!v)}
             title={T("statsTitle")}
             style={{ width:"38px", height:"38px", borderRadius:"8px",
-              background: showMinesStats?"#1f6fd0":"#0e1826",
-              border: showMinesStats?"1px solid #3a8aff":"1px solid #203a50",
-              color: showMinesStats?"#fff":"#7a9db8",
+              background: showMinesStats?"#7C3AED":"#0D0F1A",
+              border: showMinesStats?"1px solid #A855F7":"1px solid #1a1035",
+              color: showMinesStats?"#fff":"#a78bfa",
               cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
               flexShrink:0, boxSizing:"border-box",
               transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1390,7 +1390,7 @@ export default function MinesGame({
             onKeyDown={e => e.key==="Enter" && setMinesVol(v => v > 0 ? 0 : 70)}
             title={T("volumeTitle")}
             style={{ width:"38px", height:"38px", borderRadius:"8px",
-              background:"#0e1826", border:"1px solid #203a50", color:"#7a9db8",
+              background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa",
               cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
               flexShrink:0, boxSizing:"border-box",
               transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1406,7 +1406,7 @@ export default function MinesGame({
       </div>
 
       {/* ── MAIN AREA ─────────────────────────────────────────────────── */}
-      <div className="mines-main-area" style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding: isMobile ? "14px 8px" : "20px 28px", position:"relative", background:"#0e1320", overflow:"hidden", boxSizing:"border-box", width:"100%" }}>
+      <div className="mines-main-area" style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding: isMobile ? "14px 8px" : "20px 28px", position:"relative", background:"#0A0A12", overflow:"hidden", boxSizing:"border-box", width:"100%" }}>
 
         {/* Grid — fixed 580×580 square on desktop; full-width minus margin on mobile */}
         {(() => {
@@ -1442,7 +1442,7 @@ export default function MinesGame({
                       <div style={{
                         position:"absolute", inset:"-20%",
                         borderRadius:"50%",
-                        background:"radial-gradient(circle, #ffaa00 0%, #ff4400 40%, transparent 70%)",
+                        background:"radial-gradient(circle, #A855F7 0%, #ff4400 40%, transparent 70%)",
                         animation:"explosionFlash 0.55s ease-out forwards",
                         pointerEvents:"none", zIndex:2,
                       }}/>
@@ -1487,40 +1487,40 @@ export default function MinesGame({
 
       {/* ── Floating draggable stats panel ── */}
       {showMinesStats && createPortal(
-        <div style={{ position:"fixed",left:minesStatsPos.x,top:minesStatsPos.y,zIndex:9999,width:"280px",background:"#0f1f2e",border:"1px solid #1e3a52",borderRadius:"6px",boxShadow:"0 8px 32px rgba(0,0,0,.7)",overflow:"hidden",userSelect:"none" }}>
+        <div style={{ position:"fixed",left:minesStatsPos.x,top:minesStatsPos.y,zIndex:9999,width:"280px",background:"#0A0A12",border:"1px solid #1e1535",borderRadius:"6px",boxShadow:"0 8px 32px rgba(0,0,0,.7)",overflow:"hidden",userSelect:"none" }}>
           <div onMouseDown={handleMinesStatsDragStart} onTouchStart={handleMinesStatsDragStart as any}
-            style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"#112232",borderBottom:minesStatsCollapsed?"none":"1px solid #1e3a52",cursor:"grab",touchAction:"none" }}>
+            style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"#0D0F1A",borderBottom:minesStatsCollapsed?"none":"1px solid #1e1535",cursor:"grab",touchAction:"none" }}>
             <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
-              <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
-              <strong style={{ fontSize:"14px",color:"#d8e8f5" }}>{T("liveStatsTitle")}</strong>
+              <span style={{ display:"flex",alignItems:"center",color:"#a78bfa" }}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
+              <strong style={{ fontSize:"14px",color:"#ead4fc" }}>{T("liveStatsTitle")}</strong>
             </div>
             <div style={{ display:"flex",alignItems:"center",gap:"4px" }}>
-              <button onClick={()=>setMinesStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#7a9db8",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
+              <button onClick={()=>setMinesStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#a78bfa",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">{minesStatsCollapsed ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}</svg>
               </button>
-              <button onClick={()=>setShowMinesStats(false)} style={{ background:"none",border:"none",color:"#7a9db8",fontSize:"18px",cursor:"pointer",lineHeight:1,padding:"0 2px" }}>×</button>
+              <button onClick={()=>setShowMinesStats(false)} style={{ background:"none",border:"none",color:"#a78bfa",fontSize:"18px",cursor:"pointer",lineHeight:1,padding:"0 2px" }}>×</button>
             </div>
           </div>
 
           <div style={{ padding:"12px", display: minesStatsCollapsed ? "none" : "block" }}>
-            <div style={{ background:"#0d1a28",borderRadius:"6px",padding:"12px",marginBottom:"8px",display:"flex",flexDirection:"column",gap:"8px" }}>
+            <div style={{ background:"#0A0A12",borderRadius:"6px",padding:"12px",marginBottom:"8px",display:"flex",flexDirection:"column",gap:"8px" }}>
               {([
                 { label:T("bjNetProfit"), value:fmtMoney(minesStats.profit), color:minesStats.profit>=0?"#16ff5c":"#ff5959", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
                 { label:T("bjWins"),     value:String(minesStats.wins),     color:"#16ff5c", extra:{} },
-                { label:T("bjWagered"),  value:fmtMoney(minesStats.wagered),color:"#d8e8f5", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
+                { label:T("bjWagered"),  value:fmtMoney(minesStats.wagered),color:"#ead4fc", extra:{ opacity:currencyFade,transition:"opacity .18s" } },
                 { label:T("bjLosses"),   value:String(minesStats.losses),   color:"#ff5959", extra:{} },
               ] as {label:string;value:string;color:string;extra:React.CSSProperties}[]).map(s=>(
                 <div key={s.label} style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                  <span style={{ color:"#7a9db8",fontSize:"11.5px" }}>{s.label}</span>
+                  <span style={{ color:"#a78bfa",fontSize:"11.5px" }}>{s.label}</span>
                   <span style={{ color:s.color,fontWeight:500,fontSize:"13px",...s.extra }}>{s.value}</span>
                 </div>
               ))}
             </div>
 
             <button onClick={onResetStats}
-              style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
-              onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#3a8aff";b.style.background="#0d1f30";}}
-              onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#7a9db8";b.style.borderColor="#1e3a52";b.style.background="transparent";}}
+              style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e1535",borderRadius:"8px",color:"#a78bfa",fontSize:"12px",cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
+              onMouseEnter={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#fff";b.style.borderColor="#A855F7";b.style.background="#0A0A12";}}
+              onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.color="#a78bfa";b.style.borderColor="#1e1535";b.style.background="transparent";}}
             ><span style={{ fontSize:"14px" }}>↺</span> {T("minesResetStats")}</button>
 
             {(()=>{
@@ -1533,8 +1533,8 @@ export default function MinesGame({
               const allPts: ChartPt[] = raw ? [{cum:0,win:false,profit:0},...series] : [];
               const n=allPts.length;
               if(n<2) return (
-                <div style={{ position:"relative",background:"#0a1520",borderRadius:"6px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
-                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{T("noHistory")}</span>
+                <div style={{ position:"relative",background:"#0A0A12",borderRadius:"6px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1e1535" }}>
+                  <span style={{ color:"#2d1f52",fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const cums=allPts.map(p=>p.cum);
@@ -1553,11 +1553,11 @@ export default function MinesGame({
               const tipLeft=hIdx!==null&&xs.length?Math.min(Math.max((xs[hIdx]/W)*100,12),78):0;
               const tipTop=hIdx!==null&&ys.length?Math.max((ys[hIdx]/H)*100-14,2):0;
               return (
-                <div style={{ position:"relative",background:"#0a1520",borderRadius:"6px",height:"190px",overflow:"visible",border:"1px solid #1a3347" }}>
+                <div style={{ position:"relative",background:"#0A0A12",borderRadius:"6px",height:"190px",overflow:"visible",border:"1px solid #1e1535" }}>
                   {hpt && (
-                    <div style={{ position:"absolute",left:`${tipLeft}%`,top:`${tipTop}%`,transform:"translateX(-50%) translateY(-100%)",background:"#1a2a3a",border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,borderRadius:"8px",padding:"4px 10px",fontSize:"12px",fontWeight:500,color:hpt.profit>=0?"#19ff35":"#ff3350",whiteSpace:"nowrap",pointerEvents:"none",zIndex:20,boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}`}}>
+                    <div style={{ position:"absolute",left:`${tipLeft}%`,top:`${tipTop}%`,transform:"translateX(-50%) translateY(-100%)",background:"#1a1035",border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,borderRadius:"8px",padding:"4px 10px",fontSize:"12px",fontWeight:500,color:hpt.profit>=0?"#19ff35":"#ff3350",whiteSpace:"nowrap",pointerEvents:"none",zIndex:20,boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}`}}>
                       {hpt.profit>=0?"+":""}{fmtMoney(hpt.profit)}
-                      <span style={{ color:"#7a9db8",fontWeight:400,fontSize:"10px",marginLeft:"6px" }}>acum: {hpt.cum>=0?"+":""}{fmtMoney(hpt.cum)}</span>
+                      <span style={{ color:"#a78bfa",fontWeight:400,fontSize:"10px",marginLeft:"6px" }}>acum: {hpt.cum>=0?"+":""}{fmtMoney(hpt.cum)}</span>
                     </div>
                   )}
                   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ width:"100%",height:"100%",display:"block",cursor:"crosshair" }}
@@ -1584,15 +1584,15 @@ export default function MinesGame({
                     {n>1?<>
                       <path d={fillBelow} fill="rgba(200,30,30,.35)" clipPath="url(#minesClipBelow)"/>
                       <path d={fillAbove} fill="rgba(25,255,80,.18)" clipPath="url(#minesClipAbove)"/>
-                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
                       <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#minesClipAbove)"/>
                       <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#minesClipBelow)"/>
                       <rect x={PAD_X} y={PAD_Y} width={chartW} height={chartH} fill="transparent"/>
                       {hIdx!==null&&hIdx<allPts.length&&<>
-                        <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
-                        <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5" fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0a1520" strokeWidth="2" style={{ pointerEvents:"none" }}/>
+                        <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
+                        <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5" fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0A0A12" strokeWidth="2" style={{ pointerEvents:"none" }}/>
                       </>}
-                    </>:<line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#2a4055" strokeWidth="1.5"/>}
+                    </>:<line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#1e1535" strokeWidth="1.5"/>}
                   </svg>
                 </div>
               );

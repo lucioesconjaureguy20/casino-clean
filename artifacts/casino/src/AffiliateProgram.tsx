@@ -536,15 +536,15 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
     : (monthOptions.find(m => m.value === selectedMonth)?.label ?? selectedMonth);
 
   const cardStyle = {
-    background: "#161d2b",
-    border: "1px solid #20283a",
+    background: "#0D0F1A",
+    border: "1px solid #130d26",
     borderRadius: "6px",
     padding: "16px",
   };
 
   const statCardStyle = {
-    background: "#111827",
-    border: "1px solid #1e2a3d",
+    background: "#0D0F1A",
+    border: "1px solid #13102a",
     borderRadius: "6px",
     padding: "16px 18px",
     flex: 1,
@@ -554,8 +554,8 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
   const tabStyle = (active: boolean) => ({
     background: "none",
     border: "none",
-    borderBottom: active ? "2px solid #f6b531" : "2px solid transparent",
-    color: active ? "#f6b531" : "#94a3b8",
+    borderBottom: active ? "2px solid #A855F7" : "2px solid transparent",
+    color: active ? "#A855F7" : "#9b8bc4",
     padding: "10px 4px",
     fontSize: "14px",
     fontWeight: active ? 600 : 400,
@@ -564,7 +564,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
   });
 
   const primaryBtn = {
-    background: "linear-gradient(180deg,#f6b531,#e9970d)",
+    background: "linear-gradient(180deg,#A855F7,#A855F7)",
     border: "none",
     borderRadius: "8px",
     color: "#111",
@@ -582,7 +582,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
     background: "rgba(255,255,255,0.06)",
     border: "1px solid rgba(255,255,255,0.12)",
     borderRadius: "8px",
-    color: "#e2e8f0",
+    color: "#e2d4f8",
     fontWeight: 500,
     fontSize: "13px",
     padding: "8px 14px",
@@ -642,25 +642,25 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
       raw: ngrNum, Icon: IconTrendUp, hint: t("affHint7") },
   ];
 
-  const iconColor = "#8fa3be";
+  const iconColor = "#b0a0d8";
 
   const codePanel = username ? (
-    <div style={{ border: "1px solid #1a2234", borderRadius: 6, overflow: "hidden", marginBottom: 20 }}>
+    <div style={{ border: "1px solid #130d26", borderRadius: 6, overflow: "hidden", marginBottom: 20 }}>
       {/* ── Header ── */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 18px", background: "#0d1219", borderBottom: "1px solid #1a2234" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 18px", background: "#0A0A12", borderBottom: "1px solid #130d26" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 14, color: "#64748b" }}>⚙</span>
-          <span style={{ color: "#94a3b8", fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>
+          <span style={{ fontSize: 14, color: "#6b5f8c" }}>⚙</span>
+          <span style={{ color: "#9b8bc4", fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>
             {t("affYourCode")}
           </span>
         </div>
-        <span style={{ background: "#1a2234", color: "#64748b", fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 6, minWidth: 36, textAlign: "center" as const }}>
+        <span style={{ background: "#130d26", color: "#6b5f8c", fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 6, minWidth: 36, textAlign: "center" as const }}>
           {refCode ? "1/1" : "0/1"}
         </span>
       </div>
 
       {/* ── Content ── */}
-      <div style={{ background: "#0f1623", padding: "16px 16px" }}>
+      <div style={{ background: "#0A0A12", padding: "16px 16px" }}>
         {/* Estado vacío: botón dashed naranja (solo si ya terminó de cargar) */}
         {!loadingCode && !refCode && !showCodeForm && (
           <button
@@ -670,16 +670,16 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               alignItems: "center", justifyContent: "center", gap: 6,
               width: "100%", padding: "28px 20px",
               background: "transparent",
-              border: "1.5px dashed #f6b53180",
+              border: "1.5px dashed #A855F780",
               borderRadius: 8,
               cursor: "pointer",
               transition: "border-color .15s, background .15s",
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#f6b531"; (e.currentTarget as HTMLButtonElement).style.background = "#f6b5310a"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#f6b53180"; (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#A855F7"; (e.currentTarget as HTMLButtonElement).style.background = "#A855F70a"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#A855F780"; (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
           >
-            <span style={{ color: "#64748b", fontSize: 12 }}>{t("affNoCode")}</span>
-            <span style={{ color: "#f6b531", fontSize: 14, fontWeight: 600, letterSpacing: "0.02em" }}>{t("affAddCode")}</span>
+            <span style={{ color: "#6b5f8c", fontSize: 12 }}>{t("affNoCode")}</span>
+            <span style={{ color: "#A855F7", fontSize: 14, fontWeight: 600, letterSpacing: "0.02em" }}>{t("affAddCode")}</span>
           </button>
         )}
 
@@ -687,10 +687,10 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
         {refCode && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 4px" }}>
             <div>
-              <div style={{ color: "#e2e8f0", fontWeight: 700, fontSize: 14, letterSpacing: "0.03em" }}>
+              <div style={{ color: "#e2d4f8", fontWeight: 700, fontSize: 14, letterSpacing: "0.03em" }}>
                 {refCode.toUpperCase()}
               </div>
-              <div style={{ color: "#374151", fontSize: 12, marginTop: 2, fontFamily: "monospace" }}>
+              <div style={{ color: "#2d1f52", fontSize: 12, marginTop: 2, fontFamily: "monospace" }}>
                 {refLink || `${window.location.origin}/?ref=${refCode}`}
               </div>
             </div>
@@ -701,8 +701,8 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                   <div style={{
                     position: "absolute" as const, bottom: "calc(100% + 6px)", left: "50%",
                     transform: "translateX(-50%)", whiteSpace: "nowrap" as const,
-                    background: copiedCode ? "#16a34a" : "#1e2a3d",
-                    color: copiedCode ? "#fff" : "#cbd5e1",
+                    background: copiedCode ? "#16a34a" : "#13102a",
+                    color: copiedCode ? "#fff" : "#c4b8e0",
                     fontSize: 11, fontWeight: 600, padding: "4px 10px",
                     borderRadius: 6, pointerEvents: "none" as const,
                     boxShadow: "0 2px 8px #0008",
@@ -718,12 +718,12 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
                     width: 36, height: 36, borderRadius: 7,
-                    background: copiedCode ? "#16a34a22" : hoverCopyCode ? "#253048" : "#1a2234",
-                    border: `1px solid ${copiedCode ? "#29c46d55" : hoverCopyCode ? "#4a6080" : "#253048"}`,
+                    background: copiedCode ? "#16a34a22" : hoverCopyCode ? "#1e1535" : "#130d26",
+                    border: `1px solid ${copiedCode ? "#29c46d55" : hoverCopyCode ? "#4a3070" : "#1e1535"}`,
                     cursor: "pointer", transition: "all .15s",
                   }}
                 >
-                  <IconCopy size={14} color={copiedCode ? "#29c46d" : hoverCopyCode ? "#cbd5e1" : "#64748b"} />
+                  <IconCopy size={14} color={copiedCode ? "#29c46d" : hoverCopyCode ? "#c4b8e0" : "#6b5f8c"} />
                 </button>
               </div>
 
@@ -733,8 +733,8 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                   <div style={{
                     position: "absolute" as const, bottom: "calc(100% + 6px)", left: "50%",
                     transform: "translateX(-50%)", whiteSpace: "nowrap" as const,
-                    background: copied ? "#f6b531" : "#1e2a3d",
-                    color: copied ? "#111" : "#cbd5e1",
+                    background: copied ? "#A855F7" : "#13102a",
+                    color: copied ? "#111" : "#c4b8e0",
                     fontSize: 11, fontWeight: 600, padding: "4px 10px",
                     borderRadius: 6, pointerEvents: "none" as const,
                     boxShadow: "0 2px 8px #0008",
@@ -750,12 +750,12 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
                     width: 36, height: 36, borderRadius: 7,
-                    background: copied ? "#f6b53122" : hoverCopyLink ? "#253048" : "#1a2234",
-                    border: `1px solid ${copied ? "#f6b53155" : hoverCopyLink ? "#4a6080" : "#253048"}`,
+                    background: copied ? "#A855F722" : hoverCopyLink ? "#1e1535" : "#130d26",
+                    border: `1px solid ${copied ? "#A855F755" : hoverCopyLink ? "#4a3070" : "#1e1535"}`,
                     cursor: "pointer", transition: "all .15s",
                   }}
                 >
-                  <IconLink size={14} color={copied ? "#f6b531" : hoverCopyLink ? "#cbd5e1" : "#64748b"} />
+                  <IconLink size={14} color={copied ? "#A855F7" : hoverCopyLink ? "#c4b8e0" : "#6b5f8c"} />
                 </button>
               </div>
             </div>
@@ -765,7 +765,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
         {/* Formulario inline para crear código */}
         {showCodeForm && (
           <div>
-            <p style={{ margin: "0 0 10px", color: "#64748b", fontSize: 12 }}>
+            <p style={{ margin: "0 0 10px", color: "#6b5f8c", fontSize: 12 }}>
               {t("affCodeHint")}
             </p>
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" as const }}>
@@ -778,20 +778,20 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                 onKeyDown={e => { if (e.key === "Enter") saveCode(); if (e.key === "Escape") { setShowCodeForm(false); setCodeError(""); } }}
                 style={{
                   flex: 1, minWidth: 150, padding: "9px 12px", borderRadius: 8,
-                  border: codeError ? "1px solid #ef4444" : "1px solid #253048",
-                  background: "#0a1018", color: "#e2e8f0", fontSize: 14,
+                  border: codeError ? "1px solid #ef4444" : "1px solid #1e1535",
+                  background: "#0A0A12", color: "#e2d4f8", fontSize: 14,
                   outline: "none", fontFamily: "monospace", letterSpacing: "0.05em",
                 }}
               />
               <button onClick={() => { setShowCodeForm(false); setCodeError(""); }} style={{
                 padding: "9px 14px", borderRadius: 8, background: "none",
-                border: "1px solid #253048", color: "#64748b", fontSize: 13, cursor: "pointer",
+                border: "1px solid #1e1535", color: "#6b5f8c", fontSize: 13, cursor: "pointer",
               }}>
                 {t("affCancel")}
               </button>
               <button onClick={saveCode} disabled={codeSaving || !codeInput} style={{
                 padding: "9px 18px", borderRadius: 8,
-                background: "linear-gradient(180deg,#f6b531,#e9970d)",
+                background: "linear-gradient(180deg,#A855F7,#A855F7)",
                 border: "none", color: "#111", fontWeight: 700, fontSize: 13,
                 cursor: codeSaving || !codeInput ? "not-allowed" : "pointer",
                 opacity: !codeInput ? 0.5 : 1,
@@ -800,7 +800,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               </button>
             </div>
             {codeInput && (
-              <p style={{ margin: "8px 0 0", color: "#374151", fontSize: 11, fontFamily: "monospace" }}>
+              <p style={{ margin: "8px 0 0", color: "#2d1f52", fontSize: 11, fontFamily: "monospace" }}>
                 {window.location.origin}/?ref={codeInput}
               </p>
             )}
@@ -816,7 +816,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
 
       {!dashboardOnly && (
-        <div style={{ display: "flex", gap: "20px", borderBottom: "1px solid #20283a", marginBottom: "20px" }}>
+        <div style={{ display: "flex", gap: "20px", borderBottom: "1px solid #130d26", marginBottom: "20px" }}>
           <button className="aff-tab-btn" style={tabStyle(tab === "overview")} onClick={() => setTab("overview")}>{t("affOverview")}</button>
           {username && <button className="aff-tab-btn" style={tabStyle(tab === "dashboard")} onClick={() => setTab("dashboard")}>{t("affDashboard")}</button>}
         </div>
@@ -831,7 +831,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               flex: 1,
               borderRadius: "8px",
               overflow: "hidden",
-              border: "1px solid #3a2800",
+              border: "1px solid #1a1035",
               minHeight: isMobile ? "185px" : "220px",
               position: "relative",
             }}>
@@ -886,7 +886,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                     if (isMobile) {
                       /* On mobile: all words on one or two lines, no forced split */
                       return words.map((w: string, i: number) => (
-                        <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#f6b531" : "#FFFFFF" }}>
+                        <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#A855F7" : "#FFFFFF" }}>
                           {w}{i < words.length - 1 ? " " : ""}
                         </span>
                       ));
@@ -897,7 +897,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                       <>
                         <div>
                           {line1.map((w: string, i: number) => (
-                            <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#f6b531" : "#FFFFFF" }}>
+                            <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#A855F7" : "#FFFFFF" }}>
                               {w}{i < line1.length - 1 ? " " : ""}
                             </span>
                           ))}
@@ -905,7 +905,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                         {line2.length > 0 && (
                           <div>
                             {line2.map((w: string, i: number) => (
-                              <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#f6b531" : "#FFFFFF" }}>
+                              <span key={i} style={{ color: w.toUpperCase() === goldWord ? "#A855F7" : "#FFFFFF" }}>
                                 {w}{i < line2.length - 1 ? " " : ""}
                               </span>
                             ))}
@@ -930,7 +930,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
             {/* Commission Card */}
             <div style={{
-              border: "1px solid #3a2800",
+              border: "1px solid #1a1035",
               borderRadius: "8px",
               padding: isMobile ? "16px 24px" : "24px 32px",
               minWidth: isMobile ? "auto" : "160px",
@@ -959,16 +959,16 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               <div style={{ position:"absolute",inset:0,background:"rgba(10,8,0,0.52)",borderRadius:"10px",pointerEvents:"none" }} />
               <div style={{
                 position: "absolute", top: 0, left: 0, right: 0, height: "3px",
-                background: "linear-gradient(90deg, #f6b531, #e9970d)",
+                background: "linear-gradient(90deg, #A855F7, #A855F7)",
                 borderRadius: "8px 8px 0 0",
               }} />
-              <p style={{ margin: "0 0 4px", color: "#c4bfb5", fontSize: isMobile ? "10px" : "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", position: "relative", zIndex: 1 }}>
+              <p style={{ margin: "0 0 4px", color: "#c4b8e0", fontSize: isMobile ? "10px" : "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", position: "relative", zIndex: 1 }}>
                 {t("affEarnUpTo")}
               </p>
               <div style={{ fontSize: isMobile ? "38px" : "52px", fontWeight: 900, color: "#fff", lineHeight: 1, position: "relative", zIndex: 1 }}>
                 15%
               </div>
-              <p style={{ margin: isMobile ? "4px 0 0" : "6px 0 0", fontSize: isMobile ? "12px" : "14px", fontWeight: 600, color: "#f6b531", position: "relative", zIndex: 1 }}>
+              <p style={{ margin: isMobile ? "4px 0 0" : "6px 0 0", fontSize: isMobile ? "12px" : "14px", fontWeight: 600, color: "#A855F7", position: "relative", zIndex: 1 }}>
                 {t("affCommission")}
               </p>
             </div>
@@ -977,19 +977,19 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
           {/* Sign-up prompt for guests */}
           {!username && (
             <div style={{
-              background: "#0d1220",
-              border: "1px solid #1e2a3d",
+              background: "#0A0A12",
+              border: "1px solid #13102a",
               borderRadius: "6px",
               padding: "14px 20px",
               display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px",
               flexWrap: "wrap",
               marginBottom: "20px",
             }}>
-              <span style={{ fontSize: "13px", color: "#94a3b8" }}>
+              <span style={{ fontSize: "13px", color: "#9b8bc4" }}>
                 {t("affSignUpPrompt")}
               </span>
               <button onClick={onRegister} style={{
-                background: "linear-gradient(135deg,#f6b531,#d4870a)",
+                background: "linear-gradient(135deg,#A855F7,#7C3AED)",
                 border: "none", borderRadius: "8px",
                 padding: "9px 20px",
                 color: "#fff", fontWeight: 700, fontSize: "13px",
@@ -1002,18 +1002,18 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
           {/* Introduction */}
           <div style={{ marginBottom: "40px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "12px" }}>{t("affIntroTitle")}</p>
-            <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: "0 0 8px" }}>
+            <p style={{ color: "#e2d4f8", fontSize: "14px", fontWeight: 600, marginBottom: "12px" }}>{t("affIntroTitle")}</p>
+            <p style={{ color: "#9b8bc4", fontSize: "13px", lineHeight: 1.7, margin: "0 0 8px" }}>
               {t("affIntroPara1")}
             </p>
-            <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: 1.7, margin: 0 }}>
+            <p style={{ color: "#9b8bc4", fontSize: "13px", lineHeight: 1.7, margin: 0 }}>
               {t("affIntroPara2")}
             </p>
           </div>
 
           {/* Features */}
           <div style={{ marginBottom: "40px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 600, marginBottom: "16px" }}>
+            <p style={{ color: "#e2d4f8", fontSize: "14px", fontWeight: 600, marginBottom: "16px" }}>
               {t("affWhyJoin")}
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "10px" }}>
@@ -1023,8 +1023,8 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                     <Icon size={20} color={iconColor} />
                   </div>
                   <div>
-                    <div style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{title}</div>
-                    <div style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.5 }}>{desc}</div>
+                    <div style={{ color: "#e2d4f8", fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{title}</div>
+                    <div style={{ color: "#9b8bc4", fontSize: "12px", lineHeight: 1.5 }}>{desc}</div>
                   </div>
                 </div>
               ))}
@@ -1033,7 +1033,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
           {/* How to Enroll */}
           <div>
-            <p style={{ color: "#e2e8f0", fontSize: "16px", fontWeight: 800, marginBottom: "32px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            <p style={{ color: "#e2d4f8", fontSize: "16px", fontWeight: 800, marginBottom: "32px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
               {t("affHowItWorks")}
             </p>
 
@@ -1042,15 +1042,15 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               {/* Connecting line */}
               <div style={{
                 position: "absolute", top: "50%", left: "calc(100% / 6)", right: "calc(100% / 6)",
-                height: "1px", background: "#20283a", transform: "translateY(-50%)", zIndex: 0,
+                height: "1px", background: "#130d26", transform: "translateY(-50%)", zIndex: 0,
               }} />
               {steps.map((s, i) => (
                 <div key={i} style={{ position: "relative", zIndex: 1 }}>
                   <div style={{
                     width: "44px", height: "44px", borderRadius: "6px",
-                    border: "2px solid #f6b531",
-                    background: "#111827",
-                    color: "#f6b531", fontWeight: 700, fontSize: "16px",
+                    border: "2px solid #A855F7",
+                    background: "#0D0F1A",
+                    color: "#A855F7", fontWeight: 700, fontSize: "16px",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
                     {s.num}
@@ -1063,10 +1063,10 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", textAlign: "center" }}>
               {steps.map((s, i) => (
                 <div key={i}>
-                  <div style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                  <div style={{ color: "#e2d4f8", fontSize: "13px", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                     {s.title}
                   </div>
-                  <div style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.6 }}>
+                  <div style={{ color: "#9b8bc4", fontSize: "12px", lineHeight: 1.6 }}>
                     {s.desc}
                   </div>
                 </div>
@@ -1093,18 +1093,18 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                 q: t("affFaq4Q"),
                 a: (
                   <div>
-                    <p style={{ margin: "0 0 12px", color: "#94a3b8", fontSize: "13px", lineHeight: 1.7 }}>
+                    <p style={{ margin: "0 0 12px", color: "#9b8bc4", fontSize: "13px", lineHeight: 1.7 }}>
                       {t("affFaq4ContactText")}
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                       <a href="mailto:partners@manderbet.com" className="aff-contact-link" style={{
                         display: "inline-flex", alignItems: "center", gap: "10px",
-                        color: "#e2e8f0", fontSize: "13px", textDecoration: "none", transition: "color 0.15s ease",
+                        color: "#e2d4f8", fontSize: "13px", textDecoration: "none", transition: "color 0.15s ease",
                       }}>
                         <div className="aff-contact-icon" style={{ width: "30px", height: "30px", borderRadius: "8px", background: "rgba(246,181,49,0.1)", border: "1px solid rgba(246,181,49,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.15s ease, border-color 0.15s ease" }}>
-                          <IconMail size={15} color="#f6b531" />
+                          <IconMail size={15} color="#A855F7" />
                         </div>
-                        <span><span style={{ color: "#94a3b8" }}>Email:</span> partners@manderbet.com</span>
+                        <span><span style={{ color: "#9b8bc4" }}>Email:</span> partners@manderbet.com</span>
                       </a>
                     </div>
                   </div>
@@ -1113,7 +1113,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
             ];
             return (
               <div style={{ marginTop: "48px" }}>
-                <p style={{ color: "#e2e8f0", fontSize: "16px", fontWeight: 800, marginBottom: "28px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                <p style={{ color: "#e2d4f8", fontSize: "16px", fontWeight: 800, marginBottom: "28px", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                   {t("affFaq")}
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1121,8 +1121,8 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                     <div
                       key={i}
                       style={{
-                        background: "#161d2b",
-                        border: "1px solid #1e2a3d",
+                        background: "#0D0F1A",
+                        border: "1px solid #13102a",
                         borderRadius: "6px",
                         overflow: "hidden",
                       }}
@@ -1134,14 +1134,14 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                           width: "100%", background: "none", border: "none",
                           padding: "16px 20px", cursor: "pointer",
                           display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
-                          color: "#e2e8f0", fontSize: "13px", fontWeight: 600, textAlign: "left",
+                          color: "#e2d4f8", fontSize: "13px", fontWeight: 600, textAlign: "left",
                           transition: "background 0.15s ease",
                         }}
                       >
                         <span>{faq.q}</span>
                         <svg
                           width="16" height="16" viewBox="0 0 24 24" fill="none"
-                          stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                          stroke="#9b8bc4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                           style={{
                             flexShrink: 0,
                             transform: faqOpen === i ? "rotate(180deg)" : "rotate(0deg)",
@@ -1154,7 +1154,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                       {faqOpen === i && (
                         <div style={{
                           padding: "0 20px 18px",
-                          color: "#94a3b8", fontSize: "13px", lineHeight: 1.7,
+                          color: "#9b8bc4", fontSize: "13px", lineHeight: 1.7,
                           whiteSpace: "pre-line",
                           animation: "pwdReqIn 0.18s ease",
                         }}>
@@ -1175,14 +1175,14 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
           {/* Filter Bar */}
           <div style={{ ...cardStyle, display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", padding: "12px 16px", flexWrap: "wrap", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-              <span style={{ color: "#94a3b8", fontSize: "13px" }}>{t("affFilterDate")}</span>
+              <span style={{ color: "#9b8bc4", fontSize: "13px" }}>{t("affFilterDate")}</span>
 
               {/* Custom dropdown */}
               <div style={{ position: "relative" }}>
                 <button
                   onClick={() => setPeriodDropOpen(o => !o)}
                   className="aff-period-btn"
-                  style={{ background: "#0e1623", border: "1px solid #1e2a3d", borderRadius: "8px", color: "#e2e8f0", padding: "6px 28px 6px 12px", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", minWidth: "170px", justifyContent: "space-between", position: "relative" }}
+                  style={{ background: "#0A0A12", border: "1px solid #13102a", borderRadius: "8px", color: "#e2d4f8", padding: "6px 28px 6px 12px", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", minWidth: "170px", justifyContent: "space-between", position: "relative" }}
                 >
                   <span>{currentPeriodLabel}</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition:"transform .2s", transform: periodDropOpen ? "rotate(180deg)" : "rotate(0deg)", flexShrink:0 }}><polyline points="6 9 12 15 18 9"/></svg>
@@ -1191,18 +1191,18 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                 {periodDropOpen && (
                   <>
                     <div style={{ position:"fixed", inset:0, zIndex:199 }} onClick={() => setPeriodDropOpen(false)} />
-                    <div style={{ position:"absolute", top:"calc(100% + 6px)", left:0, minWidth:"200px", background:"#111827", border:"1px solid #1e2a3d", borderRadius:"10px", zIndex:200, overflow:"hidden", boxShadow:"0 8px 24px rgba(0,0,0,0.5)" }}>
+                    <div style={{ position:"absolute", top:"calc(100% + 6px)", left:0, minWidth:"200px", background:"#0D0F1A", border:"1px solid #13102a", borderRadius:"10px", zIndex:200, overflow:"hidden", boxShadow:"0 8px 24px rgba(0,0,0,0.5)" }}>
                       {/* All Time */}
                       <div
                         onClick={() => { setPeriodType("all"); setPeriodDropOpen(false); }}
-                        style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="all" ? "#f6b531" : "#e2e8f0", cursor:"pointer", background: periodType==="all" ? "rgba(246,181,49,0.08)" : "transparent", fontWeight: periodType==="all" ? 600 : 400 }}
+                        style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="all" ? "#A855F7" : "#e2d4f8", cursor:"pointer", background: periodType==="all" ? "rgba(246,181,49,0.08)" : "transparent", fontWeight: periodType==="all" ? 600 : 400 }}
                         onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.04)")}
                         onMouseLeave={e=>(e.currentTarget.style.background=periodType==="all"?"rgba(246,181,49,0.08)":"transparent")}
                       >{t("affAllTime")}</div>
                       {/* Custom Date */}
                       <div
                         onClick={() => { setPeriodType("custom"); setPeriodDropOpen(false); }}
-                        style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="custom" ? "#f6b531" : "#e2e8f0", cursor:"pointer", background: periodType==="custom" ? "rgba(246,181,49,0.15)" : "transparent", fontWeight: periodType==="custom" ? 600 : 400, borderBottom:"1px solid #1e2a3d" }}
+                        style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="custom" ? "#A855F7" : "#e2d4f8", cursor:"pointer", background: periodType==="custom" ? "rgba(246,181,49,0.15)" : "transparent", fontWeight: periodType==="custom" ? 600 : 400, borderBottom:"1px solid #13102a" }}
                         onMouseEnter={e=>(e.currentTarget.style.background=periodType==="custom"?"rgba(246,181,49,0.15)":"rgba(255,255,255,0.04)")}
                         onMouseLeave={e=>(e.currentTarget.style.background=periodType==="custom"?"rgba(246,181,49,0.15)":"transparent")}
                       >{t("affCustomDate")}</div>
@@ -1211,7 +1211,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                         <div
                           key={m.value}
                           onClick={() => { setPeriodType("month"); setSelectedMonth(m.value); setPeriodDropOpen(false); }}
-                          style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="month" && selectedMonth===m.value ? "#f6b531" : "#94a3b8", cursor:"pointer", background: periodType==="month" && selectedMonth===m.value ? "rgba(246,181,49,0.08)" : "transparent" }}
+                          style={{ padding:"9px 14px", fontSize:"13px", color: periodType==="month" && selectedMonth===m.value ? "#A855F7" : "#9b8bc4", cursor:"pointer", background: periodType==="month" && selectedMonth===m.value ? "rgba(246,181,49,0.08)" : "transparent" }}
                           onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.04)")}
                           onMouseLeave={e=>(e.currentTarget.style.background=periodType==="month"&&selectedMonth===m.value?"rgba(246,181,49,0.08)":"transparent")}
                         >{m.label}</div>
@@ -1225,10 +1225,10 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
               {periodType === "custom" && (
                 <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "center", gap:"8px", flexWrap: isMobile ? undefined : "wrap" }}>
                   {/* Desde — input invisible covers full box; CSS makes calendar indicator fill it */}
-                  <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0e1623", border:"1px solid #1e2a3d", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px", width: isMobile ? "70%" : undefined }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affFrom")}</span>
-                    <span style={{ color: customFrom ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
+                  <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0A0A12", border:"1px solid #13102a", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px", width: isMobile ? "70%" : undefined }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9b8bc4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span style={{ color:"#9b8bc4", fontSize:"12px", pointerEvents:"none" }}>{t("affFrom")}</span>
+                    <span style={{ color: customFrom ? "#e2d4f8" : "#6b5f8c", fontSize:"13px", pointerEvents:"none" }}>
                       {customFrom ? customFrom.split("-").reverse().join("/") : t("affDatePlaceholder")}
                     </span>
                     <input
@@ -1244,12 +1244,12 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                       style={{ position:"absolute", inset:0, opacity:0, width:"100%", height:"100%", cursor:"pointer", colorScheme:"dark" }}
                     />
                   </div>
-                  {!isMobile && <span style={{ color:"#556070", fontSize:"13px" }}>—</span>}
+                  {!isMobile && <span style={{ color:"#6b5f8c", fontSize:"13px" }}>—</span>}
                   {/* Hasta */}
-                  <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0e1623", border:"1px solid #1e2a3d", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px", width: isMobile ? "70%" : undefined }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span style={{ color:"#94a3b8", fontSize:"12px", pointerEvents:"none" }}>{t("affTo")}</span>
-                    <span style={{ color: customTo ? "#e2e8f0" : "#556070", fontSize:"13px", pointerEvents:"none" }}>
+                  <div className="aff-date-box" style={{ position:"relative", display:"flex", alignItems:"center", gap:"6px", background:"#0A0A12", border:"1px solid #13102a", borderRadius:"8px", padding:"5px 10px", cursor:"pointer", minWidth:"170px", width: isMobile ? "70%" : undefined }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9b8bc4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, pointerEvents:"none" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span style={{ color:"#9b8bc4", fontSize:"12px", pointerEvents:"none" }}>{t("affTo")}</span>
+                    <span style={{ color: customTo ? "#e2d4f8" : "#6b5f8c", fontSize:"13px", pointerEvents:"none" }}>
                       {customTo ? customTo.split("-").reverse().join("/") : t("affDatePlaceholder")}
                     </span>
                     <input
@@ -1265,7 +1265,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                 </div>
               )}
             </div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>
+            <span style={{ color: "#9b8bc4", fontSize: "12px" }}>
               {loading ? t("affLoading") : t("affDataUpdates")}
             </span>
           </div>
@@ -1274,7 +1274,7 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
           {/* Traffic & Conversion */}
           <div style={{ marginBottom: "20px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affTraffic")}</p>
+            <p style={{ color: "#e2d4f8", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affTraffic")}</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
               {statCards.map(({ label, val, Icon, hint }, i) => {
                 const tKey = `stat-${i}`;
@@ -1283,13 +1283,13 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                   return (
                     <div key={i} className="aff-flip-wrapper" style={{ ...statCardStyle, padding: 0, minHeight: "120px" }}>
                       <div className="aff-flip-inner">
-                        <div className="aff-flip-front" style={{ background: "#111827", border: "1px solid #1e2a3d" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
-                          <span style={{ color: "#f2f3f7", fontSize: "22px", fontWeight: 700 }}>{val}</span>
+                        <div className="aff-flip-front" style={{ background: "#0D0F1A", border: "1px solid #13102a" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
+                          <span style={{ color: "#f5eeff", fontSize: "22px", fontWeight: 700 }}>{val}</span>
                         </div>
                         <div className="aff-flip-back">
-                          <span style={{ color: "#94a3b8", fontSize: "11px", fontWeight: 600 }}>{label}</span>
-                          <span style={{ color: "#c4bfb5", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</span>
+                          <span style={{ color: "#9b8bc4", fontSize: "11px", fontWeight: 600 }}>{label}</span>
+                          <span style={{ color: "#c4b8e0", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</span>
                         </div>
                       </div>
                     </div>
@@ -1300,23 +1300,23 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                     {isFlipped ? (
                       <>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#f6b531", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
+                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#A855F7", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
                             <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><circle cx="8" cy="5.8" r="0.75" fill="currentColor"/><line x1="8" y1="7.6" x2="8" y2="10.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                           </button>
                         </div>
-                        <div style={{ color: "#c4bfb5", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</div>
+                        <div style={{ color: "#c4b8e0", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</div>
                       </>
                     ) : (
                       <>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip({ key: tKey, rect: (e.currentTarget as HTMLButtonElement).getBoundingClientRect(), text: hint }); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#556070", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
+                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip({ key: tKey, rect: (e.currentTarget as HTMLButtonElement).getBoundingClientRect(), text: hint }); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#6b5f8c", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
                             <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><circle cx="8" cy="5.8" r="0.75" fill="currentColor"/><line x1="8" y1="7.6" x2="8" y2="10.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                           </button>
                         </div>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                          <span style={{ color: "#f2f3f7", fontSize: "22px", fontWeight: 700 }}>{val}</span>
+                          <span style={{ color: "#f5eeff", fontSize: "22px", fontWeight: 700 }}>{val}</span>
                         </div>
                       </>
                     )}
@@ -1328,23 +1328,23 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
 
           {/* Monetization */}
           <div style={{ marginBottom: "24px" }}>
-            <p style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affMonetization")}</p>
+            <p style={{ color: "#e2d4f8", fontSize: "13px", fontWeight: 600, marginBottom: "12px" }}>{t("affMonetization")}</p>
             <div className="mono-cards-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
               {monoCards.map(({ label, val, raw, Icon, hint }, i) => {
                 const tKey = `mono-${i}`;
                 const isFlipped = activeTooltip?.key === tKey;
-                const valColor = raw === null ? "#f2f3f7" : raw >= 0 ? "#22c55e" : "#f87171";
+                const valColor = raw === null ? "#f5eeff" : raw >= 0 ? "#22c55e" : "#f87171";
                 if (!isMobile) {
                   return (
                     <div key={i} className="aff-flip-wrapper" style={{ ...statCardStyle, padding: 0, minHeight: "120px" }}>
                       <div className="aff-flip-inner">
-                        <div className="aff-flip-front" style={{ background: "#111827", border: "1px solid #1e2a3d" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
+                        <div className="aff-flip-front" style={{ background: "#0D0F1A", border: "1px solid #13102a" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
                           <span style={{ color: valColor, fontSize: "20px", fontWeight: 700 }}>{val}</span>
                         </div>
                         <div className="aff-flip-back">
-                          <span style={{ color: "#94a3b8", fontSize: "11px", fontWeight: 600 }}>{label}</span>
-                          <span style={{ color: "#c4bfb5", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</span>
+                          <span style={{ color: "#9b8bc4", fontSize: "11px", fontWeight: 600 }}>{label}</span>
+                          <span style={{ color: "#c4b8e0", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</span>
                         </div>
                       </div>
                     </div>
@@ -1355,18 +1355,18 @@ export default function AffiliateProgram({ username, t, lang = "es", dashboardOn
                     {isFlipped ? (
                       <>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#f6b531", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
+                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#A855F7", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
                             <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><circle cx="8" cy="5.8" r="0.75" fill="currentColor"/><line x1="8" y1="7.6" x2="8" y2="10.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                           </button>
                         </div>
-                        <div style={{ color: "#c4bfb5", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</div>
+                        <div style={{ color: "#c4b8e0", fontSize: "11.5px", lineHeight: 1.6 }}>{hint}</div>
                       </>
                     ) : (
                       <>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>{label}</span>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip({ key: tKey, rect: (e.currentTarget as HTMLButtonElement).getBoundingClientRect(), text: hint }); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#556070", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
+                          <span style={{ color: "#9b8bc4", fontSize: "12px" }}>{label}</span>
+                          <button onClick={(e) => { e.stopPropagation(); setActiveTooltip({ key: tKey, rect: (e.currentTarget as HTMLButtonElement).getBoundingClientRect(), text: hint }); }} className="aff-info-btn" style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", color: "#6b5f8c", lineHeight: 1, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.15s ease" }}>
                             <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5L13 4.25V10.75L8 13.5L3 10.75V4.25L8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><circle cx="8" cy="5.8" r="0.75" fill="currentColor"/><line x1="8" y1="7.6" x2="8" y2="10.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                           </button>
                         </div>
