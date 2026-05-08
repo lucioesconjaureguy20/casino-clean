@@ -17183,6 +17183,17 @@ function CasinoFooter({ onHome, lang, onLangChange, depositCoin = "USDT", onCoin
           </div>
         )}
 
+        {/* Payment methods banner */}
+        <div style={{ width:"100%", borderTop:"1px solid #0d1624", paddingTop:"24px", paddingBottom:"16px", display:"flex", justifyContent:"center" }}>
+          <img
+            src={assetUrl("/payment-methods-banner.png")}
+            alt="Payment methods"
+            style={{ maxWidth:"100%", height:"auto", objectFit:"contain", opacity:0.85 }}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
         {/* Copyright */}
         <div style={{ fontSize: isMobile ? "13px" : "12px", color:"#253345", paddingBottom:"20px", borderTop:"1px solid #0d1624", paddingTop:"18px" }}>
           {tl(lang, "copyright")}
