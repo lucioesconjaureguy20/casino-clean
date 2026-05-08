@@ -846,22 +846,45 @@ router.post("/admin/withdraw/reject", requireAdmin, async (req: Request, res: Re
     }
   }
 
-  // Always unlock real balance (safe even if nothing was locked — clamps to 0).
-  // Handles the case where lockFunds succeeded for a streamer user who also had real balance.
+  // Unlock real balance only if real funds were actually locked.
+  // BUG FIX: unlock_funds_atomic RPC does `balance += amount` unconditionally — calling it when
+  // locked_amount=0 (streamer demo-only withdrawal where lockFunds intentionally failed) would
+  // credit real money that never existed. We check the actual locked_amount first and only unlock
+  // if it covers the withdrawal amount.
   if (mander_id) {
-    const realUnlock = await unlockFunds(mander_id, cur, parsed);
-    if (!realUnlock.ok) {
-      if (!isStreamerWithdrawal) {
-        // For normal withdrawals this is a hard failure — log prominently
+    let shouldUnlock = true;
+
+    if (isStreamerWithdrawal) {
+      // For streamer withdrawals, verify real funds were actually locked before unlocking.
+      try {
+        const balRes = await sbAdmin(
+          `balances?mander_id=eq.${encodeURIComponent(mander_id)}&currency=eq.${encodeURIComponent(cur)}&select=locked_amount&limit=1`,
+        );
+        if (balRes.ok) {
+          const balRows: any[] = await balRes.json();
+          const lockedAmount = Number(balRows[0]?.locked_amount ?? 0);
+          if (lockedAmount < parsed) {
+            // Nothing (or less) was locked for this streamer withdrawal — skip real unlock entirely.
+            shouldUnlock = false;
+            console.log(`[WITHDRAW reject] Streamer demo withdrawal — locked_amount=${lockedAmount} < ${parsed} ${cur}, skipping unlockFunds to avoid phantom credit.`);
+          }
+        }
+      } catch (e: any) {
+        // If we can't verify, err on the side of caution: do NOT unlock to avoid over-crediting.
+        shouldUnlock = false;
+        console.warn(`[WITHDRAW reject] Could not verify locked_amount for streamer, skipping unlockFunds to be safe: ${e.message}`);
+      }
+    }
+
+    if (shouldUnlock) {
+      const realUnlock = await unlockFunds(mander_id, cur, parsed);
+      if (!realUnlock.ok) {
         console.error(`[WITHDRAW reject] unlockFunds failed: ${realUnlock.reason} — id=${withdrawal_id}`);
         console.error(`[WITHDRAW reject] MANUAL RECONCILIATION NEEDED: mander_id=${mander_id} amount=${parsed} ${cur}`);
         unlockResult = realUnlock;
       } else {
-        // For streamer withdrawals lockFunds may have intentionally failed (no real balance) — just warn
-        console.warn(`[WITHDRAW reject] unlockFunds (streamer path) warn: ${realUnlock.reason} — likely no real balance was locked, ok to ignore`);
+        console.log(`[WITHDRAW reject] unlocked ${parsed} ${cur} → balance | mander_id=${mander_id}`);
       }
-    } else {
-      console.log(`[WITHDRAW reject] unlocked ${parsed} ${cur} → balance | mander_id=${mander_id}`);
     }
   }
 
