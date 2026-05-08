@@ -105,9 +105,9 @@ function PlayingCard({
       width: `${w}px`, height: `${h}px`, borderRadius:"6px", flexShrink:0,
       position:"relative",
       background: showHidden
-        ? "linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)"
+        ? "linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)"
         : "#ffffff",
-      border: showHidden ? "2px solid #7C3AED" : "2px solid #ddd0f8",
+      border: showHidden ? "2px solid #2a5aaa" : "2px solid #d0d8ea",
       boxShadow: showHidden
         ? "0 6px 20px rgba(0,0,60,.5), inset 0 1px rgba(255,255,255,.1)"
         : "0 12px 40px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.25)",
@@ -121,7 +121,7 @@ function PlayingCard({
         <>
           <div style={{
             position:"absolute", inset:"5px", borderRadius:"6px",
-            background:"repeating-linear-gradient(45deg,#5b21b6 0px,#5b21b6 4px,#1e1535 4px,#1e1535 8px)",
+            background:"repeating-linear-gradient(45deg,#1a4080 0px,#1a4080 4px,#0e2855 4px,#0e2855 8px)",
             opacity:0.5, border:"1px solid rgba(255,255,255,.08)"
           }} />
           <img src="/mander-logo.png" alt="Mander"
@@ -168,15 +168,15 @@ function ScoreBadge({ score, bust, bj, win, lose, push, label, payout, fmtMoney 
   score: number; bust: boolean; bj?: boolean; win?: boolean; lose?: boolean; push?: boolean;
   label?: string; payout?: number; fmtMoney?: (n:number)=>string;
 }) {
-  const scoreBg = win ? "#15803d" : lose ? "#991b1b" : push ? "#5b21b6" :
-                  bj ? "#A855F7" : bust ? "#991b1b" : score === 21 ? "#15803d" : "#0A0A12";
-  const labelBg = win ? "#22c55e" : lose ? "#dc2626" : push ? "#A855F7" :
-                  bj ? "#A855F7" : bust ? "#dc2626" : score === 21 ? "#22c55e" : "#130d26";
+  const scoreBg = win ? "#15803d" : lose ? "#991b1b" : push ? "#92400e" :
+                  bj ? "#d97706" : bust ? "#991b1b" : score === 21 ? "#15803d" : "#0d1526";
+  const labelBg = win ? "#22c55e" : lose ? "#dc2626" : push ? "#eab308" :
+                  bj ? "#f59e0b" : bust ? "#dc2626" : score === 21 ? "#22c55e" : "#162036";
   const scoreColor = win||lose ? "#fff" : push ? "#fff" :
-                     bj||bust||score===21 ? "#fff" : "#e2d4f8";
+                     bj||bust||score===21 ? "#fff" : "#e2e8f0";
   const labelColor = "#fff";
-  const ring = win ? "#22c55e" : lose ? "#dc2626" : push ? "#A855F7" :
-               bj ? "#A855F7" : bust ? "#dc2626" : score===21 ? "#22c55e" : "rgba(255,255,255,.18)";
+  const ring = win ? "#22c55e" : lose ? "#dc2626" : push ? "#eab308" :
+               bj ? "#f59e0b" : bust ? "#dc2626" : score===21 ? "#22c55e" : "rgba(255,255,255,.18)";
   const anim = win ? "bjWinPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both" :
                lose ? "bjLosePop 0.4s cubic-bezier(0.34,1.56,0.64,1) both" :
                push ? "bjWinPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both" :
@@ -259,15 +259,15 @@ function DeckPile({ deckRef, lang = "es" }: { deckRef: React.RefObject<HTMLDivEl
           left: -offset * 0.8,
           width:`${cardW}px`, height:`${cardH}px`,
           borderRadius:"6px",
-          background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-          border:"1.5px solid #7C3AED",
+          background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+          border:"1.5px solid #2a5aaa",
           boxShadow:`0 ${offset+1}px ${(offset+1)*3}px rgba(0,0,60,.55)`,
         }}>
           {offset === 0 && (
             <>
               <div style={{
                 position:"absolute", inset:"4px", borderRadius:"4px",
-                background:"repeating-linear-gradient(45deg,#5b21b6 0,#5b21b6 3px,#1e1535 3px,#1e1535 6px)",
+                background:"repeating-linear-gradient(45deg,#1a4080 0,#1a4080 3px,#0e2855 3px,#0e2855 6px)",
                 opacity:0.55,
               }} />
               <img src="/mander-logo.png" alt="Mander"
@@ -1119,7 +1119,7 @@ export default function BlackjackGame({
   }
   function resultColor(r: string|null) {
     if (r === "win" || r === "blackjack") return "#22ee66";
-    if (r === "push") return "#A855F7";
+    if (r === "push") return "#f4a91f";
     return "#e74c3c";
   }
 
@@ -1130,7 +1130,7 @@ export default function BlackjackGame({
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="blackjack-root" style={{ display:"flex", height: isMobile ? "auto" : "100%", overflow: isMobile ? "visible" : "hidden", background:"#0A0A12", flexDirection:"column", userSelect:"none", WebkitUserSelect:"none" }}>
+    <div className="blackjack-root" style={{ display:"flex", height: isMobile ? "auto" : "100%", overflow: isMobile ? "visible" : "hidden", background:"#0e1320", flexDirection:"column", userSelect:"none", WebkitUserSelect:"none" }}>
 
       {/* CSS keyframes */}
       <style>{`
@@ -1178,13 +1178,13 @@ export default function BlackjackGame({
       `}</style>
 
       {/* ── Header ────────────────────────────────────────────────────────── */}
-      <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0D0F1A", borderBottom:"1px solid #1a1035", flexShrink:0 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
         <button onClick={onBack}
-          style={{ background:"#0D0F1A", border:"1px solid #1e1535", color:"#9b8bc4", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+          style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
         </button>
         <div className="game-title-label" style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="2" y="2" width="15" height="20" rx="2" fill="currentColor"/><text x="3.5" y="6" fontSize="4" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>A</text><path transform="translate(3.5,5.5) scale(0.292)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/><path transform="translate(5.5,7) scale(0.667)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/><g transform="rotate(180 9.5 12)"><text x="3.5" y="6" fontSize="4" fontWeight="bold" style={{fill:"var(--color-sidebar)"}}>A</text><path transform="translate(3.5,5.5) scale(0.292)" d="M6,11 C2,8 0.5,6 0.5,4 C0.5,2.2 1.8,1 3.5,1 C4.4,1 5.2,1.6 6,2.8 C6.8,1.6 7.6,1 8.5,1 C10.2,1 11.5,2.2 11.5,4 C11.5,6 10,8 6,11 Z" fill="var(--color-sidebar)"/></g><path d="M20,3H19V20a2,2,0,0,1-2,2h3a2,2,0,0,0,2-2V5A2,2,0,0,0,20,3Z" fill="currentColor"/></svg>{T("gameBlackjack").toUpperCase()}</div>
-        <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#7c6d9e", fontWeight:500 }}>{T("manderOriginals")}</div>
+        <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
       </div>
 
       {/* ── Body ──────────────────────────────────────────────────────────── */}
@@ -1194,9 +1194,9 @@ export default function BlackjackGame({
         <div className="game-ctrl-sidebar" style={{
           width: isMobile ? "100%" : "268px",
           flex: isMobile ? "0 0 auto" : "0 0 268px",
-          background:"#0D0F1A",
-          borderRight: isMobile ? "none" : "1px solid #1a1035",
-          borderTop: isMobile ? "1px solid #1a1035" : "none",
+          background:"#131a28",
+          borderRight: isMobile ? "none" : "1px solid #1a2438",
+          borderTop: isMobile ? "1px solid #1a2438" : "none",
           display:"flex", flexDirection:"column", gap:0,
           padding: isMobile ? "10px 14px" : "16px",
           order: isMobile ? 2 : 1,
@@ -1207,11 +1207,11 @@ export default function BlackjackGame({
           {/* ── Bet amount + validation ── */}
           <div className="bj-ctrl-amount" style={{ order: isMobile ? 3 : 1, marginBottom: isMobile ? "8px" : 0 }}>
             {/* Bet amount label */}
-            <div style={{ color:"#7c6d9e", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>{T("betAmount")}</div>
+            <div style={{ color:"#5a6a88", fontWeight:500, marginBottom:"6px", fontSize:"13px", paddingLeft:"4px" }}>{T("betAmount")}</div>
 
             {/* Bet input */}
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0D0F1A", border:`1px solid ${betInvalid||balInsuff?"#e74c3c":"#1e1535"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"8px", transition:"border .15s" }}>
-              <span style={{ fontSize:"13px", color:"#7c6d9e", fontWeight:500, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
+            <div style={{ display:"flex", alignItems:"center", gap:"8px", background:"#0e1826", border:`1px solid ${betInvalid||balInsuff?"#e74c3c":"#252f45"}`, borderRadius:"6px", padding:"8px 14px", marginBottom:"8px", transition:"border .15s" }}>
+              <span style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, whiteSpace:"nowrap", opacity:currencyFade, transition:"opacity .18s" }}>{displayCurrency}</span>
               <input
                 type="text" inputMode="decimal"
                 value={(()=>{ if(!betDisplay) return ""; if(!displayInFiat) return betDisplay; const [int,dec]=betDisplay.split("."); const fmtInt=(parseInt(int||"0")||0).toLocaleString("de-DE"); return dec!==undefined?`${fmtInt},${dec}`:fmtInt; })()}
@@ -1226,7 +1226,7 @@ export default function BlackjackGame({
                 style={{ flex:1, background:"transparent", border:"none", color:"#fff", fontSize:"17px", fontWeight:600, padding:0, minWidth:0, outline:"none", fontFamily:"inherit", opacity:currencyFade, transition:"opacity .18s" }}
               />
               <button onClick={() => setBetDisplay(minBetDisplay.toFixed(2))} disabled={disabled}
-                style={{ background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", color:"#818cf8", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", textTransform:"uppercase", letterSpacing:"0.04em", whiteSpace:"nowrap" }}>
+                style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", color:"#6db3f2", fontSize:"11px", fontWeight:500, padding:"4px 8px", cursor:disabled?"not-allowed":"pointer", textTransform:"uppercase", letterSpacing:"0.04em", whiteSpace:"nowrap" }}>
                 {T("hiloClear")}
               </button>
             </div>
@@ -1250,7 +1250,7 @@ export default function BlackjackGame({
                 { label:T("btnMax"), action:() => setBetDisplay(maxBetDisplay.toFixed(2)) },
               ].map(b => (
                 <button key={b.label} onClick={b.action} disabled={disabled} className="bj-bet-btn"
-                  style={{ background:"#1a1035", color:disabled?"#2d1f52":"#ddd0f8", border:"1px solid #1e1535", borderRadius:"8px", padding:"8px 0", fontWeight:500, fontSize:"13px", transition:"all .12s" }}>
+                  style={{ background:"#1a2438", color:disabled?"#3a4a60":"#d0dcea", border:"1px solid #252f45", borderRadius:"8px", padding:"8px 0", fontWeight:500, fontSize:"13px", transition:"all .12s" }}>
                   {b.label}
                 </button>
               ))}
@@ -1262,22 +1262,22 @@ export default function BlackjackGame({
             <div className="bj-ctrl-insurance" style={{ order: isMobile ? 2 : 3, marginBottom:"12px" }}>
               {insuranceResult === null ? (
                 <>
-                  <div style={{ textAlign:"center", color:"#ddd0f8", fontWeight:600, fontSize:"14px", marginBottom:"10px" }}>
+                  <div style={{ textAlign:"center", color:"#cad2de", fontWeight:600, fontSize:"14px", marginBottom:"10px" }}>
                     {T("bjInsuranceQ")}
                   </div>
                   <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px" }}>
                     <button onClick={takeInsurance}
                       style={{ padding:"13px 8px", borderRadius:"6px", fontWeight:600, fontSize:"14px", border:"none",
-                        background:"#2d1f52", color:"#fff", cursor:"pointer", transition:"background .15s" }}
-                      onMouseEnter={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2d1f52"; }}
-                      onMouseLeave={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2d1f52"; }}>
+                        background:"#2a3a55", color:"#fff", cursor:"pointer", transition:"background .15s" }}
+                      onMouseEnter={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#3a4e6e"; }}
+                      onMouseLeave={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2a3a55"; }}>
                       {T("bjTakeIns")}
                     </button>
                     <button onClick={declineInsurance}
                       style={{ padding:"13px 8px", borderRadius:"6px", fontWeight:600, fontSize:"14px", border:"none",
-                        background:"#2d1f52", color:"#fff", cursor:"pointer", transition:"background .15s" }}
-                      onMouseEnter={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2d1f52"; }}
-                      onMouseLeave={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2d1f52"; }}>
+                        background:"#2a3a55", color:"#fff", cursor:"pointer", transition:"background .15s" }}
+                      onMouseEnter={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#3a4e6e"; }}
+                      onMouseLeave={e=>{ (e.currentTarget as HTMLButtonElement).style.background="#2a3a55"; }}>
                       {T("bjNoIns")}
                     </button>
                   </div>
@@ -1297,15 +1297,15 @@ export default function BlackjackGame({
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px", marginBottom:"8px" }}>
                 <button onClick={hit} disabled={!canHit} className="bj-action-btn"
                   style={{ padding:"14px 8px", borderRadius:"6px", fontWeight:500, fontSize:"15px", border:"none",
-                    background:canHit?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
-                    color:canHit?"#fff":"#2d1f52", transition:"all .15s",
+                    background:canHit?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
+                    color:canHit?"#fff":"#3a4a60", transition:"all .15s",
                     boxShadow: canHit ? "0 4px 18px rgba(26,159,255,.3)" : "none" }}>
                   {T("bjHit")}
                 </button>
                 <button onClick={stand} disabled={!canStand} className="bj-action-btn"
                   style={{ padding:"14px 8px", borderRadius:"6px", fontWeight:500, fontSize:"15px", border:"none",
-                    background:canStand?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
-                    color:canStand?"#fff":"#2d1f52", transition:"all .15s",
+                    background:canStand?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
+                    color:canStand?"#fff":"#3a4a60", transition:"all .15s",
                     boxShadow: canStand ? "0 4px 18px rgba(26,159,255,.3)" : "none" }}>
                   {T("bjStand")}
                 </button>
@@ -1313,15 +1313,15 @@ export default function BlackjackGame({
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px", marginBottom:"8px" }}>
                 <button onClick={doubleDown} disabled={!canDouble} className="bj-action-btn"
                   style={{ padding:"13px 6px", borderRadius:"6px", fontWeight:500, fontSize:"13px", border:"none",
-                    background:canDouble?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
-                    color:canDouble?"#fff":"#2d1f52", transition:"all .15s",
+                    background:canDouble?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
+                    color:canDouble?"#fff":"#3a4a60", transition:"all .15s",
                     boxShadow: canDouble ? "0 4px 18px rgba(26,159,255,.3)" : "none" }}>
                   {T("bjDouble")}
                 </button>
                 <button onClick={splitCards} disabled={!canSplit} className="bj-action-btn"
                   style={{ padding:"13px 6px", borderRadius:"6px", fontWeight:500, fontSize:"13px", border:"none",
-                    background:canSplit?"linear-gradient(180deg,#A855F7,#7C3AED)":"#1a1035",
-                    color:canSplit?"#fff":"#2d1f52", transition:"all .15s",
+                    background:canSplit?"linear-gradient(180deg,#1a9fff,#0d6fd4)":"#1a2438",
+                    color:canSplit?"#fff":"#3a4a60", transition:"all .15s",
                     boxShadow: canSplit ? "0 4px 18px rgba(26,159,255,.3)" : "none" }}>
                   {T("bjSplit")}
                 </button>
@@ -1337,8 +1337,8 @@ export default function BlackjackGame({
               <div className="bj-ctrl-deal" style={{ order: isMobile ? 1 : 4, marginBottom:"14px" }}>
                 <button onClick={() => { if (!!currentUser && balInsuff) { onInsufficientBalance?.(); return; } deal(); }} disabled={dealDisabled} className="bj-deal-btn"
                   style={{ width:"100%", padding:"14px", borderRadius:"6px", fontWeight:500, fontSize:"15px", border:"none",
-                    background: (dealDisabled || balInsuff) ? "#1a1035" : "linear-gradient(180deg,#A855F7,#7C3AED)",
-                    color: (dealDisabled || balInsuff) ? "#2d1f52" : "#fff",
+                    background: (dealDisabled || balInsuff) ? "#1a2438" : "linear-gradient(180deg,#1a9fff,#0d6fd4)",
+                    color: (dealDisabled || balInsuff) ? "#3a4a60" : "#fff",
                     boxShadow: (dealDisabled || balInsuff) ? "none" : "0 4px 22px rgba(26,159,255,.35)",
                     cursor: balInsuff ? "pointer" : dealDisabled ? "not-allowed" : "pointer",
                     transition:"all .2s" }}>
@@ -1354,9 +1354,9 @@ export default function BlackjackGame({
               onKeyDown={e => e.key==="Enter" && setShowStats(v=>!v)}
               title={T("statsTitle")}
               style={{ width:"38px", height:"38px", borderRadius:"8px",
-                background: showStats?"#7C3AED":"#0D0F1A",
-                border: showStats?"1px solid #A855F7":"1px solid #1a1035",
-                color: showStats?"#fff":"#a78bfa",
+                background: showStats?"#1f6fd0":"#0e1826",
+                border: showStats?"1px solid #3a8aff":"1px solid #203a50",
+                color: showStats?"#fff":"#7a9db8",
                 cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 flexShrink:0, boxSizing:"border-box",
                 transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1372,7 +1372,7 @@ export default function BlackjackGame({
               onKeyDown={e => e.key==="Enter" && setBjVol(v => v > 0 ? 0 : 70)}
               title={T("volumeTitle")}
               style={{ width:"38px", height:"38px", borderRadius:"8px",
-                background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa",
+                background:"#0e1826", border:"1px solid #203a50", color:"#7a9db8",
                 cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 flexShrink:0, boxSizing:"border-box",
                 transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1394,7 +1394,7 @@ export default function BlackjackGame({
           height: isMobile ? ((): string => { const n = Math.max(dealerHand.length, playerHand.length, splitHand.length); return n >= 6 ? "600px" : n >= 5 ? "520px" : "360px"; })() : undefined,
           order: isMobile ? 1 : 2,
           position:"relative", display:"flex", flexDirection:"column", justifyContent:"space-between", overflow:"hidden",
-          background:"#0A0A12",
+          background:"#0e1320",
         }}>
 
           {/* ── Deck pile (top-right corner) ── */}
@@ -1444,7 +1444,7 @@ export default function BlackjackGame({
                 <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"8px",
                   opacity: phase==="player" && activeIdx===1 ? 0.5 : 1, transition:"opacity .3s" }}>
                   {phase==="player" && activeIdx===0 && (
-                    <div style={{ fontSize:"10px", color:"#A855F7", fontWeight:500, letterSpacing:"1px", animation:"none" }}>{T("bjYourTurn")}</div>
+                    <div style={{ fontSize:"10px", color:"#f4a91f", fontWeight:500, letterSpacing:"1px", animation:"none" }}>{T("bjYourTurn")}</div>
                   )}
                   <ScoreBadge score={playerScore} bust={playerScore>21}
                     win={phase==="result"&&(result==="win"||result==="blackjack")}
@@ -1461,13 +1461,13 @@ export default function BlackjackGame({
                       return <PlayingCard key={key} card={card} fromX={fx} fromY={fy} small flipping={flipRevealKeys.includes(key)} faceDownOverride={revealPendingKeys.includes(key)} />;
                     })}
                   </div>
-                  <div style={{ fontSize:"10px", color:"#7c6d9e", fontWeight:500 }}>{T("bjHand1")}</div>
+                  <div style={{ fontSize:"10px", color:"#5a6a88", fontWeight:500 }}>{T("bjHand1")}</div>
                 </div>
                 {/* Hand 2 */}
                 <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"8px",
                   opacity: phase==="player" && activeIdx===0 ? 0.5 : 1, transition:"opacity .3s" }}>
                   {phase==="player" && activeIdx===1 && (
-                    <div style={{ fontSize:"10px", color:"#A855F7", fontWeight:500, letterSpacing:"1px" }}>{T("bjYourTurn")}</div>
+                    <div style={{ fontSize:"10px", color:"#f4a91f", fontWeight:500, letterSpacing:"1px" }}>{T("bjYourTurn")}</div>
                   )}
                   <ScoreBadge score={splitScore} bust={splitScore>21}
                     win={phase==="result"&&splitResult==="win"}
@@ -1484,7 +1484,7 @@ export default function BlackjackGame({
                       return <PlayingCard key={key} card={card} fromX={fx} fromY={fy} small flipping={flipRevealKeys.includes(key)} faceDownOverride={revealPendingKeys.includes(key)} />;
                     })}
                   </div>
-                  <div style={{ fontSize:"10px", color:"#7c6d9e", fontWeight:500 }}>{T("bjHand2")}</div>
+                  <div style={{ fontSize:"10px", color:"#5a6a88", fontWeight:500 }}>{T("bjHand2")}</div>
                 </div>
               </div>
             ) : (
@@ -1533,8 +1533,8 @@ export default function BlackjackGame({
           top: statsPos.y,
           zIndex:9999,
           width:"268px",
-          background:"#0A0A12",
-          border:"1px solid #1e1535",
+          background:"#0f1f2e",
+          border:"1px solid #1e3a52",
           borderRadius:"10px",
           boxShadow:"0 8px 32px rgba(0,0,0,.7)",
           overflow:"hidden",
@@ -1542,33 +1542,33 @@ export default function BlackjackGame({
         }}>
           <div
             onMouseDown={handleStatsDragStart}
-            style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"#0D0F1A",borderBottom:"1px solid #1e1535",cursor:"grab" }}>
+            style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"#112232",borderBottom:"1px solid #1e3a52",cursor:"grab" }}>
             <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
-              <span style={{ display:"flex",alignItems:"center",color:"#a78bfa" }}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
-              <strong style={{ fontSize:"14px",color:"#ead4fc" }}>{T("statsTitle")}</strong>
+              <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
+              <strong style={{ fontSize:"14px",color:"#d8e8f5" }}>{T("statsTitle")}</strong>
             </div>
-            <button onClick={()=>setShowStats(false)} style={{ background:"none",border:"none",color:"#a78bfa",fontSize:"18px",cursor:"pointer",lineHeight:1,padding:"0 2px" }}>×</button>
+            <button onClick={()=>setShowStats(false)} style={{ background:"none",border:"none",color:"#7a9db8",fontSize:"18px",cursor:"pointer",lineHeight:1,padding:"0 2px" }}>×</button>
           </div>
           <div style={{ padding:"12px" }}>
-            <div style={{ background:"#0A0A12",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",flexDirection:"column",gap:"8px" }}>
+            <div style={{ background:"#0d1a28",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",flexDirection:"column",gap:"8px" }}>
               {([
                 { label:T("bjNetProfit"), value: fmtMoney(bjStats.profit), color: bjStats.profit>=0?"#16ff5c":"#ff5959" },
                 { label:T("bjWins"),      value: String(bjStats.wins),      color:"#16ff5c" },
                 { label:T("bjLosses"),    value: String(bjStats.losses),    color:"#ff5959" },
-                { label:T("bjPushes"),    value: String(bjStats.pushes),    color:"#A855F7" },
-                { label:T("bjWagered"),   value: fmtMoney(bjStats.wagered), color:"#ead4fc" },
+                { label:T("bjPushes"),    value: String(bjStats.pushes),    color:"#f4a91f" },
+                { label:T("bjWagered"),   value: fmtMoney(bjStats.wagered), color:"#d8e8f5" },
               ] as {label:string;value:string;color:string}[]).map(s=>(
                 <div key={s.label} style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                  <span style={{ color:"#a78bfa",fontSize:"11.5px" }}>{s.label}</span>
+                  <span style={{ color:"#7a9db8",fontSize:"11.5px" }}>{s.label}</span>
                   <span style={{ color:s.color,fontWeight:500,fontSize:"13px" }}>{s.value}</span>
                 </div>
               ))}
             </div>
             <button
               onClick={()=>{ bjStatsRef.current={...bjStatsDefault}; setBjStats({...bjStatsDefault}); }}
-              style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e1535",borderRadius:"8px",color:"#a78bfa",fontSize:"12px",fontWeight:500,cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
-              onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.color="#fff";(e.currentTarget as HTMLButtonElement).style.borderColor="#A855F7";(e.currentTarget as HTMLButtonElement).style.background="#0A0A12";}}
-              onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.color="#a78bfa";(e.currentTarget as HTMLButtonElement).style.borderColor="#1e1535";(e.currentTarget as HTMLButtonElement).style.background="transparent";}}>
+              style={{ width:"100%",marginBottom:"8px",background:"transparent",border:"1px solid #1e3a52",borderRadius:"8px",color:"#7a9db8",fontSize:"12px",fontWeight:500,cursor:"pointer",padding:"6px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",transition:"color .15s,border-color .15s,background .15s" }}
+              onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.color="#fff";(e.currentTarget as HTMLButtonElement).style.borderColor="#3a8aff";(e.currentTarget as HTMLButtonElement).style.background="#0d1f30";}}
+              onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.color="#7a9db8";(e.currentTarget as HTMLButtonElement).style.borderColor="#1e3a52";(e.currentTarget as HTMLButtonElement).style.background="transparent";}}>
               <span style={{ fontSize:"14px" }}>↺</span> {T("bjResetStats")}
             </button>
             {/* Mini chart — cumulative profit */}
@@ -1598,8 +1598,8 @@ export default function BlackjackGame({
               const hpt = hIdx!==null && hIdx>0 && hIdx<allPts.length ? allPts[hIdx] : null;
               const hx = hIdx!==null ? xs[hIdx] : 0;
               if (n < 2) return (
-                <div style={{ position:"relative",background:"#0A0A12",borderRadius:"10px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1e1535" }}>
-                  <span style={{ color:"#2d1f52",fontSize:"12px" }}>{T("noHistory")}</span>
+                <div style={{ position:"relative",background:"#0a1520",borderRadius:"10px",height:"190px",display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid #1a3347" }}>
+                  <span style={{ color:"#2a4a6a",fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
@@ -1610,14 +1610,14 @@ export default function BlackjackGame({
               const tipLeft = Math.min(Math.max(tipXpct, 12), 78);
               const tipTop  = Math.max(tipYpct - 14, 2);
               return (
-                <div style={{ position:"relative",background:"#0A0A12",borderRadius:"10px",height:"190px",overflow:"visible",border:"1px solid #1e1535" }}>
+                <div style={{ position:"relative",background:"#0a1520",borderRadius:"10px",height:"190px",overflow:"visible",border:"1px solid #1a3347" }}>
                   {hpt && (
                     <div style={{
                       position:"absolute",
                       left:`${tipLeft}%`,
                       top:`${tipTop}%`,
                       transform:"translateX(-50%) translateY(-100%)",
-                      background:"#1a1035",
+                      background:"#1a2a3a",
                       border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
                       borderRadius:"8px",
                       padding:"4px 10px",
@@ -1630,7 +1630,7 @@ export default function BlackjackGame({
                       boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}`,
                     }}>
                       {hpt.profit>=0?"+":""}{fmtMoney(hpt.profit)}
-                      <span style={{ color:"#a78bfa",fontWeight:400,fontSize:"10px",marginLeft:"6px" }}>
+                      <span style={{ color:"#7a9db8",fontWeight:400,fontSize:"10px",marginLeft:"6px" }}>
                         acum: {hpt.cum>=0?"+":""}{fmtMoney(hpt.cum)}
                       </span>
                     </div>
@@ -1659,21 +1659,21 @@ export default function BlackjackGame({
                     {n>1 ? <>
                       <path d={fillBelow} fill="rgba(200,30,30,.35)" clipPath="url(#bjClipBelow)"/>
                       <path d={fillAbove} fill="rgba(25,255,80,.18)" clipPath="url(#bjClipAbove)"/>
-                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
                       <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#bjClipAbove)"/>
                       <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#bjClipBelow)"/>
                       <rect x={PAD_X} y={PAD_Y} width={chartW} height={chartH} fill="transparent"/>
                       {hIdx!==null && hIdx<allPts.length && (
                         <>
-                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
+                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
                           <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5"
                             fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"}
-                            stroke="#0A0A12" strokeWidth="2"
+                            stroke="#0a1520" strokeWidth="2"
                             style={{ pointerEvents:"none" }}/>
                         </>
                       )}
                     </> : (
-                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#2a4055" strokeWidth="1.5"/>
                     )}
                   </svg>
                 </div>

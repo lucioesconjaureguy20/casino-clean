@@ -117,8 +117,8 @@ function HiloCard({ card, size = "large", animKey, animType = "deal", showBack =
     return (
       <div key={animKey} style={{
         width:`${w}px`, height:`${h}px`, borderRadius:"6px",
-        background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-        border:"2px solid #7C3AED",
+        background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+        border:"2px solid #2a5aaa",
         boxShadow: size === "large"
           ? "0 12px 40px rgba(0,0,60,.5), inset 0 1px rgba(255,255,255,.1)"
           : "0 4px 14px rgba(0,0,60,.4)",
@@ -129,7 +129,7 @@ function HiloCard({ card, size = "large", animKey, animType = "deal", showBack =
       }}>
         <div style={{
           position:"absolute", inset:"5px", borderRadius:"6px",
-          background:"repeating-linear-gradient(45deg,#5b21b6 0px,#5b21b6 4px,#1e1535 4px,#1e1535 8px)",
+          background:"repeating-linear-gradient(45deg,#1a4080 0px,#1a4080 4px,#0e2855 4px,#0e2855 8px)",
           opacity:0.5, border:"1px solid rgba(255,255,255,.08)"
         }}/>
         <img src="/mander-logo.png" alt="Mander" style={{
@@ -149,7 +149,7 @@ function HiloCard({ card, size = "large", animKey, animType = "deal", showBack =
     <div key={animKey} style={{
       width:`${w}px`, height:`${h}px`, borderRadius:"6px",
       background:"#ffffff",
-      border: lose ? "5px solid #e63e3e" : "2px solid #ddd0f8",
+      border: lose ? "5px solid #e63e3e" : "2px solid #d0d8ea",
       boxShadow: lose
         ? "0 0 0 3px rgba(230,62,62,0.45), inset 0 0 16px rgba(230,62,62,0.35), 0 0 32px rgba(230,62,62,0.65)"
         : size === "large"
@@ -660,15 +660,15 @@ export default function HiloGame({
     const cardW = 96, cardH = 134;
     const deckLayers = [6,5,4,3,2,1];
     return (
-      <div className="hilo-root" style={{ background:"#0A0A12", display:"flex", flexDirection:"column", userSelect:"none", WebkitUserSelect:"none", height:`${mobileHeight}px`, overflow:"hidden" }}>
+      <div className="hilo-root" style={{ background:"#0e1320", display:"flex", flexDirection:"column", userSelect:"none", WebkitUserSelect:"none", height:`${mobileHeight}px`, overflow:"hidden" }}>
 
         {/* Header */}
-        <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0D0F1A", borderBottom:"1px solid #1a1035", flexShrink:0 }}>
-          <button onClick={onBack} style={{ background:"#0D0F1A", border:"1px solid #1e1535", color:"#9b8bc4", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"10px 20px", background:"#0e1826", borderBottom:"1px solid #1a2438", flexShrink:0 }}>
+          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
           </button>
           <div className="game-title-label" style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 18 18" width="18" height="18" fill="currentColor"><path fillRule="evenodd" clipRule="evenodd" d="M4.332 16.852C3.423 16.924 2.631 16.198 2.568 15.23L2.215 10.224C2.15 9.256 2.83 8.414 3.74 8.342L14.981 7.38C15.892 7.31 16.67 8.063 16.732 9.03L17.085 14.036C17.148 15.005 16.462 15.849 15.552 15.921L4.332 16.852Z M9.7 13.64 L12.2 10.84 H7.2 Z"/><path fillRule="evenodd" clipRule="evenodd" d="M0.217 1.533C0.259 0.564 1.031 -0.185 1.941 -0.141L14.101 0.449C15.012 0.493 15.716 1.315 15.675 2.383L15.318 9.187C15.278 10.155 14.502 10.906 13.591 10.862L1.42 10.272C0.509 10.228 -0.193 9.389 -0.153 8.421L0.217 1.533Z M7.76 3.96 L5.26 6.76 H10.26 Z"/></svg>{T("gameHilo").toUpperCase()}</div>
-          <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#7c6d9e", fontWeight:500 }}>{T("manderOriginals")}</div>
+          <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
         </div>
 
         {/* Win popup */}
@@ -677,7 +677,7 @@ export default function HiloGame({
             <div style={{ background:"rgba(10,16,26,0.97)", border:"2.5px solid #22ee66", borderRadius:"6px", padding:"18px 28px", textAlign:"center", boxShadow:"0 0 48px rgba(34,238,102,.45)", animation:"kenoCenterPop .32s cubic-bezier(.34,1.56,.64,1) both", minWidth:"130px" }}>
               <div style={{ fontSize:"28px", fontWeight:700, color:"#22ee66", lineHeight:1 }}>{accMult.toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2})}×</div>
               <div style={{ height:"1px", background:"#1e3a28", margin:"10px 0" }}/>
-              <div style={{ fontSize:"14px", fontWeight:500, color:"#9b8bc4", opacity:currencyFade }}>{fmtMoney(potentialPayout)}</div>
+              <div style={{ fontSize:"14px", fontWeight:500, color:"#8aabb0", opacity:currencyFade }}>{fmtMoney(potentialPayout)}</div>
             </div>
           </div>
         )}
@@ -695,13 +695,13 @@ export default function HiloGame({
               <div key={offset} style={{
                 position:"absolute", top:offset*1.2, left:offset*0.9,
                 width:`${cardW}px`, height:`${cardH}px`, borderRadius:"6px",
-                background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-                border:"1.5px solid #7C3AED", zIndex:0,
+                background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+                border:"1.5px solid #2a5aaa", zIndex:0,
                 boxShadow:`${offset}px ${offset*1.4}px ${offset*3}px rgba(0,0,40,.35)`,
               }}/>
             ))}
-            <div style={{ position:"absolute", inset:0, borderRadius:"6px", zIndex:1, background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)", border:"2px solid #7C3AED", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <div style={{ position:"absolute", inset:"5px", borderRadius:"5px", background:"repeating-linear-gradient(45deg,#5b21b6 0px,#5b21b6 4px,#1e1535 4px,#1e1535 8px)", opacity:0.5 }}/>
+            <div style={{ position:"absolute", inset:0, borderRadius:"6px", zIndex:1, background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)", border:"2px solid #2a5aaa", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <div style={{ position:"absolute", inset:"5px", borderRadius:"5px", background:"repeating-linear-gradient(45deg,#1a4080 0px,#1a4080 4px,#0e2855 4px,#0e2855 8px)", opacity:0.5 }}/>
               <img src="/mander-logo.png" alt="M" style={{ position:"relative", width:"54px", filter:"brightness(0) invert(1)", opacity:0.9, objectFit:"contain" }}/>
             </div>
             {exitCard && (
@@ -720,8 +720,8 @@ export default function HiloGame({
               style={{
                 position:"absolute", top:"-8px", right:"-10px", zIndex:10,
                 width:"34px", height:"30px", borderRadius:"8px", border:"none",
-                background: (isPlaying && !actionBusy && skipsLeft > 0) ? "#1e1535" : "#0D0F1A",
-                color: (isPlaying && !actionBusy && skipsLeft > 0) ? "#e2d4f8" : "#2d1f52",
+                background: (isPlaying && !actionBusy && skipsLeft > 0) ? "#252f45" : "#141c2a",
+                color: (isPlaying && !actionBusy && skipsLeft > 0) ? "#c8d8f0" : "#3a4a60",
                 cursor: (isPlaying && !actionBusy && skipsLeft > 0) ? "pointer" : "not-allowed",
                 display:"flex", alignItems:"center", justifyContent:"center",
                 fontSize:"14px", fontWeight:900, letterSpacing:"-2px",
@@ -735,13 +735,13 @@ export default function HiloGame({
 
           {/* Center: K/A vertical scale — aligned to card, not badge */}
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", height:`${cardH}px`, flexShrink:0, paddingTop:"4px", paddingBottom:"4px", alignSelf:"flex-start" }}>
-            <span style={{ fontSize:"13px", fontWeight:700, color:"#9b8bc4", letterSpacing:"0.5px" }}>K</span>
+            <span style={{ fontSize:"13px", fontWeight:700, color:"#8090a8", letterSpacing:"0.5px" }}>K</span>
             <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px", padding:"4px 0" }}>
               <span style={{ fontSize:"12px", color:"#22c55e" }}>▲</span>
               <div style={{ flex:1, width:"2px", background:"linear-gradient(to bottom,#22c55e44,#e63e3e44)", minHeight:"20px" }}/>
               <span style={{ fontSize:"12px", color:"#e63e3e" }}>▼</span>
             </div>
-            <span style={{ fontSize:"13px", fontWeight:700, color:"#9b8bc4", letterSpacing:"0.5px" }}>A</span>
+            <span style={{ fontSize:"13px", fontWeight:700, color:"#8090a8", letterSpacing:"0.5px" }}>A</span>
           </div>
 
           {/* Right: Higher / Lower buttons */}
@@ -752,7 +752,7 @@ export default function HiloGame({
               disabled={!isPlaying || higherDis || actionBusy}
               style={{
                 width:"100%", padding:"14px 12px", borderRadius:"10px", border:"none",
-                background: (isPlaying && !actionBusy) ? "#0D0F1A" : "#0A0A12",
+                background: (isPlaying && !actionBusy) ? "#131e30" : "#0d1520",
                 cursor: (isPlaying && !actionBusy) ? "pointer" : "not-allowed",
                 display:"flex", flexDirection:"column", gap:"6px",
                 opacity: (isPlaying && !actionBusy) ? 1 : 0.45,
@@ -762,7 +762,7 @@ export default function HiloGame({
             >
               <div style={{ display:"flex", alignItems:"center", gap:"6px" }}>
                 <span style={{ fontSize:"16px", color:"#22c55e", lineHeight:1 }}>↑</span>
-                <span style={{ fontSize:"13px", color:"#e2d4f8", fontWeight:500, textAlign:"left" }}>{T("hiloHigherEq")}</span>
+                <span style={{ fontSize:"13px", color:"#c8d8f0", fontWeight:500, textAlign:"left" }}>{T("hiloHigherEq")}</span>
               </div>
               <div style={{ fontSize:"18px", fontWeight:700, color:"#22c55e", textAlign:"left" }}>
                 {higherProb.toFixed(2)}%
@@ -775,17 +775,17 @@ export default function HiloGame({
               disabled={!isPlaying || lowerDis || actionBusy}
               style={{
                 width:"100%", padding:"14px 12px", borderRadius:"10px", border:"none",
-                background: (isPlaying && !actionBusy) ? "#130d26" : "#0A0A12",
+                background: (isPlaying && !actionBusy) ? "#1e1418" : "#0d1520",
                 cursor: (isPlaying && !actionBusy) ? "pointer" : "not-allowed",
                 display:"flex", flexDirection:"column", gap:"6px",
                 opacity: (isPlaying && !actionBusy) ? 1 : 0.45,
                 transition:"background .15s",
-                boxShadow: (isPlaying && !actionBusy) ? "0 0 0 1px #2d0a50" : "none",
+                boxShadow: (isPlaying && !actionBusy) ? "0 0 0 1px #3a1a1a" : "none",
               }}
             >
               <div style={{ display:"flex", alignItems:"center", gap:"6px" }}>
                 <span style={{ fontSize:"16px", color:"#e63e3e", lineHeight:1 }}>↓</span>
-                <span style={{ fontSize:"13px", color:"#e2d4f8", fontWeight:500, textAlign:"left" }}>{T("hiloLowerEq")}</span>
+                <span style={{ fontSize:"13px", color:"#c8d8f0", fontWeight:500, textAlign:"left" }}>{T("hiloLowerEq")}</span>
               </div>
               <div style={{ fontSize:"18px", fontWeight:700, color:"#e63e3e", textAlign:"left" }}>
                 {lowerProb.toFixed(2)}%
@@ -796,7 +796,7 @@ export default function HiloGame({
 
         {/* Idle prompt */}
         {phase === "idle" && (
-          <div style={{ textAlign:"center", padding:"14px", color:"#2d1f52", fontSize:"13px", fontStyle:"italic", flexShrink:0 }}>
+          <div style={{ textAlign:"center", padding:"14px", color:"#3a5070", fontSize:"13px", fontStyle:"italic", flexShrink:0 }}>
             {T("hiloPrompt")}
           </div>
         )}
@@ -805,15 +805,15 @@ export default function HiloGame({
 
         {/* ── Card history strip — FUERA del área flexible, siempre visible ── */}
         {history.length > 0 && (
-          <div style={{ background:"#0A0A12", borderTop:"1px solid #1a1035", padding:"8px 14px 10px", flexShrink:0 }}>
-            <div ref={histScrollRef} style={{ display:"flex", gap:"8px", overflowX:"auto", paddingBottom:"4px", scrollbarWidth:"thin", scrollbarColor:"#1a1035 transparent" }}>
+          <div style={{ background:"#0b1220", borderTop:"1px solid #1a2c44", padding:"8px 14px 10px", flexShrink:0 }}>
+            <div ref={histScrollRef} style={{ display:"flex", gap:"8px", overflowX:"auto", paddingBottom:"4px", scrollbarWidth:"thin", scrollbarColor:"#1e3050 transparent" }}>
               {history.map((h, i) => {
                 const isFirst      = i === 0;
                 const isRevealLoss = h.guess === null && h.won === false;
                 const isSkip       = h.guess === "skip";
                 const badgeBg      = isFirst      ? "#16a34a"
                   : isRevealLoss   ? "#c0392b"
-                  : isSkip         ? "#A855F7"
+                  : isSkip         ? "#c2650a"
                   : "#16a34a";
                 const badgeText    = isFirst      ? T("hiloStartCard")
                   : isRevealLoss   ? "0.00x"
@@ -837,7 +837,7 @@ export default function HiloGame({
                       {isSkip && (
                         <div style={{
                           position:"absolute", right:"-12px", top:"38%", transform:"translateY(-50%)", zIndex:10,
-                          background:"#A855F7", border:"1px solid #A855F7aa",
+                          background:"#c2650a", border:"1px solid #f97316aa",
                           borderRadius:"5px", width:"20px", height:"20px", display:"flex", alignItems:"center", justifyContent:"center",
                           fontSize:"11px", fontWeight:900, color:"#fff", lineHeight:1,
                         }}>»</div>
@@ -860,14 +860,14 @@ export default function HiloGame({
         )}
 
         {/* ── Bottom controls — scrollable ── */}
-        <div style={{ flex:"0 0 auto", overflowY:"auto", overscrollBehavior:"contain", paddingTop:"14px", paddingLeft:"16px", paddingRight:"16px", paddingBottom:"20px", display:"flex", flexDirection:"column", gap:"9px", background:"#0D0F1A", borderTop:"1px solid #1a1035" }}>
+        <div style={{ flex:"0 0 auto", overflowY:"auto", overscrollBehavior:"contain", paddingTop:"14px", paddingLeft:"16px", paddingRight:"16px", paddingBottom:"20px", display:"flex", flexDirection:"column", gap:"9px", background:"#131a28", borderTop:"1px solid #1a2438" }}>
 
           {/* Bet/Cashout big button */}
           {isIdle ? (
             <button onClick={startGame} disabled={!(betNum > 0) || isPlaying} style={{
               width:"100%", padding:"13px", borderRadius:"10px", border:"none",
-              background: canBet ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-              color: canBet ? "#fff" : "#2d1f52", fontWeight:700, fontSize:"17px",
+              background: canBet ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+              color: canBet ? "#fff" : "#3a4a60", fontWeight:700, fontSize:"17px",
               cursor: canBet ? "pointer" : "not-allowed",
               boxShadow: canBet ? "0 4px 24px rgba(26,159,255,.35)" : "none",
               transition:"all .2s",
@@ -877,10 +877,10 @@ export default function HiloGame({
           ) : (
             <button onClick={cashout} disabled={!canCashout} style={{
               width:"100%", padding:"13px", borderRadius:"10px", border:"none",
-              background: canCashout ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-              color: canCashout ? "#fff" : "#2d1f52", fontWeight:700, fontSize:"17px",
+              background: canCashout ? "linear-gradient(180deg,#f6b531,#ea9807)" : "#1a2438",
+              color: canCashout ? "#fff" : "#3a4a60", fontWeight:700, fontSize:"17px",
               cursor: canCashout ? "pointer" : "not-allowed",
-              boxShadow: canCashout ? "0 4px 22px rgba(168,85,247,.35)" : "none",
+              boxShadow: canCashout ? "0 4px 22px rgba(244,169,31,.35)" : "none",
               transition:"all .2s", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap",
             }}>
               {canCashout ? `${T("hiloRetire")} ${fmtMoney(potentialPayout)}` : T("hiloApostar")}
@@ -890,18 +890,18 @@ export default function HiloGame({
           {/* Bet amount label + input */}
           <div>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"4px" }}>
-              <span style={{ color:"#9b8bc4", fontSize:"12px", fontWeight:500 }}>{T("betAmount")}</span>
-              <span style={{ color:"#7c6d9e", fontSize:"12px", ...dMStyle }}>{displayCurrency}</span>
+              <span style={{ color:"#8090a8", fontSize:"12px", fontWeight:500 }}>{T("betAmount")}</span>
+              <span style={{ color:"#5a6a88", fontSize:"12px", ...dMStyle }}>{displayCurrency}</span>
             </div>
-            <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", border:`1px solid ${!isPlaying && betNum > 0 && !canBet ? "#c0392b" : "#1e1535"}`, borderRadius:"8px", padding:"8px 12px" }}>
-              <span style={{ fontSize:"12px", color:"#7c6d9e", flexShrink:0, marginRight:"6px", ...dMStyle }}>{displayCurrency}</span>
+            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", border:`1px solid ${!isPlaying && betNum > 0 && !canBet ? "#c0392b" : "#252f45"}`, borderRadius:"8px", padding:"8px 12px" }}>
+              <span style={{ fontSize:"12px", color:"#5a6a88", flexShrink:0, marginRight:"6px", ...dMStyle }}>{displayCurrency}</span>
               <input
                 value={(()=>{ if(!bet) return ""; if(!displayInFiat) return bet; const [int,dec]=bet.split("."); const fi=(parseInt(int||"0")||0).toLocaleString("de-DE"); return dec!==undefined?`${fi},${dec}`:fi; })()}
                 onChange={e => { const v=displayInFiat?e.target.value.replace(/\./g,"").replace(",","."):e.target.value; if(/^\d*\.?\d*$/.test(v)) setBet(v); }}
                 onBlur={() => { if(isPlaying) return; const maxD=Math.floor(convertUsd(balance)*100)/100; const minD=Math.ceil(convertUsd(0.01)*100)/100; const raw=parseFloat(bet)||0; if(maxD>0) setBet((Math.max(minD,Math.min(maxD,raw||minD))).toFixed(2)); }}
                 disabled={isPlaying}
                 type="text" inputMode="decimal" placeholder={displayInFiat?"0,00":"0.00"}
-                style={{ flex:1, background:"transparent", border:"none", color: isPlaying?"#4a3070":"white", fontSize:"16px", fontWeight:600, padding:"0", minWidth:0, outline:"none", fontFamily:"inherit", cursor: isPlaying?"not-allowed":"text" }}
+                style={{ flex:1, background:"transparent", border:"none", color: isPlaying?"#4a6070":"white", fontSize:"16px", fontWeight:600, padding:"0", minWidth:0, outline:"none", fontFamily:"inherit", cursor: isPlaying?"not-allowed":"text" }}
               />
             </div>
             {(!isPlaying && betNum <= 0) && <div style={{ fontSize:"11px", color:"#e74c3c", marginTop:"3px", paddingLeft:"2px" }}>{T("bjMinBet")}{fmtMoney(0.01)}</div>}
@@ -909,17 +909,17 @@ export default function HiloGame({
 
           {/* Min / ½ / 2× / Max / » row */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr 1fr", gap:"5px" }}>
-            <button onClick={minBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #1e1535", background:"#0D0F1A", color:isPlaying?"#2d1f52":"#e2d4f8", fontWeight:500, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>{T("btnMin")}</button>
-            <button onClick={halveBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #1e1535", background:"#0D0F1A", color:isPlaying?"#2d1f52":"#e2d4f8", fontWeight:600, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>½</button>
-            <button onClick={doubleBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #1e1535", background:"#0D0F1A", color:isPlaying?"#2d1f52":"#e2d4f8", fontWeight:600, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>2×</button>
-            <button onClick={maxBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #1e1535", background:"#0D0F1A", color:isPlaying?"#2d1f52":"#e2d4f8", fontWeight:500, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>{T("btnMax")}</button>
-            <button onClick={skipCard} disabled={!isPlaying||actionBusy||skipsLeft<=0} title={skipsLeft>0?`Saltar (${skipsLeft})`:"Sin saltos"} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #1e1535", background:(isPlaying&&!actionBusy&&skipsLeft>0)?"#1a1035":"#0A0A12", color:(isPlaying&&!actionBusy&&skipsLeft>0)?"#e2d4f8":"#2d1f52", fontWeight:500, fontSize:"13px", cursor:(isPlaying&&!actionBusy&&skipsLeft>0)?"pointer":"not-allowed" }}>{skipsLeft > 0 ? `» ${skipsLeft}` : "»✗"}</button>
+            <button onClick={minBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #252f45", background:"#131a28", color:isPlaying?"#3a4a60":"#c8d8f0", fontWeight:500, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>{T("btnMin")}</button>
+            <button onClick={halveBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #252f45", background:"#131a28", color:isPlaying?"#3a4a60":"#c8d8f0", fontWeight:600, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>½</button>
+            <button onClick={doubleBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #252f45", background:"#131a28", color:isPlaying?"#3a4a60":"#c8d8f0", fontWeight:600, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>2×</button>
+            <button onClick={maxBet} disabled={isPlaying} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #252f45", background:"#131a28", color:isPlaying?"#3a4a60":"#c8d8f0", fontWeight:500, fontSize:"13px", cursor:isPlaying?"not-allowed":"pointer" }}>{T("btnMax")}</button>
+            <button onClick={skipCard} disabled={!isPlaying||actionBusy||skipsLeft<=0} title={skipsLeft>0?`Saltar (${skipsLeft})`:"Sin saltos"} style={{ padding:"8px 0", borderRadius:"8px", border:"1px solid #252f45", background:(isPlaying&&!actionBusy&&skipsLeft>0)?"#1e2a3e":"#0d1520", color:(isPlaying&&!actionBusy&&skipsLeft>0)?"#c8d8f0":"#3a4a60", fontWeight:500, fontSize:"13px", cursor:(isPlaying&&!actionBusy&&skipsLeft>0)?"pointer":"not-allowed" }}>{skipsLeft > 0 ? `» ${skipsLeft}` : "»✗"}</button>
           </div>
 
           {/* Accumulated gain */}
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"#0D0F1A", border:"1px solid #1a1035", borderRadius:"8px", padding:"10px 14px" }}>
-            <span style={{ color:"#6b5f8c", fontSize:"12px", fontWeight:500 }}>{T("hiloTotalGain")} ({accMult.toFixed(2)}×)</span>
-            <span style={{ color: potentialPayout>betUsd+0.001?"#22c55e":"#e2d4f8", fontSize:"15px", fontWeight:600, ...dMStyle }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"#0e1826", border:"1px solid #1a2438", borderRadius:"8px", padding:"10px 14px" }}>
+            <span style={{ color:"#5a7090", fontSize:"12px", fontWeight:500 }}>{T("hiloTotalGain")} ({accMult.toFixed(2)}×)</span>
+            <span style={{ color: potentialPayout>betUsd+0.001?"#22c55e":"#c8d8f0", fontSize:"15px", fontWeight:600, ...dMStyle }}>
               {potentialPayout>0 ? convertUsd(potentialPayout).toFixed(displayInFiat?(currRate>=10000?0:2):8) : (displayInFiat?"0,00":"0.00")} {displayCurrency}
             </span>
           </div>
@@ -929,13 +929,13 @@ export default function HiloGame({
             <button
               onClick={() => setShowStats(v => !v)}
               title={T("statsLabel")}
-              style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"6px", padding:0, overflow:"hidden", boxSizing:"border-box", background: showStats ? "#7C3AED" : "#0D0F1A", border: showStats ? "1px solid #A855F7" : "1px solid #1a1035", color: showStats ? "#fff" : "#a78bfa", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"6px", padding:0, overflow:"hidden", boxSizing:"border-box", background: showStats ? "#1f6fd0" : "#0e1826", border: showStats ? "1px solid #3a8aff" : "1px solid #1a2438", color: showStats ? "#fff" : "#7a9db8", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
             </button>
             <button
               onClick={() => setVol(v => v > 0 ? 0 : 70)}
               title={T("volumeTitle")}
-              style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"6px", padding:0, overflow:"hidden", boxSizing:"border-box", background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"6px", padding:0, overflow:"hidden", boxSizing:"border-box", background:"#0e1826", border:"1px solid #1a2438", color:"#7a9db8", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
               {vol === 0
                 ? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                 : vol < 40
@@ -955,24 +955,24 @@ export default function HiloGame({
     <div style={{ width:"100%", height:"100%", position:"relative", userSelect:"none", WebkitUserSelect:"none" }}>
       <div className="game-ctrl-grid" style={{
         display:"grid", gridTemplateColumns:"300px 1fr", gridTemplateRows:"auto 1fr",
-        width:"100%", height:"100%", minHeight:"714px", background:"#0A0A12",
+        width:"100%", height:"100%", minHeight:"714px", background:"#0e1320",
         overflow:"hidden",
       }}>
 
         {/* ── Header bar (full width) ── */}
         <div style={{
           gridColumn:"1/-1", display:"flex", alignItems:"center", gap:"10px",
-          padding:"10px 20px", background:"#0D0F1A",
-          borderBottom:"1px solid #1a1035", flexShrink:0,
+          padding:"10px 20px", background:"#0e1826",
+          borderBottom:"1px solid #1a2438", flexShrink:0,
         }}>
-          <button onClick={onBack} style={{ background:"#0D0F1A", border:"1px solid #1e1535", color:"#9b8bc4", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
+          <button onClick={onBack} style={{ background:"#131a28", border:"1px solid #252f45", color:"#8090b0", cursor:"pointer", borderRadius:"8px", width:"36px", height:"36px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg></button>
           <div className="game-title-label" style={{ fontWeight:500, fontSize:"15px", letterSpacing:"1.5px", color:"#fff", display:"flex", alignItems:"center", gap:"8px" }}><svg viewBox="0 0 18 18" width="18" height="18" fill="currentColor"><path fillRule="evenodd" clipRule="evenodd" d="M4.332 16.852C3.423 16.924 2.631 16.198 2.568 15.23L2.215 10.224C2.15 9.256 2.83 8.414 3.74 8.342L14.981 7.38C15.892 7.31 16.67 8.063 16.732 9.03L17.085 14.036C17.148 15.005 16.462 15.849 15.552 15.921L4.332 16.852Z M9.7 13.64 L12.2 10.84 H7.2 Z"/><path fillRule="evenodd" clipRule="evenodd" d="M0.217 1.533C0.259 0.564 1.031 -0.185 1.941 -0.141L14.101 0.449C15.012 0.493 15.716 1.315 15.675 2.383L15.318 9.187C15.278 10.155 14.502 10.906 13.591 10.862L1.42 10.272C0.509 10.228 -0.193 9.389 -0.153 8.421L0.217 1.533Z M7.76 3.96 L5.26 6.76 H10.26 Z"/></svg>{T("gameHilo").toUpperCase()}</div>
-          <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#7c6d9e", fontWeight:500 }}>{T("manderOriginals")}</div>
+          <div className="game-originals-badge" style={{ marginLeft:"auto", fontSize:"12px", color:"#5a6a88", fontWeight:500 }}>{T("manderOriginals")}</div>
         </div>
 
         {/* ── Left control panel ── */}
         <div className="game-ctrl-panel" style={{
-          background:"#0D0F1A", borderRight:"1px solid #1a1035",
+          background:"#131a28", borderRight:"1px solid #1a2438",
           padding:"16px", display:"flex", flexDirection:"column", gap:"10px",
         }}>
 
@@ -981,16 +981,16 @@ export default function HiloGame({
 
           {/* Monto de Apuesta label */}
           <div style={{ display:"flex", alignItems:"center" }}>
-            <span style={{ color:"#7c6d9e", fontWeight:500, fontSize:"12px" }}>{T("betAmount")}</span>
+            <span style={{ color:"#5a6a88", fontWeight:500, fontSize:"12px" }}>{T("betAmount")}</span>
           </div>
 
           {/* Bet input row */}
           <div style={{
             display:"flex", alignItems:"center", gap:"8px",
-            background:"#0D0F1A", border:`1px solid ${!isPlaying && betNum > 0 && !canBet ? "#c0392b" : "#1e1535"}`,
+            background:"#0e1826", border:`1px solid ${!isPlaying && betNum > 0 && !canBet ? "#c0392b" : "#252f45"}`,
             borderRadius:"6px", padding:"8px 14px", transition:"border .15s",
           }}>
-            <span style={{ fontSize:"13px", color:"#7c6d9e", fontWeight:500, flexShrink:0, whiteSpace:"nowrap", ...dMStyle }}>{displayCurrency}</span>
+            <span style={{ fontSize:"13px", color:"#5a6a88", fontWeight:500, flexShrink:0, whiteSpace:"nowrap", ...dMStyle }}>{displayCurrency}</span>
             <input
               value={(()=>{
                 if(!bet) return "";
@@ -1014,7 +1014,7 @@ export default function HiloGame({
               type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
               style={{
                 flex:1, background:"transparent", border:"none",
-                color: isPlaying ? "#4a3070" : "white",
+                color: isPlaying ? "#4a6070" : "white",
                 fontSize:"17px", fontWeight:600, padding:"0",
                 minWidth:0, outline:"none", fontFamily:"inherit",
                 cursor: isPlaying ? "not-allowed" : "text",
@@ -1024,8 +1024,8 @@ export default function HiloGame({
               onClick={() => setBet("0.00")}
               disabled={isPlaying}
               style={{
-                background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px",
-                color:"#818cf8", fontSize:"11px", fontWeight:500,
+                background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px",
+                color:"#6db3f2", fontSize:"11px", fontWeight:500,
                 padding:"4px 8px", cursor: isPlaying ? "not-allowed" : "pointer",
                 letterSpacing:"0.04em", whiteSpace:"nowrap", textTransform:"uppercase",
               }}
@@ -1052,8 +1052,8 @@ export default function HiloGame({
                 onClick={b.action}
                 disabled={isPlaying}
                 style={{
-                  background:"#1a1035", color: isPlaying ? "#2d1f52" : "#ddd0f8",
-                  border:"1px solid #1e1535", borderRadius:"8px",
+                  background:"#1a2438", color: isPlaying ? "#3a4a60" : "#d0dcea",
+                  border:"1px solid #252f45", borderRadius:"8px",
                   padding:"8px 0", fontWeight:500, fontSize:"13px",
                   cursor: isPlaying ? "not-allowed" : "pointer",
                 }}
@@ -1071,9 +1071,9 @@ export default function HiloGame({
               style={{
                 width:"100%", padding:"14px", borderRadius:"6px", border:"none",
                 background: canBet
-                  ? "linear-gradient(180deg,#A855F7,#7C3AED)"
-                  : "#1a1035",
-                color: canBet ? "#fff" : "#2d1f52",
+                  ? "linear-gradient(180deg,#1a9fff,#0d6fd4)"
+                  : "#1a2438",
+                color: canBet ? "#fff" : "#3a4a60",
                 fontWeight:600, fontSize:"15px",
                 cursor: canBet ? "pointer" : "not-allowed",
                 boxShadow: canBet ? "0 4px 22px rgba(26,159,255,.35)" : "none",
@@ -1089,12 +1089,12 @@ export default function HiloGame({
               style={{
                 width:"100%", padding:"14px", borderRadius:"6px", border:"none",
                 background: canCashout
-                  ? "linear-gradient(180deg,#A855F7,#7C3AED)"
-                  : "#1a1035",
-                color: canCashout ? "#fff" : "#2d1f52",
+                  ? "linear-gradient(180deg,#f6b531,#ea9807)"
+                  : "#1a2438",
+                color: canCashout ? "#fff" : "#3a4a60",
                 fontWeight:600, fontSize:"15px",
                 cursor: canCashout ? "pointer" : "not-allowed",
-                boxShadow: canCashout ? "0 4px 22px rgba(168,85,247,.35)" : "none",
+                boxShadow: canCashout ? "0 4px 22px rgba(244,169,31,.35)" : "none",
                 transition:"all .2s",
                 overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap",
               }}
@@ -1109,25 +1109,25 @@ export default function HiloGame({
             disabled={!isPlaying || actionBusy || skipsLeft <= 0}
             style={{
               width:"100%", padding:"12px 16px", borderRadius:"6px", border:"none",
-              background: (isPlaying && !actionBusy && skipsLeft > 0) ? "#1a1035" : "#0D0F1A",
-              color: (isPlaying && !actionBusy && skipsLeft > 0) ? "#e2d4f8" : "#2d1f52",
+              background: (isPlaying && !actionBusy && skipsLeft > 0) ? "#1e2a3e" : "#111822",
+              color: (isPlaying && !actionBusy && skipsLeft > 0) ? "#c8d8f0" : "#3a4a60",
               fontWeight:500, fontSize:"14px",
               cursor: (isPlaying && !actionBusy && skipsLeft > 0) ? "pointer" : "not-allowed",
               display:"flex", alignItems:"center", justifyContent:"center", gap:"6px",
               transition:"background .15s",
             }}
-            onMouseEnter={e => { if (isPlaying && !actionBusy && skipsLeft > 0) (e.currentTarget as HTMLElement).style.background = "#1e1535"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !actionBusy && skipsLeft > 0) ? "#1a1035" : "#0D0F1A"; }}
+            onMouseEnter={e => { if (isPlaying && !actionBusy && skipsLeft > 0) (e.currentTarget as HTMLElement).style.background = "#253550"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !actionBusy && skipsLeft > 0) ? "#1e2a3e" : "#111822"; }}
           >
             {T("hiloSkip")}
-            <span style={{ fontSize:"13px", color: skipsLeft > 0 ? "#9b8bc4" : "#e74c3c", marginLeft:"4px", fontWeight:700 }}>
+            <span style={{ fontSize:"13px", color: skipsLeft > 0 ? "#7a9fc0" : "#e74c3c", marginLeft:"4px", fontWeight:700 }}>
               ({skipsLeft}/{MAX_SKIPS})
             </span>
             <span style={{ fontSize:"15px", letterSpacing:"-1px" }}>»</span>
           </button>
 
           {/* Divider */}
-          <div style={{ height:"1px", background:"#1a1035" }}/>
+          <div style={{ height:"1px", background:"#1a2438" }}/>
 
           {/* Mayor o Igual */}
           <button
@@ -1135,21 +1135,21 @@ export default function HiloGame({
             disabled={!isPlaying || higherDis || actionBusy}
             style={{
               width:"100%", padding:"13px 14px", borderRadius:"6px", border:"none",
-              background: (isPlaying && !higherDis && !actionBusy) ? "#1a1035" : "#0D0F1A",
-              color: (isPlaying && !higherDis && !actionBusy) ? "#e2d4f8" : "#2d1f52",
+              background: (isPlaying && !higherDis && !actionBusy) ? "#1a2438" : "#111822",
+              color: (isPlaying && !higherDis && !actionBusy) ? "#c8d8f0" : "#3a4a60",
               fontWeight:500, fontSize:"13px",
               cursor: (isPlaying && !higherDis && !actionBusy) ? "pointer" : "not-allowed",
               display:"flex", alignItems:"center", justifyContent:"space-between",
               transition:"background .15s",
             }}
-            onMouseEnter={e => { if (isPlaying && !higherDis && !actionBusy) (e.currentTarget as HTMLElement).style.background = "#1e1535"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !higherDis && !actionBusy) ? "#1a1035" : "#0D0F1A"; }}
+            onMouseEnter={e => { if (isPlaying && !higherDis && !actionBusy) (e.currentTarget as HTMLElement).style.background = "#223048"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !higherDis && !actionBusy) ? "#1a2438" : "#111822"; }}
           >
             <span style={{ display:"flex", alignItems:"center", gap:"6px" }}>
               {T("hiloHigherEq")}
               <span style={{ color:"#22c55e", fontSize:"14px" }}>↑</span>
             </span>
-            <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !higherDis && !actionBusy) ? "#e2d4f8" : "#2d1f52" }}>
+            <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !higherDis && !actionBusy) ? "#c8d8f0" : "#3a4a60" }}>
               {higherProb.toFixed(2)}%
             </span>
           </button>
@@ -1160,50 +1160,50 @@ export default function HiloGame({
             disabled={!isPlaying || lowerDis || actionBusy}
             style={{
               width:"100%", padding:"13px 14px", borderRadius:"6px", border:"none",
-              background: (isPlaying && !lowerDis && !actionBusy) ? "#1a1035" : "#0D0F1A",
-              color: (isPlaying && !lowerDis && !actionBusy) ? "#e2d4f8" : "#2d1f52",
+              background: (isPlaying && !lowerDis && !actionBusy) ? "#1a2438" : "#111822",
+              color: (isPlaying && !lowerDis && !actionBusy) ? "#c8d8f0" : "#3a4a60",
               fontWeight:500, fontSize:"13px",
               cursor: (isPlaying && !lowerDis && !actionBusy) ? "pointer" : "not-allowed",
               display:"flex", alignItems:"center", justifyContent:"space-between",
               transition:"background .15s",
             }}
-            onMouseEnter={e => { if (isPlaying && !lowerDis && !actionBusy) (e.currentTarget as HTMLElement).style.background = "#1e1535"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !lowerDis && !actionBusy) ? "#1a1035" : "#0D0F1A"; }}
+            onMouseEnter={e => { if (isPlaying && !lowerDis && !actionBusy) (e.currentTarget as HTMLElement).style.background = "#223048"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = (isPlaying && !lowerDis && !actionBusy) ? "#1a2438" : "#111822"; }}
           >
             <span style={{ display:"flex", alignItems:"center", gap:"6px" }}>
               {T("hiloLowerEq")}
               <span style={{ color:"#e63e3e", fontSize:"14px" }}>↓</span>
             </span>
-            <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !lowerDis) ? "#e2d4f8" : "#2d1f52" }}>
+            <span style={{ fontSize:"13px", fontWeight:700, color:(isPlaying && !lowerDis) ? "#c8d8f0" : "#3a4a60" }}>
               {lowerProb.toFixed(2)}%
             </span>
           </button>
 
           {/* Divider */}
-          <div style={{ height:"1px", background:"#1a1035" }}/>
+          <div style={{ height:"1px", background:"#1a2438" }}/>
 
           {/* Ganancia total */}
           <div>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"7px" }}>
-              <span style={{ color:"#7c6d9e", fontWeight:500, fontSize:"12px" }}>
+              <span style={{ color:"#5a6a88", fontWeight:500, fontSize:"12px" }}>
                 {T("hiloTotalGain")} ({accMult.toFixed(2)}×)
               </span>
-              <span style={{ color:"#7c6d9e", fontSize:"12px", ...dMStyle }}>
+              <span style={{ color:"#5a6a88", fontSize:"12px", ...dMStyle }}>
                 {potentialPayout > 0 ? `${convertUsd(potentialPayout).toFixed(displayInFiat ? (currRate >= 10000 ? 0 : 2) : 8)} ${displayCurrency}` : `0${displayInFiat ? ",00" : ".00"} ${displayCurrency}`}
               </span>
             </div>
             <div style={{
               display:"flex", alignItems:"center",
-              background:"#0D0F1A", border:"1px solid #1e1535",
+              background:"#0e1826", border:"1px solid #252f45",
               borderRadius:"6px", overflow:"hidden",
             }}>
-              <span style={{ padding:"0 10px", color:"#a78bfa", fontWeight:600, fontSize:"15px", flexShrink:0 }}>{displayCurrency}</span>
+              <span style={{ padding:"0 10px", color:"#7a9db8", fontWeight:600, fontSize:"15px", flexShrink:0 }}>{displayCurrency}</span>
               <input
                 readOnly
                 value={potentialPayout > 0 ? convertUsd(potentialPayout).toFixed(displayInFiat ? (currRate >= 10000 ? 0 : 2) : 8) : (displayInFiat ? "0,00" : "0.00")}
                 style={{
                   flex:1, background:"transparent", border:"none",
-                  color: potentialPayout > betUsd + 0.001 ? "#22c55e" : "#e2d4f8",
+                  color: potentialPayout > betUsd + 0.001 ? "#22c55e" : "#c8d8f0",
                   fontSize:"20px", fontWeight:600, padding:"10px 0",
                   minWidth:0, outline:"none", ...dMStyle,
                 }}
@@ -1220,9 +1220,9 @@ export default function HiloGame({
               title={T("statsTitle")}
               style={{
                 width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-                background: showStats ? "#7C3AED" : "#0D0F1A",
-                border: showStats ? "1px solid #A855F7" : "1px solid #1a1035",
-                color: showStats ? "#fff" : "#a78bfa",
+                background: showStats ? "#1f6fd0" : "#0e1826",
+                border: showStats ? "1px solid #3a8aff" : "1px solid #203a50",
+                color: showStats ? "#fff" : "#7a9db8",
                 cursor:"pointer", fontSize:"17px",
                 display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background .2s,border .2s,color .2s",
@@ -1235,7 +1235,7 @@ export default function HiloGame({
               title={T("volumeTitle")}
               style={{
                 width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-                background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa",
+                background:"#0e1826", border:"1px solid #203a50", color:"#7a9db8",
                 cursor:"pointer", fontSize:"17px",
                 display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background .2s,border .2s,color .2s",
@@ -1247,7 +1247,7 @@ export default function HiloGame({
 
         {/* ── Right game area ── */}
         <div style={{
-          background:"#0A0A12", display:"flex", flexDirection:"column",
+          background:"#0e1320", display:"flex", flexDirection:"column",
           position:"relative", overflow:"hidden", minWidth:0,
         }}>
 
@@ -1269,7 +1269,7 @@ export default function HiloGame({
                   {accMult.toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
                 </div>
                 <div style={{ height:"1px", background:"#1e3a28", margin:"11px 0" }}/>
-                <div style={{ fontSize:"15px", fontWeight:500, color:"#9b8bc4", textAlign:"center" }}>
+                <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0", textAlign:"center" }}>
                   <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(potentialPayout)}</span>
                 </div>
               </div>
@@ -1294,17 +1294,17 @@ export default function HiloGame({
 
               {/* K reference (highest) */}
               <div style={{ textAlign:"center", opacity:0.5 }}>
-                <div style={{ fontSize:"10px", fontWeight:700, color:"#4a3070", letterSpacing:"1px", marginBottom:"8px", textTransform:"uppercase" }}>{T("hiloHighLabel")}</div>
+                <div style={{ fontSize:"10px", fontWeight:700, color:"#4a6080", letterSpacing:"1px", marginBottom:"8px", textTransform:"uppercase" }}>{T("hiloHighLabel")}</div>
                 <div style={{
                   width: isMobile ? "52px" : "78px", height: isMobile ? "72px" : "108px", borderRadius:"8px",
-                  background:"#0D0F1A", border:"1px solid #1a1035",
+                  background:"#111c2e", border:"1px solid #1e2e44",
                   display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px",
                 }}>
-                  <span style={{ fontSize: isMobile ? "16px" : "22px", fontWeight:900, color:"#e2d4f8" }}>K</span>
-                  <div style={{ width:"20px", height:"1px", background:"#2d1f52" }}/>
-                  <span style={{ fontSize: isMobile ? "13px" : "18px", color:"#e2d4f8" }}>↑</span>
+                  <span style={{ fontSize: isMobile ? "16px" : "22px", fontWeight:900, color:"#c8d8f0" }}>K</span>
+                  <div style={{ width:"20px", height:"1px", background:"#2a3e58" }}/>
+                  <span style={{ fontSize: isMobile ? "13px" : "18px", color:"#c8d8f0" }}>↑</span>
                 </div>
-                <div style={{ fontSize:"8px", color:"#2d1f52", marginTop:"6px", letterSpacing:"0.8px", lineHeight:1.4 }}>
+                <div style={{ fontSize:"8px", color:"#3a5070", marginTop:"6px", letterSpacing:"0.8px", lineHeight:1.4 }}>
                   {T("hiloKingDesc")}
                 </div>
               </div>
@@ -1321,8 +1321,8 @@ export default function HiloGame({
                       left: offset * 1.1,
                       width: isMobile ? "92px" : "164px", height: isMobile ? "128px" : "230px",
                       borderRadius:"6px",
-                      background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-                      border:"1.5px solid #7C3AED",
+                      background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+                      border:"1.5px solid #2a5aaa",
                       boxShadow:`${offset}px ${offset*1.5}px ${offset*4}px rgba(0,0,40,.4)`,
                       zIndex: 0,
                     }} />
@@ -1330,14 +1330,14 @@ export default function HiloGame({
                   {/* Base card: full card-back design, static behind the animating card */}
                   <div style={{
                     position:"absolute", inset:0, borderRadius:"6px", zIndex:1,
-                    background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-                    border:"2px solid #7C3AED",
+                    background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+                    border:"2px solid #2a5aaa",
                     boxShadow:"0 12px 40px rgba(0,0,60,.5), inset 0 1px rgba(255,255,255,.1)",
                     display:"flex", alignItems:"center", justifyContent:"center",
                   }}>
                     <div style={{
                       position:"absolute", inset:"5px", borderRadius:"6px",
-                      background:"repeating-linear-gradient(45deg,#5b21b6 0px,#5b21b6 4px,#1e1535 4px,#1e1535 8px)",
+                      background:"repeating-linear-gradient(45deg,#1a4080 0px,#1a4080 4px,#0e2855 4px,#0e2855 8px)",
                       opacity:0.5, border:"1px solid rgba(255,255,255,.08)",
                     }}/>
                     <img src="/mander-logo.png" alt="Mander" style={{
@@ -1362,7 +1362,7 @@ export default function HiloGame({
                   </div>
                 </div>
                 <div style={{
-                  fontSize:"13px", color:"#2d1f52", fontStyle:"italic", textAlign:"center",
+                  fontSize:"13px", color:"#3a5070", fontStyle:"italic", textAlign:"center",
                   visibility: phase === "idle" ? "visible" : "hidden",
                   marginTop:"12px",
                 }}>
@@ -1372,17 +1372,17 @@ export default function HiloGame({
 
               {/* A reference (lowest) */}
               <div style={{ textAlign:"center", opacity:0.5 }}>
-                <div style={{ fontSize:"10px", fontWeight:700, color:"#4a3070", letterSpacing:"1px", marginBottom:"8px", textTransform:"uppercase" }}>{T("hiloLowLabel")}</div>
+                <div style={{ fontSize:"10px", fontWeight:700, color:"#4a6080", letterSpacing:"1px", marginBottom:"8px", textTransform:"uppercase" }}>{T("hiloLowLabel")}</div>
                 <div style={{
                   width: isMobile ? "52px" : "78px", height: isMobile ? "72px" : "108px", borderRadius:"8px",
-                  background:"#0D0F1A", border:"1px solid #1a1035",
+                  background:"#111c2e", border:"1px solid #1e2e44",
                   display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px",
                 }}>
-                  <span style={{ fontSize: isMobile ? "16px" : "22px", fontWeight:900, color:"#e2d4f8" }}>A</span>
-                  <div style={{ width:"20px", height:"1px", background:"#2d1f52" }}/>
-                  <span style={{ fontSize: isMobile ? "13px" : "18px", color:"#e2d4f8" }}>↓</span>
+                  <span style={{ fontSize: isMobile ? "16px" : "22px", fontWeight:900, color:"#c8d8f0" }}>A</span>
+                  <div style={{ width:"20px", height:"1px", background:"#2a3e58" }}/>
+                  <span style={{ fontSize: isMobile ? "13px" : "18px", color:"#c8d8f0" }}>↓</span>
                 </div>
-                <div style={{ fontSize:"8px", color:"#2d1f52", marginTop:"6px", letterSpacing:"0.8px", lineHeight:1.4 }}>
+                <div style={{ fontSize:"8px", color:"#3a5070", marginTop:"6px", letterSpacing:"0.8px", lineHeight:1.4 }}>
                   {T("hiloAceDesc")}
                 </div>
               </div>
@@ -1395,20 +1395,20 @@ export default function HiloGame({
             }}>
               {/* Mayor */}
               <div style={{
-                flex:1, minWidth:0, background:"#0D0F1A", border:"1px solid #1a1035",
+                flex:1, minWidth:0, background:"#0e1826", border:"1px solid #1e2e44",
                 borderRadius:"6px", padding: isMobile ? "10px 8px" : "12px 14px",
               }}>
-                <div style={{ fontSize:"12px", fontWeight:600, color:"#6b5f8c", marginBottom:"8px", wordBreak:"break-word", lineHeight:1.3 }}>
+                <div style={{ fontSize:"12px", fontWeight:600, color:"#5a7090", marginBottom:"8px", wordBreak:"break-word", lineHeight:1.3 }}>
                   {T("hiloProfitHigh")} ({higherMult.toFixed(2)}×)
                 </div>
                 <div style={{
                   display:"flex", alignItems:"center",
-                  background:"#0A0A12", border:"1px solid #1a1035",
+                  background:"#08111c", border:"1px solid #1a2a3e",
                   borderRadius:"8px", padding: isMobile ? "6px 8px" : "8px 10px",
                 }}>
                   <span style={{
                     flex:1, fontSize:"17px", fontWeight:600,
-                    color: isPlaying ? "#e2d4f8" : "#2d1f52",
+                    color: isPlaying ? "#c8d8f0" : "#3a4a60",
                   }}>
                     {isPlaying ? fmtMoney(betUsd * accMult * higherMult) : fmtMoney(0)}
                   </span>
@@ -1416,20 +1416,20 @@ export default function HiloGame({
               </div>
               {/* Menor */}
               <div style={{
-                flex:1, minWidth:0, background:"#0D0F1A", border:"1px solid #1a1035",
+                flex:1, minWidth:0, background:"#0e1826", border:"1px solid #1e2e44",
                 borderRadius:"6px", padding: isMobile ? "10px 8px" : "12px 14px",
               }}>
-                <div style={{ fontSize:"12px", fontWeight:600, color:"#6b5f8c", marginBottom:"8px", wordBreak:"break-word", lineHeight:1.3 }}>
+                <div style={{ fontSize:"12px", fontWeight:600, color:"#5a7090", marginBottom:"8px", wordBreak:"break-word", lineHeight:1.3 }}>
                   {T("hiloProfitLow")} ({lowerMult.toFixed(2)}×)
                 </div>
                 <div style={{
                   display:"flex", alignItems:"center",
-                  background:"#0A0A12", border:"1px solid #1a1035",
+                  background:"#08111c", border:"1px solid #1a2a3e",
                   borderRadius:"8px", padding: isMobile ? "6px 8px" : "8px 10px",
                 }}>
                   <span style={{
                     flex:1, fontSize:"17px", fontWeight:600,
-                    color: isPlaying ? "#e2d4f8" : "#2d1f52",
+                    color: isPlaying ? "#c8d8f0" : "#3a4a60",
                   }}>
                     {isPlaying ? fmtMoney(betUsd * accMult * lowerMult) : fmtMoney(0)}
                   </span>
@@ -1441,7 +1441,7 @@ export default function HiloGame({
             {history.length > 0 && (
               <div style={{ width:"100%", minWidth:0 }}>
                 <div style={{
-                  fontSize:"10px", color:"#2d1f52", marginBottom:"10px",
+                  fontSize:"10px", color:"#3a5070", marginBottom:"10px",
                   fontWeight:700, letterSpacing:"1.2px", textTransform:"uppercase",
                 }}>
                   {T("hiloCardHistory")}
@@ -1452,7 +1452,7 @@ export default function HiloGame({
                   paddingBottom:"14px",
                   paddingTop:"24px", marginTop:"-24px",
                   scrollbarWidth:"thin",
-                  scrollbarColor:"#1a1035 transparent",
+                  scrollbarColor:"#1e3050 transparent",
                 }}>
                   {history.map((h, i) => {
                     const isFirst      = i === 0;
@@ -1460,7 +1460,7 @@ export default function HiloGame({
                     const isSkip       = h.guess === "skip";
                     const badgeBg      = isFirst      ? "#16a34a"
                       : isRevealLoss   ? "#c0392b"
-                      : isSkip         ? "#A855F7"
+                      : isSkip         ? "#c2650a"
                       : "#16a34a";
                     const badgeText    = isFirst      ? T("hiloStartCard")
                       : isRevealLoss   ? "0.00x"
@@ -1481,9 +1481,9 @@ export default function HiloGame({
                               right:"-18px", top:"41%",
                               transform:"translateY(-50%)",
                               zIndex:10, pointerEvents:"none",
-                              background: h.guess === "skip" ? "#A855F7" : h.guess === "higher" ? "#14532d" : "#7f1d1d",
+                              background: h.guess === "skip" ? "#c2650a" : h.guess === "higher" ? "#14532d" : "#7f1d1d",
                               border: h.guess === "skip"
-                                ? "1px solid #A855F7aa"
+                                ? "1px solid #f97316aa"
                                 : h.guess === "higher" ? "1px solid #22c55e66" : "1px solid #ef444466",
                               borderRadius:"6px",
                               width:"28px", height:"28px",
@@ -1523,7 +1523,7 @@ export default function HiloGame({
         <div style={{
           position:"fixed", left: statsPos.x, top: statsPos.y,
           zIndex:9999, width:"260px",
-          background:"#0A0A12", border:"1px solid #1e1535",
+          background:"#0f1f2e", border:"1px solid #1e3a52",
           borderRadius:"6px", boxShadow:"0 8px 32px rgba(0,0,0,.7)",
           overflow:"hidden", userSelect:"none",
         }}>
@@ -1532,31 +1532,31 @@ export default function HiloGame({
             onTouchStart={handleStatsDragStart as any}
             style={{
               display:"flex", alignItems:"center", justifyContent:"space-between",
-              padding:"10px 14px", background:"#0D0F1A",
-              borderBottom: statsCollapsed ? "none" : "1px solid #1e1535", cursor:"grab", touchAction:"none",
+              padding:"10px 14px", background:"#112232",
+              borderBottom: statsCollapsed ? "none" : "1px solid #1e3a52", cursor:"grab", touchAction:"none",
             }}
           >
             <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-              <span style={{ display:"flex",alignItems:"center",color:"#a78bfa" }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
-              <strong style={{ fontSize:"13px", color:"#ead4fc" }}>{T("statsTitle")}</strong>
+              <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
+              <strong style={{ fontSize:"13px", color:"#d8e8f5" }}>{T("statsTitle")}</strong>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:"4px" }}>
-              <button onClick={() => setStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#a78bfa",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
+              <button onClick={() => setStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#7a9db8",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">{statsCollapsed ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}</svg>
               </button>
-              <button onClick={() => setShowStats(false)} style={{ background:"none", border:"none", color:"#a78bfa", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
+              <button onClick={() => setShowStats(false)} style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
             </div>
           </div>
           <div style={{ padding:"12px", display: statsCollapsed ? "none" : "block" }}>
-            <div style={{ background:"#0A0A12", borderRadius:"6px", padding:"12px", display:"flex", flexDirection:"column", gap:"8px" }}>
+            <div style={{ background:"#0d1a28", borderRadius:"6px", padding:"12px", display:"flex", flexDirection:"column", gap:"8px" }}>
               {([
                 { label:T("bjNetProfit"),  value: fmtMoney(hiloStats.profit),  color: hiloStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
                 { label:T("bjWins"),       value: String(hiloStats.wins),       color:"#16ff5c" },
-                { label:T("bjWagered"),    value: fmtMoney(hiloStats.wagered),  color:"#ead4fc" },
+                { label:T("bjWagered"),    value: fmtMoney(hiloStats.wagered),  color:"#d8e8f5" },
                 { label:T("bjLosses"),     value: String(hiloStats.losses),     color:"#ff5959" },
               ] as { label:string; value:string; color:string }[]).map(s => (
                 <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                  <span style={{ color:"#a78bfa", fontSize:"11.5px" }}>{s.label}</span>
+                  <span style={{ color:"#7a9db8", fontSize:"11.5px" }}>{s.label}</span>
                   <span style={{ color:s.color, fontWeight:500, fontSize:"13px" }}>{s.value}</span>
                 </div>
               ))}
@@ -1591,27 +1591,27 @@ export default function HiloGame({
               const tipLeft = Math.min(Math.max(tipXpct, 12), 78);
               const tipTop  = Math.max(tipYpct - 14, 2);
               if (n < 2) return (
-                <div style={{ marginTop:"10px", position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1e1535" }}>
-                  <span style={{ color:"#2d1f52", fontSize:"12px" }}>{T("noHistory")}</span>
+                <div style={{ marginTop:"10px", position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1a3347" }}>
+                  <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
               const fillAbove = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
               const fillBelow = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
               return (
-                <div style={{ marginTop:"10px", position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1e1535" }}>
+                <div style={{ marginTop:"10px", position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1a3347" }}>
                   {hpt && (
                     <div style={{
                       position:"absolute", left:`${tipLeft}%`, top:`${tipTop}%`,
                       transform:"translateX(-50%) translateY(-100%)",
-                      background:"#1a1035", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
+                      background:"#1a2a3a", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
                       borderRadius:"8px", padding:"4px 10px", fontSize:"12px", fontWeight:500,
                       color: hpt.profit>=0?"#19ff35":"#ff3350", whiteSpace:"nowrap",
                       pointerEvents:"none", zIndex:20,
                       boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}`,
                     }}>
                       {hpt.profit>=0?"+":""}{fmtMoney(hpt.profit)}
-                      <span style={{ color:"#a78bfa", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
+                      <span style={{ color:"#7a9db8", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
                         acum: {hpt.cum>=0?"+":""}{fmtMoney(hpt.cum)}
                       </span>
                     </div>
@@ -1640,21 +1640,21 @@ export default function HiloGame({
                     {n>1 ? <>
                       <path d={fillBelow} fill="rgba(200,30,30,.35)" clipPath="url(#hiloClipBelow)"/>
                       <path d={fillAbove} fill="rgba(25,255,80,.18)" clipPath="url(#hiloClipAbove)"/>
-                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
                       <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#hiloClipAbove)"/>
                       <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#hiloClipBelow)"/>
                       <rect x={PAD_X} y={PAD_Y} width={chartW} height={chartH} fill="transparent"/>
                       {hIdx!==null && hIdx<allPts.length && (
                         <>
-                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
+                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
                           <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5"
                             fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"}
-                            stroke="#0A0A12" strokeWidth="2"
+                            stroke="#0a1520" strokeWidth="2"
                             style={{ pointerEvents:"none" }}/>
                         </>
                       )}
                     </> : (
-                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#2a4055" strokeWidth="1.5"/>
                     )}
                   </svg>
                 </div>
@@ -1665,13 +1665,13 @@ export default function HiloGame({
               onClick={() => setHiloStats(hiloStatsDefault)}
               style={{
                 width:"100%", marginTop:"8px", background:"transparent",
-                border:"1px solid #1e1535", borderRadius:"8px", color:"#a78bfa",
+                border:"1px solid #1e3a52", borderRadius:"8px", color:"#7a9db8",
                 fontSize:"12px", cursor:"pointer", padding:"6px 0",
                 display:"flex", alignItems:"center", justifyContent:"center", gap:"6px",
                 transition:"color .15s,border-color .15s,background .15s",
               }}
-              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#A855F7"; b.style.background="#0A0A12"; }}
-              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#a78bfa"; b.style.borderColor="#1e1535"; b.style.background="transparent"; }}
+              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#3a8aff"; b.style.background="#0d1f30"; }}
+              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#7a9db8"; b.style.borderColor="#1e3a52"; b.style.background="transparent"; }}
             >
               <span style={{ fontSize:"13px" }}>↺</span> {T("resetStats")}
             </button>

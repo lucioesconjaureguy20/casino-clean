@@ -568,15 +568,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
   return (
     <div className="game-ctrl-flex limbo-root" style={{
       width: "100%", display: "flex", fontFamily: "'Inter',sans-serif",
-      position: "relative", background: "#0A0A12", userSelect: "none", WebkitUserSelect: "none",
+      position: "relative", background: "#0e1320", userSelect: "none", WebkitUserSelect: "none",
       borderRadius: "0 0 6px 6px", overflow: "hidden",
       height: "714px",
     }}>
 
       {/* ─── LEFT PANEL ─── */}
       <div className="game-ctrl-sidebar" style={{
-        width: "260px", flexShrink: 0, background: "#0D0F1A",
-        borderRight: "1px solid #1a1035",
+        width: "260px", flexShrink: 0, background: "#131a28",
+        borderRight: "1px solid #1a2438",
         display: "flex", flexDirection: "column",
         minHeight: 0, maxHeight: "100%", overflow: "hidden",
       }}>
@@ -589,7 +589,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
         onWheel={e => { if (activeTab === "auto") e.stopPropagation(); }}>
         {/* Tabs Manual / Auto */}
         <div className="limbo-ctrl-tabs" style={{
-          display: "flex", alignItems: "center", background: "#0D0F1A",
+          display: "flex", alignItems: "center", background: "#0e1826",
           borderRadius: "6px", padding: "5px", gap: "4px",
         }}>
           {(["manual", "auto"] as const).map(tab => {
@@ -601,9 +601,9 @@ const LimboGame: React.FC<LimboGameProps> = ({
                 disabled={locked}
                 style={{
                   flex: 1,
-                  background: active ? "#1a1035" : "transparent",
-                  color: active ? "#ead4fc" : "#7c6d9e",
-                  border: active ? "1px solid #2d1f52" : "1px solid transparent",
+                  background: active ? "#1e2c44" : "transparent",
+                  color: active ? "#eef3f8" : "#5a6a88",
+                  border: active ? "1px solid #3a4a60" : "1px solid transparent",
                   borderRadius: "6px",
                   padding: "10px", fontWeight: 500,
                   cursor: locked ? "not-allowed" : "pointer",
@@ -620,16 +620,16 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
         {/* Monto de apuesta */}
         <div className="limbo-ctrl-amount" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ color: "#7c6d9e", fontWeight: 500, marginBottom: "6px", fontSize: "13px", paddingLeft: "4px" }}>{T("betAmount")}</div>
+          <div style={{ color: "#5a6a88", fontWeight: 500, marginBottom: "6px", fontSize: "13px", paddingLeft: "4px" }}>{T("betAmount")}</div>
 
           <div style={{
             display: "flex", alignItems: "center", gap: "8px",
-            background: "#0D0F1A",
-            border: `1px solid ${insuff ? "#c0392b" : "#1e1535"}`,
+            background: "#0e1826",
+            border: `1px solid ${insuff ? "#c0392b" : "#252f45"}`,
             borderRadius: "6px", padding: "8px 14px", marginBottom: "8px", transition: "border .15s",
           }}>
             <span style={{
-              fontSize: "13px", color: "#7c6d9e", fontWeight: 500, whiteSpace: "nowrap",
+              fontSize: "13px", color: "#5a6a88", fontWeight: 500, whiteSpace: "nowrap",
               opacity: currencyFade, transition: "opacity 0.18s ease",
             }}>{displayCurrency}</span>
             <input
@@ -645,7 +645,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
               style={{
                 flex: 1, background: "transparent", border: "none",
-                color: phase !== "idle" ? "#4a3070" : "white",
+                color: phase !== "idle" ? "#4a6070" : "white",
                 fontSize: "17px", fontWeight: 600, padding: "0",
                 minWidth: 0, outline: "none", fontFamily: "inherit",
                 opacity: currencyFade, transition: "opacity 0.18s ease",
@@ -655,8 +655,8 @@ const LimboGame: React.FC<LimboGameProps> = ({
               onClick={() => setBet("0.00")}
               disabled={phase !== "idle"}
               style={{
-                background: "#0D0F1A", border: "1px solid #1e1535", borderRadius: "6px",
-                color: "#818cf8", fontSize: "11px", fontWeight: 500,
+                background: "#0e1826", border: "1px solid #252f45", borderRadius: "6px",
+                color: "#6db3f2", fontSize: "11px", fontWeight: 500,
                 padding: "4px 8px", cursor: phase !== "idle" ? "not-allowed" : "pointer",
                 letterSpacing: "0.04em", whiteSpace: "nowrap", textTransform: "uppercase",
                 marginRight: "-8px",
@@ -673,22 +673,22 @@ const LimboGame: React.FC<LimboGameProps> = ({
           {/* Quick buttons: Min, ½, 2×, Max */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "6px", marginBottom: "8px" }}>
             <button onClick={minBet} disabled={phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: phase !== "idle" ? "not-allowed" : "pointer",
             }}>{T("btnMin")}</button>
             <button onClick={halveBet} disabled={phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: phase !== "idle" ? "not-allowed" : "pointer",
             }}>½</button>
             <button onClick={doubleBet} disabled={phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: phase !== "idle" ? "not-allowed" : "pointer",
             }}>2×</button>
             <button onClick={maxBet} disabled={phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: phase !== "idle" ? "not-allowed" : "pointer",
             }}>{T("btnMax")}</button>
@@ -703,11 +703,11 @@ const LimboGame: React.FC<LimboGameProps> = ({
           style={{
             width: "100%", padding: "14px", borderRadius: "6px", border: "none",
             background: (phase === "idle" && canBet && betUsd > 0)
-              ? "linear-gradient(180deg,#A855F7,#7C3AED)"
+              ? "linear-gradient(180deg,#1a9fff,#0d6fd4)"
               : (phase === "idle" && !currentUser)
-                ? "linear-gradient(180deg,#A855F7,#7C3AED)"
-                : "#1a1035",
-            color: ((phase === "idle" && canBet && betUsd > 0) || (phase === "idle" && !currentUser)) ? "#fff" : "#2d1f52",
+                ? "linear-gradient(180deg,#1a9fff,#0d6fd4)"
+                : "#1a2438",
+            color: ((phase === "idle" && canBet && betUsd > 0) || (phase === "idle" && !currentUser)) ? "#fff" : "#3a4a60",
             fontWeight: 600, fontSize: "15px",
             cursor: (phase === "idle") ? "pointer" : "not-allowed",
             boxShadow: ((phase === "idle" && canBet && betUsd > 0) || (phase === "idle" && !currentUser))
@@ -721,15 +721,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
         {/* Ganancias */}
         <div className="limbo-ctrl-profit" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ color: "#7c6d9e", fontWeight: 500, marginBottom: "6px", fontSize: "12px", paddingLeft: "4px" }}>{T("limboProfit")}</div>
+          <div style={{ color: "#5a6a88", fontWeight: 500, marginBottom: "6px", fontSize: "12px", paddingLeft: "4px" }}>{T("limboProfit")}</div>
 
           <div style={{
             display: "flex", alignItems: "center", gap: "8px",
-            background: "#0D0F1A", border: "1px solid #1e1535",
+            background: "#0e1826", border: "1px solid #252f45",
             borderRadius: "6px", padding: "8px 14px",
           }}>
             <span style={{
-              fontSize: "16px", color: "#7c6d9e", fontWeight: 500, whiteSpace: "nowrap",
+              fontSize: "16px", color: "#5a6a88", fontWeight: 500, whiteSpace: "nowrap",
               opacity: currencyFade, transition: "opacity 0.18s ease",
             }}>{displayCurrency}</span>
             <input
@@ -741,7 +741,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               })()}
               style={{
                 flex: 1, background: "transparent", border: "none",
-                color: betDisplay > 0 ? "#00d95f" : "#4a3070",
+                color: betDisplay > 0 ? "#00d95f" : "#4a6070",
                 fontSize: "17px", fontWeight: 600, padding: "0",
                 minWidth: 0, outline: "none", fontFamily: "inherit",
                 opacity: currencyFade, transition: "opacity 0.18s ease",
@@ -755,16 +755,16 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
         {/* Monto de apuesta (auto) */}
         <div className="limbo-ctrl-amount" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ color: "#7c6d9e", fontWeight: 500, marginBottom: "6px", fontSize: "13px", paddingLeft: "4px" }}>{T("betAmount")}</div>
+          <div style={{ color: "#5a6a88", fontWeight: 500, marginBottom: "6px", fontSize: "13px", paddingLeft: "4px" }}>{T("betAmount")}</div>
 
           <div style={{
             display: "flex", alignItems: "center", gap: "8px",
-            background: "#0D0F1A",
-            border: `1px solid ${insuff ? "#c0392b" : "#1e1535"}`,
+            background: "#0e1826",
+            border: `1px solid ${insuff ? "#c0392b" : "#252f45"}`,
             borderRadius: "6px", padding: "8px 14px", marginBottom: "8px", transition: "border .15s",
           }}>
             <span style={{
-              fontSize: "13px", color: "#7c6d9e", fontWeight: 500, whiteSpace: "nowrap",
+              fontSize: "13px", color: "#5a6a88", fontWeight: 500, whiteSpace: "nowrap",
               opacity: currencyFade, transition: "opacity 0.18s ease",
             }}>{displayCurrency}</span>
             <input
@@ -780,7 +780,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               type="text" inputMode="decimal" placeholder={displayInFiat ? "0,00" : "0.00"}
               style={{
                 flex: 1, background: "transparent", border: "none",
-                color: autoRunning ? "#4a3070" : "white",
+                color: autoRunning ? "#4a6070" : "white",
                 fontSize: "17px", fontWeight: 600, padding: "0",
                 minWidth: 0, outline: "none", fontFamily: "inherit",
                 opacity: currencyFade, transition: "opacity 0.18s ease",
@@ -790,8 +790,8 @@ const LimboGame: React.FC<LimboGameProps> = ({
               onClick={() => setBet("0.00")}
               disabled={autoRunning}
               style={{
-                background: "#0D0F1A", border: "1px solid #1e1535", borderRadius: "6px",
-                color: "#818cf8", fontSize: "11px", fontWeight: 500,
+                background: "#0e1826", border: "1px solid #252f45", borderRadius: "6px",
+                color: "#6db3f2", fontSize: "11px", fontWeight: 500,
                 padding: "4px 8px", cursor: autoRunning ? "not-allowed" : "pointer",
                 letterSpacing: "0.04em", whiteSpace: "nowrap", textTransform: "uppercase",
                 marginRight: "-8px",
@@ -808,25 +808,25 @@ const LimboGame: React.FC<LimboGameProps> = ({
           {/* Quick buttons: Min, ½, 2×, Max */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "6px", marginBottom: "8px" }}>
             <button onClick={minBet} disabled={autoRunning || phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: (autoRunning || phase !== "idle") ? "not-allowed" : "pointer",
               opacity: (autoRunning || phase !== "idle") ? 0.45 : 1,
             }}>{T("btnMin")}</button>
             <button onClick={halveBet} disabled={autoRunning || phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: (autoRunning || phase !== "idle") ? "not-allowed" : "pointer",
               opacity: (autoRunning || phase !== "idle") ? 0.45 : 1,
             }}>½</button>
             <button onClick={doubleBet} disabled={autoRunning || phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: (autoRunning || phase !== "idle") ? "not-allowed" : "pointer",
               opacity: (autoRunning || phase !== "idle") ? 0.45 : 1,
             }}>2×</button>
             <button onClick={maxBet} disabled={autoRunning || phase !== "idle"} style={{
-              background: "#1a1035", color: "#ddd0f8", border: "1px solid #1e1535",
+              background: "#1a2438", color: "#d0dcea", border: "1px solid #252f45",
               borderRadius: "6px", padding: "8px 0", fontWeight: 500, fontSize: "13px",
               cursor: (autoRunning || phase !== "idle") ? "not-allowed" : "pointer",
               opacity: (autoRunning || phase !== "idle") ? 0.45 : 1,
@@ -854,10 +854,10 @@ const LimboGame: React.FC<LimboGameProps> = ({
               width: "100%", padding: "14px", borderRadius: "6px", border: "none",
               background: (betUsd < 0.0099 || insuff
                 || (!autoInfinite && (autoCount === "" || (parseInt(autoCount) || 0) <= 0)))
-                ? "#1a1035" : "linear-gradient(180deg,#A855F7,#7C3AED)",
+                ? "#1a2438" : "linear-gradient(180deg,#1a9fff,#0d6fd4)",
               color: (betUsd < 0.0099 || insuff
                 || (!autoInfinite && (autoCount === "" || (parseInt(autoCount) || 0) <= 0)))
-                ? "#2d1f52" : "#fff",
+                ? "#3a4a60" : "#fff",
               fontWeight: 600, fontSize: "15px",
               cursor: (betUsd < 0.0099 || insuff
                 || (!autoInfinite && (autoCount === "" || (parseInt(autoCount) || 0) <= 0)))
@@ -877,15 +877,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
           onClick={() => setShowAdvanced(v => !v)}
           style={{
             display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "8px 12px", background: "#0D0F1A",
-            borderRadius: "6px", border: "1px solid #1a1035",
+            padding: "8px 12px", background: "#152334",
+            borderRadius: "6px", border: "1px solid #1e3548",
             cursor: "pointer", userSelect: "none",
           }}>
-          <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "13px" }}>{T("limboAdvanced")}</span>
+          <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "13px" }}>{T("limboAdvanced")}</span>
           <div
             style={{
               width: "42px", height: "24px", borderRadius: "6px",
-              background: showAdvanced ? "#7C3AED" : "#2d1f52",
+              background: showAdvanced ? "#1f6fd0" : "#2a3f54",
               position: "relative", transition: "background .2s", flexShrink: 0,
             }}>
             <div style={{
@@ -900,15 +900,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {/* On Win */}
             <div>
-              <div style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboOnWin")}</div>
+              <div style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboOnWin")}</div>
               <div style={{ display: "flex", gap: "6px", marginBottom: "6px" }}>
                 {(["reset", "increase"] as const).map(m => (
                   <button key={m} onClick={() => setAutoOnWin(m)}
                     style={{
                       flex: 1, padding: "7px 0", borderRadius: "6px",
                       fontSize: "12px", fontWeight: 500, cursor: "pointer", border: "none",
-                      background: autoOnWin === m ? "#7C3AED" : "#1a1035",
-                      color: autoOnWin === m ? "#fff" : "#a78bfa",
+                      background: autoOnWin === m ? "#1f6fd0" : "#1a2438",
+                      color: autoOnWin === m ? "#fff" : "#7a9db8",
                       transition: "background .15s",
                     }}>
                     {m === "reset" ? T("limboReset") : T("limboIncrease")}
@@ -918,7 +918,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               {autoOnWin === "increase" && (
                 <div style={{
                   display: "flex", alignItems: "center", gap: "6px",
-                  background: "#0D0F1A", border: "1px solid #1e1535",
+                  background: "#0e1826", border: "1px solid #252f45",
                   borderRadius: "6px", padding: "6px 10px",
                 }}>
                   <input value={autoOnWinPct}
@@ -928,22 +928,22 @@ const LimboGame: React.FC<LimboGameProps> = ({
                       flex: 1, background: "transparent", border: "none", color: "#fff",
                       fontSize: "16px", fontWeight: 500, minWidth: 0, outline: "none",
                     }} />
-                  <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "14px" }}>%</span>
+                  <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "14px" }}>%</span>
                 </div>
               )}
             </div>
 
             {/* On Lose */}
             <div>
-              <div style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboOnLose")}</div>
+              <div style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboOnLose")}</div>
               <div style={{ display: "flex", gap: "6px", marginBottom: "6px" }}>
                 {(["reset", "increase"] as const).map(m => (
                   <button key={m} onClick={() => setAutoOnLose(m)}
                     style={{
                       flex: 1, padding: "7px 0", borderRadius: "6px",
                       fontSize: "12px", fontWeight: 500, cursor: "pointer", border: "none",
-                      background: autoOnLose === m ? "#7C3AED" : "#1a1035",
-                      color: autoOnLose === m ? "#fff" : "#a78bfa",
+                      background: autoOnLose === m ? "#1f6fd0" : "#1a2438",
+                      color: autoOnLose === m ? "#fff" : "#7a9db8",
                       transition: "background .15s",
                     }}>
                     {m === "reset" ? T("limboReset") : T("limboIncrease")}
@@ -953,7 +953,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               {autoOnLose === "increase" && (
                 <div style={{
                   display: "flex", alignItems: "center", gap: "6px",
-                  background: "#0D0F1A", border: "1px solid #1e1535",
+                  background: "#0e1826", border: "1px solid #252f45",
                   borderRadius: "6px", padding: "6px 10px",
                 }}>
                   <input value={autoOnLosePct}
@@ -963,20 +963,20 @@ const LimboGame: React.FC<LimboGameProps> = ({
                       flex: 1, background: "transparent", border: "none", color: "#fff",
                       fontSize: "16px", fontWeight: 500, minWidth: 0, outline: "none",
                     }} />
-                  <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "14px" }}>%</span>
+                  <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "14px" }}>%</span>
                 </div>
               )}
             </div>
 
             {/* Stop on Profit */}
             <div>
-              <div style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboStopWin")}</div>
+              <div style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboStopWin")}</div>
               <div style={{
                 display: "flex", alignItems: "center", gap: "6px",
-                background: "#0D0F1A", border: "1px solid #1e1535",
+                background: "#0e1826", border: "1px solid #252f45",
                 borderRadius: "6px", padding: "6px 10px",
               }}>
-                <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "13px", whiteSpace: "nowrap" }}>{displayCurrency}</span>
+                <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "13px", whiteSpace: "nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopProfit}
                   onChange={e => setAutoStopProfit(e.target.value.replace(/[^\d.]/g, ""))}
                   type="text" inputMode="decimal" placeholder="0.00"
@@ -989,13 +989,13 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
             {/* Stop on Loss */}
             <div>
-              <div style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboStopLose")}</div>
+              <div style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px", marginBottom: "5px" }}>{T("limboStopLose")}</div>
               <div style={{
                 display: "flex", alignItems: "center", gap: "6px",
-                background: "#0D0F1A", border: "1px solid #1e1535",
+                background: "#0e1826", border: "1px solid #252f45",
                 borderRadius: "6px", padding: "6px 10px",
               }}>
-                <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "13px", whiteSpace: "nowrap" }}>{displayCurrency}</span>
+                <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "13px", whiteSpace: "nowrap" }}>{displayCurrency}</span>
                 <input value={autoStopLoss}
                   onChange={e => setAutoStopLoss(e.target.value.replace(/[^\d.]/g, ""))}
                   type="text" inputMode="decimal" placeholder="0.00"
@@ -1011,15 +1011,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
         {/* Number of bets + ∞ */}
         <div className="limbo-ctrl-numbets" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px" }}>{T("limboNumBets")}</span>
+          <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px" }}>{T("limboNumBets")}</span>
           {(() => {
             const countInvalid = !autoInfinite && (autoCount === "" || (parseInt(autoCount) || 0) <= 0);
             return (
               <>
                 <div style={{
                   display: "flex", alignItems: "center", gap: "6px",
-                  background: "#0D0F1A",
-                  border: `1px solid ${countInvalid ? "#c0392b" : "#1e1535"}`,
+                  background: "#0e1826",
+                  border: `1px solid ${countInvalid ? "#c0392b" : "#252f45"}`,
                   borderRadius: "6px", padding: "6px 10px",
                 }}>
                   <input
@@ -1041,8 +1041,8 @@ const LimboGame: React.FC<LimboGameProps> = ({
                     disabled={autoRunning}
                     style={{
                       padding: "4px 10px", borderRadius: "6px",
-                      background: autoInfinite ? "#7C3AED" : "#1e1535",
-                      color: "#ddd0f8", border: "none", fontWeight: 500,
+                      background: autoInfinite ? "#1f6fd0" : "#2a4155",
+                      color: "#d0dcea", border: "none", fontWeight: 500,
                       cursor: autoRunning ? "not-allowed" : "pointer",
                       fontSize: "16px", opacity: autoRunning ? 0.5 : 1,
                     }}
@@ -1060,14 +1060,14 @@ const LimboGame: React.FC<LimboGameProps> = ({
 
         {/* Ganancias (auto) */}
         <div className="limbo-ctrl-profit" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ color: "#7c6d9e", fontWeight: 500, marginBottom: "6px", fontSize: "12px", paddingLeft: "4px" }}>{T("limboProfit")}</div>
+          <div style={{ color: "#5a6a88", fontWeight: 500, marginBottom: "6px", fontSize: "12px", paddingLeft: "4px" }}>{T("limboProfit")}</div>
           <div style={{
             display: "flex", alignItems: "center", gap: "8px",
-            background: "#0D0F1A", border: "1px solid #1e1535",
+            background: "#0e1826", border: "1px solid #252f45",
             borderRadius: "6px", padding: "8px 14px",
           }}>
             <span style={{
-              fontSize: "16px", color: "#7c6d9e", fontWeight: 500, whiteSpace: "nowrap",
+              fontSize: "16px", color: "#5a6a88", fontWeight: 500, whiteSpace: "nowrap",
               opacity: currencyFade, transition: "opacity 0.18s ease",
             }}>{displayCurrency}</span>
             <input
@@ -1079,7 +1079,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
               })()}
               style={{
                 flex: 1, background: "transparent", border: "none",
-                color: betDisplay > 0 ? "#00d95f" : "#4a3070",
+                color: betDisplay > 0 ? "#00d95f" : "#4a6070",
                 fontSize: "17px", fontWeight: 600, padding: "0",
                 minWidth: 0, outline: "none", fontFamily: "inherit",
                 opacity: currencyFade, transition: "opacity 0.18s ease",
@@ -1092,15 +1092,15 @@ const LimboGame: React.FC<LimboGameProps> = ({
         </div>{/* end scrollable content */}
 
         {/* Stats + volume buttons (footer) — always visible, not scrollable */}
-        <div className="limbo-icon-footer" style={{ flexShrink:0, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:"8px", padding:"12px 16px", borderTop:(activeTab === "auto" && showAdvanced) ? "1px solid #1a1035" : "none" }}>
+        <div className="limbo-icon-footer" style={{ flexShrink:0, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:"8px", padding:"12px 16px", borderTop:(activeTab === "auto" && showAdvanced) ? "1px solid #1a2438" : "none" }}>
           <button
             onClick={() => setShowStats(v => !v)}
             title={T("statsTitle")}
             style={{
               width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-              background: showStats ? "#7C3AED" : "#0D0F1A",
-              border: showStats ? "1px solid #A855F7" : "1px solid #1a1035",
-              color: showStats ? "#fff" : "#a78bfa",
+              background: showStats ? "#1f6fd0" : "#0e1826",
+              border: showStats ? "1px solid #3a8aff" : "1px solid #203a50",
+              color: showStats ? "#fff" : "#7a9db8",
               cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
               transition:"background .15s,border-color .15s,color .15s",
             }}
@@ -1114,7 +1114,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
             title={T("volumeTitle")}
             style={{
               width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-              background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa",
+              background:"#0e1826", border:"1px solid #203a50", color:"#7a9db8",
               cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
               transition:"background .15s,border-color .15s,color .15s",
             }}
@@ -1133,12 +1133,12 @@ const LimboGame: React.FC<LimboGameProps> = ({
             title={turbo ? "Turbo: ON" : "Turbo: OFF"}
             style={{
               width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-              background: turbo ? "linear-gradient(135deg,#A855F7,#7C3AED)" : "#0D0F1A",
-              border: turbo ? "1px solid #A855F7" : "1px solid #1a1035",
-              color: turbo ? "#fff" : "#a78bfa",
+              background: turbo ? "linear-gradient(135deg,#f4a91f,#c4780a)" : "#0e1826",
+              border: turbo ? "1px solid #f4a91f" : "1px solid #203a50",
+              color: turbo ? "#fff" : "#7a9db8",
               cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
               transition:"background .2s,border .2s,color .2s,box-shadow .2s",
-              boxShadow: turbo ? "0 0 14px rgba(168,85,247,.45)" : "none",
+              boxShadow: turbo ? "0 0 14px rgba(244,169,31,.45)" : "none",
             }}
           >
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -1151,7 +1151,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
       {/* ─── RIGHT / MAIN AREA ─── */}
       <div className="limbo-game-area" style={{
         flex: 1, display: "flex", flexDirection: "column",
-        background: "#0A0A12", padding: "20px",
+        background: "#0e1320", padding: "20px",
         minHeight: "560px", position: "relative",
         boxSizing: "border-box", minWidth: 0,
       }}>
@@ -1174,7 +1174,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
                   fontWeight: 800, fontFamily: "'Inter',sans-serif",
                   background: h.win ? "#1eff00" : "#ef4444",
                   fontSize: "11.7px",
-                  color: h.win ? "#0A0A12" : "white",
+                  color: h.win ? "#06280a" : "white",
                   whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                 }}>
                   {h.mult.toFixed(2)}
@@ -1211,10 +1211,10 @@ const LimboGame: React.FC<LimboGameProps> = ({
         }}>
           {/* Multiplicador */}
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px" }}>{T("limboMultiplier")}</span>
+            <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px" }}>{T("limboMultiplier")}</span>
             <div style={{
               display: "flex", alignItems: "center",
-              background: "#0D0F1A", border: "1px solid #1e1535",
+              background: "#0e1826", border: "1px solid #252f45",
               borderRadius: "6px", padding: "10px 14px",
             }}>
               <input
@@ -1225,21 +1225,21 @@ const LimboGame: React.FC<LimboGameProps> = ({
                 type="text" inputMode="decimal"
                 style={{
                   flex: 1, background: "transparent", border: "none",
-                  color: phase !== "idle" ? "#4a3070" : "white",
+                  color: phase !== "idle" ? "#4a6070" : "white",
                   fontSize: "17px", fontWeight: 600, padding: "0",
                   minWidth: 0, outline: "none", fontFamily: "inherit",
                 }}
               />
-              <span style={{ color: "#818cf8", fontSize: "13px", fontWeight: 600 }}>×</span>
+              <span style={{ color: "#6db3f2", fontSize: "13px", fontWeight: 600 }}>×</span>
             </div>
           </div>
 
           {/* Chance */}
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <span style={{ color: "#7c6d9e", fontWeight: 500, fontSize: "12px" }}>{T("limboChance")}</span>
+            <span style={{ color: "#5a6a88", fontWeight: 500, fontSize: "12px" }}>{T("limboChance")}</span>
             <div style={{
               display: "flex", alignItems: "center",
-              background: "#0D0F1A", border: "1px solid #1e1535",
+              background: "#0e1826", border: "1px solid #252f45",
               borderRadius: "6px", padding: "10px 14px",
             }}>
               <input
@@ -1251,7 +1251,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
                   minWidth: 0, outline: "none", fontFamily: "inherit",
                 }}
               />
-              <span style={{ color: "#7c6d9e", fontSize: "13px", fontWeight: 600 }}>%</span>
+              <span style={{ color: "#5a6a88", fontSize: "13px", fontWeight: 600 }}>%</span>
             </div>
           </div>
         </div>
@@ -1266,7 +1266,7 @@ const LimboGame: React.FC<LimboGameProps> = ({
         <div style={{
           position:"fixed", left: statsPos.x, top: statsPos.y,
           zIndex:9999, width:"260px",
-          background:"#0A0A12", border:"1px solid #1e1535",
+          background:"#0f1f2e", border:"1px solid #1e3a52",
           borderRadius:"6px", boxShadow:"0 8px 32px rgba(0,0,0,.7)",
           overflow:"hidden", userSelect:"none",
         }}>
@@ -1274,33 +1274,33 @@ const LimboGame: React.FC<LimboGameProps> = ({
             onMouseDown={handleStatsDragStart}
             style={{
               display:"flex", alignItems:"center", justifyContent:"space-between",
-              padding:"10px 14px", background:"#0D0F1A",
-              borderBottom: statsCollapsed ? "none" : "1px solid #1e1535", cursor:"grab", touchAction:"none",
+              padding:"10px 14px", background:"#112232",
+              borderBottom: statsCollapsed ? "none" : "1px solid #1e3a52", cursor:"grab", touchAction:"none",
             }}
           >
             <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-              <span style={{ display:"flex",alignItems:"center",color:"#a78bfa" }}>
+              <span style={{ display:"flex",alignItems:"center",color:"#7a9db8" }}>
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
               </span>
-              <strong style={{ fontSize:"13px", color:"#ead4fc" }}>{T("statsTitle")}</strong>
+              <strong style={{ fontSize:"13px", color:"#d8e8f5" }}>{T("statsTitle")}</strong>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:"4px" }}>
-              <button onClick={() => setStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#a78bfa",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
+              <button onClick={() => setStatsCollapsed(v=>!v)} style={{ background:"none",border:"none",color:"#7a9db8",cursor:"pointer",lineHeight:1,padding:"2px 4px",display:"flex",alignItems:"center" }}>
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">{statsCollapsed ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}</svg>
               </button>
-              <button onClick={() => setShowStats(false)} style={{ background:"none", border:"none", color:"#a78bfa", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
+              <button onClick={() => setShowStats(false)} style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
             </div>
           </div>
           <div style={{ padding:"12px", display: statsCollapsed ? "none" : "block" }}>
-            <div style={{ background:"#0A0A12", borderRadius:"6px", padding:"12px", display:"flex", flexDirection:"column", gap:"8px" }}>
+            <div style={{ background:"#0d1a28", borderRadius:"6px", padding:"12px", display:"flex", flexDirection:"column", gap:"8px" }}>
               {([
                 { label:T("bjNetProfit"), value: fmtMoney(convertUsd(limboStats.profit)), color: limboStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
                 { label:T("bjWins"),      value: String(limboStats.wins),                   color:"#16ff5c" },
-                { label:T("bjWagered"),   value: fmtMoney(convertUsd(limboStats.wagered)), color:"#ead4fc" },
+                { label:T("bjWagered"),   value: fmtMoney(convertUsd(limboStats.wagered)), color:"#d8e8f5" },
                 { label:T("bjLosses"),    value: String(limboStats.losses),                 color:"#ff5959" },
               ] as { label:string; value:string; color:string }[]).map(s => (
                 <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                  <span style={{ color:"#a78bfa", fontSize:"11.5px" }}>{s.label}</span>
+                  <span style={{ color:"#7a9db8", fontSize:"11.5px" }}>{s.label}</span>
                   <span style={{ color:s.color, fontWeight:500, fontSize:"13px" }}>{s.value}</span>
                 </div>
               ))}
@@ -1334,27 +1334,27 @@ const LimboGame: React.FC<LimboGameProps> = ({
               const tipLeft = Math.min(Math.max(tipXpct, 12), 78);
               const tipTop  = Math.max(tipYpct - 14, 2);
               if (n < 2) return (
-                <div style={{ marginTop:"10px", position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1e1535" }}>
-                  <span style={{ color:"#2d1f52", fontSize:"12px" }}>{T("noHistory")}</span>
+                <div style={{ marginTop:"10px", position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1a3347" }}>
+                  <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{T("noHistory")}</span>
                 </div>
               );
               const linePath = xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
               const fillAbove = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
               const fillBelow = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
               return (
-                <div style={{ marginTop:"10px", position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1e1535" }}>
+                <div style={{ marginTop:"10px", position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1a3347" }}>
                   {hpt && (
                     <div style={{
                       position:"absolute", left:`${tipLeft}%`, top:`${tipTop}%`,
                       transform:"translateX(-50%) translateY(-100%)",
-                      background:"#1a1035", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
+                      background:"#1a2a3a", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
                       borderRadius:"8px", padding:"4px 10px", fontSize:"12px", fontWeight:500,
                       color: hpt.profit>=0?"#19ff35":"#ff3350", whiteSpace:"nowrap",
                       pointerEvents:"none", zIndex:20,
                       boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}`,
                     }}>
                       {hpt.profit>=0?"+":""}{fmtMoney(convertUsd(hpt.profit))}
-                      <span style={{ color:"#a78bfa", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
+                      <span style={{ color:"#7a9db8", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
                         acum: {hpt.cum>=0?"+":""}{fmtMoney(convertUsd(hpt.cum))}
                       </span>
                     </div>
@@ -1383,21 +1383,21 @@ const LimboGame: React.FC<LimboGameProps> = ({
                     {n>1 ? <>
                       <path d={fillBelow} fill="rgba(200,30,30,.35)" clipPath="url(#limboClipBelow)"/>
                       <path d={fillAbove} fill="rgba(25,255,80,.18)" clipPath="url(#limboClipAbove)"/>
-                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
                       <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#limboClipAbove)"/>
                       <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#limboClipBelow)"/>
                       <rect x={PAD_X} y={PAD_Y} width={chartW} height={chartH} fill="transparent"/>
                       {hIdx!==null && hIdx<allPts.length && (
                         <>
-                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
+                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
                           <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5"
                             fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"}
-                            stroke="#0A0A12" strokeWidth="2"
+                            stroke="#0a1520" strokeWidth="2"
                             style={{ pointerEvents:"none" }}/>
                         </>
                       )}
                     </> : (
-                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#1e1535" strokeWidth="1.5"/>
+                      <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#2a4055" strokeWidth="1.5"/>
                     )}
                   </svg>
                 </div>
@@ -1408,13 +1408,13 @@ const LimboGame: React.FC<LimboGameProps> = ({
               onClick={() => setLimboStats(limboStatsDefault)}
               style={{
                 width:"100%", marginTop:"8px", background:"transparent",
-                border:"1px solid #1e1535", borderRadius:"8px", color:"#a78bfa",
+                border:"1px solid #1e3a52", borderRadius:"8px", color:"#7a9db8",
                 fontSize:"12px", cursor:"pointer", padding:"6px 0",
                 display:"flex", alignItems:"center", justifyContent:"center", gap:"6px",
                 transition:"color .15s,border-color .15s,background .15s",
               }}
-              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#A855F7"; b.style.background="#0A0A12"; }}
-              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#a78bfa"; b.style.borderColor="#1e1535"; b.style.background="transparent"; }}
+              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#3a8aff"; b.style.background="#0d1f30"; }}
+              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#7a9db8"; b.style.borderColor="#1e3a52"; b.style.background="transparent"; }}
             >
               <span style={{ fontSize:"13px" }}>↺</span> {T("resetStats")}
             </button>

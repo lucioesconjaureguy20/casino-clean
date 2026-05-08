@@ -229,7 +229,7 @@ function BacCard({ card, delay = 0, glow = false, small = false }: {
         <div style={{
           position:"absolute", inset:0, backfaceVisibility:"hidden",
           borderRadius:"10px", background:"#ffffff",
-          border: glow ? "2.5px solid #00e064" : "2px solid #ddd0f8",
+          border: glow ? "2.5px solid #00e064" : "2px solid #d0d8ea",
           boxShadow: glow
             ? "0 0 20px 4px rgba(0,224,100,0.5), 0 12px 40px rgba(0,0,0,.45)"
             : "0 12px 40px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.25)",
@@ -263,14 +263,14 @@ function BacCard({ card, delay = 0, glow = false, small = false }: {
           position:"absolute", inset:0, backfaceVisibility:"hidden",
           transform:"rotateY(180deg)",
           borderRadius:"10px",
-          background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-          border:"2px solid #7C3AED",
+          background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+          border:"2px solid #2a5aaa",
           boxShadow:"0 8px 22px rgba(0,0,60,.55)",
           display:"flex", alignItems:"center", justifyContent:"center",
         }}>
           <div style={{
             position:"absolute", inset:"5px", borderRadius:"6px",
-            background:"repeating-linear-gradient(45deg,#5b21b6 0px,#5b21b6 4px,#1e1535 4px,#1e1535 8px)",
+            background:"repeating-linear-gradient(45deg,#1a4080 0px,#1a4080 4px,#0e2855 4px,#0e2855 8px)",
             opacity:0.5,
           }} />
           <img loading="lazy" decoding="async" src="/mander-logo.webp" alt="" style={{ width: small ? "28px" : "40px", opacity:0.5, position:"relative", zIndex:1 }} />
@@ -283,12 +283,12 @@ function BacCard({ card, delay = 0, glow = false, small = false }: {
 // ── Casino chip SVG (identical to Roulette) ────────────────────────────────────
 const CHIP_VALUES = [0.01, 0.10, 1, 5, 10, 100, 500, 1_000];
 const CHIP_META: Record<string, { label: string; bg: string; border: string; txt: string }> = {
-  "0.01":  { label:"0.01", bg:"#ddd0f8", border:"#9ca3af", txt:"#0D0F1A" },
-  "0.1":   { label:"0.1",  bg:"#A855F7", border:"#A855F7", txt:"#0D0F1A" },
+  "0.01":  { label:"0.01", bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
+  "0.1":   { label:"0.1",  bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
   "1":     { label:"1",    bg:"#15803d", border:"#22c55e", txt:"#fff"    },
-  "5":     { label:"5",    bg:"#22D3EE", border:"#22D3EE", txt:"#fff"    },
-  "10":    { label:"10",   bg:"#0D0F1A", border:"#A855F7", txt:"#A855F7" },
-  "100":   { label:"100",  bg:"#7C3AED", border:"#a78bfa", txt:"#fff"    },
+  "5":     { label:"5",    bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
+  "10":    { label:"10",   bg:"#111827", border:"#f4a91f", txt:"#f4a91f" },
+  "100":   { label:"100",  bg:"#6d28d9", border:"#a78bfa", txt:"#fff"    },
   "500":   { label:"500",  bg:"#0f766e", border:"#2dd4bf", txt:"#fff"    },
   "1000":  { label:"1K",   bg:"#b91c1c", border:"#f87171", txt:"#fff"    },
 };
@@ -358,15 +358,15 @@ function DeckPile({ lang = "es" }: { lang?: string }) {
           left: -offset * 0.8,
           width:`${cardW}px`, height:`${cardH}px`,
           borderRadius:"6px",
-          background:"linear-gradient(135deg,#2d1f52 0%,#1e1535 50%,#0A0A12 100%)",
-          border:"1.5px solid #7C3AED",
+          background:"linear-gradient(135deg,#1e3d72 0%,#0d2248 50%,#0a1a38 100%)",
+          border:"1.5px solid #2a5aaa",
           boxShadow:`0 ${offset+1}px ${(offset+1)*3}px rgba(0,0,60,.55)`,
         }}>
           {offset === 0 && (
             <>
               <div style={{
                 position:"absolute", inset:"4px", borderRadius:"4px",
-                background:"repeating-linear-gradient(45deg,#5b21b6 0,#5b21b6 3px,#1e1535 3px,#1e1535 6px)",
+                background:"repeating-linear-gradient(45deg,#1a4080 0,#1a4080 3px,#0e2855 3px,#0e2855 6px)",
                 opacity:0.55,
               }} />
               <img loading="lazy" decoding="async" src="/mander-logo.webp" alt="Mander"
@@ -788,9 +788,9 @@ export default function BaccaratGame({
   const arrowBtn = (enabled: boolean, onClick: () => void, label: string) => (
     <button onClick={onClick} disabled={!enabled}
       onMouseEnter={e => { if (enabled) { e.currentTarget.style.color="#ffffff"; e.currentTarget.style.textShadow="0 0 10px rgba(255,255,255,0.8)"; }}}
-      onMouseLeave={e => { e.currentTarget.style.color=enabled?"#ddd0f8":"#2d1f52"; e.currentTarget.style.textShadow="none"; }}
+      onMouseLeave={e => { e.currentTarget.style.color=enabled?"#c0d0e0":"#2a3a50"; e.currentTarget.style.textShadow="none"; }}
       style={{ flexShrink:0, width:"26px", background:"none", border:"none", padding:0,
-        color: enabled?"#ddd0f8":"#2d1f52", fontSize:"20px", fontWeight:800, fontFamily:"inherit",
+        color: enabled?"#c0d0e0":"#2a3a50", fontSize:"20px", fontWeight:800, fontFamily:"inherit",
         cursor: enabled?"pointer":"default", lineHeight:1,
         display:"flex", alignItems:"center", justifyContent:"center",
         transition:"color .15s, text-shadow .15s" }}>
@@ -799,19 +799,19 @@ export default function BaccaratGame({
   );
 
   return (
-    <div className="game-ctrl-grid baccarat-root" style={{ display:"grid", gridTemplateColumns:"300px 1fr", background:"#0A0A12", height:"100%", flex:1, fontFamily:"'Inter',sans-serif", userSelect:"none", WebkitUserSelect:"none" }}>
+    <div className="game-ctrl-grid baccarat-root" style={{ display:"grid", gridTemplateColumns:"300px 1fr", background:"#0e1320", height:"100%", flex:1, fontFamily:"'Inter',sans-serif", userSelect:"none", WebkitUserSelect:"none" }}>
 
       {/* ─── LEFT PANEL ──────────────────────────────────────────────────── */}
-      <div className="game-ctrl-panel" style={{ background:"#0D0F1A", borderRight:"1px solid #1a1035", display:"flex", flexDirection:"column", overflowY:"auto" }}>
+      <div className="game-ctrl-panel" style={{ background:"#131a28", borderRight:"1px solid #1a2438", display:"flex", flexDirection:"column", overflowY:"auto" }}>
 
         <div style={{ padding:"16px 14px", flex:1, display:"flex", flexDirection:"column", gap:"14px" }}>
 
           {/* 6. Mode tabs — Manual / Auto */}
-          <div className="bac-mode-tabs" style={{ display:"flex", alignItems:"center", background:"#0D0F1A", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+          <div className="bac-mode-tabs" style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
             {(["manual","auto"] as const).map(m => (
               <button key={m} onClick={() => { if (!autoRunning && !isDealing) setTab(m); }} disabled={autoRunning || isDealing}
-                style={{ flex:1, background:tab===m?"#1a1035":"transparent", color:tab===m?"#ead4fc":"#7c6d9e",
-                  border:tab===m?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px",
+                style={{ flex:1, background:tab===m?"#1e2c44":"transparent", color:tab===m?"#eef3f8":"#5a6a88",
+                  border:tab===m?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px",
                   fontWeight:500, cursor:(autoRunning||isDealing)?"not-allowed":"pointer", fontSize:"14px",
                   opacity:(autoRunning||isDealing)&&tab!==m?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
                 {m==="manual"?gt(lang,"tabManual"):gt(lang,"tabAuto")}
@@ -821,9 +821,9 @@ export default function BaccaratGame({
 
           {/* 2. Chip selector — Roulette-identical */}
           <div>
-            <div style={{ fontSize:"10px", color:"#6b5f8c", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "chips")}</div>
+            <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "chips")}</div>
             <div style={{ display:"flex", alignItems:"center", gap:"4px",
-              background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 4px", overflow:"visible" }}>
+              background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 4px", overflow:"visible" }}>
               {arrowBtn(canLeft && !isDealing, () => setChipOffset(o => o - 1), "‹")}
               <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"visible" }}>
                 {visChips.map(v => {
@@ -850,9 +850,9 @@ export default function BaccaratGame({
           </div>
 
           {/* Total bet — Roulette-identical box */}
-          <div style={{ background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"10px 12px" }}>
-            <div style={{ fontSize:"10px", color:"#4a3070", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "totalBet")}</div>
-            <div style={{ fontSize:"16px", fontWeight:800, color: hasBets?"#ead4fc":"#4a3070", opacity:currencyFade }}>
+          <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"10px 12px" }}>
+            <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(lang, "totalBet")}</div>
+            <div style={{ fontSize:"16px", fontWeight:800, color: hasBets?"#e0e8f4":"#4a6080", opacity:currencyFade }}>
               {fmtMoney(totalBet)}
             </div>
           </div>
@@ -880,7 +880,7 @@ export default function BaccaratGame({
                     });
                   }}
                     disabled={!canHD}
-                    style={{ flex:1, padding:"9px 0", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"8px", color: canHD ? "#a090c8" : "#2d1f52", fontSize:"13px", fontWeight:700, cursor: canHD ? "pointer" : "not-allowed", opacity: (!canHD) ? 0.45 : 1, transition:"opacity .15s", fontFamily:"inherit" }}>
+                    style={{ flex:1, padding:"9px 0", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", color: canHD ? "#9ab0d0" : "#3a4a60", fontSize:"13px", fontWeight:700, cursor: canHD ? "pointer" : "not-allowed", opacity: (!canHD) ? 0.45 : 1, transition:"opacity .15s", fontFamily:"inherit" }}>
                     {label}
                   </button>
                 ))}
@@ -891,8 +891,8 @@ export default function BaccaratGame({
           {/* 5. Num rounds — only in auto tab, above the tabs */}
           {tab === "auto" && (
             <div>
-              <div style={{ fontSize:"10px", color:"#6b5f8c", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(lang, "numRounds")}</div>
-              <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 10px" }}>
+              <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(lang, "numRounds")}</div>
+              <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
                 <input
                   value={autoRunning ? (autoInfinite ? `${999999-autoRemaining}/∞` : `${(parseInt(autoCount)||10)-autoRemaining}/${autoCount}`) : (autoInfinite ? "∞" : autoCount)}
                   onChange={e => { setAutoInfinite(false); setAutoCount(e.target.value); }}
@@ -905,7 +905,7 @@ export default function BaccaratGame({
                   style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
                 />
                 <button onClick={() => setAutoInfinite(v => !v)} disabled={autoRunning}
-                  style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#7C3AED":"#1e1535", color:"#ddd0f8", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
+                  style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
                   ∞
                 </button>
               </div>
@@ -923,8 +923,8 @@ export default function BaccaratGame({
               )}
               <button onClick={handleDeal} disabled={!canDealBtn}
                 style={{ width:"100%", padding:"14px", borderRadius:"6px", border:"none", fontFamily:"inherit",
-                  background: canDeal ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-                  color: canDeal ? "#fff" : "#2d1f52",
+                  background: canDeal ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                  color: canDeal ? "#fff" : "#3a4a60",
                   fontWeight:800, fontSize:"14px", letterSpacing:"0.5px",
                   cursor: canDealBtn ? "pointer" : "not-allowed",
                   boxShadow: canDeal ? "0 4px 22px rgba(26,159,255,.35)" : "none",
@@ -947,15 +947,15 @@ export default function BaccaratGame({
                 const btnDisabled = isDealing || autoStopping || (!autoRunning && (!hasBets || insufAuto));
                 const canStart = !autoRunning && hasBets && !insufAuto;
                 const btnBg = (btnDisabled && !autoStopping)
-                  ? "#1a1035"
+                  ? "#1a2438"
                   : autoStopping
-                    ? "linear-gradient(135deg,#A855F7,#A855F7)"
+                    ? "linear-gradient(135deg,#b07d20,#8a6010)"
                     : autoRunning
                       ? "linear-gradient(135deg,#c0392b,#a93226)"
                       : canStart
-                        ? "linear-gradient(180deg,#A855F7,#7C3AED)"
-                        : "#1a1035";
-                const btnColor = (btnDisabled && !autoStopping) ? "#2d1f52" : "#fff";
+                        ? "linear-gradient(180deg,#1a9fff,#0d6fd4)"
+                        : "#1a2438";
+                const btnColor = (btnDisabled && !autoStopping) ? "#3a4a60" : "#fff";
                 return (<>
                   {insufAuto && (
                     <div style={{ fontSize:"11.5px", color:"#e74c3c", fontWeight:600, paddingLeft:"2px" }}>
@@ -980,42 +980,42 @@ export default function BaccaratGame({
           {/* Stats floating panel (identical to Roulette) */}
           {statsOpen && createPortal(
             <div style={{ position:"fixed", left:statsPos.x, top:statsPos.y, zIndex:9999, width:"280px",
-              background:"#0A0A12", border:"1px solid #1e1535", borderRadius:"6px",
+              background:"#0f1f2e", border:"1px solid #1e3a52", borderRadius:"6px",
               boxShadow:"0 8px 32px rgba(0,0,0,.7)", overflow:"hidden", userSelect:"none" }}>
               <div onMouseDown={handleStatsDragStart}
                 style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                  padding:"12px 14px", background:"#0D0F1A", borderBottom:"1px solid #1e1535", cursor:"grab" }}>
+                  padding:"12px 14px", background:"#112232", borderBottom:"1px solid #1e3a52", cursor:"grab" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-                  <span style={{ color:"#a78bfa" }}>
+                  <span style={{ color:"#7a9db8" }}>
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
                       <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
                     </svg>
                   </span>
-                  <strong style={{ fontSize:"14px", color:"#ead4fc" }}>{gt(lang, "liveStats")}</strong>
+                  <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>{gt(lang, "liveStats")}</strong>
                 </div>
                 <button onClick={() => setStatsOpen(false)}
-                  style={{ background:"none", border:"none", color:"#a78bfa", fontSize:"18px", cursor:"pointer", lineHeight:1 }}>×</button>
+                  style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1 }}>×</button>
               </div>
               <div style={{ padding:"12px" }}>
-                <div style={{ background:"#0A0A12", borderRadius:"6px", padding:"12px", marginBottom:"8px", display:"flex", flexDirection:"column", gap:"8px" }}>
+                <div style={{ background:"#0d1a28", borderRadius:"6px", padding:"12px", marginBottom:"8px", display:"flex", flexDirection:"column", gap:"8px" }}>
                   {([
                     { label:"Ganancia",  value: fmtMoney(baccaratStats.profit),  color: baccaratStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
                     { label:"Victorias", value: String(baccaratStats.wins),       color:"#16ff5c" },
-                    { label:"Empates",   value: String(baccaratStats.ties),       color:"#A855F7" },
-                    { label:"Apostado",  value: fmtMoney(baccaratStats.wagered),  color:"#ead4fc" },
+                    { label:"Empates",   value: String(baccaratStats.ties),       color:"#f4a91f" },
+                    { label:"Apostado",  value: fmtMoney(baccaratStats.wagered),  color:"#d8e8f5" },
                     { label:"Derrotas",  value: String(baccaratStats.losses),     color:"#ff5959" },
                   ] as {label:string;value:string;color:string}[]).map(s => (
                     <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                      <span style={{ color:"#a78bfa", fontSize:"11.5px" }}>{s.label}</span>
+                      <span style={{ color:"#7a9db8", fontSize:"11.5px" }}>{s.label}</span>
                       <span style={{ color:s.color, fontWeight:500, fontSize:"13px" }}>{s.value}</span>
                     </div>
                   ))}
                 </div>
                 <button onClick={() => setBaccaratStats(baccaratStatsDefault)}
-                  style={{ width:"100%", marginBottom:"8px", background:"transparent", border:"1px solid #1e1535", borderRadius:"8px", color:"#a78bfa", fontSize:"12px", cursor:"pointer", padding:"6px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px", fontFamily:"inherit" }}
-                  onMouseEnter={e => { const b=e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#A855F7"; b.style.background="#0A0A12"; }}
-                  onMouseLeave={e => { const b=e.currentTarget as HTMLButtonElement; b.style.color="#a78bfa"; b.style.borderColor="#1e1535"; b.style.background="transparent"; }}>
+                  style={{ width:"100%", marginBottom:"8px", background:"transparent", border:"1px solid #1e3a52", borderRadius:"8px", color:"#7a9db8", fontSize:"12px", cursor:"pointer", padding:"6px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px", fontFamily:"inherit" }}
+                  onMouseEnter={e => { const b=e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#3a8aff"; b.style.background="#0d1f30"; }}
+                  onMouseLeave={e => { const b=e.currentTarget as HTMLButtonElement; b.style.color="#7a9db8"; b.style.borderColor="#1e3a52"; b.style.background="transparent"; }}>
                   <span style={{ fontSize:"14px" }}>↺</span> {gt(lang, "resetStats")}
                 </button>
                 {/* Profit chart */}
@@ -1028,8 +1028,8 @@ export default function BaccaratGame({
                   const allPts = raw ? [{cum:0,win:false,profit:0},...series] : [];
                   const n=allPts.length;
                   if (n<2) return (
-                    <div style={{ height:"160px", display:"flex", alignItems:"center", justifyContent:"center", background:"#0A0A12", borderRadius:"6px", border:"1px solid #1e1535" }}>
-                      <span style={{ color:"#2d1f52", fontSize:"12px" }}>{gt(lang, "noHistoryShort")}</span>
+                    <div style={{ height:"160px", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a1520", borderRadius:"6px", border:"1px solid #1a3347" }}>
+                      <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{gt(lang, "noHistoryShort")}</span>
                     </div>
                   );
                   const cums=allPts.map(p=>p.cum);
@@ -1045,11 +1045,11 @@ export default function BaccaratGame({
                   const linePath=xs.map((x,i)=>`${i===0?"M":"L"}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(" ");
                   const fillPath=linePath+` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
                   return (
-                    <div style={{ position:"relative", background:"#0A0A12", borderRadius:"6px", height:"160px", border:"1px solid #1e1535", overflow:"visible" }}>
+                    <div style={{ position:"relative", background:"#0a1520", borderRadius:"6px", height:"160px", border:"1px solid #1a3347", overflow:"visible" }}>
                       {hpt && (
                         <div style={{ position:"absolute", left:`${Math.min(Math.max((xs[hIdx!]/W)*100,10),80)}%`, top:`${Math.max((ys[hIdx!]/H)*100-14,2)}%`,
                           transform:"translateX(-50%) translateY(-100%)",
-                          background:"#1a1035", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
+                          background:"#1a2a3a", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
                           borderRadius:"8px", padding:"4px 10px", fontSize:"11px", fontWeight:500,
                           color:hpt.profit>=0?"#19ff35":"#ff3350", whiteSpace:"nowrap", pointerEvents:"none", zIndex:20 }}>
                           {hpt.profit>=0?"+":""}{fmtMoney(hpt.profit)}
@@ -1077,12 +1077,12 @@ export default function BaccaratGame({
                         </defs>
                         <path d={fillPath} fill="rgba(200,30,30,.35)" clipPath="url(#bacClipBelow)"/>
                         <path d={fillPath} fill="rgba(25,255,80,.18)" clipPath="url(#bacClipAbove)"/>
-                        <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
+                        <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
                         <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2" strokeLinecap="square" clipPath="url(#bacClipAbove)"/>
                         <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2" strokeLinecap="square" clipPath="url(#bacClipBelow)"/>
                         {hIdx!==null&&hIdx<allPts.length&&<>
-                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
-                          <circle cx={xs[hIdx]} cy={ys[hIdx]} r="4" fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0A0A12" strokeWidth="1.5" style={{pointerEvents:"none"}}/>
+                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
+                          <circle cx={xs[hIdx]} cy={ys[hIdx]} r="4" fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0a1520" strokeWidth="1.5" style={{pointerEvents:"none"}}/>
                         </>}
                       </svg>
                     </div>
@@ -1097,9 +1097,9 @@ export default function BaccaratGame({
             <button onClick={() => { setStatsOpen(v=>!v); }}
               title={gt(lang, "liveStatsTitle")}
               style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", fontFamily:"inherit", padding:0, overflow:"hidden", boxSizing:"border-box",
-                background: statsOpen?"#7C3AED":"#0D0F1A",
-                border: statsOpen?"1px solid #A855F7":"1px solid #1a1035",
-                color: statsOpen?"#fff":"#a78bfa",
+                background: statsOpen?"#1f6fd0":"#0e1826",
+                border: statsOpen?"1px solid #3a8aff":"1px solid #203a50",
+                color: statsOpen?"#fff":"#7a9db8",
                 cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
               onMouseEnter={e=>{e.currentTarget.style.filter="brightness(1.4)";e.currentTarget.style.transform="scale(1.12)";}}
@@ -1113,7 +1113,7 @@ export default function BaccaratGame({
             <button onClick={() => setVol(v => v > 0 ? 0 : 70)}
               title={gt(lang ?? "es", "volume")}
               style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", fontFamily:"inherit", padding:0, overflow:"hidden", boxSizing:"border-box",
-                background:"#0D0F1A", border:"1px solid #1a1035", color:"#a78bfa",
+                background:"#0e1826", border:"1px solid #203a50", color:"#7a9db8",
                 cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
               onMouseEnter={e=>{e.currentTarget.style.filter="brightness(1.4)";e.currentTarget.style.transform="scale(1.12)";}}
@@ -1129,7 +1129,7 @@ export default function BaccaratGame({
       </div>
 
       {/* ─── RIGHT: GAME AREA ─────────────────────────────────────────────── */}
-      <div style={{ display:"flex", flexDirection:"column", background:"#0A0A12", position:"relative", overflow:"hidden" }}>
+      <div style={{ display:"flex", flexDirection:"column", background:"#0e1320", position:"relative", overflow:"hidden" }}>
 
         {/* Deck pile — top right, identical to Blackjack (hidden on mobile to avoid overlapping banker hand) */}
         {!isMobile && <DeckPile lang={lang} />}
@@ -1137,18 +1137,18 @@ export default function BaccaratGame({
         {/* TIE badge */}
         {isMobile ? (
           <div style={{ display:"flex", justifyContent:"center", padding:"8px 0 0" }}>
-            <div style={{ background:"rgba(20,36,70,0.75)", border:"1px solid #2d1f52",
+            <div style={{ background:"rgba(20,36,70,0.75)", border:"1px solid #2a4a80",
               borderRadius:"6px", padding:"4px 16px",
-              fontSize:"11px", color:"#9b8bc4", fontWeight:700, letterSpacing:"1.5px",
+              fontSize:"11px", color:"#6a8ab0", fontWeight:700, letterSpacing:"1.5px",
               textTransform:"uppercase" }}>
               {gt(lang, "bacTiePays")}
             </div>
           </div>
         ) : (
           <div style={{ position:"absolute", top:"16px", left:"50%", transform:"translateX(-50%)",
-            background:"rgba(20,36,70,0.75)", border:"1px solid #2d1f52",
+            background:"rgba(20,36,70,0.75)", border:"1px solid #2a4a80",
             borderRadius:"6px", padding:"4px 16px",
-            fontSize:"11px", color:"#9b8bc4", fontWeight:700, letterSpacing:"1.5px",
+            fontSize:"11px", color:"#6a8ab0", fontWeight:700, letterSpacing:"1.5px",
             textTransform:"uppercase", zIndex:10 }}>
             {gt(lang, "bacTiePays")}
           </div>
@@ -1163,9 +1163,9 @@ export default function BaccaratGame({
           }}>
             {(() => {
               const isTie = result === "tie";
-              const accentColor = isTie ? "#A855F7" : "#22ee66";
+              const accentColor = isTie ? "#f4c430" : "#22ee66";
               const shadowColor = isTie ? "rgba(244,196,48,.45)" : "rgba(34,238,102,.45)";
-              const dividerColor = isTie ? "#1a1035" : "#1e3a28";
+              const dividerColor = isTie ? "#3a2e08" : "#1e3a28";
               return (
                 <div style={{
                   background:"rgba(10,16,26,0.97)",
@@ -1184,7 +1184,7 @@ export default function BaccaratGame({
                         {gt(lang, "bacTie")}
                       </div>
                       <div style={{ height:"1px", background:dividerColor, margin:"11px 0" }}/>
-                      <div style={{ fontSize:"15px", fontWeight:500, color:"#9b8bc4" }}>
+                      <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0" }}>
                         1.00× — {gt(lang, "bacRefund")}
                       </div>
                     </>
@@ -1194,7 +1194,7 @@ export default function BaccaratGame({
                         {(isTie ? 9 : winMult).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
                       </div>
                       <div style={{ height:"1px", background:dividerColor, margin:"11px 0" }}/>
-                      <div style={{ fontSize:"15px", fontWeight:500, color:"#9b8bc4" }}>
+                      <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0" }}>
                         +{fmtMoney(payout)}
                       </div>
                     </>
@@ -1211,11 +1211,11 @@ export default function BaccaratGame({
 
             {/* Player hand */}
             <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"12px" }}>
-              <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2px", color:"#9b8bc4",
+              <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2px", color:"#7a9ac0",
                 textTransform:"uppercase", display:"flex", alignItems:"center", gap:"8px" }}>
-                <span style={{ background:"rgba(30,80,200,0.25)", border:"1px solid #7C3AED",
+                <span style={{ background:"rgba(30,80,200,0.25)", border:"1px solid #2a5ae0",
                   borderRadius:"4px", padding:"2px 0", minWidth:"32px", textAlign:"center", display:"inline-block",
-                  color: result==="player"?"#00e064":"#9b8bc4" }}>
+                  color: result==="player"?"#00e064":"#7a9ac0" }}>
                   {playerCards.length > 0 ? pScore : "–"}
                 </span>
                 {gt(lang, "bacPlayer")}
@@ -1232,7 +1232,7 @@ export default function BaccaratGame({
                       </div>
                     ))}
                     {n===0 && phase==="idle" && (
-                      <div style={{ width:CW, height:CH, borderRadius:"6px", border:"2px dashed #1a1035", opacity:0.35 }}/>
+                      <div style={{ width:CW, height:CH, borderRadius:"6px", border:"2px dashed #1a2e50", opacity:0.35 }}/>
                     )}
                   </div>
                 );
@@ -1242,15 +1242,15 @@ export default function BaccaratGame({
             {/* Divider + result — fixed height so cards don't jump */}
             <div style={{ width: isMobile ? "60px" : "110px", flexShrink:0, position:"relative", height: isMobile ? "130px" : "210px" }}>
               {/* top line */}
-              <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)", width:"1px", height:"68px", background:"linear-gradient(to bottom,transparent,#2d1f52)" }}/>
+              <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)", width:"1px", height:"68px", background:"linear-gradient(to bottom,transparent,#2a4a70)" }}/>
               {/* result badge — absolutely centered */}
               <div style={{ position:"absolute", top:"68px", left:0, right:0, display:"flex", flexDirection:"column", alignItems:"center", gap:"6px", minHeight:"74px", justifyContent:"center" }}>
                 {result && (
                   <div style={{ padding:"5px 12px", borderRadius:"8px", fontSize:"11px", fontWeight:800,
                     letterSpacing:"1px", textTransform:"uppercase", whiteSpace:"nowrap",
-                    background: result==="tie"?"rgba(168,85,247,0.15)":result==="player"?"rgba(0,100,224,0.15)":"rgba(224,30,80,0.15)",
-                    border:`1px solid ${result==="tie"?"#A855F7":result==="player"?"#7C3AED":"#FF3B5C"}`,
-                    color: result==="tie"?"#A855F7":result==="player"?"#818cf8":"#ff4a7a",
+                    background: result==="tie"?"rgba(244,169,31,0.15)":result==="player"?"rgba(0,100,224,0.15)":"rgba(224,30,80,0.15)",
+                    border:`1px solid ${result==="tie"?"#f4a91f":result==="player"?"#1a64e0":"#e01a50"}`,
+                    color: result==="tie"?"#f4a91f":result==="player"?"#4a90ff":"#ff4a7a",
                     animation:"bacResultPop 0.35s cubic-bezier(0.08,0.6,0.2,1) both",
                   }}>
                     {result==="player"?gt(lang,"bacPlayer"):result==="banker"?gt(lang,"bacBanker"):gt(lang,"bacTie")}
@@ -1258,17 +1258,17 @@ export default function BaccaratGame({
                 )}
               </div>
               {/* bottom line */}
-              <div style={{ position:"absolute", bottom:0, left:"50%", transform:"translateX(-50%)", width:"1px", height:"68px", background:"linear-gradient(to top,transparent,#2d1f52)" }}/>
+              <div style={{ position:"absolute", bottom:0, left:"50%", transform:"translateX(-50%)", width:"1px", height:"68px", background:"linear-gradient(to top,transparent,#2a4a70)" }}/>
             </div>
 
             {/* Banker hand */}
             <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"12px" }}>
-              <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2px", color:"#9b8bc4",
+              <div style={{ fontSize:"11px", fontWeight:700, letterSpacing:"2px", color:"#7a9ac0",
                 textTransform:"uppercase", display:"flex", alignItems:"center", gap:"8px" }}>
                 {gt(lang, "bacBanker")}
-                <span style={{ background:"rgba(200,30,80,0.2)", border:"1px solid #FF3B5C",
+                <span style={{ background:"rgba(200,30,80,0.2)", border:"1px solid #e01a50",
                   borderRadius:"4px", padding:"2px 0", minWidth:"32px", textAlign:"center", display:"inline-block",
-                  color: result==="banker"?"#00e064":"#9b8bc4" }}>
+                  color: result==="banker"?"#00e064":"#7a9ac0" }}>
                   {bankerCards.length > 0 ? bScore : "–"}
                 </span>
               </div>
@@ -1284,7 +1284,7 @@ export default function BaccaratGame({
                       </div>
                     ))}
                     {n===0 && phase==="idle" && (
-                      <div style={{ width:CW, height:CH, borderRadius:"6px", border:"2px dashed #1a1035", opacity:0.35 }}/>
+                      <div style={{ width:CW, height:CH, borderRadius:"6px", border:"2px dashed #1a2e50", opacity:0.35 }}/>
                     )}
                   </div>
                 );
@@ -1294,12 +1294,12 @@ export default function BaccaratGame({
         </div>
 
         {/* ── BETTING TABLE ─────────────────────────────────────────────── */}
-        <div style={{ padding:"12px 20px 0", background:"#0A0A12" }}>
+        <div style={{ padding:"12px 20px 0", background:"#0e1320" }}>
           {/* 3 separate zone rectangles */}
           <div style={{ display:"flex", gap:"10px", marginBottom:"10px" }}>
             {([
-              { zone:"player"  as BetZone, label:gt(lang,"bacPlayer"), pay:"1:1",    accent:"#7C3AED", glow:"rgba(37,99,235,0.45)" },
-              { zone:"tie"     as BetZone, label:gt(lang,"bacTie"),    pay:"8:1",    accent:"#A855F7", glow:"rgba(217,119,6,0.45)"  },
+              { zone:"player"  as BetZone, label:gt(lang,"bacPlayer"), pay:"1:1",    accent:"#2563eb", glow:"rgba(37,99,235,0.45)" },
+              { zone:"tie"     as BetZone, label:gt(lang,"bacTie"),    pay:"8:1",    accent:"#d97706", glow:"rgba(217,119,6,0.45)"  },
               { zone:"banker"  as BetZone, label:gt(lang,"bacBanker"), pay:"0.95:1", accent:"#dc2626", glow:"rgba(220,38,38,0.45)"  },
             ]).map(({ zone, label, pay, accent, glow }) => {
               const betHere = zoneBets[zone];
@@ -1311,12 +1311,12 @@ export default function BaccaratGame({
                   style={{
                     flex:1, borderRadius:"6px", padding:"16px 12px", textAlign:"center",
                     cursor: (phase==="idle" || phase==="result") ? "pointer" : "default",
-                    border: isWinner ? `2px solid ${accent}` : `1px solid ${betHere>0?accent+"88":"#1a1035"}`,
+                    border: isWinner ? `2px solid ${accent}` : `1px solid ${betHere>0?accent+"88":"#1e3050"}`,
                     background: isWinner
                       ? `radial-gradient(ellipse at center, ${glow.replace("0.45","0.18")} 0%, rgba(9,20,31,0.96) 70%)`
                       : betHere>0
                       ? `radial-gradient(ellipse at center, ${glow.replace("0.45","0.08")} 0%, rgba(9,20,31,0.92) 70%)`
-                      : "#0A0A12",
+                      : "#0b1421",
                     transition:"all .2s",
                     boxShadow: isWinner ? `0 0 24px ${glow}` : betHere>0 ? `0 0 12px ${glow.replace("0.45","0.25")}` : "none",
                     position:"relative", height: isMobile ? "110px" : "130px", display:"flex", flexDirection:"column",
@@ -1326,14 +1326,14 @@ export default function BaccaratGame({
                   onMouseLeave={e => {
                     if (phase==="idle" || phase==="result") {
                       const b = isWinner;
-                      e.currentTarget.style.border = b ? `2px solid ${accent}` : betHere>0 ? `1px solid ${accent}88` : "1px solid #1a1035";
+                      e.currentTarget.style.border = b ? `2px solid ${accent}` : betHere>0 ? `1px solid ${accent}88` : "1px solid #1e3050";
                       e.currentTarget.style.boxShadow = b ? `0 0 24px ${glow}` : betHere>0 ? `0 0 12px ${glow.replace("0.45","0.25")}` : "none";
                     }
                   }}>
-                  <div style={{ fontSize:"13px", fontWeight:700, color: isWinner ? "#fff" : "#a090c8", letterSpacing:"0.5px" }}>{label}</div>
+                  <div style={{ fontSize:"13px", fontWeight:700, color: isWinner ? "#fff" : "#8aa8d0", letterSpacing:"0.5px" }}>{label}</div>
                   <div style={{ fontSize:"11px", color: accent, fontWeight:600, letterSpacing:"0.5px" }}>{pay}</div>
                   {betHere > 0 && (
-                    <div style={{ fontSize:"11px", fontWeight:700, color:"#e2d4f8", letterSpacing:"0.3px", marginTop:"2px" }}>
+                    <div style={{ fontSize:"11px", fontWeight:700, color:"#c8daf0", letterSpacing:"0.3px", marginTop:"2px" }}>
                       {fmtMoney(betHere)}
                     </div>
                   )}
@@ -1376,22 +1376,22 @@ export default function BaccaratGame({
             {(()=>{ const canEdit = (phase==="idle"||phase==="result") && hasBets; return (<>
             <button onClick={handleUndo} disabled={!canEdit}
               style={{ padding:"7px 16px", background:"transparent",
-                border:`1px solid ${canEdit?"#1a1035":"#0D0F1A"}`,
-                borderRadius:"8px", color:canEdit?"#a090c8":"#2d1f52",
+                border:`1px solid ${canEdit?"#1e3050":"#131d30"}`,
+                borderRadius:"8px", color:canEdit?"#8aa8d0":"#2a3a50",
                 fontSize:"12px", cursor:canEdit?"pointer":"default", fontWeight:600,
                 transition:"all .15s" }}
-              onMouseEnter={e=>{ if(canEdit){e.currentTarget.style.borderColor="#2d1f52";e.currentTarget.style.color="#c4b8e0";}}}
-              onMouseLeave={e=>{ e.currentTarget.style.borderColor=canEdit?"#1a1035":"#0D0F1A"; e.currentTarget.style.color=canEdit?"#a090c8":"#2d1f52";}}>
+              onMouseEnter={e=>{ if(canEdit){e.currentTarget.style.borderColor="#3a5a80";e.currentTarget.style.color="#b0c8e8";}}}
+              onMouseLeave={e=>{ e.currentTarget.style.borderColor=canEdit?"#1e3050":"#131d30"; e.currentTarget.style.color=canEdit?"#8aa8d0":"#2a3a50";}}>
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ display:"inline-block", verticalAlign:"middle", marginRight:"5px", marginTop:"-1px" }}><path d="M3 7h10a5 5 0 0 1 0 10H8"/><polyline points="7 3 3 7 7 11"/></svg>{gt(lang, "bacUndo")}
             </button>
             <button onClick={handleClear} disabled={!canEdit}
               style={{ padding:"7px 16px", background:"transparent",
-                border:`1px solid ${canEdit?"#1a1035":"#0D0F1A"}`,
-                borderRadius:"8px", color:canEdit?"#a090c8":"#2d1f52",
+                border:`1px solid ${canEdit?"#1e3050":"#131d30"}`,
+                borderRadius:"8px", color:canEdit?"#8aa8d0":"#2a3a50",
                 fontSize:"12px", cursor:canEdit?"pointer":"default", fontWeight:600,
                 transition:"all .15s" }}
-              onMouseEnter={e=>{ if(canEdit){e.currentTarget.style.borderColor="#2d1f52";e.currentTarget.style.color="#c4b8e0";}}}
-              onMouseLeave={e=>{ e.currentTarget.style.borderColor=canEdit?"#1a1035":"#0D0F1A"; e.currentTarget.style.color=canEdit?"#a090c8":"#2d1f52";}}>
+              onMouseEnter={e=>{ if(canEdit){e.currentTarget.style.borderColor="#3a5a80";e.currentTarget.style.color="#b0c8e8";}}}
+              onMouseLeave={e=>{ e.currentTarget.style.borderColor=canEdit?"#1e3050":"#131d30"; e.currentTarget.style.color=canEdit?"#8aa8d0":"#2a3a50";}}>
               {gt(lang, "bacClear")} <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ display:"inline-block", verticalAlign:"middle", marginLeft:"5px", marginTop:"-1px" }}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.34"/></svg>
             </button>
             </>); })()}

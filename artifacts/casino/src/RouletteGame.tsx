@@ -93,12 +93,12 @@ interface SpinData {
 // Chip display labels → actual USD amounts:
 const CHIP_VALUES = [0.01, 0.10, 1, 5, 10, 100, 500, 1_000];
 const CHIP_META: Record<string, { label: string; bg: string; border: string; txt: string }> = {
-  "0.01":  { label:"0.01", bg:"#ddd0f8", border:"#9ca3af", txt:"#0D0F1A" },
-  "0.1":   { label:"0.1",  bg:"#A855F7", border:"#A855F7", txt:"#0D0F1A" },
+  "0.01":  { label:"0.01", bg:"#d1d5db", border:"#9ca3af", txt:"#111827" },
+  "0.1":   { label:"0.1",  bg:"#f4a91f", border:"#fbbf24", txt:"#111827" },
   "1":     { label:"1",    bg:"#15803d", border:"#22c55e", txt:"#fff"    },
-  "5":     { label:"5",    bg:"#22D3EE", border:"#22D3EE", txt:"#fff"    },
-  "10":    { label:"10",   bg:"#0D0F1A", border:"#A855F7", txt:"#A855F7" },
-  "100":   { label:"100",  bg:"#7C3AED", border:"#a78bfa", txt:"#fff"    },
+  "5":     { label:"5",    bg:"#0ea5e9", border:"#38bdf8", txt:"#fff"    },
+  "10":    { label:"10",   bg:"#111827", border:"#f4a91f", txt:"#f4a91f" },
+  "100":   { label:"100",  bg:"#6d28d9", border:"#a78bfa", txt:"#fff"    },
   "500":   { label:"500",  bg:"#0f766e", border:"#2dd4bf", txt:"#fff"    },
   "1000":  { label:"1K",   bg:"#b91c1c", border:"#f87171", txt:"#fff"    },
 };
@@ -186,7 +186,7 @@ function buildChipSVGString(bg: string, border: string, txt: string, label: stri
 
 function numColor(n: number) {
   if (n === 0) return "#1a6b30";
-  return RED_NUMS.has(n) ? "#c0392b" : "#0D0F1A";
+  return RED_NUMS.has(n) ? "#c0392b" : "#111827";
 }
 
 // Returns true if number `num` belongs to the given outside-bet group
@@ -356,7 +356,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   // ── OUTER DARK RING (bezel, no gold) ─────────────────────────────────────
   ctx.beginPath();
   ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
-  ctx.fillStyle = "#0A0A12";
+  ctx.fillStyle = "#0d0d10";
   ctx.fill();
 
   // Very subtle outer glow
@@ -370,7 +370,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   ctx.beginPath();
   ctx.arc(cx, cy, ballTrackR + outerR * 0.025, 0, Math.PI * 2);
   ctx.arc(cx, cy, segOutR + outerR * 0.005, 0, Math.PI * 2, true);
-  ctx.fillStyle = "#0A0A12";
+  ctx.fillStyle = "#141416";
   ctx.fill("evenodd");
 
   // Subtle inner edge of groove
@@ -389,7 +389,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
     const num = WHEEL_NUMBERS[i];
     const sa  = -Math.PI / 2 + i * segRad;
     const ea  = sa + segRad;
-    const col = num === 0 ? "#166534" : RED_NUMS.has(num) ? "#991b1b" : "#0A0A12";
+    const col = num === 0 ? "#166534" : RED_NUMS.has(num) ? "#991b1b" : "#0a0a0f";
     const midA = sa + segRad / 2;
 
     // Segment fill (from center up to segOutR)
@@ -425,7 +425,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   // ── INNER SEPARATOR RING (clean line, no gold) ───────────────────────────
   ctx.beginPath();
   ctx.arc(0, 0, segInR, 0, Math.PI * 2);
-  ctx.fillStyle = "#0A0A12";
+  ctx.fillStyle = "#0e1018";
   ctx.fill();
   ctx.strokeStyle = "rgba(255,255,255,0.12)";
   ctx.lineWidth = 1.2;
@@ -434,7 +434,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   // ── INNER BOWL ───────────────────────────────────────────────────────────
   ctx.beginPath();
   ctx.arc(0, 0, innerR, 0, Math.PI * 2);
-  ctx.fillStyle = "#0A0A12";
+  ctx.fillStyle = "#111520";
   ctx.fill();
 
   // ── 4 YELLOW ARMS (simple, clean) ────────────────────────────────────────
@@ -444,7 +444,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
     ctx.beginPath();
     ctx.moveTo(Math.cos(a) * hubR, Math.sin(a) * hubR);
     ctx.lineTo(Math.cos(a) * armLen, Math.sin(a) * armLen);
-    ctx.strokeStyle = "#A855F7";
+    ctx.strokeStyle = "#f4a91f";
     ctx.lineWidth = 3.5;
     ctx.lineCap = "round";
     ctx.stroke();
@@ -453,7 +453,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   // ── CENTER HUB (small yellow circle) ─────────────────────────────────────
   ctx.beginPath();
   ctx.arc(0, 0, hubR, 0, Math.PI * 2);
-  ctx.fillStyle = "#A855F7";
+  ctx.fillStyle = "#f4a91f";
   ctx.fill();
 
   ctx.restore(); // end rotating context
@@ -464,7 +464,7 @@ function drawWheel(canvas: HTMLCanvasElement, wheelAngleDeg: number, ball?: Ball
   ctx.beginPath();
   ctx.moveTo(0, 9); ctx.lineTo(-6, -5); ctx.lineTo(6, -5);
   ctx.closePath();
-  ctx.fillStyle = "#A855F7";
+  ctx.fillStyle = "#f4a91f";
   ctx.fill();
   ctx.restore();
 
@@ -1513,7 +1513,7 @@ function RouletteGame({
         }}
         style={{
           position:"relative", display:"flex", alignItems:"center", justifyContent:"center",
-          background: color || "#1a1035", color:"#e2d4f8", fontWeight:700, fontSize:"10px",
+          background: color || "#1a2438", color:"#c8d8f0", fontWeight:700, fontSize:"10px",
           cursor: isSpinning ? "default" : (betAmt > 0 && !isDragSrc ? "grab" : "pointer"),
           borderRadius:"4px", touchAction:"none", WebkitTapHighlightColor:"transparent",
           border: isWin ? "2px solid #16ff5c" : "2px solid rgba(255,255,255,0.06)",
@@ -1558,20 +1558,20 @@ function RouletteGame({
 
   // ── JSX ────────────────────────────────────────────────────────────────────
   return (
-    <div className="game-ctrl-flex" style={{ width:"100%", display:"flex", fontFamily:"'Inter',sans-serif", position:"relative", background:"#0A0A12", userSelect:"none", WebkitUserSelect:"none" }}>
+    <div className="game-ctrl-flex" style={{ width:"100%", display:"flex", fontFamily:"'Inter',sans-serif", position:"relative", background:"#0e1320", userSelect:"none", WebkitUserSelect:"none" }}>
 
 
       {/* ─── LEFT PANEL — hidden on mobile (controls appear below table) ── */}
-      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#0D0F1A", borderRight:"1px solid #1a1035", padding:"16px", display: isMobile ? "none" : "flex", flexDirection:"column", gap:"12px" }}>
+      <div className="game-ctrl-sidebar" style={{ width:"260px", flexShrink:0, background:"#131a28", borderRight:"1px solid #1a2438", padding:"16px", display: isMobile ? "none" : "flex", flexDirection:"column", gap:"12px" }}>
 
         {/* Tabs: Manual / Automático */}
-        <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+        <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
           <button onClick={() => { if (!autoRunning) setMode("manual"); }} disabled={autoRunning}
-            style={{ flex:1, background:mode==="manual"?"#1a1035":"transparent", color:mode==="manual"?"#ead4fc":"#7c6d9e", border:mode==="manual"?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s" }}>
+            style={{ flex:1, background:mode==="manual"?"#1e2c44":"transparent", color:mode==="manual"?"#eef3f8":"#5a6a88", border:mode==="manual"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s" }}>
             {gt(_lang, "tabManual")}
           </button>
           <button onClick={() => { if (!autoRunning) setMode("auto"); }} disabled={autoRunning}
-            style={{ flex:1, background:mode==="auto"?"#1a1035":"transparent", color:mode==="auto"?"#ead4fc":"#7c6d9e", border:mode==="auto"?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s" }}>
+            style={{ flex:1, background:mode==="auto"?"#1e2c44":"transparent", color:mode==="auto"?"#eef3f8":"#5a6a88", border:mode==="auto"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s" }}>
             {gt(_lang, "tabAuto")}
           </button>
         </div>
@@ -1585,9 +1585,9 @@ function RouletteGame({
           const arrowBtn = (enabled: boolean, onClick: () => void, label: string) => (
             <button onClick={onClick} disabled={!enabled}
               onMouseEnter={e => { if (enabled) e.currentTarget.style.color = "#ffffff"; e.currentTarget.style.textShadow = enabled ? "0 0 10px rgba(255,255,255,0.8)" : "none"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = enabled ? "#ddd0f8" : "#2d1f52"; e.currentTarget.style.textShadow = "none"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = enabled ? "#c0d0e0" : "#2a3a50"; e.currentTarget.style.textShadow = "none"; }}
               style={{ flexShrink:0, width:"26px", background:"none", border:"none", padding:0,
-                color: enabled ? "#ddd0f8" : "#2d1f52", fontSize:"20px", fontWeight:800, fontFamily:"inherit",
+                color: enabled ? "#c0d0e0" : "#2a3a50", fontSize:"20px", fontWeight:800, fontFamily:"inherit",
                 cursor: enabled ? "pointer" : "default", lineHeight:1,
                 display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"color .15s, text-shadow .15s" }}>
@@ -1596,11 +1596,11 @@ function RouletteGame({
           );
           return (
             <div>
-              <div style={{ fontSize:"10px", color:"#6b5f8c", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>
+              <div style={{ fontSize:"10px", color:"#5a7090", marginBottom:"5px", fontWeight:600, letterSpacing:"0.5px" }}>
                 {gt(_lang, "chips")}
               </div>
               <div style={{ display:"flex", alignItems:"center", gap:"4px",
-                background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 4px", overflow:"visible" }}>
+                background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 4px", overflow:"visible" }}>
                 {arrowBtn(canLeft, () => setChipOffset(o => o - 1), "‹")}
                 <div style={{ display:"flex", flex:1, gap:"4px", justifyContent:"space-around", alignItems:"center", overflow:"visible" }}>
                   {visChips.map(v => {
@@ -1633,9 +1633,9 @@ function RouletteGame({
         })()}
 
         {/* Total bet */}
-        <div style={{ background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"10px 12px" }}>
-          <div style={{ fontSize:"10px", color:"#4a3070", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
-          <div style={{ fontSize:"16px", fontWeight:800, color: totalBetUsd > 0 ? "#ead4fc" : "#4a3070", opacity: currencyFade }}>
+        <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"10px 12px" }}>
+          <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
+          <div style={{ fontSize:"16px", fontWeight:800, color: totalBetUsd > 0 ? "#e0e8f4" : "#4a6080", opacity: currencyFade }}>
             {totalBetUsd > 0 ? fmtMoney(totalBetUsd) : `${fmtMoney(0)}`}
           </div>
         </div>
@@ -1668,9 +1668,9 @@ function RouletteGame({
                   }}
                   style={{
                     flex:1, padding:"10px 0", borderRadius:"6px", fontSize:"15px",
-                    fontWeight:700, border:"1px solid #1e1535",
-                    background: canHD ? "#1a1035" : "#0A0A12",
-                    color: canHD ? "#ddd0f8" : "#2d1f52",
+                    fontWeight:700, border:"1px solid #252f45",
+                    background: canHD ? "#1a2438" : "#101926",
+                    color: canHD ? "#d0dcea" : "#2a3a50",
                     cursor: canHD ? "pointer" : "not-allowed",
                     transition:"background .15s", fontFamily:"inherit",
                   }}>
@@ -1684,8 +1684,8 @@ function RouletteGame({
         {/* Auto round counter — visible only in auto tab */}
         {mode === "auto" && (
           <div>
-            <div style={{ fontSize:"10px", color:"#6b5f8c", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
-            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 10px" }}>
+            <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
+            <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
               <input
                 value={autoRunning ? (autoInfinite ? `${999999-autoRemaining}/∞` : `${(parseInt(autoCount)||10)-autoRemaining}/${autoCount}`) : (autoInfinite ? "∞" : autoCount)}
                 onChange={e => { setAutoInfinite(false); setAutoCount(e.target.value); }}
@@ -1698,7 +1698,7 @@ function RouletteGame({
                 style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
               />
               <button onClick={() => setAutoInfinite(v => !v)} disabled={autoRunning}
-                style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#7C3AED":"#1e1535", color:"#ddd0f8", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
+                style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
                 ∞
               </button>
             </div>
@@ -1716,8 +1716,8 @@ function RouletteGame({
           mode === "manual" ? (
             <button onClick={handleSpin} disabled={!canSpinBtn}
               style={{ width:"100%", padding:"14px", borderRadius:"6px", border:"none", fontFamily:"inherit",
-                background: canSpin ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-                color: canSpin ? "#fff" : "#2d1f52",
+                background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                color: canSpin ? "#fff" : "#3a4a60",
                 fontWeight:800, fontSize:"14px", letterSpacing:"0.5px",
                 cursor: canSpinBtn ? "pointer" : "not-allowed",
                 boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
@@ -1732,8 +1732,8 @@ function RouletteGame({
               onClick={handleAutoButton}
               disabled={isSpinning || autoStopping || (!autoRunning && (!hasBets || insufAuto))}
               style={{ width:"100%", padding:"14px", borderRadius:"6px", border:"none", fontFamily:"inherit",
-                background: isSpinning ? "#1a1035" : autoStopping ? "linear-gradient(135deg,#A855F7,#A855F7)" : autoRunning ? "linear-gradient(135deg,#c0392b,#a93226)" : canStart ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-                color: (isSpinning || (!autoRunning && (!hasBets || insufAuto))) ? "#2d1f52" : "#fff",
+                background: isSpinning ? "#1a2438" : autoStopping ? "linear-gradient(135deg,#b07d20,#8a6010)" : autoRunning ? "linear-gradient(135deg,#c0392b,#a93226)" : canStart ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                color: (isSpinning || (!autoRunning && (!hasBets || insufAuto))) ? "#3a4a60" : "#fff",
                 fontWeight:800, fontSize:"14px",
                 cursor: (isSpinning || autoStopping || (!autoRunning && (!hasBets || insufAuto))) ? "not-allowed" : "pointer",
                 opacity: isSpinning ? 0.45 : 1,
@@ -1761,7 +1761,7 @@ function RouletteGame({
         ) : (
           <button onClick={handleNewRoundAndSpin}
             style={{ width:"100%", padding:"14px", borderRadius:"6px", border:"none", fontFamily:"inherit",
-              background:"linear-gradient(180deg,#A855F7,#7C3AED)", color:"#fff",
+              background:"linear-gradient(180deg,#1a9fff,#0d6fd4)", color:"#fff",
               fontWeight:800, fontSize:"14px", letterSpacing:"0.5px", cursor:"pointer",
               boxShadow:"0 4px 22px rgba(26,159,255,.35)", transition:"all .2s" }}
             onMouseEnter={e => { e.currentTarget.style.transform="scale(1.03)"; e.currentTarget.style.boxShadow="0 6px 32px rgba(26,159,255,.65)"; }}
@@ -1773,36 +1773,36 @@ function RouletteGame({
         {/* Stats panel (floating, draggable — identical to Hilo/Mines) */}
         {statsOpen && createPortal(
           <div style={{ position:"fixed", left:statsPos.x, top:statsPos.y, zIndex:9999, width:"280px",
-            background:"#0A0A12", border:"1px solid #1e1535", borderRadius:"6px",
+            background:"#0f1f2e", border:"1px solid #1e3a52", borderRadius:"6px",
             boxShadow:"0 8px 32px rgba(0,0,0,.7)", overflow:"hidden", userSelect:"none" }}>
             {/* Title bar — drag handle */}
             <div onMouseDown={handleStatsDragStart}
               style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                padding:"12px 14px", background:"#0D0F1A", borderBottom:"1px solid #1e1535", cursor:"grab" }}>
+                padding:"12px 14px", background:"#112232", borderBottom:"1px solid #1e3a52", cursor:"grab" }}>
               <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-                <span style={{ display:"flex", alignItems:"center", color:"#a78bfa" }}>
+                <span style={{ display:"flex", alignItems:"center", color:"#7a9db8" }}>
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
                     <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
                   </svg>
                 </span>
-                <strong style={{ fontSize:"14px", color:"#ead4fc" }}>{gt(_lang, "liveStats")}</strong>
+                <strong style={{ fontSize:"14px", color:"#d8e8f5" }}>{gt(_lang, "liveStats")}</strong>
               </div>
               <button onClick={() => setStatsOpen(false)}
-                style={{ background:"none", border:"none", color:"#a78bfa", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
+                style={{ background:"none", border:"none", color:"#7a9db8", fontSize:"18px", cursor:"pointer", lineHeight:1, padding:"0 2px" }}>×</button>
             </div>
 
             <div style={{ padding:"12px" }}>
               {/* Stats rows */}
-              <div style={{ background:"#0A0A12", borderRadius:"6px", padding:"12px", marginBottom:"8px", display:"flex", flexDirection:"column", gap:"8px" }}>
+              <div style={{ background:"#0d1a28", borderRadius:"6px", padding:"12px", marginBottom:"8px", display:"flex", flexDirection:"column", gap:"8px" }}>
                 {([
                   { label:"Ganancia",  value: fmtMoney(rouletteStats.profit),  color: rouletteStats.profit >= 0 ? "#16ff5c" : "#ff5959" },
                   { label:"Victorias", value: String(rouletteStats.wins),       color:"#16ff5c" },
-                  { label:"Apostado",  value: fmtMoney(rouletteStats.wagered),  color:"#ead4fc" },
+                  { label:"Apostado",  value: fmtMoney(rouletteStats.wagered),  color:"#d8e8f5" },
                   { label:"Derrotas",  value: String(rouletteStats.losses),     color:"#ff5959" },
                 ] as { label:string; value:string; color:string }[]).map(s => (
                   <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                    <span style={{ color:"#a78bfa", fontSize:"11.5px" }}>{s.label}</span>
+                    <span style={{ color:"#7a9db8", fontSize:"11.5px" }}>{s.label}</span>
                     <span style={{ color:s.color, fontWeight:500, fontSize:"13px" }}>{s.value}</span>
                   </div>
                 ))}
@@ -1810,9 +1810,9 @@ function RouletteGame({
 
               {/* Reset button */}
               <button onClick={() => setRouletteStats(rouletteStatsDefault)}
-                style={{ width:"100%", marginBottom:"8px", background:"transparent", border:"1px solid #1e1535", borderRadius:"8px", color:"#a78bfa", fontSize:"12px", cursor:"pointer", padding:"6px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px", transition:"color .15s,border-color .15s,background .15s", fontFamily:"inherit" }}
-                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#A855F7"; b.style.background="#0A0A12"; }}
-                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#a78bfa"; b.style.borderColor="#1e1535"; b.style.background="transparent"; }}>
+                style={{ width:"100%", marginBottom:"8px", background:"transparent", border:"1px solid #1e3a52", borderRadius:"8px", color:"#7a9db8", fontSize:"12px", cursor:"pointer", padding:"6px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:"6px", transition:"color .15s,border-color .15s,background .15s", fontFamily:"inherit" }}
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#fff"; b.style.borderColor="#3a8aff"; b.style.background="#0d1f30"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.color="#7a9db8"; b.style.borderColor="#1e3a52"; b.style.background="transparent"; }}>
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.34"/></svg> {gt(_lang, "resetStats")}
               </button>
 
@@ -1827,8 +1827,8 @@ function RouletteGame({
                 const allPts: RChartPt[] = raw ? [{ cum:0, win:false, profit:0 }, ...series] : [];
                 const n = allPts.length;
                 if (n < 2) return (
-                  <div style={{ position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1e1535" }}>
-                    <span style={{ color:"#2d1f52", fontSize:"12px" }}>{gt(_lang, "noHistoryShort")}</span>
+                  <div style={{ position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid #1a3347" }}>
+                    <span style={{ color:"#2a4a6a", fontSize:"12px" }}>{gt(_lang, "noHistoryShort")}</span>
                   </div>
                 );
                 const cums = allPts.map(p => p.cum);
@@ -1847,17 +1847,17 @@ function RouletteGame({
                 const fillAbove = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
                 const fillBelow = linePath + ` L${xs[n-1].toFixed(1)} ${zeroY.toFixed(1)} L${xs[0].toFixed(1)} ${zeroY.toFixed(1)} Z`;
                 return (
-                  <div style={{ position:"relative", background:"#0A0A12", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1e1535" }}>
+                  <div style={{ position:"relative", background:"#0a1520", borderRadius:"6px", height:"190px", overflow:"visible", border:"1px solid #1a3347" }}>
                     {hpt && (
                       <div style={{ position:"absolute", left:`${tipLeft}%`, top:`${tipTop}%`,
                         transform:"translateX(-50%) translateY(-100%)",
-                        background:"#1a1035", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
+                        background:"#1a2a3a", border:`1.5px solid ${hpt.profit>=0?"#19ff35":"#ff3350"}`,
                         borderRadius:"8px", padding:"4px 10px", fontSize:"12px", fontWeight:500,
                         color: hpt.profit>=0?"#19ff35":"#ff3350", whiteSpace:"nowrap",
                         pointerEvents:"none", zIndex:20,
                         boxShadow:`0 2px 12px ${hpt.profit>=0?"rgba(25,255,53,.3)":"rgba(255,51,80,.3)"}` }}>
                         {hpt.profit>=0?"+":""}{fmtMoney(hpt.profit)}
-                        <span style={{ color:"#a78bfa", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
+                        <span style={{ color:"#7a9db8", fontWeight:400, fontSize:"10px", marginLeft:"6px" }}>
                           acum: {hpt.cum>=0?"+":""}{fmtMoney(hpt.cum)}
                         </span>
                       </div>
@@ -1886,17 +1886,17 @@ function RouletteGame({
                       {n > 1 ? <>
                         <path d={fillBelow} fill="rgba(200,30,30,.35)" clipPath="url(#rouletteClipBelow)"/>
                         <path d={fillAbove} fill="rgba(25,255,80,.18)" clipPath="url(#rouletteClipAbove)"/>
-                        <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#1e1535" strokeWidth="1.5"/>
+                        <line x1={PAD_X} y1={zeroY} x2={W-PAD_X} y2={zeroY} stroke="#2a4055" strokeWidth="1.5"/>
                         <path d={linePath} fill="none" stroke="#19ff35" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#rouletteClipAbove)"/>
                         <path d={linePath} fill="none" stroke="#e03030" strokeWidth="2.5" strokeLinejoin="miter" strokeLinecap="square" clipPath="url(#rouletteClipBelow)"/>
                         <rect x={PAD_X} y={PAD_Y} width={chartW} height={chartH} fill="transparent"/>
                         {hIdx !== null && hIdx < allPts.length && <>
-                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#2d1f52" strokeWidth="1" strokeDasharray="4,3"/>
+                          <line x1={xs[hIdx]} y1={PAD_Y} x2={xs[hIdx]} y2={H-PAD_Y} stroke="#3a5570" strokeWidth="1" strokeDasharray="4,3"/>
                           <circle cx={xs[hIdx]} cy={ys[hIdx]} r="5"
-                            fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0A0A12" strokeWidth="2"
+                            fill={allPts[hIdx].profit>=0?"#19ff35":"#ff3350"} stroke="#0a1520" strokeWidth="2"
                             style={{ pointerEvents:"none" }}/>
                         </>}
-                      </> : <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#1e1535" strokeWidth="1.5"/>}
+                      </> : <line x1={PAD_X} y1={H/2} x2={W-PAD_X} y2={H/2} stroke="#2a4055" strokeWidth="1.5"/>}
                     </svg>
                   </div>
                 );
@@ -1910,9 +1910,9 @@ function RouletteGame({
           <button onClick={() => { setStatsOpen(v => !v); }}
             title={gt(_lang, "liveStatsTitle")}
             style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", fontFamily:"inherit", padding:0, overflow:"hidden", boxSizing:"border-box",
-              background: statsOpen ? "#7C3AED" : "#0D0F1A",
-              border: statsOpen ? "1px solid #A855F7" : "1px solid #1a1035",
-              color: statsOpen ? "#fff" : "#a78bfa",
+              background: statsOpen ? "#1f6fd0" : "#0e1826",
+              border: statsOpen ? "1px solid #3a8aff" : "1px solid #203a50",
+              color: statsOpen ? "#fff" : "#7a9db8",
               cursor:"pointer", fontSize:"17px",
               display:"flex", alignItems:"center", justifyContent:"center",
               transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1924,9 +1924,9 @@ function RouletteGame({
           <button onClick={() => { const n = vol > 0 ? 0 : 70; setVol(n); volRef.current = n; }}
             title={gt(_lang, "volume")}
             style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", fontFamily:"inherit", padding:0, overflow:"hidden", boxSizing:"border-box",
-              background: "#0D0F1A",
-              border: "1px solid #1a1035",
-              color: "#a78bfa",
+              background: "#0e1826",
+              border: "1px solid #203a50",
+              color: "#7a9db8",
               cursor:"pointer", fontSize:"17px",
               display:"flex", alignItems:"center", justifyContent:"center",
               transition:"background .2s,border .2s,color .2s,transform .12s,filter .12s" }}
@@ -1938,7 +1938,7 @@ function RouletteGame({
       </div>
 
       {/* ─── RIGHT AREA ──────────────────────────────────────────────────── */}
-      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0A0A12", position:"relative" }}>
+      <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:"16px", padding:"12px 16px 16px", background:"#0e1320", position:"relative" }}>
 
         {/* Wheel row — desktop only. Mobile: always hidden (canvas moved into table overlay). */}
         <div style={{
@@ -1953,10 +1953,10 @@ function RouletteGame({
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"5px" }}>
             {resultHistory.length > 0 && (() => {
               const last = resultHistory[0];
-              const bg = last === 0 ? "#1a6b30" : RED_NUMS.has(last) ? "#c0392b" : "#0D0F1A";
+              const bg = last === 0 ? "#1a6b30" : RED_NUMS.has(last) ? "#c0392b" : "#111827";
               return (
                 <>
-                  <div style={{ fontSize:"9px", color:"#4a3070", fontWeight:700, letterSpacing:"0.5px", textTransform:"uppercase" }}>{gt(_lang, "lastResult")}</div>
+                  <div style={{ fontSize:"9px", color:"#4a6080", fontWeight:700, letterSpacing:"0.5px", textTransform:"uppercase" }}>{gt(_lang, "lastResult")}</div>
                   <div style={{ width:"72px", height:"72px", borderRadius:"50%", background:bg,
                     border:"3px solid rgba(255,255,255,0.3)",
                     display:"flex", alignItems:"center", justifyContent:"center",
@@ -1992,7 +1992,7 @@ function RouletteGame({
                 }}>
                   <div style={{
                     width:"50px", height:"50px", borderRadius:"50%",
-                    background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#0D0F1A",
+                    background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#111827",
                     border:"3px solid rgba(255,255,255,0.32)",
                     display:"flex", alignItems:"center", justifyContent:"center",
                     fontWeight:900, fontSize:"22px", color:"#fff",
@@ -2005,7 +2005,7 @@ function RouletteGame({
                     {(winAmountUsd / totalWageredUsd).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
                   </div>
                   <div style={{ height:"1px", background:"#1e3a28", margin:"11px 0" }}/>
-                  <div style={{ fontSize:"15px", fontWeight:500, color:"#9b8bc4" }}>
+                  <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0" }}>
                     <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(winAmountUsd)}</span>
                   </div>
                 </div>
@@ -2020,7 +2020,7 @@ function RouletteGame({
             gap:"4px", height:"280px", overflowY:"hidden", justifyContent:"flex-start",
             paddingTop:"5px", marginLeft:"-11px" }}>
             {resultHistory.slice(0, 12).map((n, i) => {
-              const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#0D0F1A";
+              const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
               const opacity = Math.max(0.25, 1 - i * 0.07);
               return (
                 <div key={i} style={{ flexShrink:0, width:"28px", height:"28px", borderRadius:"6px",
@@ -2082,7 +2082,7 @@ function RouletteGame({
                     }}>
                       <div style={{
                         width:"50px", height:"50px", borderRadius:"50%",
-                        background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#0D0F1A",
+                        background: winNumber === 0 ? "#1a6b30" : RED_NUMS.has(winNumber) ? "#c0392b" : "#111827",
                         border:"3px solid rgba(255,255,255,0.32)",
                         display:"flex", alignItems:"center", justifyContent:"center",
                         fontWeight:900, fontSize:"22px", color:"#fff",
@@ -2092,7 +2092,7 @@ function RouletteGame({
                         {(winAmountUsd / totalWageredUsd).toLocaleString("es-AR", { minimumFractionDigits:2, maximumFractionDigits:2 })}×
                       </div>
                       <div style={{ height:"1px", background:"#1e3a28", margin:"11px 0" }}/>
-                      <div style={{ fontSize:"15px", fontWeight:500, color:"#9b8bc4" }}>
+                      <div style={{ fontSize:"15px", fontWeight:500, color:"#8aabb0" }}>
                         <span style={{ opacity:currencyFade, transition:"opacity .18s" }}>{fmtMoney(winAmountUsd)}</span>
                       </div>
                     </div>
@@ -2109,7 +2109,7 @@ function RouletteGame({
               {/* Big square — last result */}
               {(() => {
                 const n = resultHistory[0];
-                const bg = n === undefined ? "#0D0F1A" : n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#0D0F1A";
+                const bg = n === undefined ? "#111827" : n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
                 return (
                   <div style={{ width:"60px", height:"60px", borderRadius:"6px", flexShrink:0,
                     background: bg, border:"2px solid rgba(255,255,255,0.10)",
@@ -2123,7 +2123,7 @@ function RouletteGame({
 
               {/* Smaller squares — previous results */}
               {resultHistory.slice(1, 9).map((n, i) => {
-                const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#0D0F1A";
+                const bg = n === 0 ? "#1a6b30" : RED_NUMS.has(n) ? "#c0392b" : "#111827";
                 return (
                   <div key={i} style={{ width:"28px", height:"28px", borderRadius:"4px", flexShrink:0,
                     background: bg, border:"1.5px solid rgba(255,255,255,0.08)",
@@ -2174,7 +2174,7 @@ function RouletteGame({
                 { betKey:"low",   label: gt(_lang,"rouletteLow"),   row:2,  color: undefined },
                 { betKey:"even",  label: gt(_lang,"rouletteEven"),  row:4,  color: undefined },
                 { betKey:"red",   label: gt(_lang,"rouletteRed"),   row:6,  color: "#b91c1c" },
-                { betKey:"black", label: gt(_lang,"rouletteBlack"), row:8,  color: "#130d26" },
+                { betKey:"black", label: gt(_lang,"rouletteBlack"), row:8,  color: "#1c1f2e" },
                 { betKey:"odd",   label: gt(_lang,"rouletteOdd"),   row:10, color: undefined },
                 { betKey:"high",  label: gt(_lang,"rouletteHigh"),  row:12, color: undefined },
               ].map(({ betKey, label, row, color }) => (
@@ -2254,13 +2254,13 @@ function RouletteGame({
 
               {/* ── Row 14: 2:1 column bets (number cols only) ── */}
               <div style={{ gridColumn:"3", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"4", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
               <div style={{ gridColumn:"5", gridRow:"14" }}>
-                <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_3" style={{ height:"24px", fontSize:8, background:"#1a2438" }}/>
               </div>
             </div>
             ); })()}
@@ -2315,7 +2315,7 @@ function RouletteGame({
               ))}
               {/* Column 3 (top row) 2:1 */}
               <div style={{ gridRow:"1" }}>
-                <OutsideCell label="2:1" betKey="col_3" style={{ height:"100%", fontSize:"11px", background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_3" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
 
               {/* Mid row: 2,5,8,...,35 */}
@@ -2324,7 +2324,7 @@ function RouletteGame({
               ))}
               {/* Column 2 2:1 */}
               <div style={{ gridRow:"2" }}>
-                <OutsideCell label="2:1" betKey="col_2" style={{ height:"100%", fontSize:"11px", background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_2" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
 
               {/* Bot row: 1,4,7,...,34 */}
@@ -2333,7 +2333,7 @@ function RouletteGame({
               ))}
               {/* Column 1 2:1 */}
               <div style={{ gridRow:"3" }}>
-                <OutsideCell label="2:1" betKey="col_1" style={{ height:"100%", fontSize:"11px", background:"#1a1035" }}/>
+                <OutsideCell label="2:1" betKey="col_1" style={{ height:"100%", fontSize:"11px", background:"#1a2438" }}/>
               </div>
             </div>
 
@@ -2406,7 +2406,7 @@ function RouletteGame({
               <div style={{ gridColumn:"2 / span 2" }}><OutsideCell label={gt(_lang,"rouletteLow")} betKey="low"/></div>
               <div style={{ gridColumn:"4 / span 2" }}><OutsideCell label={gt(_lang,"rouletteEven")} betKey="even"/></div>
               <div style={{ gridColumn:"6 / span 2" }}><OutsideCell label={gt(_lang,"rouletteRed")} betKey="red" color="#b91c1c"/></div>
-              <div style={{ gridColumn:"8 / span 2" }}><OutsideCell label={gt(_lang,"rouletteBlack")} betKey="black" color="#130d26"/></div>
+              <div style={{ gridColumn:"8 / span 2" }}><OutsideCell label={gt(_lang,"rouletteBlack")} betKey="black" color="#1a1a2e"/></div>
               <div style={{ gridColumn:"10 / span 2" }}><OutsideCell label={gt(_lang,"rouletteOdd")} betKey="odd"/></div>
               <div style={{ gridColumn:"12 / span 2" }}><OutsideCell label={gt(_lang,"rouletteHigh")} betKey="high"/></div>
               <div/>
@@ -2422,9 +2422,9 @@ function RouletteGame({
               padding:"7px 18px", borderRadius:"8px",
               border:"1px solid", fontSize:"12px", fontWeight:600, fontFamily:"inherit",
               cursor: !isSpinning ? "pointer" : "not-allowed",
-              background:"#0D0F1A",
-              borderColor: !isSpinning ? "#2d1f52" : "#0D0F1A",
-              color: !isSpinning ? "#818cf8" : "#2d1f52",
+              background:"#0e1826",
+              borderColor: !isSpinning ? "#2a3e58" : "#151f2c",
+              color: !isSpinning ? "#7ab0d8" : "#2a3a50",
               transition:"all .15s",
             }}
             onMouseEnter={e => { if (!isSpinning) { e.currentTarget.style.filter="brightness(1.4)"; e.currentTarget.style.transform="scale(1.05)"; e.currentTarget.style.boxShadow="0 0 12px rgba(122,176,216,.35)"; }}}
@@ -2436,9 +2436,9 @@ function RouletteGame({
               padding:"7px 18px", borderRadius:"8px",
               border:"1px solid", fontSize:"12px", fontWeight:600, fontFamily:"inherit",
               cursor: !isSpinning ? "pointer" : "not-allowed",
-              background:"#0D0F1A",
-              borderColor: !isSpinning ? "#2d0a50" : "#0D0F1A",
-              color: !isSpinning ? "#d87878" : "#2d1f52",
+              background:"#0e1826",
+              borderColor: !isSpinning ? "#582a2a" : "#151f2c",
+              color: !isSpinning ? "#d87878" : "#2a3a50",
               transition:"all .15s",
             }}
             onMouseEnter={e => { if (!isSpinning) { e.currentTarget.style.filter="brightness(1.4)"; e.currentTarget.style.transform="scale(1.05)"; e.currentTarget.style.boxShadow="0 0 12px rgba(216,120,120,.35)"; }}}
@@ -2457,7 +2457,7 @@ function RouletteGame({
                 /* Wheel still visible — block spin until overlay disappears */
                 <button disabled
                   style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                    background:"#1a1035", color:"#2d1f52",
+                    background:"#1a2438", color:"#3a4a60",
                     fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
                     cursor:"not-allowed", boxShadow:"none", transition:"all .2s" }}>
                   {gt(_lang,"bjBet")}
@@ -2465,8 +2465,8 @@ function RouletteGame({
               ) : (!isResult) ? (
                 <button onClick={handleSpin} disabled={!canSpin}
                   style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                    background: canSpin ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-                    color: canSpin ? "#fff" : "#2d1f52",
+                    background: canSpin ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                    color: canSpin ? "#fff" : "#3a4a60",
                     fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
                     cursor: canSpin ? "pointer" : "not-allowed",
                     boxShadow: canSpin ? "0 4px 22px rgba(26,159,255,.35)" : "none",
@@ -2476,7 +2476,7 @@ function RouletteGame({
               ) : (
                 <button onClick={handleNewRoundAndSpin}
                   style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                    background:"linear-gradient(180deg,#A855F7,#7C3AED)", color:"#fff",
+                    background:"linear-gradient(180deg,#1a9fff,#0d6fd4)", color:"#fff",
                     fontWeight:800, fontSize:"15px", letterSpacing:"0.5px", cursor:"pointer",
                     boxShadow:"0 4px 22px rgba(26,159,255,.35)", transition:"all .2s" }}>
                   {gt(_lang,"bjBet")}
@@ -2489,8 +2489,8 @@ function RouletteGame({
                 onClick={handleAutoButton}
                 disabled={isSpinning || autoStopping || (!autoRunning && (!hasBets || insufAuto))}
                 style={{ width:"100%", padding:"14px", borderRadius:"8px", border:"none", fontFamily:"inherit",
-                  background: isSpinning ? "#1a1035" : autoStopping ? "linear-gradient(135deg,#A855F7,#A855F7)" : autoRunning ? "linear-gradient(135deg,#c0392b,#a93226)" : canStart ? "linear-gradient(180deg,#A855F7,#7C3AED)" : "#1a1035",
-                  color: (isSpinning || (!autoRunning && (!hasBets || insufAuto))) ? "#2d1f52" : "#fff",
+                  background: isSpinning ? "#1a2438" : autoStopping ? "linear-gradient(135deg,#b07d20,#8a6010)" : autoRunning ? "linear-gradient(135deg,#c0392b,#a93226)" : canStart ? "linear-gradient(180deg,#1a9fff,#0d6fd4)" : "#1a2438",
+                  color: (isSpinning || (!autoRunning && (!hasBets || insufAuto))) ? "#3a4a60" : "#fff",
                   fontWeight:800, fontSize:"15px", letterSpacing:"0.5px",
                   cursor: (isSpinning || autoStopping || (!autoRunning && (!hasBets || insufAuto))) ? "not-allowed" : "pointer",
                   opacity: isSpinning ? 0.45 : 1,
@@ -2502,16 +2502,16 @@ function RouletteGame({
             )}
 
             {/* 2 — Chip selector row */}
-            <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"8px", padding:"6px 4px" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:"4px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"8px", padding:"6px 4px" }}>
               <button onClick={() => setChipOffset(o => Math.max(0, o-1))} disabled={chipOffset<=0}
-                style={{ background:"none", border:"none", color: chipOffset>0 ? "#818cf8" : "#2d1f52", fontSize:"18px", lineHeight:1, cursor: chipOffset>0 ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>‹</button>
+                style={{ background:"none", border:"none", color: chipOffset>0 ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset>0 ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>‹</button>
               {CHIP_VALUES.slice(chipOffset, chipOffset+4).map(v => {
                 const ck = chipKey(v);
                 const meta = CHIP_META[ck];
                 const sel = chipUsd === v;
                 return (
                   <button key={v} onClick={() => setChipUsd(v)}
-                    style={{ flex:1, background:"none", border: sel ? "1px solid #A855F7" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
+                    style={{ flex:1, background:"none", border: sel ? "1px solid #1a9fff" : "1px solid transparent", borderRadius:"8px", padding:"4px 2px", cursor:"pointer",
                       boxShadow: sel ? "0 0 8px rgba(26,159,255,.35)" : "none", transition:"all .15s",
                       display:"flex", alignItems:"center", justifyContent:"center" }}>
                     <CasinoChipSVG {...meta} selected={sel} size={36} />
@@ -2519,13 +2519,13 @@ function RouletteGame({
                 );
               })}
               <button onClick={() => setChipOffset(o => Math.min(CHIP_VALUES.length-4, o+1))} disabled={chipOffset+4>=CHIP_VALUES.length}
-                style={{ background:"none", border:"none", color: chipOffset+4<CHIP_VALUES.length ? "#818cf8" : "#2d1f52", fontSize:"18px", lineHeight:1, cursor: chipOffset+4<CHIP_VALUES.length ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>›</button>
+                style={{ background:"none", border:"none", color: chipOffset+4<CHIP_VALUES.length ? "#7ab0d8" : "#2a3a50", fontSize:"18px", lineHeight:1, cursor: chipOffset+4<CHIP_VALUES.length ? "pointer" : "default", padding:"0 4px", fontFamily:"inherit" }}>›</button>
             </div>
 
             {/* 3 — Total Bet card (desktop style) */}
-            <div style={{ background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"10px 12px" }}>
-              <div style={{ fontSize:"10px", color:"#4a3070", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
-              <div style={{ fontSize:"16px", fontWeight:800, color: hasBets ? "#ead4fc" : "#4a3070", opacity: currencyFade }}>
+            <div style={{ background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"10px 12px" }}>
+              <div style={{ fontSize:"10px", color:"#4a6080", marginBottom:"4px", fontWeight:600, letterSpacing:"0.5px" }}>{gt(_lang, "totalBet")}</div>
+              <div style={{ fontSize:"16px", fontWeight:800, color: hasBets ? "#e0e8f4" : "#4a6080", opacity: currencyFade }}>
                 {hasBets ? fmtMoney(totalBetUsd) : fmtMoney(0)}
               </div>
             </div>
@@ -2554,8 +2554,8 @@ function RouletteGame({
                       });
                     }}
                     style={{ flex:1, padding:"10px 0", borderRadius:"6px", fontSize:"15px", fontWeight:700,
-                      border:"1px solid #1e1535", background:"#0D0F1A",
-                      color: canHD ? "#a090c8" : "#2d1f52",
+                      border:"1px solid #252f45", background:"#0e1826",
+                      color: canHD ? "#9ab0d0" : "#3a4a60",
                       cursor: canHD ? "pointer" : "not-allowed",
                       opacity: canHD ? 1 : 0.45,
                       fontFamily:"inherit", transition:"opacity .15s" }}>
@@ -2568,8 +2568,8 @@ function RouletteGame({
             {/* 5 — Number of rounds (only in auto mode, above toggle) */}
             {mode === "auto" && (
               <div>
-                <div style={{ fontSize:"10px", color:"#6b5f8c", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
-                <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0D0F1A", border:"1px solid #1e1535", borderRadius:"6px", padding:"6px 10px" }}>
+                <div style={{ fontSize:"10px", color:"#5a7090", fontWeight:600, letterSpacing:"0.5px", marginBottom:"6px" }}>{gt(_lang, "numRounds")}</div>
+                <div style={{ display:"flex", alignItems:"center", gap:"6px", background:"#0e1826", border:"1px solid #252f45", borderRadius:"6px", padding:"6px 10px" }}>
                   <input
                     value={autoRunning ? (autoInfinite ? `${999999-autoRemaining}/∞` : `${(parseInt(autoCount)||10)-autoRemaining}/${autoCount}`) : (autoInfinite ? "∞" : autoCount)}
                     onChange={e => { setAutoInfinite(false); setAutoCount(e.target.value); }}
@@ -2582,7 +2582,7 @@ function RouletteGame({
                     style={{ flex:1, background:"transparent", border:"none", color:"white", fontSize:"20px", padding:"4px", minWidth:0, outline:"none", fontFamily:"inherit" }}
                   />
                   <button onClick={() => setAutoInfinite(v => !v)} disabled={autoRunning}
-                    style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#7C3AED":"#1e1535", color:"#ddd0f8", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
+                    style={{ padding:"4px 10px", borderRadius:"6px", background:autoInfinite?"#1f6fd0":"#2a4155", color:"#d0dcea", border:"none", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"16px", fontFamily:"inherit" }}>
                     ∞
                   </button>
                 </div>
@@ -2590,13 +2590,13 @@ function RouletteGame({
             )}
 
             {/* 6 — Manual / Auto toggle */}
-            <div style={{ display:"flex", alignItems:"center", background:"#0D0F1A", borderRadius:"6px", padding:"5px", gap:"4px" }}>
+            <div style={{ display:"flex", alignItems:"center", background:"#0e1826", borderRadius:"6px", padding:"5px", gap:"4px" }}>
               <button onClick={() => { if (!autoRunning) setMode("manual"); }} disabled={autoRunning}
-                style={{ flex:1, background:mode==="manual"?"#1a1035":"transparent", color:mode==="manual"?"#ead4fc":"#7c6d9e", border:mode==="manual"?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                style={{ flex:1, background:mode==="manual"?"#1e2c44":"transparent", color:mode==="manual"?"#eef3f8":"#5a6a88", border:mode==="manual"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="manual"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
                 {gt(_lang, "tabManual")}
               </button>
               <button onClick={() => { if (!autoRunning) setMode("auto"); }} disabled={autoRunning}
-                style={{ flex:1, background:mode==="auto"?"#1a1035":"transparent", color:mode==="auto"?"#ead4fc":"#7c6d9e", border:mode==="auto"?"1px solid #2d1f52":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
+                style={{ flex:1, background:mode==="auto"?"#1e2c44":"transparent", color:mode==="auto"?"#eef3f8":"#5a6a88", border:mode==="auto"?"1px solid #3a4a60":"1px solid transparent", borderRadius:"6px", padding:"10px", fontWeight:500, cursor:autoRunning?"not-allowed":"pointer", fontSize:"14px", opacity:autoRunning&&mode!=="auto"?0.45:1, transition:"opacity .2s", fontFamily:"inherit" }}>
                 {gt(_lang, "tabAuto")}
               </button>
             </div>
@@ -2607,9 +2607,9 @@ function RouletteGame({
                 onClick={() => setStatsOpen(v => !v)}
                 title={gt(_lang, "liveStatsTitle")}
                 style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-                  background: statsOpen ? "#7C3AED" : "#0D0F1A",
-                  border: statsOpen ? "1px solid #A855F7" : "1px solid #1a1035",
-                  color: statsOpen ? "#fff" : "#a78bfa",
+                  background: statsOpen ? "#1f6fd0" : "#0e1826",
+                  border: statsOpen ? "1px solid #3a8aff" : "1px solid #203a50",
+                  color: statsOpen ? "#fff" : "#7a9db8",
                   cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                   transition:"background .15s,border-color .15s,color .15s",
                 }}
@@ -2623,7 +2623,7 @@ function RouletteGame({
                 onClick={() => { const n = vol > 0 ? 0 : 70; setVol(n); volRef.current = n; }}
                 title={gt(_lang, "volume")}
                 style={{ width:"38px", height:"38px", minHeight:"38px", maxHeight:"38px", borderRadius:"8px", padding:0, overflow:"hidden", boxSizing:"border-box",
-                  background: "#0D0F1A", border: "1px solid #1a1035", color: "#a78bfa",
+                  background: "#0e1826", border: "1px solid #203a50", color: "#7a9db8",
                   cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                   transition:"background .15s,border-color .15s,color .15s",
                 }}

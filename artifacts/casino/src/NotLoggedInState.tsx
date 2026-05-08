@@ -32,12 +32,12 @@ export default function NotLoggedInState({ variant, onLogin, onRegister, lang }:
         }}>
           <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
             <rect x="7" y="16" width="22" height="15" rx="3.5"
-              stroke="#A855F7" strokeWidth="1.6" fill="rgba(246,181,49,.1)"/>
+              stroke="#f6b531" strokeWidth="1.6" fill="rgba(246,181,49,.1)"/>
             <path d="M11.5 16v-5a6.5 6.5 0 0 1 13 0v5"
-              stroke="#A855F7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="18" cy="23.5" r="2" fill="#A855F7"/>
+              stroke="#f6b531" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="18" cy="23.5" r="2" fill="#f6b531"/>
             <line x1="18" y1="25.5" x2="18" y2="28"
-              stroke="#A855F7" strokeWidth="1.6" strokeLinecap="round"/>
+              stroke="#f6b531" strokeWidth="1.6" strokeLinecap="round"/>
           </svg>
         </div>
         <div style={{
@@ -56,7 +56,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister, lang }:
         margin: "0 0 10px",
         fontSize: "17px",
         fontWeight: 700,
-        color: "#e2d4f8",
+        color: "#e2e8f0",
         letterSpacing: "-0.2px",
       }}>
         {isDeposit ? T("nlsLoginDeposit") : T("nlsLoginTx")}
@@ -65,7 +65,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister, lang }:
       <p style={{
         margin: "0 0 30px",
         fontSize: "13.5px",
-        color: "#8b7ab8",
+        color: "#6a7a99",
         maxWidth: "260px",
         lineHeight: 1.65,
       }}>
@@ -88,7 +88,7 @@ export default function NotLoggedInState({ variant, onLogin, onRegister, lang }:
             padding: "12px 0",
             borderRadius: "10px",
             border: "none",
-            background: "linear-gradient(180deg,#A855F7,#7C3AED)",
+            background: "linear-gradient(180deg,#f6b531,#ea9807)",
             color: "#111",
             fontWeight: 700,
             fontSize: "14px",
@@ -101,20 +101,20 @@ export default function NotLoggedInState({ variant, onLogin, onRegister, lang }:
         <button
           onClick={onRegister}
           onMouseEnter={e => {
-            e.currentTarget.style.background = "#1e1535";
+            e.currentTarget.style.background = "#232d42";
             e.currentTarget.style.transform = "scale(1.03)";
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = "#130d26";
+            e.currentTarget.style.background = "#1a2235";
             e.currentTarget.style.transform = "";
           }}
           style={{
             flex: 1,
             padding: "12px 0",
             borderRadius: "10px",
-            border: "1px solid #2d1f52",
-            background: "#130d26",
-            color: "#ddd0f8",
+            border: "1px solid #2a3650",
+            background: "#1a2235",
+            color: "#c8d4e8",
             fontWeight: 600,
             fontSize: "14px",
             cursor: "pointer",
